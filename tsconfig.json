@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "module": "esnext",
+    "target": "es2015",
+    "jsx": "react-jsx",
+    "importHelpers": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
     "outDir": "dist",
-    "jsx": "react",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
@@ -12,6 +17,15 @@
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma"
-    ]
-  }
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    },
+    "rootDir": "./"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
