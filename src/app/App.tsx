@@ -1,3 +1,5 @@
+import './styles/global.css'
+
 import { useEffect } from 'react'
 
 function App() {
