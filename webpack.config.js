@@ -1,7 +1,8 @@
 /* eslint-disable sort-keys */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 const path = require('path')
 
 module.exports = (env, argv) => ({
@@ -61,12 +62,28 @@ module.exports = (env, argv) => ({
 
   // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
   plugins: [
+    new webpack.DefinePlugin({
+      global: {}, // Fix missing symbol error when running in developer VM
+    }),
     new HtmlWebpackPlugin({
+      inject: 'body',
       template: './src/app/index.html',
       filename: 'ui.html',
-      inlineSource: '.(js)$',
       chunks: ['ui'],
     }),
-    new HtmlWebpackInlineSourcePlugin(),
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
   ],
+
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    port: 8000,
+    allowedHosts: ['*'],
+    hot: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    },
+  },
 })
