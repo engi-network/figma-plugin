@@ -1,8 +1,8 @@
 /* eslint-disable sort-keys */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
 
 module.exports = (env, argv) => ({
   mode: argv.mode === 'production' ? 'production' : 'development',
@@ -47,7 +47,12 @@ module.exports = (env, argv) => ({
   },
 
   // Webpack tries these extensions for you if you omit the extension like "import './file'"
-  resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js'] },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    alias: {
+      '~': path.resolve(__dirname, 'src/app/'),
+    },
+  },
 
   output: {
     filename: '[name].js',
@@ -64,4 +69,4 @@ module.exports = (env, argv) => ({
     }),
     new HtmlWebpackInlineSourcePlugin(),
   ],
-});
+})

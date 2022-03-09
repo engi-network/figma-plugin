@@ -20,9 +20,9 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "~/*": [
-        "src/*"
-      ]
+      "~*": [
+        "src/app/*"
+      ],
     },
     "rootDir": "./",
     "jsxImportSource": "@emotion/react"

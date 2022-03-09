@@ -2,6 +2,8 @@ import './styles/global.css'
 
 import { useEffect } from 'react'
 
+import Button from '~/components/global/Button/Button'
+
 function App() {
   useEffect(() => {
     window.onmessage = (event) => {
@@ -36,6 +38,7 @@ function App() {
               Learn more
             </a>
           </div>
+          <Button label="Cool" />
         </div>
       </div>
     </div>
