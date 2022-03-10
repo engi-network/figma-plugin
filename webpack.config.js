@@ -76,7 +76,7 @@ module.exports = (env, argv) => ({
   ],
 
   devServer: {
-    https: true,
+    liveReload: true,
     static: {
       directory: path.join(__dirname, 'dist'),
     },

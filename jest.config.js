@@ -1,7 +1,7 @@
 module.exports = {
   moduleNameMapper: {
     // Make sure this is the last mapper, since it will match any file extension
-    '^~/(.*)$': '<rootDir>/src/$1',
+    '^~/(.*)$': '<rootDir>/src/app/$1',
     '\\.(css|less)$': '<rootDir>/src/app/__mocks__/styleMock.js',
   },
   preset: 'ts-jest',
