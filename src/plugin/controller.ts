@@ -1,26 +1,30 @@
+// TODO: support absolute import in /plugin
+import { FIGMA_SELECTION_CHANGE } from '../constants'
+
 figma.showUI(__html__)
 
-figma.ui.onmessage = (msg) => {
-  if (msg.type === 'create-rectangles') {
-    const nodes = []
+// store selected layer information and message plugin UI
+figma.on("selectionchange", async () => {
+  console.log('engi | selection changed in figma')
 
-    for (let i = 0; i < msg.count; i++) {
-      const rect = figma.createRectangle()
-      rect.x = i * 150
-      rect.fills = [{ type: 'SOLID', color: { r: 1, g: 0.5, b: 0 } }]
-      figma.currentPage.appendChild(rect)
-      nodes.push(rect as never)
+  // get current selection
+  const { name, width, height, ...selection }  = figma.currentPage.selection[0]
+
+  // store locally and export selected layer as bytes
+  const [layer] = await Promise.all([
+    selection.exportAsync(), // https://www.figma.com/plugin-docs/api/properties/nodes-exportasync/#docsNav
+    figma.clientStorage.setAsync('engi-selected-frame-name', name),
+    figma.clientStorage.setAsync('engi-selected-frame-width', name),
+    figma.clientStorage.setAsync('engi-selected-frame-height', name),
+  ])
+
+  figma.ui.postMessage({
+    type: FIGMA_SELECTION_CHANGE,
+    data: {
+      name,
+      width,
+      height,
+      layer,
     }
-
-    figma.currentPage.selection = nodes
-    figma.viewport.scrollAndZoomIntoView(nodes)
-
-    // This is how figma responds back to the ui
-    figma.ui.postMessage({
-      type: 'create-rectangles',
-      message: `Created ${msg.count} Rectangles`,
-    })
-  }
-
-  figma.closePlugin()
-}
+  })
+})
