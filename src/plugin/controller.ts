@@ -4,11 +4,11 @@ import { FIGMA_SELECTION_CHANGE } from '../constants'
 figma.showUI(__html__)
 
 // store selected layer information and message plugin UI
-figma.on("selectionchange", async () => {
+figma.on('selectionchange', async () => {
   console.log('engi | selection changed in figma')
 
   // get current selection
-  const { name, width, height, ...selection }  = figma.currentPage.selection[0]
+  const { name, width, height, ...selection } = figma.currentPage.selection[0]
 
   // store locally and export selected layer as bytes
   const [layer] = await Promise.all([
@@ -25,6 +25,6 @@ figma.on("selectionchange", async () => {
       width,
       height,
       layer,
-    }
+    },
   })
 })
