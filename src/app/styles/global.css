@@ -1,9 +1,14 @@
-body {
-  font: 12px sans-serif;
-  text-align: center;
-  margin: 20px;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
