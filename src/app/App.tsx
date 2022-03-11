@@ -2,7 +2,7 @@ import './styles/global.css'
 
 import { useEffect } from 'react'
 
-import Button from '~/components/global/Button/Button'
+import Button from '~/app/components/global/Button/Button'
 
 function App() {
   useEffect(() => {

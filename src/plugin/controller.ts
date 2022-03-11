@@ -1,11 +1,11 @@
 // TODO: support absolute import in /plugin
-import { FIGMA_SELECTION_CHANGE } from '../constants'
+import { FIGMA_SELECTION_CHANGE } from '~/plugin/constants'
 
 figma.showUI(__html__)
 
 // store selected layer information and message plugin UI
 figma.on('selectionchange', async () => {
-  console.log('engi | selection changed in figma')
+  console.info('engi | selection changed in figma')
 
   // get current selection
   const { name, width, height, ...selection } = figma.currentPage.selection[0]
