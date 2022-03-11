@@ -1,7 +1,6 @@
-// TODO: support absolute import in /plugin
-import { FIGMA_SELECTION_CHANGE } from '~/plugin/constants'
+import { FIGMA_SELECTION_CHANGE, ShowUIOptions } from '~/plugin/constants'
 
-figma.showUI(__html__)
+figma.showUI(__html__, ShowUIOptions)
 
 // store selected layer information and message plugin UI
 figma.on('selectionchange', async () => {
