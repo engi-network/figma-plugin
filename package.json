@@ -15,14 +15,16 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "lint": "eslint \"src/**/*.{ts,tsx,md}\" \"scripts/**/*.{ts,tsx,md}\"",
-    "lint:fix": "eslint \"src/**/*.{ts,tsx,md}\" --fix"
+    "lint:fix": "eslint \"src/**/*.{ts,tsx,md}\" --fix",
+    "storycap": "storycap --serverCmd \"start-storybook -p 9001\" http://localhost:9001"
   },
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "postcss-loader": "^4.2.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "storycap": "^3.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
