@@ -12,14 +12,13 @@ function Carousel() {
       slidesPerView={3}
       onSlideChange={() => console.info('slide change')}
       onSwiper={(swiper) => console.info(swiper)}
-      className="w-5/12"
+      className="w-full"
     >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
+      {Array(50)
+        .fill(0)
+        .map((_, index) => (
+          <SwiperSlide key={index}>Slide {index}</SwiperSlide>
+        ))}
     </Swiper>
   )
 }

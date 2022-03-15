@@ -13,7 +13,7 @@ function Header() {
             />
           </a>
         </div>
-        <div className="flex-1">
+        <div className="w-10/12">
           <Navigation />
         </div>
         <div>Learn more</div>

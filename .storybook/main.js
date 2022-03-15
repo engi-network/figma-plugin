@@ -1,4 +1,9 @@
+const path = require('path');
+
 module.exports = {
+  core: {
+    builder: "webpack5",
+  },
   stories: ['../src/**/*.stories.tsx'],
   typescript: {
     reactDocgen: 'none',
@@ -11,10 +16,11 @@ module.exports = {
   babel: async (options) => ({
     ...options,
   }),
-  framework: '@storybook/react',
   webpackFinal: async (config, { configType }) => {
     // Make whatever fine-grained changes you need
     // Return the altered config
+    config.resolve.alias['~'] = path.resolve(__dirname + '/../src');
+    
     return config;
   },
 }

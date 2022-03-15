@@ -1,4 +1,4 @@
-import { StylesMap } from '../../../lib/constants/styles.types'
+import { StylesMap } from '~/app/lib/constants/styles.types'
 
 const styles: StylesMap = {
   button: {
