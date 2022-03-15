@@ -94,5 +94,8 @@
       "parser": "typescript",
       "style": "wes"
     }
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
