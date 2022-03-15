@@ -1,3 +1,5 @@
+import Navigation from '~/app/components/modules/Navigation/Navigation'
+
 function Header() {
   return (
     <header>
@@ -11,7 +13,9 @@ function Header() {
             />
           </a>
         </div>
-        <div className="flex-1">Carousel</div>
+        <div className="flex-1">
+          <Navigation />
+        </div>
         <div>Learn more</div>
       </div>
     </header>
