@@ -22,13 +22,10 @@ export async function decode(
   frame: BlobPart,
 ): Promise<[ImageData, string]> {
   const url = URL.createObjectURL(new Blob([frame]))
-
   const image: HTMLImageElement = await new Promise((resolve, reject) => {
     const img = new Image()
-
     img.onload = () => resolve(img)
     img.onerror = () => reject()
-
     // kick off load
     img.src = url
   })

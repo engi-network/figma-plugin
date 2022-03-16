@@ -1,3 +1,4 @@
+import { PluginSelection } from '~/app/models/PluginSelection'
 import {
   FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
   FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
@@ -11,7 +12,7 @@ figma.showUI(__html__, ShowUIOptions)
 
 // store selected layer information and message plugin UI
 // save a selection to storage + UI
-const setSelection = async (selection) => {
+const onSelection = async (selection: SceneNode) => {
   const { name, width, height } = selection
   try {
     const promises = [
@@ -21,9 +22,8 @@ const setSelection = async (selection) => {
       selection.exportAsync(), // bytes must be last promise
     ]
     const results = await Promise.all(promises)
-    console.info('extracted selected frame')
-
     const frame = results.pop()
+
     figma.ui.postMessage({
       type: FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI,
       data: {
@@ -32,10 +32,10 @@ const setSelection = async (selection) => {
         name,
         repository,
         width,
-      },
+      } as PluginSelection,
     })
   } catch (error) {
-    console.error('error extracting selected frame!', error)
+    console.error('Error extracting selected frame!', error)
   }
 }
 
@@ -43,11 +43,11 @@ const setSelection = async (selection) => {
 const selection = figma.currentPage.selection[0]
 
 if (selection) {
-  setSelection(selection)
+  onSelection(selection)
 } else {
   figma.ui.postMessage({
     type: FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
-    error: { message: 'Select a frame' },
+    error: { message: 'Select a frame!' },
   })
 }
 
@@ -56,7 +56,7 @@ figma.on('selectionchange', () => {
   const selection = figma.currentPage.selection[0]
 
   if (selection) {
-    setSelection(selection)
+    onSelection(selection)
     figma.ui.postMessage({
       type: FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
     })
@@ -69,5 +69,5 @@ figma.on('selectionchange', () => {
 })
 
 figma.ui.onmessage = (msg) => {
-  console.info('unhandled message received', msg)
+  console.info('unhandled message received!', msg)
 }

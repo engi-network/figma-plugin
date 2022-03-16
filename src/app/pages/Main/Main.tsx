@@ -1,4 +1,5 @@
 import Header from '~/app/components/global/Header/Header'
+import Code from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
 
 function Main() {
@@ -13,7 +14,7 @@ function Main() {
           CTAs
         </section>
         <section className="w-5/12 border-dotted border-2 border-indigo-600">
-          B section-code
+          <Code />
         </section>
       </main>
       <footer className="border-dotted border-2 border-indigo-600">
