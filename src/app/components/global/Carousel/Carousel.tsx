@@ -8,7 +8,7 @@ function Carousel() {
       spaceBetween={50}
       slidesPerView={3}
       onSlideChange={() => console.info('slide change')}
-      onSwiper={(swiper) => console.info(swiper)}
+      onSwiper={() => console.info('')}
       className="w-full"
       css={{ border: '1px solid gray', padding: '10px' }}
     >
