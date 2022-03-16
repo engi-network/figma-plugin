@@ -1,16 +1,27 @@
-import { ReactNode } from 'react'
+import { Slider } from '@lifarl/react-scroll-snap-slider'
 
-import styles from './Swiper.styles'
-
-interface Props {
-  children: ReactNode
-}
-
-function Swiper({ children }: Props) {
+function Swiper() {
   return (
-    <div css={styles.root}>
-      <div css={styles.swiper}>{children}</div>
-    </div>
+    <Slider
+      slidesPerPageSettings={{
+        mobileSmall: 3,
+        mobileBig: 3,
+        tablet: 3,
+        desktop: 3,
+      }}
+    >
+      {Array(50)
+        .fill(0)
+        .map((_, index) => (
+          <div
+            key={index}
+            css={{ border: '1px solid gray' }}
+            className="border-dotted border-2 border-indigo-600"
+          >
+            Slide {index}
+          </div>
+        ))}
+    </Slider>
   )
 }
 

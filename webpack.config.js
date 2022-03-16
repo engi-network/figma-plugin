@@ -2,6 +2,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const path = require('path')
 
@@ -73,7 +75,8 @@ module.exports = (env, argv) => ({
       chunks: ['ui'],
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
-  ],
+    argv.mode !== 'production' && new BundleAnalyzerPlugin(),
+  ].filter(Boolean),
 
   devServer: {
     liveReload: true,
