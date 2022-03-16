@@ -1,29 +1,73 @@
-import { FIGMA_SELECTION_CHANGE, ShowUIOptions } from '~/plugin/constants'
+import {
+  FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
+  FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
+  FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI,
+  repository,
+  ShowUIOptions,
+} from '~/plugin/constants'
 
+figma.clientStorage.setAsync('ss-repository', repository)
 figma.showUI(__html__, ShowUIOptions)
 
 // store selected layer information and message plugin UI
-figma.on('selectionchange', async () => {
-  console.info('engi | selection changed in figma')
+// save a selection to storage + UI
+const setSelection = async (selection) => {
+  const { name, width, height } = selection
+  try {
+    const promises = [
+      figma.clientStorage.setAsync('ss-name', name),
+      figma.clientStorage.setAsync('ss-width', width),
+      figma.clientStorage.setAsync('ss-height', height),
+      selection.exportAsync(), // bytes must be last promise
+    ]
+    const results = await Promise.all(promises)
+    console.info('extracted selected frame')
 
-  // get current selection
-  const { name, width, height, ...selection } = figma.currentPage.selection[0]
+    const frame = results.pop()
+    figma.ui.postMessage({
+      type: FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI,
+      data: {
+        frame,
+        height,
+        name,
+        repository,
+        width,
+      },
+    })
+  } catch (error) {
+    console.error('error extracting selected frame!', error)
+  }
+}
 
-  // store locally and export selected layer as bytes
-  const [layer] = await Promise.all([
-    selection.exportAsync(), // https://www.figma.com/plugin-docs/api/properties/nodes-exportasync/#docsNav
-    figma.clientStorage.setAsync('engi-selected-frame-name', name),
-    figma.clientStorage.setAsync('engi-selected-frame-width', name),
-    figma.clientStorage.setAsync('engi-selected-frame-height', name),
-  ])
+// set selection if exists
+const selection = figma.currentPage.selection[0]
 
+if (selection) {
+  setSelection(selection)
+} else {
   figma.ui.postMessage({
-    type: FIGMA_SELECTION_CHANGE,
-    data: {
-      name,
-      width,
-      height,
-      layer,
-    },
+    type: FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
+    error: { message: 'Select a frame' },
   })
+}
+
+// support ability to change selected frame while plugin is open
+figma.on('selectionchange', () => {
+  const selection = figma.currentPage.selection[0]
+
+  if (selection) {
+    setSelection(selection)
+    figma.ui.postMessage({
+      type: FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
+    })
+  } else {
+    figma.ui.postMessage({
+      type: FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
+      error: { message: 'Select a frame' },
+    })
+  }
 })
+
+figma.ui.onmessage = (msg) => {
+  console.info('unhandled message received', msg)
+}
