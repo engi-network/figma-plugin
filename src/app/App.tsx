@@ -10,6 +10,8 @@ function App() {
   const [errorUI, setErrorUI] = useState()
   const [loading, setLoading] = useState(false)
 
+  console.info('status', selectionUI, errorUI, loading)
+
   useEffect(() => {
     window.onmessage = (event) => {
       console.info('got this from the plugin code', event.data.pluginMessage)

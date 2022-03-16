@@ -1,4 +1,5 @@
 import Header from '~/app/components/global/Header/Header'
+import Preview from '~/app/components/modules/Preview/Preview'
 
 function Main() {
   return (
@@ -6,7 +7,7 @@ function Main() {
       <Header />
       <main className="flex flex-1">
         <section className="w-5/12 border-dotted border-2 border-indigo-600">
-          A section-preview
+          <Preview />
         </section>
         <section className="w-2/12 border-dotted border-2 border-indigo-600">
           CTAs

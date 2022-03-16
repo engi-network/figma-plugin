@@ -11,7 +11,7 @@ export async function encode(
       reader.onload = () =>
         resolve(new Uint8Array(reader.result as ArrayBuffer))
       reader.onerror = () => reject(new Error('Could not read from blob'))
-      reader.readAsArrayBuffer(blob)
+      reader.readAsArrayBuffer(blob as Blob)
     })
   })
 }
