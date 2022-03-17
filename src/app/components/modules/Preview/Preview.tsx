@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
+import Canvas from '~/app/components/global/Canvas/Canvas'
 import { decode } from '~/app/lib/utils/canvas'
 import { PluginSelection } from '~/app/models/PluginSelection'
 import * as PLUGIN_CONSTATNS from '~/plugin/constants'
@@ -7,29 +8,21 @@ import * as PLUGIN_CONSTATNS from '~/plugin/constants'
 function Preview() {
   const [, setErrorUI] = useState()
   const [, setLoading] = useState(false)
-  const [[width, height], setDemension] = useState([0, 0])
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [selectionData, setSelectionData] = useState<PluginSelection>()
 
-  const selectionCallback = useCallback(
-    async ({ name, width, height, repository, frame }: PluginSelection) => {
-      if (!canvasRef || !canvasRef.current) {
+  const drawCallback = useCallback(
+    async (canvas: HTMLCanvasElement, context: RenderingContext) => {
+      if (!selectionData) {
         return
       }
-
-      const context = canvasRef.current.getContext('2d')
-
-      if (!context) {
-        return
-      }
-
+      const { name, frame, repository } = selectionData
       const [component, story] = name.split('-')
-      setDemension([width, height])
 
-      await decode(canvasRef.current, context, frame)
+      await decode(canvas, context as CanvasRenderingContext2D, frame)
 
       console.info('data after decode=====>', component, story, repository)
     },
-    [],
+    [selectionData],
   )
 
   useEffect(() => {
@@ -37,7 +30,7 @@ function Preview() {
       switch (event.data.pluginMessage.type) {
         case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
           const { data } = event.data.pluginMessage
-          selectionCallback(data)
+          setSelectionData(data)
           break
         }
         case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI: {
@@ -56,21 +49,22 @@ function Preview() {
           console.error('event type is not correct!')
       }
     }
-  }, [selectionCallback])
+  }, [])
+
+  const { width = 0, height = 0 } = selectionData || {}
 
   return (
     <div className="flex flex-col h-full">
       <h2 className="text-3xl font-bold">Design</h2>
       <div className="designs--frame rounded flex-1">
-        <canvas
+        <Canvas
           id="designs--frame-canvas"
           className="border-double border-4 border-indigo-600"
-          ref={canvasRef}
           width={400}
           height={300}
-        >
-          <canvas id="designs--frame-canvas--original" />
-        </canvas>
+          draw={drawCallback}
+          options={{ contextId: '2d' }}
+        />
         <span
           id="design-dimensions"
           className="prose font-light text-sm text-gray-400"
