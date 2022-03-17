@@ -18,8 +18,7 @@ function Canvas({
   height,
   ...rest
 }: Props) {
-  const { contextId } = options
-  const canvasRef = useCanvas(draw, { contextId })
+  const canvasRef = useCanvas(draw, options)
 
   return (
     <canvas
