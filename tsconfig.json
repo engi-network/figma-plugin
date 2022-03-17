@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
+    "esModuleInterop": true,
     "target": "es2015",
     "jsx": "react-jsx",
     "importHelpers": true,
