@@ -7,7 +7,7 @@ export default {
 
 export function InputWithKnobs() {
   return (
-    <div className="bg-red-500">
+    <div>
       <Button label="test" />
     </div>
   )
