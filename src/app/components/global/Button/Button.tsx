@@ -1,7 +1,7 @@
 import styles from './Button.styles'
 
 interface ButtonProps {
-  backgroundColor?: string
+  className?: string
   label: string
   onClick?: () => void
   primary?: boolean
@@ -11,7 +11,7 @@ interface ButtonProps {
 function Button({
   primary = false,
   size = 'medium',
-  backgroundColor,
+  className,
   label,
   ...props
 }: ButtonProps) {
@@ -21,7 +21,7 @@ function Button({
     <button
       type="button"
       css={[styles.button, styles[size], mode]}
-      style={{ backgroundColor }}
+      className={className}
       {...props}
     >
       {label}
