@@ -1,18 +1,27 @@
+import { ReactNode } from 'react'
+
 import styles from './Button.styles'
 
+enum BUTTON_SIZE {
+  LARGE = 'large',
+  MEDIUM = 'medium',
+  SMALL = 'small',
+}
 interface ButtonProps {
+  children: ReactNode
   className?: string
-  label: string
+  label?: string
   onClick?: () => void
   primary?: boolean
-  size?: 'small' | 'medium' | 'large'
+  size?: BUTTON_SIZE
 }
 
 function Button({
   primary = false,
-  size = 'medium',
+  size = BUTTON_SIZE.MEDIUM,
   className,
-  label,
+  onClick,
+  children,
   ...props
 }: ButtonProps) {
   const mode = primary ? styles.primary : styles.secondary
@@ -22,9 +31,10 @@ function Button({
       type="button"
       css={[styles.button, styles[size], mode]}
       className={className}
+      onClick={onClick}
       {...props}
     >
-      {label}
+      {children}
     </button>
   )
 }

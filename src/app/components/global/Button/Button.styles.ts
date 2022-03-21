@@ -1,14 +1,21 @@
-import { BORDERS, StylesMap } from '~/app/lib/constants'
+import {
+  BORDER_STYLE,
+  BORDERS_RADIUS,
+  COLORS,
+  StylesMap,
+} from '~/app/lib/constants'
+import { typography } from '~/app/styles/typography.styles'
 
 const styles: StylesMap = {
-  button: {
-    border: 0,
-    borderRadius: BORDERS.DEFAULT,
-    cursor: 'pointer',
-    display: 'inlines-block',
-    fontWeight: 700,
-    lineHeight: 1,
-  },
+  button: [
+    typography.tertiaryHeadline,
+    {
+      border: 0,
+      borderRadius: BORDERS_RADIUS.DEFAULT,
+      cursor: 'pointer',
+      display: 'inlines-block',
+    },
+  ],
   large: {
     fontSize: 16,
     padding: '12px 24px',
@@ -18,13 +25,13 @@ const styles: StylesMap = {
     padding: '11px 20px',
   },
   primary: {
-    color: 'white',
-    backgroundColor: '#1ea7fd',
+    color: COLORS.PRIMARY.WHITE,
+    backgroundColor: COLORS.WF.PRIMARY,
   },
   secondary: {
-    color: '#333',
-    backgroundColor: 'transparent',
-    boxShadow: 'rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset',
+    color: COLORS.WF.PRIMARY,
+    backgroundColor: COLORS.PRIMARY.WHITE,
+    border: BORDER_STYLE.SOLID_BLACK_1PX,
   },
   small: {
     fontSize: 12,

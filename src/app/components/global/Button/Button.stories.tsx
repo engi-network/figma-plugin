@@ -8,7 +8,7 @@ export default {
 export function InputWithKnobs() {
   return (
     <div>
-      <Button label="test" />
+      <Button label="test">Click me</Button>
     </div>
   )
 }

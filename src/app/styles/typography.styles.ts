@@ -142,7 +142,7 @@ export const typography: { [className: string]: CSSObject[] } = {
   ],
   smallCopy: [fontStyles(12, 20), { fontWeight: 'normal' }],
   smallCopyTight: [fontStyles(12, 15), { fontWeight: 'normal' }],
-  tertiaryHeadline: [typographyStyles.tertiaryHeadline.base, {}],
+  tertiaryHeadline: [typographyStyles.tertiaryHeadline.base],
   topPicksPrice: [
     fontStyles(20, 20),
     {
