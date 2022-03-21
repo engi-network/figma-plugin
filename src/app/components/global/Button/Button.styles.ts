@@ -1,9 +1,9 @@
-import { StylesMap } from '~/app/lib/constants/styles.types'
+import { BORDERS, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
   button: {
     border: 0,
-    borderRadius: '3em',
+    borderRadius: BORDERS.DEFAULT,
     cursor: 'pointer',
     display: 'inlines-block',
     fontWeight: 700,
