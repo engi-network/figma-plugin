@@ -1,12 +1,9 @@
 import { ReactNode } from 'react'
 
+import { BUTTON_SIZE } from '~/app/lib/constants'
+
 import styles from './Button.styles'
 
-enum BUTTON_SIZE {
-  LARGE = 'large',
-  MEDIUM = 'medium',
-  SMALL = 'small',
-}
 interface ButtonProps {
   children: ReactNode
   className?: string
@@ -22,7 +19,7 @@ function Button({
   className,
   onClick,
   children,
-  ...props
+  ...rest
 }: ButtonProps) {
   const mode = primary ? styles.primary : styles.secondary
 
@@ -32,7 +29,7 @@ function Button({
       css={[styles.button, styles[size], mode]}
       className={className}
       onClick={onClick}
-      {...props}
+      {...rest}
     >
       {children}
     </button>
