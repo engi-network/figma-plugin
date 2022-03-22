@@ -20,7 +20,8 @@
     "moduleResolution": "node",
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/@figma"
+      "./node_modules/@figma",
+      "./src/app/@types"
     ],
     "baseUrl": "./",
     "paths": {
@@ -29,6 +30,6 @@
     "rootDir": "./",
     "jsxImportSource": "@emotion/react"
   },
-  "include": ["src"],
+  "include": ["src", "index.d.ts"],
   "exclude": ["node_modules"]
 }
