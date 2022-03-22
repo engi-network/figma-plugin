@@ -24,13 +24,14 @@ function Main() {
         </div>
       </div>
       <div className="flex flex-1">
-        <section className="w-6/12 border-dotted border-2 border-indigo-600">
+        <section className="w-6/12 border-solid border-r border-wf-tertiery">
           <Preview />
         </section>
-        <section className="w-6/12 border-dotted border-2 border-indigo-600">
+        <section className="w-6/12 pl-10">
           <Code />
         </section>
       </div>
+      <div className="flex">footer</div>
     </>
   )
 }
