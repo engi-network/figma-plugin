@@ -1,7 +1,5 @@
-import Carousel from '~/app/components/global/Carousel/Carousel'
-
 function Navigation() {
-  return <Carousel />
+  return <div>Navigation</div>
 }
 
 export default Navigation

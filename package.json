@@ -27,8 +27,7 @@
     "postcss-loader": "^4.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "storycap": "^3.1.5",
-    "swiper": "^8.0.7"
+    "storycap": "^3.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",

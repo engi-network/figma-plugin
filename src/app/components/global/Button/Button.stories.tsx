@@ -9,7 +9,7 @@ export default {
 }
 
 export function InputWithKnobs() {
-  const mode = select('Style', [true, false], false)
+  const mode = select('Primary', [true, false], false)
 
   return (
     <div>

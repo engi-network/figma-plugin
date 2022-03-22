@@ -48,20 +48,6 @@ export const typography: { [className: string]: CSSObject[] } = {
       letterSpacing: '-0.01em',
     },
   ],
-  certifiedCopy: [
-    fontStyles(14.5, 20),
-    {
-      fontWeight: 'bold',
-      letterSpacing: '0.3rem',
-      textTransform: 'uppercase',
-    },
-  ],
-  disclaimerCopy: [
-    fontStyles(8, 20),
-    {
-      fontWeight: 'normal',
-    },
-  ],
   eyebrow: [
     fontStyles(12, 15),
     {
@@ -113,16 +99,9 @@ export const typography: { [className: string]: CSSObject[] } = {
     },
   ],
   largeCopy: [
-    fontStyles(18, 25),
+    fontStyles(18, 23),
     {
       fontWeight: 'normal',
-      letterSpacing: '-0.01em',
-    },
-  ],
-  modalHeadline: [
-    fontStyles(40, 40),
-    {
-      fontWeight: 'bold',
     },
   ],
   primaryHeadline: [typographyStyles.primaryHeadline.base],
