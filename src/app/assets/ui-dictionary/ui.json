@@ -3,5 +3,8 @@
     "title": "Same story?",
     "learnMore": "Learn more at",
     "companyName": "engi.com"
+  },
+  "main": {
+    "title": "Are these the same story?"
   }
 }

@@ -2,28 +2,20 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const BundleAnalyzerPlugin =
-//   require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const path = require('path')
 
 module.exports = (env, argv) => ({
   mode: argv.mode === 'production' ? 'production' : 'development',
-
   // This is necessary because Figma's 'eval' works differently than normal eval
   devtool: argv.mode === 'production' ? false : 'inline-source-map',
-
   entry: {
-    ui: './src/app/index.tsx', // The entry point for your UI code
-    code: './src/plugin/controller.ts', // The entry point for your plugin code
+    ui: './src/app/index.tsx',
+    code: './src/plugin/controller.ts',
   },
-
   module: {
     rules: [
-      // Converts TypeScript code to JavaScript
       { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/ },
-
-      // Enables including CSS by doing "import './file.css'" in your TypeScript code
       {
         test: /\.css$/,
         use: [
@@ -43,8 +35,6 @@ module.exports = (env, argv) => ({
           },
         ],
       },
-
-      // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
       { test: /\.(png|jpg|gif|webp|svg)$/, loader: 'url-loader' },
     ],
   },
@@ -59,14 +49,13 @@ module.exports = (env, argv) => ({
 
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'), // Compile into a folder called "dist"
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '',
   },
 
-  // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
   plugins: [
     new webpack.DefinePlugin({
-      global: {}, // Fix missing symbol error when running in developer VM
+      global: {},
     }),
     new HtmlWebpackPlugin({
       inject: 'body',
@@ -75,17 +64,16 @@ module.exports = (env, argv) => ({
       chunks: ['ui'],
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
-    // argv.mode !== 'production' && new BundleAnalyzerPlugin(),
   ].filter(Boolean),
 
   devServer: {
-    liveReload: true,
+    liveReload: false,
     static: {
       directory: path.join(__dirname, 'dist'),
     },
     port: 8000,
     allowedHosts: ['*'],
-    hot: true,
+    hot: 'only',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',

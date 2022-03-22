@@ -19,3 +19,35 @@ body {
   height: 100%;
   overflow: hidden;
 }
+
+a,
+button {
+  border: 0 none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+  vertical-align: inherit;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  cursor: pointer;
+  line-height: normal;
+  text-decoration: none;
+}

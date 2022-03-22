@@ -6,6 +6,8 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import styles from './Header.styles'
 
 function Header() {
+  const handleClose = () => {}
+
   return (
     <header className="bg-primary-white border-solid border-b border-wf-tertiary">
       <div className="flex justify-between items-center px-3.5 py-4">
@@ -17,16 +19,13 @@ function Header() {
             {ui('header.title')}
           </h1>
         </div>
-        <div className="flex items-center">
-          <a href="/" className="flex items-center">
-            <span className="mr-6 text-sm text-wf-secondary">
-              {ui('header.learnMore')}
-              <span className="text-wf-primary">
-                {ui('header.companyName')}
-              </span>
-            </span>
-            <XIcon className="w-6 h-6" />
-          </a>
+        <div
+          className="flex items-center"
+          role="button"
+          tabIndex={-1}
+          onClick={handleClose}
+        >
+          <XIcon className="w-6 h-6" />
         </div>
       </div>
     </header>
