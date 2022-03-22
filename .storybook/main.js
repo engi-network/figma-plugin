@@ -11,9 +11,9 @@ module.exports = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
     '@storybook/addon-actions',
     '@storybook/addon-knobs',
+    "@storybook/addon-interactions",
     {
       /**
        * Fix Storybook issue with PostCSS@8

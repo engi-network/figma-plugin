@@ -1,6 +1,7 @@
 import { XIcon } from '@heroicons/react/solid'
 
-import Logo from '~/app/assets/logo.svg'
+import Logo from '~/app/assets/icons/common/logo.svg'
+import { ui } from '~/app/lib/utils/ui-dictionary'
 
 import styles from './Header.styles'
 
@@ -13,13 +14,16 @@ function Header() {
             <img className="h-8 w-auto sm:h-10" src={Logo} alt="engi" />
           </a>
           <h1 css={styles.title} className="ml-5 text-wf-primary">
-            Same story?
+            {ui('header.title')}
           </h1>
         </div>
         <div className="flex items-center">
           <a href="/" className="flex items-center">
             <span className="mr-6 text-sm text-wf-secondary">
-              Learn more at <span className="text-wf-primary">engi.com</span>
+              {ui('header.learnMore')}
+              <span className="text-wf-primary">
+                {ui('header.companyName')}
+              </span>
             </span>
             <XIcon className="w-6 h-6" />
           </a>
