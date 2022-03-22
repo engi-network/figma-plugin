@@ -8,7 +8,7 @@ export default {
   title: 'Global/Button',
 }
 
-export function InputWithKnobs() {
+export function ButtonWithKnobs() {
   const mode = select('Primary', [true, false], false)
 
   return (
