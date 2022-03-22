@@ -7,7 +7,7 @@
     "build": "webpack --mode=production",
     "modd": "modd",
     "build:dev": "webpack --mode=development",
-    "dev": "yarn build && webpack serve --mode=development",
+    "dev": "npm build && webpack serve --mode=development",
     "prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,json}' ",
     "test": "jest",
     "test:coverage": "jest --coverage",
