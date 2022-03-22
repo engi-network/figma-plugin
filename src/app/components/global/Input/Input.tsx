@@ -8,7 +8,7 @@ interface Props {
   disabled?: boolean
   id?: string
   label?: string
-  onChange?: (value: string) => void
+  onChange: (value: string) => void
   placeholder?: string
   required?: boolean
   type?: string

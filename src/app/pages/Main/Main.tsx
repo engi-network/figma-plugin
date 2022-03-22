@@ -1,13 +1,19 @@
 import { ReplyIcon, XIcon } from '@heroicons/react/solid'
+import { useState } from 'react'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
-import Code from '~/app/components/modules/Code/Code'
+import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 import styles from './Main.styles'
 
 function Main() {
+  const [values, setValues] = useState<AnalyzeFormValues>()
+  const handleChange = (values: AnalyzeFormValues) => {
+    setValues(values)
+  }
+
   return (
     <>
       <div className="flex justify-between mb-10">
@@ -28,7 +34,7 @@ function Main() {
           <Preview />
         </section>
         <section className="w-6/12 pl-10">
-          <Code />
+          <Code onChange={handleChange} values={values} />
         </section>
       </div>
       <div className="flex">footer</div>
