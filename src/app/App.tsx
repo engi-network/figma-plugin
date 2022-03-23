@@ -8,6 +8,7 @@ import Layout from '~/app/components/modules/App/Layout/Layout'
 import Routes from '~/app/pages/Routes'
 
 const queryClient = new QueryClient()
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>

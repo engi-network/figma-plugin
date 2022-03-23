@@ -4,7 +4,7 @@ import { AsyncResponse } from './index.types'
 const authorizationExpiration: Date | null = null
 const authorizationHeader: string | null = null
 const authorizationFunction: (() => Promise<void>) | null = null
-let defaultBaseUrl = ''
+// const defaultBaseUrl = ''
 
 const ErrorByStatus: Record<number, string> = {
   400: FetchErrorCodes.BadRequest,
@@ -184,7 +184,7 @@ export async function fetchWithErrorHandling<T, U = never>(
   }
 }
 
-export function fetchSetUrlBase(newUrlBase: string) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  defaultBaseUrl = newUrlBase
-}
+// export function fetchSetUrlBase(newUrlBase: string) {
+//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//   defaultBaseUrl = newUrlBase
+// }

@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import HistoryIcon from '~/app/assets/icons/common/history.svg'
@@ -22,6 +22,12 @@ function Main() {
     console.info('submitting=====>', values)
     navigate('/result')
   }
+
+  useEffect(() => {
+    fetch('/api/reminders')
+      .then((response) => response.json())
+      .then((json) => console.info('===>', json))
+  }, [])
 
   return (
     <>
