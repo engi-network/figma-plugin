@@ -5,6 +5,12 @@
     "companyName": "engi.com"
   },
   "main": {
-    "title": "Are these the same story?"
+    "title": "Are these the same story?",
+    "analyze": "Analyze"
+  },
+  "result": {
+    "blueScale": "Blue-scale Difference",
+    "grayScale": "Gray-scale Difference",
+    "createNew": "Create new"
   }
 }

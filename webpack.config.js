@@ -74,6 +74,9 @@ module.exports = (env, argv) => ({
     port: 8000,
     allowedHosts: ['*'],
     hot: 'only',
+    historyApiFallback: {
+      index: 'ui.html',
+    },
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',

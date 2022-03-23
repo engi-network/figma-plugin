@@ -1,5 +1,6 @@
 import { PlusIcon, ReplyIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
@@ -10,6 +11,7 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import styles from './Main.styles'
 
 function Main() {
+  const navigate = useNavigate()
   const [values, setValues] = useState<AnalyzeFormValues>()
   const handleChange = (values: AnalyzeFormValues) => {
     setValues(values)
@@ -17,6 +19,7 @@ function Main() {
 
   const handleSubmit = () => {
     console.info('submitting=====>', values)
+    navigate('/result')
   }
 
   return (
@@ -44,11 +47,11 @@ function Main() {
       </div>
       <div className="flex justify-center mb-10">
         <Button primary onClick={handleSubmit} className="w-5/12">
-          Analyze
+          {ui('main.analyze')}
         </Button>
       </div>
       <footer className="flex justify-center">
-        <a href="/" className="flex items-center">
+        <a href="#" className="flex items-center">
           <span className="mr-6 text-sm text-wf-secondary">
             {ui('header.learnMore')}
             <span className="text-wf-primary">{ui('header.companyName')}</span>

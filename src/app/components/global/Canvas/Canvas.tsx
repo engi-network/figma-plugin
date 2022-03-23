@@ -1,6 +1,8 @@
+import cn from 'classnames'
+
 import useCanvas, { CanvasOption } from '~/app/hooks/useCanvas'
 
-interface Props {
+export interface CanvasProps {
   className?: string
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => void
   height?: number
@@ -17,14 +19,15 @@ function Canvas({
   width,
   height,
   ...rest
-}: Props) {
+}: CanvasProps) {
   const canvasRef = useCanvas(draw, options)
+  const classes = cn('border border-wf-tertiery rounded-st-small', className)
 
   return (
     <canvas
       id={id}
       ref={canvasRef}
-      className={className}
+      className={classes}
       width={width}
       height={height}
       {...rest}

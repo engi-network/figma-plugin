@@ -1,13 +1,17 @@
 import './styles/global.css'
 
+import { MemoryRouter as Router } from 'react-router-dom'
+
 import Layout from '~/app/components/modules/App/Layout/Layout'
-import MainPage from '~/app/pages/Main/Main'
+import Routes from '~/app/pages/Routes'
 
 function App() {
   return (
-    <Layout>
-      <MainPage />
-    </Layout>
+    <Router initialEntries={['/', '/result']}>
+      <Layout>
+        <Routes />
+      </Layout>
+    </Router>
   )
 }
 

@@ -12,7 +12,6 @@ function Preview() {
       <div className="designs--frame rounded flex-1">
         <Canvas
           id="designs--frame-canvas"
-          className="border border-wf-tertiery rounded-st-small"
           width={400}
           height={300}
           draw={draw}
@@ -20,7 +19,7 @@ function Preview() {
         />
         <span
           id="design-dimensions"
-          className="prose font-light text-sm text-gray-400"
+          className="text-base text-gray-400"
         >{`${width} * ${height}`}</span>
       </div>
     </div>
