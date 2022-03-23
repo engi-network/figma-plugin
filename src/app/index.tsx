@@ -3,8 +3,7 @@ import * as ReactDOM from 'react-dom'
 import App from './App'
 import { makeServer } from './mockServer/server'
 
-console.info('node env', process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'test') {
   makeServer({ environment: 'development' })
 }
 

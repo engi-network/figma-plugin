@@ -9,6 +9,7 @@ import IconButton from '~/app/components/global/IconButton/IconButton'
 import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
 import usePreviewData from '~/app/components/modules/Preview/Preview.hooks'
+import config from '~/app/lib/config'
 import snsClient from '~/app/lib/snsClient'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
@@ -49,23 +50,23 @@ function Main() {
 
     const params = {
       Message: JSON.stringify(message),
-      TopicArn: 'arn:aws:sns:us-west-2:163803973373:same-story-check-topic',
+      TopicArn: config.TOPIC_ARN,
     }
 
     const run = async () => {
-      try {
-        const data = await snsClient.send(new PublishCommand(params))
-        console.info('Success from sns', data)
-        return data
-      } catch (err) {
-        console.error('Error====>', err)
-      }
+      const data = await snsClient.send(new PublishCommand(params))
+      console.info('Success from sns', data)
+      return data
     }
 
-    await run()
-    setIsLoading(false)
-
-    navigate('/result')
+    try {
+      await run()
+      setIsLoading(false)
+      navigate('/result')
+    } catch (error) {
+      console.error(error)
+      setIsLoading(false)
+    }
   }
 
   return (
