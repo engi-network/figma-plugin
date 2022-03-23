@@ -7,7 +7,7 @@ import Routes from '~/app/pages/Routes'
 
 function App() {
   return (
-    <Router initialEntries={['/', '/result']}>
+    <Router initialEntries={['/', '/result']} initialIndex={0}>
       <Layout>
         <Routes />
       </Layout>

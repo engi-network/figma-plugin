@@ -1,9 +1,9 @@
 export const FIGMA_SELECTION_CHANGE = 'FIGMA_SELECTION_CHANGE'
 
 export const ShowUIOptions = {
-  title: 'Same story',
+  title: 'Same story?',
   width: 728,
-  height: 619,
+  height: 600,
 }
 
 export const FIGMA_MSG_TYPE_SAME_STORY_RECEIVE_PREPARE_SELECTION_FROM_UI_TO_PLUGIN =

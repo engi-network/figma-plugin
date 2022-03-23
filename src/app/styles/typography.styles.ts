@@ -3,7 +3,7 @@ import { CSSObject } from '@emotion/react'
 import { CSSObjectType } from '~/app/lib/constants'
 
 export const fontStyles = (fontSize: number, lineHeight: number) => ({
-  fontSize: `${fontSize / 10}rem`,
+  fontSize: `${fontSize / 16}rem`,
   lineHeight: lineHeight / fontSize,
 })
 

@@ -6,11 +6,16 @@
   },
   "main": {
     "title": "Are these the same story?",
-    "analyze": "Analyze"
+    "analyze": "Analyze",
+    "preview": {
+      "design": "Design",
+      "code": "Code"
+    }
   },
   "result": {
     "blueScale": "Blue-scale Difference",
     "grayScale": "Gray-scale Difference",
-    "createNew": "Create new"
+    "createNew": "Create new",
+    "viewHistory": "View history"
   }
 }

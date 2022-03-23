@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import Input from '~/app/components/global/Input/Input'
+import { ui } from '~/app/lib/utils/ui-dictionary'
 
 enum FORM_FIELD {
   COMPONENT = 'component',
@@ -40,8 +41,10 @@ function Code({ values: intialValues, onChange }: Props) {
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="text-lg text-wf-secondary mb-5">Code</h2>
-      <div className="flex mb-10">
+      <h2 className="text-lg text-wf-secondary mb-5">
+        {ui('main.preview.code')}
+      </h2>
+      <div className="flex mb-7">
         <div className="w-6/12">
           <Input
             id="component"
@@ -51,7 +54,7 @@ function Code({ values: intialValues, onChange }: Props) {
             onChange={handleInputChange(FORM_FIELD.COMPONENT)}
           />
         </div>
-        <div className="w-6/12 ml-10">
+        <div className="w-6/12 ml-7">
           <Input
             id="story"
             label="Story"

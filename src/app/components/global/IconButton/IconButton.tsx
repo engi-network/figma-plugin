@@ -1,24 +1,34 @@
 import { ReactNode } from 'react'
 
+import { BUTTON_STYLE } from '~/app/lib/constants'
+
 import styles from './IconButton.styles'
 
 interface Props {
+  buttonStyle?: BUTTON_STYLE
   className?: string
+  icon: ReactNode
   id?: string
   onClick?: () => void
-  renderIcon: () => ReactNode
 }
 
-function IconButton({ id, onClick, className, renderIcon, ...rest }: Props) {
+function IconButton({
+  id,
+  onClick,
+  className,
+  icon,
+  buttonStyle = BUTTON_STYLE.SOLID,
+  ...rest
+}: Props) {
   return (
     <button
       id={id}
-      css={styles.root}
       className={className}
+      css={[styles.root, styles[buttonStyle]]}
       onClick={onClick}
       {...rest}
     >
-      {renderIcon()}
+      {icon}
     </button>
   )
 }

@@ -1,9 +1,11 @@
-import { ArrowLeftIcon, ReplyIcon } from '@heroicons/react/solid'
+import { ArrowLeftIcon } from '@heroicons/react/solid'
 import { useNavigate } from 'react-router'
 
+import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import IconButton from '~/app/components/global/IconButton/IconButton'
+import { BUTTON_STYLE } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 function Result() {
@@ -22,35 +24,40 @@ function Result() {
   return (
     <div className="px-10">
       <div className="flex justify-between mb-16">
-        <div className="w-2/12">
+        <div className="w-1/12">
           <IconButton
-            renderIcon={() => <ArrowLeftIcon className="w-5 h-5" />}
-            className="rounded-full w-8 h-8 mr-5"
+            icon={<ArrowLeftIcon className="w-4 h-4" />}
+            buttonStyle={BUTTON_STYLE.OUTLINED}
             onClick={handleClickBack}
           />
         </div>
         <div className="w-8/12 flex justify-center">
-          <h1 className="text-3xl text-wf-primary w-6/12 text-center">
+          <h1 className="text-2xl text-wf-primary w-6/12 text-center">
             Well done 99.55% match!
           </h1>
         </div>
         <div
           role="button"
           tabIndex={-1}
-          className="flex w-2/12 justify-end"
+          className="flex justify-end w-3/12 h-fit"
           onClick={handleViewHistory}
         >
-          <span className="text-sm text-wf-secondary mr-5">View history</span>
-          <ReplyIcon className="w-5 h-5" />
+          <span className="text-sm text-wf-secondary mr-5">
+            {ui('result.viewHistory')}
+          </span>
+          <IconButton
+            icon={<img src={HistoryIcon} width={24} height={24} />}
+            buttonStyle={BUTTON_STYLE.OUTLINED}
+          />
         </div>
       </div>
       <div className="flex mb-8">
         <div className="w-6/12 flex justify-start">
           <Canvas
-            id="blue-scale-canvas"
+            id="blue-scale"
             className="mb-4"
-            width={300}
-            height={300}
+            width={210}
+            height={210}
             draw={() => {}}
             options={{ contextId: '2d' }}
             label={ui('result.blueScale')}
@@ -58,10 +65,10 @@ function Result() {
         </div>
         <div className="w-6/12 flex justify-end">
           <Canvas
-            id="blue-scale-canvas"
+            id="blue-scale"
             className="mb-4"
-            width={300}
-            height={300}
+            width={210}
+            height={210}
             draw={() => {}}
             options={{ contextId: '2d' }}
             label={ui('result.grayScale')}

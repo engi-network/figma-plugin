@@ -1,7 +1,8 @@
-import { PlusIcon, ReplyIcon } from '@heroicons/react/solid'
+import { PlusIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
@@ -28,13 +29,10 @@ function Main() {
         <h1 css={styles.title}>{ui('main.title')}</h1>
         <div className="flex justify-center items-center">
           <IconButton
-            renderIcon={() => <PlusIcon className="w-5 h-5" />}
-            className="bg-wf-light rounded-full w-8 h-8 mr-5"
+            icon={<PlusIcon className="w-4 h-4" />}
+            className="mr-5"
           />
-          <IconButton
-            renderIcon={() => <ReplyIcon className="w-5 h-5" />}
-            className="bg-wf-light rounded-full w-8 h-8"
-          />
+          <IconButton icon={<img src={HistoryIcon} width={24} height={24} />} />
         </div>
       </div>
       <div className="flex mb-10">
@@ -45,7 +43,7 @@ function Main() {
           <Code onChange={handleChange} values={values} />
         </section>
       </div>
-      <div className="flex justify-center mb-10">
+      <div className="flex justify-center mb-7">
         <Button primary onClick={handleSubmit} className="w-5/12">
           {ui('main.analyze')}
         </Button>
