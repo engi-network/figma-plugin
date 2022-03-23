@@ -5,6 +5,9 @@ body {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+  overscroll-behavior-x: none;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 *,
@@ -17,7 +20,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
 }
 
 a,
