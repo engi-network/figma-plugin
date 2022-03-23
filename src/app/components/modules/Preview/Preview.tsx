@@ -1,12 +1,12 @@
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-import usePreviewData from './Preview.hooks'
+interface Props {
+  draw: (canvas: HTMLCanvasElement, context: RenderingContext) => Promise<void>
+  label: string
+}
 
-function Preview() {
-  const { selectionData, draw } = usePreviewData()
-  const { width = 0, height = 0 } = selectionData || {}
-
+function Preview({ draw, label }: Props) {
   return (
     <div className="flex flex-col h-full">
       <h2 className="text-lg text-wf-secondary mb-5">
@@ -19,7 +19,7 @@ function Preview() {
           height={210}
           draw={draw}
           options={{ contextId: '2d' }}
-          label={`${width} ✕ ${height}`}
+          label={label}
         />
       </div>
     </div>

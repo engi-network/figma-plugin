@@ -1,5 +1,6 @@
+import { PublishCommand } from '@aws-sdk/client-sns'
 import { PlusIcon } from '@heroicons/react/solid'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import HistoryIcon from '~/app/assets/icons/common/history.svg'
@@ -7,27 +8,65 @@ import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
+import usePreviewData from '~/app/components/modules/Preview/Preview.hooks'
+import snsClient from '~/app/lib/snsClient'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { Message } from '~/app/models/Message'
 
 import styles from './Main.styles'
 
 function Main() {
   const navigate = useNavigate()
   const [values, setValues] = useState<AnalyzeFormValues>()
+  const [_, setIsLoading] = useState<boolean>(false)
+  const { selectionData, draw } = usePreviewData()
+  const { width = 0, height = 0 } = selectionData || {}
+
   const handleChange = (values: AnalyzeFormValues) => {
     setValues(values)
   }
 
-  const handleSubmit = () => {
+  /**
+   * @TODO form value validation
+   */
+  const handleSubmit = async () => {
     console.info('submitting=====>', values)
+    if (!values) {
+      return
+    }
+
+    setIsLoading(true)
+    const { component, repository, story } = values
+    const checkId = Date.now()
+    const message: Message = {
+      check_id: checkId,
+      component,
+      height: height + '',
+      repository,
+      story,
+      width: width + '',
+    }
+
+    const params = {
+      Message: JSON.stringify(message),
+      TopicArn: 'arn:aws:sns:us-west-2:163803973373:same-story-check-topic',
+    }
+
+    const run = async () => {
+      try {
+        const data = await snsClient.send(new PublishCommand(params))
+        console.info('Success from sns', data)
+        return data
+      } catch (err) {
+        console.error('Error====>', err)
+      }
+    }
+
+    await run()
+    setIsLoading(false)
+
     navigate('/result')
   }
-
-  useEffect(() => {
-    fetch('/api/reminders')
-      .then((response) => response.json())
-      .then((json) => console.info('===>', json))
-  }, [])
 
   return (
     <>
@@ -43,7 +82,7 @@ function Main() {
       </div>
       <div className="flex mb-10">
         <section className="w-6/12 border-solid border-r border-wf-tertiery">
-          <Preview />
+          <Preview draw={draw} label={`${width} ✕ ${height}`} />
         </section>
         <section className="w-6/12 pl-10">
           <Code onChange={handleChange} values={values} />
