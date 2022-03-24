@@ -26,21 +26,9 @@ const useCanvas = (
       return
     }
 
-    let animationFrameId
-
-    const render = () => {
-      predraw && predraw()
-      draw(canvas, context)
-      postdraw && postdraw(canvas, context)
-
-      animationFrameId = window.requestAnimationFrame(render)
-    }
-
-    render()
-
-    return () => {
-      window.cancelAnimationFrame(animationFrameId)
-    }
+    predraw && predraw()
+    draw(canvas, context)
+    postdraw && postdraw(canvas, context)
   }, [draw])
 
   return canvasRef
