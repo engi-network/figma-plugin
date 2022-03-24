@@ -1,14 +1,15 @@
-import Canvas, { CanvasRefType } from '~/app/components/global/Canvas/Canvas'
+import { CanvasRefType } from '~/app/components/global/Canvas/Canvas'
 import CanvasContainer from '~/app/components/global/Canvas/CanvasContainer'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 interface Props {
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => Promise<void>
   label: string
-  originalCanvasRef: CanvasRefType
+  originalCanvasRef?: CanvasRefType
 }
 
-function Preview({ draw, label, originalCanvasRef }: Props) {
+function Preview({ draw, label }: Props) {
+  console.info('I am rendering======>')
   return (
     <div className="flex flex-col h-full">
       <h2 className="text-lg text-wf-secondary mb-5">
@@ -22,13 +23,14 @@ function Preview({ draw, label, originalCanvasRef }: Props) {
           draw={draw}
           options={{ contextId: '2d' }}
           label={label}
-        />
-        <Canvas
-          id="designs--frame-canvas--original"
-          options={{ contextId: '2d' }}
-          draw={() => {}}
-          ref={originalCanvasRef}
-        />
+        >
+          {/* <Canvas
+            id="designs--frame-canvas--original"
+            options={{ contextId: '2d' }}
+            draw={() => {}}
+            ref={originalCanvasRef}
+          /> */}
+        </CanvasContainer>
       </div>
     </div>
   )

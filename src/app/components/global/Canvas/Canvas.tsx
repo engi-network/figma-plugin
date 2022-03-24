@@ -1,10 +1,11 @@
 import cn from 'classnames'
-import { forwardRef, MutableRefObject } from 'react'
+import { forwardRef, MutableRefObject, ReactNode } from 'react'
 
 import useCanvas, { CanvasOption } from '~/app/hooks/useCanvas'
 import mergeRefs from '~/app/lib/utils/ref'
 
 export interface CanvasProps {
+  children?: ReactNode
   className?: string
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => void
   height?: number
@@ -19,7 +20,16 @@ export type CanvasRefType =
   | null
 
 function Canvas(
-  { id, draw, options, className, width, height, ...rest }: CanvasProps,
+  {
+    id,
+    draw,
+    options,
+    className,
+    width,
+    height,
+    children,
+    ...rest
+  }: CanvasProps,
   ref: CanvasRefType,
 ) {
   const canvasRef = useCanvas(draw, options)
@@ -34,7 +44,9 @@ function Canvas(
       width={width}
       height={height}
       {...rest}
-    />
+    >
+      {children}
+    </canvas>
   )
 }
 

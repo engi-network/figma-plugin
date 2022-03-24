@@ -16,6 +16,7 @@ function CanvasContainer({
   options,
   label,
   className,
+  children,
   ...rest
 }: Props) {
   const [inputId, setInputId] = useState(id)
@@ -36,7 +37,9 @@ function CanvasContainer({
         options={options}
         className={className}
         {...rest}
-      />
+      >
+        {children}
+      </Canvas>
       {label && (
         <label className="text-base text-gray-400" htmlFor={inputId}>
           {label}

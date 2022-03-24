@@ -8,11 +8,13 @@ function usePreviewData() {
   const [errorUI, setErrorUI] = useState()
   const [isLoading, setLoading] = useState(false)
   const [selectionData, setSelectionData] = useState<PluginSelection>()
+
   const drawCallback = useCallback(
     async (canvas: HTMLCanvasElement, context: RenderingContext) => {
       if (!selectionData) {
         return
       }
+
       const { name, frame, repository } = selectionData
       const [component, story] = name.split('-')
 
@@ -28,6 +30,7 @@ function usePreviewData() {
       switch (event.data.pluginMessage.type) {
         case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
           const { data } = event.data.pluginMessage
+          console.info('data came from plugin======>')
           setSelectionData(data)
           break
         }

@@ -5,11 +5,6 @@ import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
 import { Message } from '~/app/models/Message'
 
-/**
- *
- * @TODO type checking for input and return values
- */
-
 export const uploadCheckSpecificationToS3 = async ({
   check_id,
   component,
