@@ -72,8 +72,10 @@ function Main() {
     )
     const frame = await encode(originCanvasRef.current, context, imageData)
 
+    console.info('selecteddata======>', selectionData.frame, frame)
     try {
       await uploadEncodedFrameToS3(name, checkId, frame)
+      console.info('uploading to S3 success')
       await uploadCheckSpecificationToS3(message)
       await startEcsCheck(message)
       await pollCheckReport(checkId)
@@ -84,7 +86,7 @@ function Main() {
       console.error(error)
       setIsLoading(false)
     }
-  }, [])
+  }, [values, selectionData])
 
   return (
     <>

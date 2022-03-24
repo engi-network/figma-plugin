@@ -63,7 +63,7 @@ figma.on('selectionchange', () => {
   } else {
     figma.ui.postMessage({
       type: FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
-      error: { message: 'Select a frame' },
+      error: { message: 'Select a frame!' },
     })
   }
 })
