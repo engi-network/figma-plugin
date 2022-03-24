@@ -26,8 +26,7 @@ interface Props {
   values?: AnalyzeFormValues
 }
 
-function Code({ values: intialValues, onChange }: Props) {
-  console.info('values from parent', intialValues)
+function Code({ onChange }: Props) {
   const [values, setValues] = useState<AnalyzeFormValues>(intialFormValue)
 
   const handleInputChange = (field: FORM_FIELD) => (value: string) => {

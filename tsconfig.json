@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "esnext",
     "esModuleInterop": true,
-    "target": "es2015",
+    "target": "es6",
     "jsx": "react-jsx",
     "importHelpers": true,
     "allowJs": true,
@@ -19,6 +19,11 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma",

@@ -1,8 +1,9 @@
 import { SNSClient } from '@aws-sdk/client-sns'
+import S3 from 'aws-sdk/clients/s3'
 
 import config from '~/app/lib/config'
 
-const snsClient = new SNSClient({
+export const snsClient = new SNSClient({
   region: config.AWS_DEFAULT_REGION,
   credentials: {
     accessKeyId: config.AWS_ACCESS_KEY_ID,
@@ -10,4 +11,4 @@ const snsClient = new SNSClient({
   },
 })
 
-export default snsClient
+export const s3Client = new S3()

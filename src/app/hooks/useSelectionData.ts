@@ -8,7 +8,6 @@ function usePreviewData() {
   const [errorUI, setErrorUI] = useState()
   const [isLoading, setLoading] = useState(false)
   const [selectionData, setSelectionData] = useState<PluginSelection>()
-
   const drawCallback = useCallback(
     async (canvas: HTMLCanvasElement, context: RenderingContext) => {
       if (!selectionData) {

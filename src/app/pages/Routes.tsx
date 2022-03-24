@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 
-import MainPage from '~/app/pages/Main/Main'
-import ResultPage from '~/app/pages/Result/Result'
+import MainPage from '~/app/pages/Main/Main.container'
+import ResultPage from '~/app/pages/Result/Result.container'
 
 function RoutesPages() {
   return (

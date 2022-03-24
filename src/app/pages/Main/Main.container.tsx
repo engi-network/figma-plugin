@@ -1,26 +1,33 @@
-import { PublishCommand } from '@aws-sdk/client-sns'
 import { PlusIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 
 import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
-import usePreviewData from '~/app/components/modules/Preview/Preview.hooks'
-import config from '~/app/lib/config'
-import snsClient from '~/app/lib/snsClient'
+import useSelectionData from '~/app/hooks/useSelectionData'
+import {
+  pollCheckReport,
+  startEcsCheck,
+  uploadCheckSpecificationToS3,
+  uploadEncodedFrameToS3,
+} from '~/app/lib/utils/aws'
+import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
 
-import styles from './Main.styles'
+import styles from './Main.container.styles'
 
 function Main() {
   const navigate = useNavigate()
   const [values, setValues] = useState<AnalyzeFormValues>()
   const [_, setIsLoading] = useState<boolean>(false)
-  const { selectionData, draw } = usePreviewData()
+  const { selectionData, draw } = useSelectionData()
+  const originCanvasRef = useRef<HTMLCanvasElement>(null)
+
   const { width = 0, height = 0 } = selectionData || {}
 
   const handleChange = (values: AnalyzeFormValues) => {
@@ -30,15 +37,20 @@ function Main() {
   /**
    * @TODO form value validation
    */
-  const handleSubmit = async () => {
-    console.info('submitting=====>', values)
-    if (!values) {
+  const handleSubmit = useCallback(async () => {
+    if (
+      !values ||
+      !originCanvasRef ||
+      !originCanvasRef.current ||
+      !selectionData
+    ) {
       return
     }
 
     setIsLoading(true)
+
     const { component, repository, story } = values
-    const checkId = Date.now()
+    const checkId: string = uuidv4()
     const message: Message = {
       check_id: checkId,
       component,
@@ -48,26 +60,31 @@ function Main() {
       width: width + '',
     }
 
-    const params = {
-      Message: JSON.stringify(message),
-      TopicArn: config.TOPIC_ARN,
-    }
+    const name = component + '-' + story
+    const context = originCanvasRef.current.getContext(
+      '2d',
+    ) as CanvasRenderingContext2D
 
-    const run = async () => {
-      const data = await snsClient.send(new PublishCommand(params))
-      console.info('Success from sns', data)
-      return data
-    }
+    const imageData = await decodeOriginal(
+      originCanvasRef.current,
+      context,
+      selectionData.frame,
+    )
+    const frame = await encode(originCanvasRef.current, context, imageData)
 
     try {
-      await run()
+      await uploadEncodedFrameToS3(name, checkId, frame)
+      await uploadCheckSpecificationToS3(message)
+      await startEcsCheck(message)
+      await pollCheckReport(checkId)
+
       setIsLoading(false)
       navigate('/result')
     } catch (error) {
       console.error(error)
       setIsLoading(false)
     }
-  }
+  }, [])
 
   return (
     <>
@@ -83,7 +100,11 @@ function Main() {
       </div>
       <div className="flex mb-10">
         <section className="w-6/12 border-solid border-r border-wf-tertiery">
-          <Preview draw={draw} label={`${width} ✕ ${height}`} />
+          <Preview
+            draw={draw}
+            label={`${width} ✕ ${height}`}
+            originalCanvasRef={originCanvasRef}
+          />
         </section>
         <section className="w-6/12 pl-10">
           <Code onChange={handleChange} values={values} />

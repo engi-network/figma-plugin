@@ -1,5 +1,5 @@
 export interface Message {
-  check_id: number
+  check_id: string
   component: string
   height: string
   repository: string
