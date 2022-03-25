@@ -5,6 +5,7 @@ import { BUTTON_SIZE } from '~/app/lib/constants'
 import styles from './Button.styles'
 
 interface ButtonProps {
+  backgroundColor?: string
   children: ReactNode
   className?: string
   label?: string
@@ -14,6 +15,7 @@ interface ButtonProps {
 }
 
 function Button({
+  backgroundColor,
   primary = false,
   size = BUTTON_SIZE.MEDIUM,
   className,
@@ -26,7 +28,12 @@ function Button({
   return (
     <button
       type="button"
-      css={[styles.button, styles[size], mode]}
+      css={[
+        styles.button,
+        styles[size],
+        mode,
+        backgroundColor && { background: backgroundColor },
+      ]}
       className={className}
       onClick={onClick}
       {...rest}

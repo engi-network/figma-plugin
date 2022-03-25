@@ -1,3 +1,4 @@
+import { InformationCircleIcon } from '@heroicons/react/outline'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -116,7 +117,7 @@ function Main() {
               />
             }
           >
-            History
+            {ui('main.history')}
           </IconButton>
         </div>
       </div>
@@ -132,18 +133,21 @@ function Main() {
           <Code onChange={handleChange} values={values} />
         </section>
       </div>
-      <div className="flex justify-center mb-7">
-        <Button primary onClick={handleSubmit} className="w-5/12">
-          {ui('main.analyze')}
-        </Button>
-      </div>
-      <footer className="flex justify-center">
+      <footer className="flex justify-between px-6">
         <a href="#" className="flex items-center">
-          <span className="mr-6 text-sm text-wf-secondary">
+          <span className="mr-6 text-sm text-[#B3B3B3] flex">
+            <InformationCircleIcon className="w-5 h-5 text-[#B3B3B3] mr-3" />
             {ui('header.learnMore')}
-            <span className="text-wf-primary">{ui('header.companyName')}</span>
           </span>
         </a>
+        <Button
+          primary
+          onClick={handleSubmit}
+          className="w-3/12"
+          backgroundColor="#18A0FB"
+        >
+          {ui('main.analyze')}
+        </Button>
       </footer>
     </>
   )
