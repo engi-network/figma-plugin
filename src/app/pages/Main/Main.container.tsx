@@ -121,14 +121,14 @@ function Main() {
         </div>
       </div>
       <div className="flex mb-10 p-10">
-        <section className="w-6/12">
+        <section className="w-1/2 flex justify-end">
           <Preview
             draw={draw}
             label={`${width} ✕ ${height}`}
             originalCanvasRef={originCanvasRef}
           />
         </section>
-        <section className="w-6/12">
+        <section className="w-1/2">
           <Code onChange={handleChange} values={values} />
         </section>
       </div>

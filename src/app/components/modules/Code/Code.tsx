@@ -48,11 +48,11 @@ function Code({ values: parentValues, onChange }: Props) {
   }, [parentValues])
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-[304px]">
       <h2 className="text-2xl text-black mb-5 font-bold text-center">
         {ui('main.preview.code')}
       </h2>
-      <div className="p-10 border border-wf-tertiery">
+      <div className="p-10 border-y border-r border-wf-tertiery">
         <div className="flex mb-5">
           <div className="w-6/12 flex flex-col">
             <TextWithLabel
