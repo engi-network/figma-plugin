@@ -26,20 +26,20 @@ function Result() {
       <div className="flex justify-between mb-16">
         <div className="w-1/12">
           <IconButton
-            icon={<ArrowLeftIcon className="w-4 h-4" />}
+            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-dark" />}
             buttonStyle={BUTTON_STYLE.OUTLINED}
             onClick={handleClickBack}
           />
         </div>
         <div className="w-8/12 flex justify-center">
-          <h1 className="text-2xl text-wf-primary w-6/12 text-center">
-            Well done 99.55% match!
+          <h1 className="text-2xl text-primary-dark w-6/12 text-center">
+            Well done <span className="bg-primary-green">99.55%</span> match!
           </h1>
         </div>
         <div
           role="button"
           tabIndex={-1}
-          className="flex justify-end w-3/12 h-fit"
+          className="flex justify-end items-center w-3/12 h-fit"
           onClick={handleViewHistory}
         >
           <span className="text-sm text-wf-secondary mr-5">
@@ -76,7 +76,7 @@ function Result() {
         </div>
       </div>
       <div className="flex justify-center">
-        <Button primary onClick={handleCreateNew} className="w-5/12 capitalize">
+        <Button onClick={handleCreateNew} className="w-5/12 capitalize">
           {ui('result.createNew')}
         </Button>
       </div>

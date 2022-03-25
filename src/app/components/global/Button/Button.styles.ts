@@ -29,7 +29,7 @@ const styles: StylesMap = {
     backgroundColor: COLORS.WF.PRIMARY,
   },
   secondary: {
-    color: COLORS.WF.PRIMARY,
+    color: 'black',
     backgroundColor: COLORS.PRIMARY.WHITE,
     border: BORDER_STYLE.SOLID_BLACK_1PX,
   },

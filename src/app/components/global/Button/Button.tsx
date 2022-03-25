@@ -1,11 +1,12 @@
 import { ReactNode } from 'react'
 
-import { BUTTON_SIZE } from '~/app/lib/constants'
+import { BUTTON_SIZE, BUTTON_STYLE } from '~/app/lib/constants'
 
 import styles from './Button.styles'
 
 interface ButtonProps {
   backgroundColor?: string
+  buttonStyle?: BUTTON_STYLE
   children: ReactNode
   className?: string
   label?: string
