@@ -1,4 +1,3 @@
-import { PlusIcon } from '@heroicons/react/solid'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -104,25 +103,32 @@ function Main() {
 
   return (
     <>
-      <div className="flex justify-between mb-10">
-        <h1 css={styles.title}>{ui('main.title')}</h1>
+      <div className="flex justify-between border-y border-text-secondary px-7 py-5">
+        <h1 className="font-base text-black font-medium">{ui('main.title')}</h1>
         <div className="flex justify-center items-center">
           <IconButton
-            icon={<PlusIcon className="w-4 h-4" />}
-            className="mr-5"
-          />
-          <IconButton icon={<img src={HistoryIcon} width={24} height={24} />} />
+            icon={
+              <img
+                src={HistoryIcon}
+                width={24}
+                height={24}
+                css={styles.historyIcon}
+              />
+            }
+          >
+            History
+          </IconButton>
         </div>
       </div>
-      <div className="flex mb-10">
-        <section className="w-6/12 border-solid border-r border-wf-tertiery">
+      <div className="flex mb-10 p-10">
+        <section className="w-6/12">
           <Preview
             draw={draw}
             label={`${width} ✕ ${height}`}
             originalCanvasRef={originCanvasRef}
           />
         </section>
-        <section className="w-6/12 pl-10">
+        <section className="w-6/12">
           <Code onChange={handleChange} values={values} />
         </section>
       </div>

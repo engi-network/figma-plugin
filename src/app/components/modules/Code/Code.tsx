@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import Input from '~/app/components/global/Input/Input'
+import TextWithLabel from '~/app/components/global/TextWithLabel/TextWithLabel'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 enum FORM_FIELD {
@@ -10,9 +11,9 @@ enum FORM_FIELD {
 }
 
 export interface AnalyzeFormValues {
+  [FORM_FIELD.STORY]: string
   [FORM_FIELD.COMPONENT]: string
   [FORM_FIELD.REPOSITORY]: string
-  [FORM_FIELD.STORY]: string
 }
 
 const intialFormValue = {
@@ -48,37 +49,37 @@ function Code({ values: parentValues, onChange }: Props) {
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="text-lg text-wf-secondary mb-5">
+      <h2 className="text-2xl text-black mb-5 font-bold text-center">
         {ui('main.preview.code')}
       </h2>
-      <div className="flex mb-7">
-        <div className="w-6/12">
+      <div className="p-10 border border-wf-tertiery">
+        <div className="flex mb-5">
+          <div className="w-6/12 flex flex-col">
+            <TextWithLabel
+              label="Component"
+              id="component"
+              text={values[FORM_FIELD.COMPONENT]}
+              placeholder="Placehoder1"
+            />
+          </div>
+          <div className="w-6/12 ml-7 flex flex-col">
+            <TextWithLabel
+              label="Story"
+              id="story"
+              text={values[FORM_FIELD.STORY]}
+              placeholder="Placehoder2"
+            />
+          </div>
+        </div>
+        <div className="flex">
           <Input
-            id="component"
-            label="Component"
-            placeholder="Button"
-            value={values[FORM_FIELD.COMPONENT]}
-            onChange={handleInputChange(FORM_FIELD.COMPONENT)}
+            id="repository"
+            label="Repository"
+            placeholder="engi-network/engi-ui"
+            value={values[FORM_FIELD.REPOSITORY]}
+            onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
           />
         </div>
-        <div className="w-6/12 ml-7">
-          <Input
-            id="story"
-            label="Story"
-            placeholder="Unwindowed"
-            value={values[FORM_FIELD.STORY]}
-            onChange={handleInputChange(FORM_FIELD.STORY)}
-          />
-        </div>
-      </div>
-      <div className="flex">
-        <Input
-          id="repository"
-          label="Repository"
-          placeholder="engi-network/engi-ui"
-          value={values[FORM_FIELD.REPOSITORY]}
-          onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
-        />
       </div>
     </div>
   )

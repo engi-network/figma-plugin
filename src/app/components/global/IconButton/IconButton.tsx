@@ -6,6 +6,7 @@ import styles from './IconButton.styles'
 
 interface Props {
   buttonStyle?: BUTTON_STYLE
+  children?: ReactNode
   className?: string
   icon: ReactNode
   id?: string
@@ -18,6 +19,7 @@ function IconButton({
   className,
   icon,
   buttonStyle = BUTTON_STYLE.SOLID,
+  children,
   ...rest
 }: Props) {
   return (
@@ -29,6 +31,7 @@ function IconButton({
       {...rest}
     >
       {icon}
+      {children && <span css={styles.text}>{children}</span>}
     </button>
   )
 }

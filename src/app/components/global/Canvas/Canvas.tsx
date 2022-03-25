@@ -33,7 +33,7 @@ function Canvas(
   ref: CanvasRefType,
 ) {
   const canvasRef = useCanvas(draw, options)
-  const classes = cn('border border-wf-tertiery rounded-st-small', className)
+  const classes = cn('border border-wf-tertiery', className)
   const mergedRef = mergeRefs([canvasRef, ref])
 
   return (

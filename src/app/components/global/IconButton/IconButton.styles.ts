@@ -6,18 +6,16 @@ const styles: StylesMap = {
       color: COLORS.WF.PRIMARY,
     },
     alignItems: 'center',
-    borderRadius: '50%',
+    color: '#B3B3B3',
     display: 'flex',
     height: 30,
     justifyContent: 'center',
-    width: 30,
   },
-  [BUTTON_STYLE.SOLID]: {
-    background: COLORS.WF.LIGHT,
+  text: {
+    marginLeft: 10,
   },
-  [BUTTON_STYLE.OUTLINED]: {
-    background: COLORS.PRIMARY.WHITE,
-  },
+  [BUTTON_STYLE.SOLID]: {},
+  [BUTTON_STYLE.OUTLINED]: {},
 }
 
 export default styles

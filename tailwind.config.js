@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         primary: {
           white: '#FFFFFF',
+          dark: '#070706',
         },
         wf: {
           bg: '#F3F5F9',
@@ -15,6 +16,9 @@ module.exports = {
           primary: '#40444E',
           secondary: '#6B7690',
           tertiary: '#AEB5C7',
+        },
+        text: {
+          secondary: '#C7C7C7',
         },
       },
       borderRadius: {

@@ -48,7 +48,7 @@ function Input({
   return (
     <span className="flex flex-col">
       {label && (
-        <label className="text-sm text-wf-tertiary mb-4" htmlFor={inputId}>
+        <label className="text-sm text-primary-dark mb-4" htmlFor={inputId}>
           {label}
         </label>
       )}

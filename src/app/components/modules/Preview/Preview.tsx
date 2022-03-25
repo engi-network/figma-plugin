@@ -11,14 +11,14 @@ interface Props {
 function Preview({ draw, label, originalCanvasRef }: Props) {
   return (
     <div className="flex flex-col h-full">
-      <h2 className="text-lg text-wf-secondary mb-5">
+      <h2 className="text-2xl text-black mb-5 font-bold text-center">
         {ui('main.preview.design')}
       </h2>
-      <div className="flex justify-start">
+      <div className="flex justify-end border border-wf-tertiery">
         <CanvasContainer
           id="designs--frame-canvas"
           width={280}
-          height={210}
+          height={229}
           draw={draw}
           options={{ contextId: '2d' }}
           label={label}

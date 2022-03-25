@@ -7,7 +7,7 @@ interface Props {
 }
 
 function Layout({ children }: Props) {
-  return <main className="flex flex-1 flex-col p-10">{children}</main>
+  return <main className="flex flex-1 flex-col">{children}</main>
 }
 
 export default Layout
