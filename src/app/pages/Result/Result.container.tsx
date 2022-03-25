@@ -22,24 +22,23 @@ function Result() {
   }
 
   return (
-    <div className="px-10">
-      <div className="flex justify-between mb-16">
-        <div className="w-1/12">
-          <IconButton
-            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-dark" />}
-            buttonStyle={BUTTON_STYLE.OUTLINED}
-            onClick={handleClickBack}
-          />
-        </div>
-        <div className="w-8/12 flex justify-center">
-          <h1 className="text-2xl text-primary-dark w-6/12 text-center">
-            Well done <span className="bg-primary-green">99.55%</span> match!
+    <div className="px-10 pt-10">
+      <div className="flex justify-between mb-16 relative">
+        <IconButton
+          icon={<ArrowLeftIcon className="w-4 h-4 text-primary-dark" />}
+          buttonStyle={BUTTON_STYLE.OUTLINED}
+          onClick={handleClickBack}
+        />
+        <div className="absolute flex justify-center top-0 left-0 right-0">
+          <h1 className="text-2xl text-primary-dark w-6/12 text-center font-bold">
+            Well done <br />
+            <span className="bg-primary-green">99.55%</span> match!
           </h1>
         </div>
         <div
           role="button"
           tabIndex={-1}
-          className="flex justify-end items-center w-3/12 h-fit"
+          className="flex justify-end items-center h-fit"
           onClick={handleViewHistory}
         >
           <span className="text-sm text-wf-secondary mr-5">
