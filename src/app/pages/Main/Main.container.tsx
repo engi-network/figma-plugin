@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/solid'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -23,9 +23,9 @@ import styles from './Main.container.styles'
 
 function Main() {
   const navigate = useNavigate()
+  const { selectionData, draw } = useSelectionData()
   const [values, setValues] = useState<AnalyzeFormValues>()
   const [_, setIsLoading] = useState<boolean>(false)
-  const { selectionData, draw } = useSelectionData()
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
 
   const { width = 0, height = 0 } = selectionData || {}
@@ -72,7 +72,6 @@ function Main() {
     )
     const frame = await encode(originCanvasRef.current, context, imageData)
 
-    console.info('selecteddata======>', selectionData.frame, frame)
     try {
       await uploadEncodedFrameToS3(name, checkId, frame)
       console.info('uploading to S3 success')
@@ -87,6 +86,21 @@ function Main() {
       setIsLoading(false)
     }
   }, [values, selectionData])
+
+  useEffect(() => {
+    if (!selectionData) {
+      return
+    }
+
+    const { name = '', repository = '' } = selectionData
+    const [component, story = ''] = name.split('-')
+
+    setValues({
+      story,
+      component,
+      repository,
+    })
+  }, [selectionData])
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Input from '~/app/components/global/Input/Input'
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -26,7 +26,7 @@ interface Props {
   values?: AnalyzeFormValues
 }
 
-function Code({ onChange }: Props) {
+function Code({ values: parentValues, onChange }: Props) {
   const [values, setValues] = useState<AnalyzeFormValues>(intialFormValue)
 
   const handleInputChange = (field: FORM_FIELD) => (value: string) => {
@@ -37,6 +37,14 @@ function Code({ onChange }: Props) {
 
     onChange({ ...values, [field]: value })
   }
+
+  useEffect(() => {
+    if (!parentValues) {
+      return
+    }
+
+    setValues(parentValues)
+  }, [parentValues])
 
   return (
     <div className="flex flex-col h-full">

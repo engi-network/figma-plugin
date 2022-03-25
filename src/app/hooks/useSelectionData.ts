@@ -30,7 +30,6 @@ function usePreviewData() {
       switch (event.data.pluginMessage.type) {
         case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
           const { data } = event.data.pluginMessage
-          console.info('data came from plugin======>')
           setSelectionData(data)
           break
         }

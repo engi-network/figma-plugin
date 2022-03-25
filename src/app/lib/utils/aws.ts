@@ -78,8 +78,6 @@ const checks = {
 }
 
 export const pollCheckReport = async (checkId: string) => {
-  console.info('polling for check report=======>')
-
   setInterval(async () => {
     // if we have a report and are still polling, cancel it
     if (
