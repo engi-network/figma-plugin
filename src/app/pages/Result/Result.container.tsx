@@ -29,7 +29,7 @@ function Result() {
           buttonStyle={BUTTON_STYLE.OUTLINED}
           onClick={handleClickBack}
         />
-        <div className="absolute flex justify-center top-0 left-0 right-0">
+        <div className="absolute flex justify-center top-0 left-0 right-0 -z-10">
           <h1 className="text-2xl text-primary-dark w-6/12 text-center font-bold">
             Well done <br />
             <span className="bg-primary-green">99.55%</span> match!

@@ -6,6 +6,7 @@ const styles: StylesMap = {
       color: COLORS.WF.PRIMARY,
     },
     alignItems: 'center',
+    cursor: 'pointer',
     display: 'flex',
     height: 30,
     justifyContent: 'center',
