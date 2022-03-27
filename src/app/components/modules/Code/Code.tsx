@@ -4,7 +4,7 @@ import Input from '~/app/components/global/Input/Input'
 import TextWithLabel from '~/app/components/global/TextWithLabel/TextWithLabel'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-enum FORM_FIELD {
+export enum FORM_FIELD {
   COMPONENT = 'component',
   REPOSITORY = 'repository',
   STORY = 'story',

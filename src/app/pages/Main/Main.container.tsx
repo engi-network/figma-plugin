@@ -18,6 +18,7 @@ import {
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
+import { LOCAL_STORAGE_KEY, SAME_STORY_FORM_UPDATE } from '~/plugin/constants'
 
 import styles from './Main.container.styles'
 
@@ -30,8 +31,22 @@ function Main() {
 
   const { width = 0, height = 0 } = selectionData || {}
 
-  const handleChange = (values: AnalyzeFormValues) => {
+  const handleChange = async (values: AnalyzeFormValues) => {
     setValues(values)
+
+    if (values) {
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: SAME_STORY_FORM_UPDATE,
+            data: {
+              [LOCAL_STORAGE_KEY.REPOSITORY]: values.repository,
+            },
+          },
+        },
+        '*',
+      )
+    }
   }
 
   /**

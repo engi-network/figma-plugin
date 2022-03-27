@@ -20,7 +20,7 @@ module.exports = (env, argv) => {
     devtool: argv.mode === 'production' ? false : 'inline-source-map',
     entry: {
       ui: './src/app/index.tsx',
-      code: './src/plugin/controller.ts',
+      code: './src/plugin/index.ts',
     },
     module: {
       rules: [

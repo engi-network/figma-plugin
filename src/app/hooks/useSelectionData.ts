@@ -26,7 +26,7 @@ function usePreviewData() {
   )
 
   useEffect(() => {
-    window.onmessage = (event: MessageEvent) => {
+    onmessage = (event: MessageEvent) => {
       switch (event.data.pluginMessage.type) {
         case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
           const { data } = event.data.pluginMessage
@@ -46,8 +46,13 @@ function usePreviewData() {
           break
         }
         default:
-          console.error('event type is not correct!')
+          console.error('Event type is not correct!')
+          break
       }
+    }
+
+    return () => {
+      onmessage = null
     }
   }, [])
 

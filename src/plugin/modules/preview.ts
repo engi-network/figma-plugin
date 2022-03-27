@@ -1,24 +1,39 @@
 import { PluginSelection } from '~/app/models/PluginSelection'
 import {
+  DEFAULT_REPO,
   FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
   FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
   FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI,
-  repository,
+  LOCAL_STORAGE_KEY,
   ShowUIOptions,
 } from '~/plugin/constants'
 
-figma.clientStorage.setAsync('ss-repository', repository)
+let repository = DEFAULT_REPO
+
+;(async () => {
+  const repo = await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.REPOSITORY)
+  if (repo) {
+    repository = repo
+  }
+})()
+
+figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.REPOSITORY, repository)
 figma.showUI(__html__, ShowUIOptions)
 
-// store selected layer information and message plugin UI
-// save a selection to storage + UI
+/**
+ *
+ * @description
+ * store selected layer information and message plugin UI
+ * save a selection to storage + UI
+ */
+
 const onSelection = async (selection: SceneNode) => {
   const { name, width, height } = selection
   try {
     const promises = [
-      figma.clientStorage.setAsync('ss-name', name),
-      figma.clientStorage.setAsync('ss-width', width),
-      figma.clientStorage.setAsync('ss-height', height),
+      figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.NAME, name),
+      figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.WIDTH, width),
+      figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.HEIGHT, height),
       selection.exportAsync(), // bytes must be last promise
     ]
     const results = await Promise.all(promises)
@@ -54,6 +69,7 @@ if (selection) {
 // support ability to change selected frame while plugin is open
 figma.on('selectionchange', () => {
   const selection = figma.currentPage.selection[0]
+  console.info('selectionn chagge=========>')
 
   if (selection) {
     onSelection(selection)
@@ -67,7 +83,3 @@ figma.on('selectionchange', () => {
     })
   }
 })
-
-figma.ui.onmessage = (msg) => {
-  console.info('unhandled message received!', msg)
-}

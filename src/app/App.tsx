@@ -12,7 +12,7 @@ const queryClient = new QueryClient()
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router initialEntries={['/', '/result']} initialIndex={1}>
+      <Router initialEntries={['/', '/result']} initialIndex={0}>
         <Layout>
           <Routes />
         </Layout>
