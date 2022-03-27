@@ -7,14 +7,14 @@ interface Props {
 
 function TextWithLabel({ id, label, text, placeholder }: Props) {
   return (
-    <div className="w-6/12 flex flex-col">
+    <div className="flex flex-col">
       <label className="text-sm text-primary-dark" htmlFor={id}>
         {label}
       </label>
       <p
-        id="id"
+        id={id}
         aria-readonly
-        className="text-sm text-wf-tertiary min-h-[42px]  flex items-center"
+        className="text-sm text-wf-tertiary min-h-[42px]  flex items-center text-ellipsis overflow-hidden"
       >
         {text || placeholder}
       </p>
