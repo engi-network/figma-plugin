@@ -78,6 +78,7 @@ function Code({ values: parentValues, onChange }: Props) {
             placeholder="engi-network/engi-ui"
             value={values[FORM_FIELD.REPOSITORY]}
             onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
+            error={'This field is required.'}
           />
         </div>
       </div>
