@@ -27,12 +27,14 @@ function Main() {
   const { selectionData, draw } = useSelectionData()
   const [values, setValues] = useState<AnalyzeFormValues>()
   const [_, setIsLoading] = useState<boolean>(false)
+  const [errors, setErrors] = useState<AnalyzeFormValues>()
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
 
-  const { width = 0, height = 0 } = selectionData || {}
+  const { width = 0, height = 0, commit, branch } = selectionData || {}
 
   const handleChange = async (values: AnalyzeFormValues) => {
     setValues(values)
+    setErrors(undefined)
 
     if (values) {
       parent.postMessage(
@@ -53,12 +55,16 @@ function Main() {
    * @TODO form value validation
    */
   const handleSubmit = useCallback(async () => {
-    if (
-      !values ||
-      !originCanvasRef ||
-      !originCanvasRef.current ||
-      !selectionData
-    ) {
+    if (!values || !values.repository) {
+      setErrors({
+        repository: 'This field is required!',
+        story: '',
+        component: '',
+      })
+      return
+    }
+
+    if (!originCanvasRef || !originCanvasRef.current || !selectionData) {
       return
     }
 
@@ -67,7 +73,9 @@ function Main() {
     const { component, repository, story } = values
     const checkId: string = uuidv4()
     const message: Message = {
+      branch,
       check_id: checkId,
+      commit,
       component,
       height: height + '',
       repository,
@@ -146,7 +154,7 @@ function Main() {
           />
         </section>
         <section className="w-1/2">
-          <Code onChange={handleChange} values={values} />
+          <Code onChange={handleChange} values={values} errors={errors} />
         </section>
       </div>
       <footer className="flex justify-between px-6">

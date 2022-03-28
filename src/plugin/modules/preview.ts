@@ -42,6 +42,8 @@ const onSelection = async (selection: SceneNode) => {
     figma.ui.postMessage({
       type: FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI,
       data: {
+        branch: 'master',
+        commit: '2f513f8411b438f140ddef716ea92d479bc76f81',
         frame,
         height,
         name,

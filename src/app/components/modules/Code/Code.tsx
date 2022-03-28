@@ -23,11 +23,12 @@ const intialFormValue = {
 }
 
 interface Props {
+  errors?: AnalyzeFormValues
   onChange: (values: AnalyzeFormValues) => void
   values?: AnalyzeFormValues
 }
 
-function Code({ values: parentValues, onChange }: Props) {
+function Code({ values: parentValues, onChange, errors }: Props) {
   const [values, setValues] = useState<AnalyzeFormValues>(intialFormValue)
 
   const handleInputChange = (field: FORM_FIELD) => (value: string) => {
@@ -78,7 +79,7 @@ function Code({ values: parentValues, onChange }: Props) {
             placeholder="engi-network/engi-ui"
             value={values[FORM_FIELD.REPOSITORY]}
             onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
-            error={'This field is required.'}
+            error={errors && errors[FORM_FIELD.REPOSITORY]}
           />
         </div>
       </div>
