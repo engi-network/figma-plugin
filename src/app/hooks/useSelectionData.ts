@@ -20,7 +20,7 @@ function usePreviewData() {
 
       await decode(canvas, context as CanvasRenderingContext2D, frame)
 
-      console.info('data after decode=====>', component, story, repository)
+      console.info('::', component, story, repository)
     },
     [selectionData],
   )

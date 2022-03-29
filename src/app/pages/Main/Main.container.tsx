@@ -10,6 +10,7 @@ import ProgressBar from '~/app/components/global/ProgressBar/ProgressBar'
 import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
 import useSelectionData from '~/app/hooks/useSelectionData'
+import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
   pollCheckReport,
   startEcsCheck,
@@ -19,20 +20,47 @@ import {
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
+import { Report } from '~/app/models/Report'
 import { LOCAL_STORAGE_KEY, SAME_STORY_FORM_UPDATE } from '~/plugin/constants'
 
 import styles from './Main.container.styles'
-import { MESSAGES, STEPS } from './Main.types'
+import { MESSAGES } from './Main.types'
 
-function Main() {
+function MainContainer() {
   const navigate = useNavigate()
   const { selectionData, draw } = useSelectionData()
   const [values, setValues] = useState<AnalyzeFormValues>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [errors, setErrors] = useState<AnalyzeFormValues>()
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
+  const [progress, setProgress] = useState(0)
 
   const { width = 0, height = 0, commit, branch } = selectionData || {}
+
+  const pollCallback = (
+    status: {
+      retryTimes: number
+      success: boolean
+    },
+    report?: Report,
+  ) => {
+    if (report) {
+      console.info('successfully got report:::', report)
+      console.info('Polling times=========>', status.retryTimes)
+      setIsLoading(false)
+      navigate('/result')
+    } else {
+      if (status.retryTimes > MAX_RETRY_TIMES) {
+        setIsLoading(false)
+        //set ui error in turn
+      } else {
+        //calculate the progress based on the retry times
+        const progress = Math.floor((status.retryTimes / MAX_RETRY_TIMES) * 100)
+
+        setProgress(progress)
+      }
+    }
+  }
 
   const handleChange = async (values: AnalyzeFormValues) => {
     setValues(values)
@@ -68,45 +96,43 @@ function Main() {
     }
 
     setIsLoading(true)
-
-    const { component, repository, story } = values
-    const checkId: string = uuidv4()
-    const message: Message = {
-      branch,
-      check_id: checkId,
-      commit,
-      component,
-      height: height + '',
-      repository,
-      story,
-      width: width + '',
-    }
-
-    const name = component + '-' + story
-    const context = originCanvasRef.current.getContext(
-      '2d',
-    ) as CanvasRenderingContext2D
-
-    const imageData = await decodeOriginal(
-      originCanvasRef.current,
-      context,
-      selectionData.frame,
-    )
-    const frame = await encode(originCanvasRef.current, context, imageData)
-
     try {
+      const { component, repository, story } = values
+      const checkId: string = uuidv4()
+      const message: Message = {
+        branch,
+        check_id: checkId,
+        commit,
+        component,
+        height: height + '',
+        repository,
+        story,
+        width: width + '',
+      }
+
+      const name = component + '-' + story
+      const context = originCanvasRef.current.getContext(
+        '2d',
+      ) as CanvasRenderingContext2D
+
+      const copyRef = originCanvasRef.current
+      const imageData = await decodeOriginal(
+        originCanvasRef.current,
+        context,
+        selectionData.frame,
+      )
+
+      const frame = await encode(copyRef, context, imageData)
+
       await uploadEncodedFrameToS3(name, checkId, frame)
       await uploadCheckSpecificationToS3(message)
       await startEcsCheck(message)
-      await pollCheckReport(checkId)
-
-      setIsLoading(false)
-      navigate('/result')
+      await pollCheckReport(checkId, pollCallback)
     } catch (error) {
       console.error(error)
       setIsLoading(false)
     }
-  }, [values, selectionData])
+  }, [values, selectionData, originCanvasRef])
 
   useEffect(() => {
     if (!selectionData) {
@@ -123,12 +149,13 @@ function Main() {
     })
   }, [selectionData])
 
-  if (!isLoading) {
+  if (isLoading) {
+    const step = Math.floor(progress / 20)
     return (
       <div className="flex flex-1 justify-center items-center">
         <ProgressBar
-          percentage={45}
-          label={MESSAGES[STEPS.CLONE]}
+          percentage={progress}
+          label={MESSAGES[step]}
           className={'w-8/12'}
         />
       </div>
@@ -187,4 +214,4 @@ function Main() {
   )
 }
 
-export default Main
+export default MainContainer

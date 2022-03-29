@@ -56,7 +56,6 @@ const onSelection = async (selection: SceneNode) => {
   }
 }
 
-// set selection if exists
 const selection = figma.currentPage.selection[0]
 
 if (selection) {
@@ -68,10 +67,8 @@ if (selection) {
   })
 }
 
-// support ability to change selected frame while plugin is open
 figma.on('selectionchange', () => {
   const selection = figma.currentPage.selection[0]
-  console.info('selectionn chagge=========>')
 
   if (selection) {
     onSelection(selection)

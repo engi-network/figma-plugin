@@ -1,16 +1,18 @@
 /* eslint-disable typescript-sort-keys/string-enum */
 export enum STEPS {
-  CLONE = 'clone',
-  INSTALL = 'install',
-  RENDER = 'render',
-  CAPTURE = 'capture',
-  COMPARE = 'compare',
+  INIT = 0,
+  CLONE = 1,
+  INSTALL = 2,
+  RENDER = 3,
+  CAPTURE = 4,
+  COMPARE = 5,
 }
 
 export const MESSAGES: Record<STEPS, string> = {
-  [STEPS.CLONE]: 'Cloning repository…',
-  [STEPS.INSTALL]: 'Installing dependencies…',
-  [STEPS.RENDER]: 'Rendering Storybook…',
-  [STEPS.CAPTURE]: 'Capturing screenshots…',
-  [STEPS.COMPARE]: 'Running visual comparison…',
+  [STEPS.INIT]: 'Initializing...',
+  [STEPS.CLONE]: 'Cloning repository...',
+  [STEPS.INSTALL]: 'Installing dependencies...',
+  [STEPS.RENDER]: 'Rendering Storybook...',
+  [STEPS.CAPTURE]: 'Capturing screenshots...',
+  [STEPS.COMPARE]: 'Running visual comparison...',
 }

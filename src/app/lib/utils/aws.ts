@@ -4,7 +4,7 @@ import S3 from 'aws-sdk/clients/s3'
 
 import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
-import { POLLING_INTERVAL, RETRY_TIMES } from '~/app/lib/constants/aws'
+import { MAX_RETRY_TIMES, POLLING_INTERVAL } from '~/app/lib/constants/aws'
 import { CheckItem, CheckTable } from '~/app/models/Check'
 import { Message } from '~/app/models/Message'
 import { Report } from '~/app/models/Report'
@@ -20,9 +20,6 @@ export const uploadCheckSpecificationToS3 = async ({
   width,
 }: Message): Promise<S3.ManagedUpload.SendData> => {
   const key = 'checks/' + check_id + '/specification.json'
-
-  console.info('uploading key: ', key)
-
   const specification = JSON.stringify({
     check_id,
     component,
@@ -74,54 +71,64 @@ export const startEcsCheck = async (
 }
 
 // all checks the user has started since the plugin has been open
-const checks: CheckTable = {
+const checkTable: CheckTable = {
   EXAMPLE_CHECK_ID: {
     report: null,
     reportPollId: undefined,
   },
 }
 
-export const pollCheckReport = async (checkId: string) => {
+export const pollCheckReport = async (
+  checkId: string,
+  callback: (
+    status: { retryTimes: number; success: boolean },
+    data?: Report,
+  ) => void,
+) => {
+  if (
+    checkTable[checkId] &&
+    checkTable[checkId].reportPollId &&
+    checkTable[checkId].report
+  ) {
+    clearInterval(checkTable[checkId].reportPollId)
+    checkTable[checkId].reportPollId = undefined
+    return checkTable[checkId].report
+  }
+
+  let retryTimes = 0
   let timerId = -1
-  let retryTimes = RETRY_TIMES
 
   timerId = setInterval(async () => {
-    if (
-      checks[checkId] &&
-      checks[checkId].reportPollId &&
-      checks[checkId].report
-    ) {
-      clearInterval(checks[checkId].reportPollId)
-      checks[checkId].reportPollId = undefined
-    } else {
-      checks[checkId] = {} as CheckItem
-      try {
-        const report = await fetchCheckReport(checkId)
-        if (report) {
-          checks[checkId].report = report
-          clearInterval(timerId)
-          return report
-        }
-      } catch (error) {
-        const statusCode = (error as AWSError).statusCode
-        console.info('error fetching status code', statusCode)
-        if (retryTimes < 0 || statusCode !== 404) {
-          clearInterval(timerId)
-          const errorReport = await fetchCheckReport(checkId, true)
-          console.info('error resport=======>', errorReport)
-          return errorReport
-        }
+    checkTable[checkId] = {} as CheckItem
+    try {
+      const report = await fetchCheckReport(checkId)
+      if (report) {
+        checkTable[checkId].report = report
+        callback(
+          {
+            success: true,
+            retryTimes,
+          },
+          report,
+        )
+        clearInterval(timerId)
+      }
+    } catch (error) {
+      const statusCode = (error as AWSError).statusCode
 
-        if (statusCode === 404) {
-          retryTimes -= 1
-          console.info('left retry times======>', retryTimes)
-        }
+      if (retryTimes > MAX_RETRY_TIMES || statusCode !== 404) {
+        clearInterval(timerId)
+        const errorReport = await fetchCheckReport(checkId, true)
+        callback({ success: false, retryTimes }, errorReport)
+      }
+
+      if (statusCode === 404) {
+        retryTimes += 1
+        callback({ success: false, retryTimes })
       }
     }
   }, POLLING_INTERVAL)
 }
-
-// get the generated (if complete) check report
 
 export const fetchCheckReport = async (
   checkId: string,
