@@ -19,7 +19,7 @@ export const uploadCheckSpecificationToS3 = async ({
   story,
   width,
 }: Message): Promise<S3.ManagedUpload.SendData> => {
-  const key = 'checks/' + check_id + '/specification.json'
+  const key = `checks/${check_id}/specification.json`
   const specification = JSON.stringify({
     check_id,
     component,
@@ -45,7 +45,7 @@ export const uploadEncodedFrameToS3 = async (
   check,
   frame,
 ): Promise<S3.ManagedUpload.SendData> => {
-  const key = 'checks/' + check + '/frames/' + name
+  const key = `checks/${check}/frames/${name}.png`
 
   const upload = new S3.ManagedUpload({
     params: {
@@ -166,7 +166,7 @@ export const fetchCheckReport = async (checkId: string): Promise<Report> => {
 export const fetchCheckReportDifference = async (
   checkId: string,
   difference: string,
-) => {
+): Promise<ArrayBuffer> => {
   return new Promise((resolve, reject) => {
     s3Client.getObject(
       {
@@ -177,9 +177,7 @@ export const fetchCheckReportDifference = async (
         if (error) {
           reject(error)
         } else {
-          console.info('got report difference')
-          console.info(data)
-          resolve(data.Body)
+          resolve(data.Body as ArrayBuffer)
         }
       },
     )

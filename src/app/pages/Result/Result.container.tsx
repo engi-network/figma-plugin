@@ -1,15 +1,28 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import IconButton from '~/app/components/global/IconButton/IconButton'
+import { useAppContext } from '~/app/contexts/App.context'
 import { BUTTON_STYLE } from '~/app/lib/constants'
+import { fetchCheckReportDifference } from '~/app/lib/utils/aws'
+import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-function Result() {
+//checkId: 293bdbd6-dee7-4e17-b3db-82765db6308f
+// MAE: "24587.6 (0.375183)"
+
+function ResultContainer() {
   const navigate = useNavigate()
+  const { report } = useAppContext()
+  const [buffers, setBuffers] = useState<Array<ArrayBuffer>>([])
+
+  if (!report || !report.checkId) {
+    return null
+  }
 
   const handleClickBack = () => {
     navigate('/')
@@ -20,6 +33,38 @@ function Result() {
   const handleCreateNew = () => {
     navigate('/')
   }
+
+  const drawBlueCanvas = useCallback(
+    async (canvas: HTMLCanvasElement, context: RenderingContext) => {
+      await decode(canvas, context as CanvasRenderingContext2D, buffers[0])
+    },
+    [buffers],
+  )
+
+  const drawGrayCanvas = useCallback(
+    async (canvas: HTMLCanvasElement, context: RenderingContext) => {
+      console.info('buffer1==>', buffers[1])
+      await decode(canvas, context as CanvasRenderingContext2D, buffers[1])
+    },
+    [buffers],
+  )
+
+  const fetchSetDiffData = async (checkId) => {
+    const promises = [
+      fetchCheckReportDifference(checkId, 'blue'),
+      fetchCheckReportDifference(checkId, 'gray'),
+    ]
+    const results = await Promise.all(promises)
+    setBuffers(results)
+  }
+
+  useEffect(() => {
+    if (!report) {
+      return
+    }
+
+    fetchSetDiffData(report.checkId)
+  }, [report])
 
   return (
     <div className="px-10 pt-10">
@@ -57,7 +102,7 @@ function Result() {
             className="mb-4"
             width={210}
             height={210}
-            draw={() => {}}
+            draw={drawBlueCanvas}
             options={{ contextId: '2d' }}
             label={ui('result.blueScale')}
           />
@@ -68,7 +113,7 @@ function Result() {
             className="mb-4"
             width={210}
             height={210}
-            draw={() => {}}
+            draw={drawGrayCanvas}
             options={{ contextId: '2d' }}
             label={ui('result.grayScale')}
           />
@@ -83,4 +128,4 @@ function Result() {
   )
 }
 
-export default Result
+export default ResultContainer

@@ -9,6 +9,7 @@ import IconButton from '~/app/components/global/IconButton/IconButton'
 import ProgressBar from '~/app/components/global/ProgressBar/ProgressBar'
 import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
+import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
@@ -34,6 +35,7 @@ function MainContainer() {
   const [errors, setErrors] = useState<AnalyzeFormValues>()
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
   const [progress, setProgress] = useState(0)
+  const { setReport } = useAppContext()
 
   const { width = 0, height = 0, commit, branch } = selectionData || {}
 
@@ -47,6 +49,7 @@ function MainContainer() {
     if (report) {
       console.info('successfully got report:::', report)
       if (status.success) {
+        setReport(report)
         navigate('/result')
       } else {
         console.info('error report======>', report)
@@ -55,12 +58,11 @@ function MainContainer() {
       }
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
-        setIsLoading(false)
         //set ui error in turn
+        setIsLoading(false)
       } else {
         //calculate the progress based on the retry times
         const progress = Math.floor((status.retryTimes / MAX_RETRY_TIMES) * 100)
-
         setProgress(progress)
       }
     }

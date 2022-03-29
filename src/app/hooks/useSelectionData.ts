@@ -15,12 +15,8 @@ function usePreviewData() {
         return
       }
 
-      const { name, frame, repository } = selectionData
-      const [component, story] = name.split('-')
-
+      const { frame } = selectionData
       await decode(canvas, context as CanvasRenderingContext2D, frame)
-
-      console.info('::', component, story, repository)
     },
     [selectionData],
   )
