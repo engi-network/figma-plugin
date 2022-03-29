@@ -5,6 +5,7 @@ import S3 from 'aws-sdk/clients/s3'
 import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
 import { POLLING_INTERVAL, RETRY_TIMES } from '~/app/lib/constants/aws'
+import { CheckItem, CheckTable } from '~/app/models/Check'
 import { Message } from '~/app/models/Message'
 import { Report } from '~/app/models/Report'
 
@@ -73,12 +74,10 @@ export const startEcsCheck = async (
 }
 
 // all checks the user has started since the plugin has been open
-const checks = {
+const checks: CheckTable = {
   EXAMPLE_CHECK_ID: {
-    // the downloaded report from s3
     report: null,
-    // the cancelable interval when polling for a report
-    reportPoll: null,
+    reportPollId: undefined,
   },
 }
 
@@ -87,23 +86,19 @@ export const pollCheckReport = async (checkId: string) => {
   let retryTimes = RETRY_TIMES
 
   timerId = setInterval(async () => {
-    // if we have a report and are still polling, cancel it
     if (
       checks[checkId] &&
-      checks[checkId].reportPoll &&
+      checks[checkId].reportPollId &&
       checks[checkId].report
     ) {
-      clearInterval(checks[checkId].reportPoll)
-      checks[checkId].reportPoll = null
+      clearInterval(checks[checkId].reportPollId)
+      checks[checkId].reportPollId = undefined
     } else {
-      checks[checkId] = {}
+      checks[checkId] = {} as CheckItem
       try {
         const report = await fetchCheckReport(checkId)
         if (report) {
-          // set global store
           checks[checkId].report = report
-          // setReportUI(report)
-          // hideLoadingUI()
           clearInterval(timerId)
           return report
         }
