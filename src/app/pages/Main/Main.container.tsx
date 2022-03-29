@@ -46,9 +46,13 @@ function MainContainer() {
   ) => {
     if (report) {
       console.info('successfully got report:::', report)
-      console.info('Polling times=========>', status.retryTimes)
-      setIsLoading(false)
-      navigate('/result')
+      if (status.success) {
+        navigate('/result')
+      } else {
+        console.info('error report======>', report)
+        setIsLoading(false)
+        setProgress(0)
+      }
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
         setIsLoading(false)
@@ -109,6 +113,8 @@ function MainContainer() {
         story,
         width: width + '',
       }
+
+      console.info('message===>', message)
 
       const name = component + '-' + story
       const context = originCanvasRef.current.getContext(

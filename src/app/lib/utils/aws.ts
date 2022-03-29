@@ -102,7 +102,9 @@ export const pollCheckReport = async (
     checkTable[checkId] = {} as CheckItem
     try {
       const report = await fetchCheckReport(checkId)
-      if (report) {
+      clearInterval(timerId)
+
+      if (!report.result.error) {
         checkTable[checkId].report = report
         callback(
           {
@@ -111,15 +113,15 @@ export const pollCheckReport = async (
           },
           report,
         )
-        clearInterval(timerId)
+      } else {
+        callback({ success: false, retryTimes }, report)
       }
     } catch (error) {
       const statusCode = (error as AWSError).statusCode
 
       if (retryTimes > MAX_RETRY_TIMES || statusCode !== 404) {
         clearInterval(timerId)
-        const errorReport = await fetchCheckReport(checkId, true)
-        callback({ success: false, retryTimes }, errorReport)
+        callback({ success: false, retryTimes })
       }
 
       if (statusCode === 404) {
@@ -130,15 +132,12 @@ export const pollCheckReport = async (
   }, POLLING_INTERVAL)
 }
 
-export const fetchCheckReport = async (
-  checkId: string,
-  isError = false,
-): Promise<Report> => {
+export const fetchCheckReport = async (checkId: string): Promise<Report> => {
   return new Promise((resolve, reject) => {
     s3Client.getObject(
       {
         Bucket: config.SAME_STORY_BUCKET_NAME,
-        Key: `checks/${checkId}/report/${isError ? 'error' : 'results'}.json`,
+        Key: `checks/${checkId}/report/results.json`,
       },
       async (error, data) => {
         if (error) {

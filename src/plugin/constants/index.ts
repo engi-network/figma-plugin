@@ -17,7 +17,7 @@ export const FIGMA_MSG_TYPE_SAME_STORY_SEND_ENCODED_FRAME_FROM_PLUGIN_TO_UI = `$
 export const FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI = `${PREFIX}_send_selection_from_plugin_to_ui`
 export const FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI = `${PREFIX}_send_clear_error_from_plugin_to_ui`
 
-export const DEFAULT_REPO = 'engi_network/engi_ui'
+export const DEFAULT_REPO = 'engi-network/engi-ui'
 export const SAME_STORY_FORM_UPDATE = `${PREFIX}_form_update`
 
 export enum LOCAL_STORAGE_KEY {
