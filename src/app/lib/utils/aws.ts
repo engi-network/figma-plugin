@@ -1,4 +1,5 @@
 import { PublishCommand, PublishCommandOutput } from '@aws-sdk/client-sns'
+import { AWSError } from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
 
 import { s3Client, snsClient } from '~/app/lib/awsClients'
@@ -78,7 +79,10 @@ const checks = {
 }
 
 export const pollCheckReport = async (checkId: string) => {
-  setInterval(async () => {
+  let timerId = -1
+  let retryTimes = 5
+
+  timerId = setInterval(async () => {
     // if we have a report and are still polling, cancel it
     if (
       checks[checkId] &&
@@ -97,22 +101,38 @@ export const pollCheckReport = async (checkId: string) => {
 
           // setReportUI(report)
           // hideLoadingUI()
+
+          clearInterval(timerId)
         }
       } catch (error) {
-        console.info('error fetching report')
-        console.info(error)
+        const statusCode = (error as AWSError).statusCode
+        console.info('error fetching status code', statusCode)
+        if (retryTimes < 0 || statusCode !== 404) {
+          clearInterval(timerId)
+          const errorReport = await fetchCheckReport(checkId, true)
+          console.info('error resport=======>', errorReport)
+          return errorReport
+        }
+
+        if (statusCode === 404) {
+          retryTimes -= 1
+          console.info('left retry times======>', retryTimes)
+        }
       }
     }
   }, 3000)
 }
 
 // get the generated (if complete) check report
-export const fetchCheckReport = async (checkId: string) => {
+export const fetchCheckReport = async (
+  checkId: string,
+  isError = false,
+): Promise<Record<string, string>> => {
   return new Promise((resolve, reject) => {
     s3Client.getObject(
       {
         Bucket: config.SAME_STORY_BUCKET_NAME,
-        Key: `checks/${checkId}/report/results.json`,
+        Key: `checks/${checkId}/report/${isError ? 'error' : 'results'}.json`,
       },
       async (error, data) => {
         if (error) {
