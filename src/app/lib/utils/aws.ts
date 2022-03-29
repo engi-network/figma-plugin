@@ -4,8 +4,9 @@ import S3 from 'aws-sdk/clients/s3'
 
 import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
-import { RETRY_TIMES } from '~/app/lib/constants/aws'
+import { POLLING_INTERVAL, RETRY_TIMES } from '~/app/lib/constants/aws'
 import { Message } from '~/app/models/Message'
+import { Report } from '~/app/models/Report'
 
 import { decodeFromBuffer } from './buffer'
 
@@ -101,11 +102,10 @@ export const pollCheckReport = async (checkId: string) => {
         if (report) {
           // set global store
           checks[checkId].report = report
-
           // setReportUI(report)
           // hideLoadingUI()
-
           clearInterval(timerId)
+          return report
         }
       } catch (error) {
         const statusCode = (error as AWSError).statusCode
@@ -123,14 +123,15 @@ export const pollCheckReport = async (checkId: string) => {
         }
       }
     }
-  }, 3000)
+  }, POLLING_INTERVAL)
 }
 
 // get the generated (if complete) check report
+
 export const fetchCheckReport = async (
   checkId: string,
   isError = false,
-): Promise<{ checkId: string; result: Record<string, string> }> => {
+): Promise<Report> => {
   return new Promise((resolve, reject) => {
     s3Client.getObject(
       {

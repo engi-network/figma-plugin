@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
+import ProgressBar from '~/app/components/global/ProgressBar/ProgressBar'
 import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
 import useSelectionData from '~/app/hooks/useSelectionData'
@@ -21,12 +22,13 @@ import { Message } from '~/app/models/Message'
 import { LOCAL_STORAGE_KEY, SAME_STORY_FORM_UPDATE } from '~/plugin/constants'
 
 import styles from './Main.container.styles'
+import { MESSAGES, STEPS } from './Main.types'
 
 function Main() {
   const navigate = useNavigate()
   const { selectionData, draw } = useSelectionData()
   const [values, setValues] = useState<AnalyzeFormValues>()
-  const [_, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [errors, setErrors] = useState<AnalyzeFormValues>()
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -51,9 +53,6 @@ function Main() {
     }
   }
 
-  /**
-   * @TODO form value validation
-   */
   const handleSubmit = useCallback(async () => {
     if (!values || !values.repository) {
       setErrors({
@@ -97,7 +96,6 @@ function Main() {
 
     try {
       await uploadEncodedFrameToS3(name, checkId, frame)
-      console.info('uploading to S3 success')
       await uploadCheckSpecificationToS3(message)
       await startEcsCheck(message)
       await pollCheckReport(checkId)
@@ -124,6 +122,18 @@ function Main() {
       repository,
     })
   }, [selectionData])
+
+  if (!isLoading) {
+    return (
+      <div className="flex flex-1 justify-center items-center">
+        <ProgressBar
+          percentage={45}
+          label={MESSAGES[STEPS.CLONE]}
+          className={'w-8/12'}
+        />
+      </div>
+    )
+  }
 
   return (
     <>
