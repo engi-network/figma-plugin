@@ -4,7 +4,10 @@ import S3 from 'aws-sdk/clients/s3'
 
 import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
+import { RETRY_TIMES } from '~/app/lib/constants/aws'
 import { Message } from '~/app/models/Message'
+
+import { decodeFromBuffer } from './buffer'
 
 export const uploadCheckSpecificationToS3 = async ({
   check_id,
@@ -80,7 +83,7 @@ const checks = {
 
 export const pollCheckReport = async (checkId: string) => {
   let timerId = -1
-  let retryTimes = 5
+  let retryTimes = RETRY_TIMES
 
   timerId = setInterval(async () => {
     // if we have a report and are still polling, cancel it
@@ -127,7 +130,7 @@ export const pollCheckReport = async (checkId: string) => {
 export const fetchCheckReport = async (
   checkId: string,
   isError = false,
-): Promise<Record<string, string>> => {
+): Promise<{ checkId: string; result: Record<string, string> }> => {
   return new Promise((resolve, reject) => {
     s3Client.getObject(
       {
@@ -139,19 +142,12 @@ export const fetchCheckReport = async (
           reject(error)
         } else {
           console.info('got report')
-          console.info(data)
-
-          //test purpose
-          const s3GetObjectResponseBody = '{ success: true }'
-
           if (data.Body) {
-            // for await (const chunk of data.Body) {
-            //   s3GetObjectResponseBody += chunk
-            // }
+            console.info(data.Body)
+            const result = decodeFromBuffer(data.Body as ArrayLike<number>)
 
-            const report = JSON.parse(s3GetObjectResponseBody)
-            console.info(report)
-            resolve({ ...report, checkId })
+            console.info(result)
+            resolve({ result, checkId })
           }
         }
       },
