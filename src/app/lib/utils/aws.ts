@@ -143,7 +143,6 @@ export const fetchCheckReport = async (checkId: string): Promise<Report> => {
         if (error) {
           reject(error)
         } else {
-          console.info('got report')
           if (data.Body) {
             console.info(data.Body)
             const result = decodeFromBuffer(data.Body as ArrayLike<number>)

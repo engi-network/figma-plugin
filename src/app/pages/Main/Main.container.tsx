@@ -50,6 +50,7 @@ function MainContainer() {
       console.info('successfully got report:::', report)
       if (status.success) {
         setReport(report)
+        setProgress(100)
         navigate('/result')
       } else {
         console.info('error report======>', report)
@@ -59,6 +60,7 @@ function MainContainer() {
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
         //set ui error in turn
+        setProgress(0)
         setIsLoading(false)
       } else {
         //calculate the progress based on the retry times

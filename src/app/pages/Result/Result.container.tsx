@@ -12,9 +12,6 @@ import { fetchCheckReportDifference } from '~/app/lib/utils/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-//checkId: 293bdbd6-dee7-4e17-b3db-82765db6308f
-// MAE: "24587.6 (0.375183)"
-
 function ResultContainer() {
   const navigate = useNavigate()
   const { report } = useAppContext()
