@@ -37,6 +37,10 @@ function ResultContainer() {
 
   const drawBlueCanvas = useCallback(
     async (canvas: HTMLCanvasElement, context: RenderingContext) => {
+      if (!buffers[0]) {
+        return
+      }
+
       await decode(canvas, context as CanvasRenderingContext2D, buffers[0])
     },
     [buffers],
@@ -44,7 +48,9 @@ function ResultContainer() {
 
   const drawGrayCanvas = useCallback(
     async (canvas: HTMLCanvasElement, context: RenderingContext) => {
-      console.info('buffer1==>', buffers[1])
+      if (!buffers[1]) {
+        return
+      }
       await decode(canvas, context as CanvasRenderingContext2D, buffers[1])
     },
     [buffers],
