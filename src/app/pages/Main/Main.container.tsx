@@ -100,7 +100,7 @@ function MainContainer() {
     if (!originCanvasRef || !originCanvasRef.current || !selectionData) {
       return
     }
-
+    setProgress(0)
     setIsLoading(true)
     try {
       const { component, repository, story } = values

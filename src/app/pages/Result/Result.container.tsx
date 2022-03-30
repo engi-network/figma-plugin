@@ -21,6 +21,7 @@ function ResultContainer() {
   const [buffers, setBuffers] = useState<Array<ArrayBuffer>>([])
 
   if (!report || !report.checkId) {
+    navigate('/')
     return null
   }
 
