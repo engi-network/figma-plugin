@@ -1,10 +1,11 @@
+import { text } from '@storybook/addon-knobs'
 import { useState } from 'react'
 
 import Input from './Input'
 
 export default {
   component: Input,
-  title: 'Global/Button',
+  title: 'Global/Input',
 }
 
 export function InputWithKnobs() {
@@ -19,7 +20,8 @@ export function InputWithKnobs() {
         label="Component"
         onChange={handleChangeValue}
         value={value}
-        placeholder={'Component'}
+        placeholder={text('Placehoder', 'placehoder')}
+        error={text('Error', 'This field has an error!')}
       />
     </div>
   )
