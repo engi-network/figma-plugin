@@ -5,7 +5,7 @@ import Button from './Button'
 
 export default {
   component: Button,
-  title: 'Global/Button',
+  title: 'Global/Components/Button',
 }
 
 export function ButtonWithKnobs() {

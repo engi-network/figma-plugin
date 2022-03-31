@@ -2,7 +2,7 @@ import Header from './Header'
 
 export default {
   component: Header,
-  title: 'Global/Header',
+  title: 'Global/Components/Header',
 }
 
 export function HeaderDefault() {

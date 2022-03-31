@@ -5,7 +5,7 @@ import Input from './Input'
 
 export default {
   component: Input,
-  title: 'Global/Input',
+  title: 'Global/Components/Input',
 }
 
 export function InputWithKnobs() {

@@ -8,7 +8,7 @@ import IconButton from './IconButton'
 
 export default {
   component: IconButton,
-  title: 'Global/Button',
+  title: 'Global/Components/Button',
 }
 
 export function IconButtonWithKnobs() {

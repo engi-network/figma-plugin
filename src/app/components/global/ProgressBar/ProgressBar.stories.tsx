@@ -4,7 +4,7 @@ import ProgressBar from './ProgressBar'
 
 export default {
   component: ProgressBar,
-  title: 'Global/ProgressBar',
+  title: 'Global/Components/ProgressBar',
 }
 
 export function ProgressBarWithKnobs() {

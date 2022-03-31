@@ -5,7 +5,7 @@ import CanvasContainer from './CanvasContainer'
 
 export default {
   component: Canvas,
-  title: 'Global/Canvas',
+  title: 'Global/Components/Canvas',
 }
 
 export function CanvasWithKnobs() {
