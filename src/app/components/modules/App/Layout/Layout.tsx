@@ -1,7 +1,5 @@
 import { ReactNode } from 'react'
 
-// import Header from '~/app/components/global/Header/Header'
-
 interface Props {
   children: ReactNode
 }
