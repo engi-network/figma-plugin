@@ -57,18 +57,18 @@ function Code({ values: parentValues, onChange, errors }: Props) {
         <div className="flex mb-5">
           <div className="w-6/12 flex flex-col">
             <TextWithLabel
-              label="Component name"
+              label="Component"
               id="component"
               text={values[FORM_FIELD.COMPONENT]}
-              placeholder="Placehoder1"
+              placeholder="Component"
             />
           </div>
           <div className="w-6/12 ml-7 flex flex-col">
             <TextWithLabel
-              label="Story name"
+              label="Story"
               id="story"
               text={values[FORM_FIELD.STORY]}
-              placeholder="Placehoder2"
+              placeholder="Story"
             />
           </div>
         </div>
