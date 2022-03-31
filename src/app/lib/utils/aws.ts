@@ -7,7 +7,7 @@ import config from '~/app/lib/config'
 import { MAX_RETRY_TIMES, POLLING_INTERVAL } from '~/app/lib/constants/aws'
 import { CheckItem, CheckTable } from '~/app/models/Check'
 import { Message } from '~/app/models/Message'
-import { Report } from '~/app/models/Report'
+import { isError, Report, ReportResult } from '~/app/models/Report'
 
 import { decodeFromBuffer } from './buffer'
 
@@ -104,7 +104,7 @@ export const pollCheckReport = async (
       const report = await fetchCheckReport(checkId)
       clearInterval(timerId)
 
-      if (!report.result.error) {
+      if (!isError(report.result)) {
         checkTable[checkId].report = report
         callback(
           {
@@ -148,7 +148,7 @@ export const fetchCheckReport = async (checkId: string): Promise<Report> => {
             const result = decodeFromBuffer(data.Body as ArrayLike<number>)
 
             console.info(result)
-            resolve({ result, checkId })
+            resolve({ result: result as unknown as ReportResult, checkId })
           }
         }
       },

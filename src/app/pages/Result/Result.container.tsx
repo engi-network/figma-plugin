@@ -11,16 +11,22 @@ import { BUTTON_STYLE } from '~/app/lib/constants'
 import { fetchCheckReportDifference } from '~/app/lib/utils/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { isError } from '~/app/models/Report'
 
 function ResultContainer() {
   const navigate = useNavigate()
   const { report } = useAppContext()
   const [buffers, setBuffers] = useState<Array<ArrayBuffer>>([])
 
-  if (!report || !report.checkId) {
+  if (!report || !report.checkId || isError(report.result)) {
     navigate('/')
     return null
   }
+
+  const {
+    checkId,
+    result: { MAE },
+  } = report
 
   const handleClickBack = () => {
     navigate('/')
@@ -63,12 +69,12 @@ function ResultContainer() {
   }
 
   useEffect(() => {
-    if (!report) {
+    if (!checkId) {
       return
     }
 
-    fetchSetDiffData(report.checkId)
-  }, [report])
+    fetchSetDiffData(checkId)
+  }, [checkId])
 
   return (
     <div className="px-10 pt-10">
@@ -81,7 +87,7 @@ function ResultContainer() {
         <div className="absolute flex justify-center top-0 left-0 right-0 -z-10">
           <h1 className="text-2xl text-primary-dark w-6/12 text-center font-bold">
             Well done <br />
-            <span className="bg-primary-green">99.55%</span> match!
+            <span className="bg-primary-green">{MAE}</span> match!
           </h1>
         </div>
         <div

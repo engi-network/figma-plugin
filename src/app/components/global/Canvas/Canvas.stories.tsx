@@ -15,7 +15,7 @@ export function CanvasWithKnobs() {
         draw={() => {}}
         height={300}
         width={300}
-        options={{ contextdId: '2d' }}
+        options={{ contextId: '2d' }}
         id={'canvas-id'}
       >
         {text('Label', 'Canvas Label')}
@@ -31,7 +31,7 @@ export function CanvasContainerWithKnobs() {
         draw={() => {}}
         height={300}
         width={300}
-        options={{ contextdId: '2d' }}
+        options={{ contextId: '2d' }}
         id={'canvas-id'}
         label={text('Label', 'Canvas Label')}
       >
