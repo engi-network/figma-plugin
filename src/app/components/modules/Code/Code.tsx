@@ -57,7 +57,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
         <div className="flex mb-5">
           <div className="w-6/12 flex flex-col">
             <TextWithLabel
-              label="Component"
+              label="Component name"
               id="component"
               text={values[FORM_FIELD.COMPONENT]}
               placeholder="Placehoder1"
@@ -65,7 +65,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
           </div>
           <div className="w-6/12 ml-7 flex flex-col">
             <TextWithLabel
-              label="Story"
+              label="Story name"
               id="story"
               text={values[FORM_FIELD.STORY]}
               placeholder="Placehoder2"
@@ -76,7 +76,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
           <Input
             id="repository"
             label="Repository"
-            placeholder="engi-network/engi-ui"
+            placeholder="Git repository name"
             value={values[FORM_FIELD.REPOSITORY]}
             onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
             error={errors && errors[FORM_FIELD.REPOSITORY]}
