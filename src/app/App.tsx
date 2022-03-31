@@ -14,7 +14,7 @@ function App() {
   return (
     <AppContextProvider>
       <QueryClientProvider client={queryClient}>
-        <Router initialEntries={['/', '/result']} initialIndex={0}>
+        <Router initialEntries={['/', '/result', '/history']} initialIndex={0}>
           <Layout>
             <Routes />
           </Layout>

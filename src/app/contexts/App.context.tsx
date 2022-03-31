@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
 
 import { createContext } from '~/app/lib/utils/context'
 import { Report } from '~/app/models/Report'
@@ -12,17 +12,22 @@ export const mockReport: Report = {
 
 export interface AppContextProps {
   report?: Report
+  reportList: Array<Report>
   setReport: (value: Report) => void
+  setReportList: Dispatch<SetStateAction<Report[]>>
 }
 
 const AppContext = createContext<AppContextProps>()
 
 export function useAppContextSetup(): AppContextProps {
   const [report, setReport] = useState<Report>()
+  const [reportList, setReportList] = useState<Array<Report>>([])
 
   return {
     report,
     setReport,
+    reportList,
+    setReportList,
   }
 }
 
