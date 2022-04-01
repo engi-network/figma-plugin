@@ -37,7 +37,7 @@ function Historycontainer() {
         </a>
       </div>
       <div className="p-8">
-        <h2 className="text-2xl text-black mb-5 font-bold ">History</h2>
+        <h2 className="text-2xl text-black mb-5 font-bold">History</h2>
         <div className="flex">
           <Input
             onChange={onSearchTermChange}
