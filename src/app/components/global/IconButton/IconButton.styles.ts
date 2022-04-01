@@ -1,10 +1,7 @@
-import { BUTTON_STYLE, COLORS, StylesMap } from '~/app/lib/constants'
+import { BUTTON_STYLE, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
   root: {
-    '& > svg': {
-      color: COLORS.WF.PRIMARY,
-    },
     alignItems: 'center',
     cursor: 'pointer',
     display: 'flex',

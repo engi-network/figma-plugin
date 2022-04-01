@@ -179,6 +179,10 @@ function MainContainer() {
     })
   }, [selectionData])
 
+  const handleViewHistory = () => {
+    navigate('/history')
+  }
+
   if (isLoading) {
     const step = Math.floor(progress / 20)
     return (
@@ -207,6 +211,7 @@ function MainContainer() {
                 css={styles.historyIcon}
               />
             }
+            onClick={handleViewHistory}
           >
             {ui('main.history')}
           </IconButton>
@@ -227,7 +232,7 @@ function MainContainer() {
       </div>
       <footer className="flex justify-between px-6">
         <a href="#" className="flex items-center">
-          <span className="mr-6 text-sm text-[#B3B3B3] flex">
+          <span className="text-sm text-[#B3B3B3] flex">
             <InformationCircleIcon className="w-5 h-5 text-[#B3B3B3] mr-3" />
             {ui('header.learnMore')}
           </span>

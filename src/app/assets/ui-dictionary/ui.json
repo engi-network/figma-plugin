@@ -2,7 +2,8 @@
   "header": {
     "title": "Same story?",
     "learnMore": "Learn more",
-    "companyName": "engi.com"
+    "companyName": "engi.com",
+    "back": "Back"
   },
   "main": {
     "title": "Сompare existing design",
@@ -18,5 +19,7 @@
     "grayScale": "Gray-scale Difference",
     "createNew": "Create new",
     "viewHistory": "View history"
+  },
+  "history": {
   }
 }
