@@ -29,11 +29,11 @@ import { MESSAGES } from './Main.types'
 
 export const DEMENSIONS = {
   SMALL: {
-    width: 304,
+    width: 300,
     height: 240,
   },
   BIG: {
-    width: 304,
+    width: 300,
     height: 240,
   },
 }
