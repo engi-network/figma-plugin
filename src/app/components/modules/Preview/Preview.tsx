@@ -33,7 +33,7 @@ function Preview({ draw, originalCanvasRef, height, width, label }: Props) {
         </CanvasContainer>
       </div>
       {label && (
-        <label className="text-base text-gray-400 text-center absolute -bottom-5 left-0 right-0">
+        <label className="text-base text-gray-400 text-center absolute -bottom-8 left-0 right-0">
           {label}
         </label>
       )}

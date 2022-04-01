@@ -103,9 +103,11 @@ function MainContainer() {
   const handleSubmit = useCallback(async () => {
     if (!values || !values.repository) {
       setErrors({
+        branch: '',
+        commit: '',
+        component: '',
         repository: 'This field is required!',
         story: '',
-        component: '',
       })
       return
     }
@@ -160,13 +162,20 @@ function MainContainer() {
       return
     }
 
-    const { name = '', repository = '' } = selectionData
+    const {
+      name = '',
+      repository = '',
+      branch = '',
+      commit = '',
+    } = selectionData
     const [component, story = ''] = name.split('-')
 
     setValues({
-      story,
+      branch,
+      commit,
       component,
       repository,
+      story,
     })
   }, [selectionData])
 
