@@ -5,6 +5,7 @@ import { randomString } from '~/app/lib/utils/string'
 
 interface Props {
   className?: string
+  containerClass?: string
   disabled?: boolean
   error?: string
   id?: string
@@ -27,6 +28,7 @@ function Input({
   className,
   placeholder,
   error,
+  containerClass,
   ...rest
 }: Props) {
   const [inputId, setInputId] = useState(id)
@@ -46,9 +48,10 @@ function Input({
     'border border-wf-tertiary text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
     className,
   )
+  const containerClassname = cn('flex flex-col relative w-full', containerClass)
 
   return (
-    <span className="flex flex-col relative">
+    <div className={containerClassname}>
       {label && (
         <label className="text-sm text-primary-dark mb-4" htmlFor={inputId}>
           {label}
@@ -70,7 +73,7 @@ function Input({
           {error}
         </span>
       )}
-    </span>
+    </div>
   )
 }
 

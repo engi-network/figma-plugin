@@ -30,6 +30,7 @@ interface Props {
 
 function Code({ values: parentValues, onChange, errors }: Props) {
   const [values, setValues] = useState<AnalyzeFormValues>(intialFormValue)
+  const [showMore, setShowMore] = useState<boolean>(false)
 
   const handleInputChange = (field: FORM_FIELD) => (value: string) => {
     setValues((prev) => ({
@@ -38,6 +39,10 @@ function Code({ values: parentValues, onChange, errors }: Props) {
     }))
 
     onChange({ ...values, [field]: value })
+  }
+
+  const handleClickSeeMore = () => {
+    setShowMore(true)
   }
 
   useEffect(() => {
@@ -72,11 +77,34 @@ function Code({ values: parentValues, onChange, errors }: Props) {
             />
           </div>
         </div>
-        <div className="flex">
+        <div className="flex flex-col">
           <Input
             id="repository"
             label="Repository"
             placeholder="Git repository name"
+            value={values[FORM_FIELD.REPOSITORY]}
+            onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
+            error={errors && errors[FORM_FIELD.REPOSITORY]}
+          />
+          {showMore && (
+            <span role="link" onClick={handleClickSeeMore}>
+              See more options
+            </span>
+          )}
+          <Input
+            id="branch"
+            label="Branch name"
+            placeholder="feature/new-button"
+            containerClass="mt-5"
+            value={values[FORM_FIELD.REPOSITORY]}
+            onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
+            error={errors && errors[FORM_FIELD.REPOSITORY]}
+          />
+          <Input
+            id="commit"
+            label="Commit hash"
+            placeholder="7e2c7d4"
+            containerClass="mt-5"
             value={values[FORM_FIELD.REPOSITORY]}
             onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
             error={errors && errors[FORM_FIELD.REPOSITORY]}

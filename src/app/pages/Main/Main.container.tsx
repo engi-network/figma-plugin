@@ -27,6 +27,17 @@ import { LOCAL_STORAGE_KEY, SAME_STORY_FORM_UPDATE } from '~/plugin/constants'
 import styles from './Main.container.styles'
 import { MESSAGES } from './Main.types'
 
+export const DEMENSIONS = {
+  SMALL: {
+    width: 304,
+    height: 240,
+  },
+  BIG: {
+    width: 304,
+    height: 240,
+  },
+}
+
 function MainContainer() {
   const navigate = useNavigate()
   const { selectionData, draw } = useSelectionData()
@@ -193,11 +204,12 @@ function MainContainer() {
         </div>
       </div>
       <div className="flex mb-10 p-10">
-        <section className="w-1/2 flex justify-end">
+        <section className="w-1/2 flex flex-col items-end">
           <Preview
             draw={draw}
-            label={`${width} ✕ ${height}`}
             originalCanvasRef={originCanvasRef}
+            label={`${width} ✕ ${height}`}
+            {...DEMENSIONS.SMALL}
           />
         </section>
         <section className="w-1/2">

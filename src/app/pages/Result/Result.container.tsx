@@ -109,7 +109,7 @@ function ResultContainer() {
         <div className="w-6/12 flex justify-start">
           <Canvas
             id="blue-scale"
-            className="mb-4"
+            className="mb-4 border-wf-tertiery"
             width={210}
             height={210}
             draw={drawBlueCanvas}
@@ -120,7 +120,7 @@ function ResultContainer() {
         <div className="w-6/12 flex justify-end">
           <Canvas
             id="blue-scale"
-            className="mb-4"
+            className="mb-4 border border-wf-tertiery"
             width={210}
             height={210}
             draw={drawGrayCanvas}

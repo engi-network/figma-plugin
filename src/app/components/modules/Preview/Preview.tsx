@@ -4,24 +4,25 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 
 interface Props {
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => Promise<void>
-  label: string
+  height: number
+  label?: string
   originalCanvasRef?: CanvasRefType
+  width: number
 }
 
-function Preview({ draw, label, originalCanvasRef }: Props) {
+function Preview({ draw, originalCanvasRef, height, width, label }: Props) {
   return (
-    <div className="flex flex-col h-full w-[304px]">
+    <div className="flex flex-col h-full w-[304px] relative">
       <h2 className="text-2xl text-black mb-5 font-bold text-center">
         {ui('main.preview.design')}
       </h2>
-      <div className="flex justify-end">
+      <div className="flex justify-end flex-1 items-center border border-wf-tertiery">
         <CanvasContainer
           id="designs--frame-canvas"
-          width={304}
-          height={240}
+          width={width}
+          height={height}
           draw={draw}
           options={{ contextId: '2d' }}
-          label={label}
         >
           <Canvas
             id="designs--frame-canvas--original"
@@ -31,6 +32,11 @@ function Preview({ draw, label, originalCanvasRef }: Props) {
           />
         </CanvasContainer>
       </div>
+      {label && (
+        <label className="text-base text-gray-400 text-center absolute -bottom-5 left-0 right-0">
+          {label}
+        </label>
+      )}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { text } from '@storybook/addon-knobs'
 import { useRef } from 'react'
 
 import { decode } from '~/app/lib/utils/canvas'
+import { DEMENSIONS } from '~/app/pages/Main/Main.container'
 
 import Preview from './Preview'
 
@@ -21,8 +22,8 @@ export function PreviewWithDefault() {
     <div className="bg-primary-white">
       <Preview
         draw={draw}
-        label={'100 ✕ 100'}
         originalCanvasRef={originCanvasRef}
+        {...DEMENSIONS.SMALL}
       />
     </div>
   )
