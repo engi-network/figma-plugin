@@ -1,12 +1,25 @@
+import { useState } from 'react'
+
 import Button from '~/app/components/global/Button/Button'
-import Dropdown from '~/app/components/global/Dropdown/Dropdown'
 import Input from '~/app/components/global/Input/Input'
+import Select, { SelectOption } from '~/app/components/global/Select/Select'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+
+const sortBy: Array<SelectOption> = [
+  { value: 'component', name: 'Component' },
+  { value: 'branch', name: 'Branch' },
+  { value: 'commit', name: 'Commit' },
+]
 
 function Historycontainer() {
   const onSearchTermChange = () => {}
   const onSearch = () => {}
+  const [selectedOption, setSelectedOption] = useState<string>('')
+
+  const onSelectChange = (value: string) => {
+    setSelectedOption(value)
+  }
 
   return (
     <>
@@ -32,7 +45,11 @@ function Historycontainer() {
         </div>
       </div>
       <div>
-        <Dropdown items={[]} />
+        <Select
+          options={sortBy}
+          onChange={onSelectChange}
+          value={selectedOption}
+        />
       </div>
     </>
   )
