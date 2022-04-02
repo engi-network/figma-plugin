@@ -22,4 +22,7 @@ export const mockHistoryData: Array<Report> = [
   mockReport,
   mockReport,
   mockError,
+  mockReport,
+  mockReport,
+  mockError,
 ]
