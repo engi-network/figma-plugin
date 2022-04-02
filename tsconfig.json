@@ -34,7 +34,8 @@
       "~/*": ["src/*"],
     },
     "rootDir": "./",
-    "jsxImportSource": "@emotion/react"
+    //https://github.com/tailwindlabs/headlessui/issues/233#issuecomment-778506854
+    // "jsxImportSource": "@emotion/react" 
   },
   "include": ["src"],
   "exclude": ["node_modules"]

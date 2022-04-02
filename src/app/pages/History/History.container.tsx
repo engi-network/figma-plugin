@@ -1,6 +1,7 @@
 import Button from '~/app/components/global/Button/Button'
+import Dropdown from '~/app/components/global/Dropdown/Dropdown'
 import Input from '~/app/components/global/Input/Input'
-import HistoryHeader from '~/app/components/modules/History/HistoryHeader'
+import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 function Historycontainer() {
@@ -29,6 +30,9 @@ function Historycontainer() {
             {ui('history.search')}
           </Button>
         </div>
+      </div>
+      <div>
+        <Dropdown items={[]} />
       </div>
     </>
   )
