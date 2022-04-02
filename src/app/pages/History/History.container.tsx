@@ -49,6 +49,7 @@ function Historycontainer() {
           options={sortBy}
           onChange={onSelectChange}
           value={selectedOption}
+          placeholder="Select one..."
         />
       </div>
     </>
