@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import { useBlockLayout, useFilters, useSortBy, useTable } from 'react-table'
 import { FixedSizeList } from 'react-window'
@@ -20,6 +21,7 @@ export interface ColumnGroup extends Column {
 export type Cell = Record<string, string>
 
 interface Props {
+  className?: string
   columns: Array<Column | ColumnGroup>
   data: Array<Cell>
   filterBy?: string
@@ -27,7 +29,14 @@ interface Props {
   sortBy?: string
 }
 
-function Table({ columns, data, hideHeader, sortBy, filterBy }: Props) {
+function Table({
+  columns,
+  data,
+  hideHeader,
+  sortBy,
+  filterBy,
+  className,
+}: Props) {
   const defaultColumn = useMemo(
     () => ({
       width: 150,
@@ -90,51 +99,46 @@ function Table({ columns, data, hideHeader, sortBy, filterBy }: Props) {
   }, [sortBy])
 
   useEffect(() => {
-    if (!filterBy) {
-      return
-    }
-
     setFilter('component', filterBy)
   }, [filterBy])
 
+  const tableClasses = cn('table', className)
   return (
-    <>
-      <div {...getTableProps()} className="table" role="table">
-        {!hideHeader && (
-          <div>
-            {headerGroups.map((headerGroup, index) => (
-              <div
-                {...headerGroup.getHeaderGroupProps()}
-                className="tr"
-                key={index}
-              >
-                {headerGroup.headers.map((column, index) => (
-                  <div
-                    {...column.getHeaderProps()}
-                    className="th"
-                    key={index}
-                    role="columnheader"
-                  >
-                    {column.render('Header')}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div {...getTableBodyProps()}>
-          <FixedSizeList
-            height={400}
-            itemCount={rows.length}
-            itemSize={35}
-            width={totalColumnsWidth + scrollBarSize}
-          >
-            {RenderRow}
-          </FixedSizeList>
+    <div {...getTableProps()} className={tableClasses} role="table">
+      {!hideHeader && (
+        <div>
+          {headerGroups.map((headerGroup, index) => (
+            <div
+              {...headerGroup.getHeaderGroupProps()}
+              className="tr"
+              key={index}
+            >
+              {headerGroup.headers.map((column, index) => (
+                <div
+                  {...column.getHeaderProps()}
+                  className="th"
+                  key={index}
+                  role="columnheader"
+                >
+                  {column.render('Header')}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
+      )}
+
+      <div {...getTableBodyProps()}>
+        <FixedSizeList
+          height={400}
+          itemCount={rows.length}
+          itemSize={35}
+          width={totalColumnsWidth + scrollBarSize}
+        >
+          {RenderRow}
+        </FixedSizeList>
       </div>
-    </>
+    </div>
   )
 }
 

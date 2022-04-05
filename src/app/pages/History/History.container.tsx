@@ -1,25 +1,61 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import Button from '~/app/components/global/Button/Button'
 import Input from '~/app/components/global/Input/Input'
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
+import Table, {
+  CellText,
+  Column,
+  Status,
+} from '~/app/components/global/Table/Table'
+import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { mockHistoryData } from '~/app/pages/History/History.data'
 
-const sortBy: Array<SelectOption> = [
+const sortByOptions: Array<SelectOption> = [
   { value: 'component', name: 'Component' },
-  { value: 'branch', name: 'Branch' },
-  { value: 'commit', name: 'Commit' },
+  { value: 'story', name: 'Story' },
+  { value: 'status', name: 'Status' },
 ]
 
 function Historycontainer() {
-  const onSearchTermChange = () => {}
-  const onSearch = () => {}
-  const [selectedOption, setSelectedOption] = useState<string>('')
+  const data = useMemo(() => mapHistoryToTable(mockHistoryData), [])
+  const [sortBy, setSortBy] = useState('')
+  const [filterBy, setFilterBy] = useState('')
+  const [submitedValue, setSubmitedValue] = useState('')
 
-  const onSelectChange = (value: string) => {
-    setSelectedOption(value)
+  const onSearchTermChange = (value: string) => {
+    setFilterBy(value)
   }
+  const onSearch = () => {
+    setSubmitedValue(filterBy)
+  }
+
+  const handleSelectChange = (value: string) => {
+    setSortBy(value)
+  }
+
+  const columns: Array<Column> = useMemo(
+    () => [
+      {
+        Header: 'Component',
+        accessor: 'component',
+        Cell: CellText,
+      },
+      {
+        Header: 'Story',
+        accessor: 'story',
+        Cell: CellText,
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: Status,
+      },
+    ],
+    [],
+  )
 
   return (
     <>
@@ -33,6 +69,7 @@ function Historycontainer() {
             onChange={onSearchTermChange}
             placeholder={'Search...'}
             className=""
+            value={filterBy}
           />
           <Button
             onClick={onSearch}
@@ -44,14 +81,23 @@ function Historycontainer() {
           </Button>
         </div>
       </div>
-      <div>
+      <div className="px-8 mb-8">
         <Select
-          options={sortBy}
-          onChange={onSelectChange}
-          value={selectedOption}
+          options={sortByOptions}
+          onChange={handleSelectChange}
+          value={sortBy}
           placeholder="Select one..."
+          className="w-1/2"
         />
       </div>
+      <Table
+        columns={columns}
+        data={data}
+        sortBy={sortBy}
+        filterBy={submitedValue}
+        hideHeader
+        className="px-8"
+      />
     </>
   )
 }
