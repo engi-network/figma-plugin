@@ -232,7 +232,7 @@ function MainContainer() {
           <Code onChange={handleChange} values={values} errors={errors} />
         </section>
       </div>
-      <footer className="flex justify-between px-6">
+      <footer className="flex justify-between px-6 mb-10">
         <a href="#" className="flex items-center">
           <span className="text-sm text-[#B3B3B3] flex">
             <InformationCircleIcon className="w-5 h-5 text-[#B3B3B3] mr-3" />

@@ -1,10 +1,11 @@
 import { ReactNode, useCallback, useMemo, useState } from 'react'
-import { useBlockLayout, useSortBy, useTable } from 'react-table'
+import { useBlockLayout, useFilters, useSortBy, useTable } from 'react-table'
 import { FixedSizeList } from 'react-window'
 
 import Checkbox from '~/app/components/global/Checkbox/Checkbox'
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
 
+import Input from '../Input/Input'
 import scrollbarWidth from './scrollbarWidth'
 
 export interface Column {
@@ -51,6 +52,7 @@ function Table({ columns, data, hideHeader }: Props) {
     totalColumnsWidth,
     prepareRow,
     toggleSortBy,
+    setFilter,
   } = useTable(
     {
       columns,
@@ -58,6 +60,7 @@ function Table({ columns, data, hideHeader }: Props) {
       defaultColumn,
     },
     useBlockLayout,
+    useFilters,
     useSortBy,
   )
 
@@ -91,6 +94,10 @@ function Table({ columns, data, hideHeader }: Props) {
     setSelectedOption(value)
   }
 
+  const handleFilterChange = (value: string) => {
+    setFilter('component', value)
+  }
+
   return (
     <>
       <div>
@@ -99,6 +106,7 @@ function Table({ columns, data, hideHeader }: Props) {
           onChange={handleSelectChange}
           value={selectedOption}
         />
+        <Input onChange={handleFilterChange} />
       </div>
       <div {...getTableProps()} className="table" role="table">
         {!hideHeader && (
