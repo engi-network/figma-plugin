@@ -1,11 +1,9 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import { useBlockLayout, useFilters, useSortBy, useTable } from 'react-table'
 import { FixedSizeList } from 'react-window'
 
 import Checkbox from '~/app/components/global/Checkbox/Checkbox'
-import Select, { SelectOption } from '~/app/components/global/Select/Select'
 
-import Input from '../Input/Input'
 import scrollbarWidth from './scrollbarWidth'
 
 export interface Column {
@@ -24,17 +22,12 @@ export type Cell = Record<string, string>
 interface Props {
   columns: Array<Column | ColumnGroup>
   data: Array<Cell>
+  filterBy?: string
   hideHeader?: boolean
+  sortBy?: string
 }
 
-const sortByOptions: Array<SelectOption> = [
-  { value: 'component', name: 'Component' },
-  { value: 'story', name: 'Story' },
-  { value: 'status', name: 'Status' },
-]
-
-function Table({ columns, data, hideHeader }: Props) {
-  const [selectedOption, setSelectedOption] = useState('')
+function Table({ columns, data, hideHeader, sortBy, filterBy }: Props) {
   const defaultColumn = useMemo(
     () => ({
       width: 150,
@@ -88,26 +81,24 @@ function Table({ columns, data, hideHeader }: Props) {
     [prepareRow, rows],
   )
 
-  const handleSelectChange = (value: string) => {
-    // Function(ColumnId: String, descending: Bool, isMulti: Bool) => void
-    toggleSortBy(value, true)
-    setSelectedOption(value)
-  }
+  useEffect(() => {
+    if (!sortBy) {
+      return
+    }
 
-  const handleFilterChange = (value: string) => {
-    setFilter('component', value)
-  }
+    toggleSortBy(sortBy, true)
+  }, [sortBy])
+
+  useEffect(() => {
+    if (!filterBy) {
+      return
+    }
+
+    setFilter('component', filterBy)
+  }, [filterBy])
 
   return (
     <>
-      <div>
-        <Select
-          options={sortByOptions}
-          onChange={handleSelectChange}
-          value={selectedOption}
-        />
-        <Input onChange={handleFilterChange} />
-      </div>
       <div {...getTableProps()} className="table" role="table">
         {!hideHeader && (
           <div>
