@@ -1,6 +1,6 @@
 import { CheckIcon, MinusIcon } from '@heroicons/react/solid'
 import cn from 'classnames'
-import React, { ChangeEvent, InputHTMLAttributes } from 'react'
+import { ChangeEvent, InputHTMLAttributes } from 'react'
 
 interface Props // use custom on change
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
