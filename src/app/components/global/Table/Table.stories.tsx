@@ -1,29 +1,29 @@
 import { useMemo } from 'react'
 
-import Table, { Column } from './Table'
-import makeData from './Table.utils'
+import { mockHistoryData } from '~/app/pages/History/History.data'
+
+import Table, { CellText, Column, Status } from './Table'
+import { mapHistoryToTable } from './Table.utils'
 
 export default {
   component: Table,
   title: 'Global/Components/Table',
 }
 
-function Status({ value }: { value: string }) {
-  return <p className="test">{value}</p>
-}
-
 export function TableWithKnobs() {
-  const data = useMemo(() => makeData(100000), [])
+  const data = useMemo(() => mapHistoryToTable(mockHistoryData), [])
 
   const columns: Array<Column> = useMemo(
     () => [
       {
         Header: 'Component',
         accessor: 'component',
+        Cell: CellText,
       },
       {
         Header: 'Story',
         accessor: 'story',
+        Cell: CellText,
       },
       {
         Header: 'Status',

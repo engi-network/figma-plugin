@@ -1,4 +1,5 @@
-export interface ErrorReport {
+import { Specification } from './Specification'
+export interface ErrorReport extends Specification {
   error: {
     aws?: string
     branch?: string
@@ -11,7 +12,7 @@ export interface ErrorReport {
   }
 }
 
-export interface ReportResult {
+export interface ReportResult extends Specification {
   MAE: string
 }
 
@@ -19,6 +20,8 @@ export interface Report {
   checkId: string
   result: ReportResult | ErrorReport
 }
+
+export type History = Array<Report>
 
 export function isError(
   result: ReportResult | ErrorReport,

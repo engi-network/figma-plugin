@@ -2,6 +2,8 @@ import { ReactNode, useCallback, useMemo } from 'react'
 import { useBlockLayout, useTable } from 'react-table'
 import { FixedSizeList } from 'react-window'
 
+import Checkbox from '~/app/components/global/Checkbox/Checkbox'
+
 import scrollbarWidth from './scrollbarWidth'
 
 export interface Column {
@@ -15,9 +17,11 @@ export interface ColumnGroup extends Column {
   columns?: Array<Column>
 }
 
+export type Cell = Record<string, string>
+
 interface Props {
   columns: Array<Column | ColumnGroup>
-  data: any
+  data: Array<Cell>
   hideHeader?: boolean
 }
 
@@ -46,8 +50,6 @@ function Table({ columns, data, hideHeader }: Props) {
     },
     useBlockLayout,
   )
-
-  console.log('=====>', headerGroups)
 
   const RenderRow = useCallback(
     ({ index, style }) => {
@@ -110,6 +112,18 @@ function Table({ columns, data, hideHeader }: Props) {
       </div>
     </div>
   )
+}
+
+export function Status({ value }: { value: string }) {
+  if (value === 'success') {
+    return <Checkbox checked readOnly />
+  }
+
+  return <Checkbox isDisabled readOnly />
+}
+
+export function CellText({ value }: { value: string }) {
+  return <p className="text-sm text-wf-secondary">{value}</p>
 }
 
 export default Table
