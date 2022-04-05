@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import Table from './Table'
+import Table, { Column } from './Table'
 import makeData from './Table.utils'
 
 export default {
@@ -8,54 +8,31 @@ export default {
   title: 'Global/Components/Table',
 }
 
+function Status({ value }: { value: string }) {
+  return <p className="test">{value}</p>
+}
+
 export function TableWithKnobs() {
   const data = useMemo(() => makeData(100000), [])
 
-  const columns = useMemo(
+  const columns: Array<Column> = useMemo(
     () => [
       {
-        Header: 'Row Index',
-        accessor: (row, i) => i,
+        Header: 'Component',
+        accessor: 'component',
       },
       {
-        Header: 'Name',
-        columns: [
-          {
-            Header: 'First Name',
-            accessor: 'firstName',
-          },
-          {
-            Header: 'Last Name',
-            accessor: 'lastName',
-          },
-        ],
+        Header: 'Story',
+        accessor: 'story',
       },
       {
-        Header: 'Info',
-        columns: [
-          {
-            Header: 'Age',
-            accessor: 'age',
-            width: 50,
-          },
-          {
-            Header: 'Visits',
-            accessor: 'visits',
-            width: 60,
-          },
-          {
-            Header: 'Status',
-            accessor: 'status',
-          },
-          {
-            Header: 'Profile Progress',
-            accessor: 'progress',
-          },
-        ],
+        Header: 'Status',
+        accessor: 'status',
+        Cell: Status,
       },
     ],
     [],
   )
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} hideHeader />
 }

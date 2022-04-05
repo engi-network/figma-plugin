@@ -1,35 +1,27 @@
 /* eslint-disable sort-keys */
 const range = (len) => {
-  const arr = []
+  const arr: Array<number> = []
   for (let i = 0; i < len; i++) {
     arr.push(i)
   }
   return arr
 }
 
-const newPerson = () => {
+const newPerson = (index: number) => {
   const statusChance = Math.random()
   return {
-    firstName: 'first',
-    lastName: 'last',
-    age: Math.floor(Math.random() * 30),
-    visits: Math.floor(Math.random() * 100),
-    progress: Math.floor(Math.random() * 100),
-    status:
-      statusChance > 0.66
-        ? 'relationship'
-        : statusChance > 0.33
-        ? 'complicated'
-        : 'single',
+    component: `component ${index}`,
+    story: `story ${index}`,
+    status: statusChance > 0.66 ? 'success' : 'fail',
   }
 }
 
 export default function makeData(...lens) {
   const makeDataLevel = (depth = 0) => {
     const len = lens[depth]
-    return range(len).map(() => {
+    return range(len).map((_, index) => {
       return {
-        ...newPerson(),
+        ...newPerson(index),
         subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
       }
     })

@@ -1,15 +1,27 @@
-import { useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 import { useBlockLayout, useTable } from 'react-table'
 import { FixedSizeList } from 'react-window'
 
 import scrollbarWidth from './scrollbarWidth'
 
-interface Props {
-  columns: any
-  data: any
+export interface Column {
+  Cell?: ReactNode
+  Header: string
+  accessor: number | string | ((_: number, index: number) => number)
+  height?: number
+  width?: number
+}
+export interface ColumnGroup extends Column {
+  columns?: Array<Column>
 }
 
-function Table({ columns, data }: Props) {
+interface Props {
+  columns: Array<Column | ColumnGroup>
+  data: any
+  hideHeader?: boolean
+}
+
+function Table({ columns, data, hideHeader }: Props) {
   const defaultColumn = useMemo(
     () => ({
       width: 150,
@@ -34,6 +46,8 @@ function Table({ columns, data }: Props) {
     },
     useBlockLayout,
   )
+
+  console.log('=====>', headerGroups)
 
   const RenderRow = useCallback(
     ({ index, style }) => {
@@ -60,22 +74,29 @@ function Table({ columns, data }: Props) {
   )
 
   return (
-    <div {...getTableProps()} className="table">
-      <div>
-        {headerGroups.map((headerGroup, index) => (
-          <div
-            {...headerGroup.getHeaderGroupProps()}
-            className="tr"
-            key={index}
-          >
-            {headerGroup.headers.map((column, index) => (
-              <div {...column.getHeaderProps()} className="th" key={index}>
-                {column.render('Header')}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+    <div {...getTableProps()} className="table" role="table">
+      {!hideHeader && (
+        <div>
+          {headerGroups.map((headerGroup, index) => (
+            <div
+              {...headerGroup.getHeaderGroupProps()}
+              className="tr"
+              key={index}
+            >
+              {headerGroup.headers.map((column, index) => (
+                <div
+                  {...column.getHeaderProps()}
+                  className="th"
+                  key={index}
+                  role="columnheader"
+                >
+                  {column.render('Header')}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
 
       <div {...getTableBodyProps()}>
         <FixedSizeList
