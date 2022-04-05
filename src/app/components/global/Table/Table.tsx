@@ -1,8 +1,9 @@
-import { ReactNode, useCallback, useMemo } from 'react'
-import { useBlockLayout, useTable } from 'react-table'
+import { ReactNode, useCallback, useMemo, useState } from 'react'
+import { useBlockLayout, useSortBy, useTable } from 'react-table'
 import { FixedSizeList } from 'react-window'
 
 import Checkbox from '~/app/components/global/Checkbox/Checkbox'
+import Select, { SelectOption } from '~/app/components/global/Select/Select'
 
 import scrollbarWidth from './scrollbarWidth'
 
@@ -25,7 +26,14 @@ interface Props {
   hideHeader?: boolean
 }
 
+const sortByOptions: Array<SelectOption> = [
+  { value: 'component', name: 'Component' },
+  { value: 'story', name: 'Story' },
+  { value: 'status', name: 'Status' },
+]
+
 function Table({ columns, data, hideHeader }: Props) {
+  const [selectedOption, setSelectedOption] = useState('')
   const defaultColumn = useMemo(
     () => ({
       width: 150,
@@ -42,6 +50,7 @@ function Table({ columns, data, hideHeader }: Props) {
     rows,
     totalColumnsWidth,
     prepareRow,
+    toggleSortBy,
   } = useTable(
     {
       columns,
@@ -49,6 +58,7 @@ function Table({ columns, data, hideHeader }: Props) {
       defaultColumn,
     },
     useBlockLayout,
+    useSortBy,
   )
 
   const RenderRow = useCallback(
@@ -75,42 +85,57 @@ function Table({ columns, data, hideHeader }: Props) {
     [prepareRow, rows],
   )
 
-  return (
-    <div {...getTableProps()} className="table" role="table">
-      {!hideHeader && (
-        <div>
-          {headerGroups.map((headerGroup, index) => (
-            <div
-              {...headerGroup.getHeaderGroupProps()}
-              className="tr"
-              key={index}
-            >
-              {headerGroup.headers.map((column, index) => (
-                <div
-                  {...column.getHeaderProps()}
-                  className="th"
-                  key={index}
-                  role="columnheader"
-                >
-                  {column.render('Header')}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
+  const handleSelectChange = (value: string) => {
+    // Function(ColumnId: String, descending: Bool, isMulti: Bool) => void
+    toggleSortBy(value, true)
+    setSelectedOption(value)
+  }
 
-      <div {...getTableBodyProps()}>
-        <FixedSizeList
-          height={400}
-          itemCount={rows.length}
-          itemSize={35}
-          width={totalColumnsWidth + scrollBarSize}
-        >
-          {RenderRow}
-        </FixedSizeList>
+  return (
+    <>
+      <div>
+        <Select
+          options={sortByOptions}
+          onChange={handleSelectChange}
+          value={selectedOption}
+        />
       </div>
-    </div>
+      <div {...getTableProps()} className="table" role="table">
+        {!hideHeader && (
+          <div>
+            {headerGroups.map((headerGroup, index) => (
+              <div
+                {...headerGroup.getHeaderGroupProps()}
+                className="tr"
+                key={index}
+              >
+                {headerGroup.headers.map((column, index) => (
+                  <div
+                    {...column.getHeaderProps()}
+                    className="th"
+                    key={index}
+                    role="columnheader"
+                  >
+                    {column.render('Header')}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div {...getTableBodyProps()}>
+          <FixedSizeList
+            height={400}
+            itemCount={rows.length}
+            itemSize={35}
+            width={totalColumnsWidth + scrollBarSize}
+          >
+            {RenderRow}
+          </FixedSizeList>
+        </div>
+      </div>
+    </>
   )
 }
 
