@@ -11,16 +11,14 @@ import { onHistoryCreate } from '~/plugin/modules/history'
  * @description all event will be handled here
  */
 
-figma.ui.onmessage = (event: MessageEvent) => {
+figma.ui.onmessage = async (event: MessageEvent) => {
   switch (event.type) {
     case SAME_STORY_FORM_UPDATE: {
-      console.info('form change====>')
-      onFormChange(event.data)
+      await onFormChange(event.data)
       break
     }
     case SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN: {
-      onHistoryCreate(event.data)
-      console.info('event.data=====>', event.data)
+      await onHistoryCreate(event.data.report)
       break
     }
     default:

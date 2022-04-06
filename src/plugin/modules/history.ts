@@ -5,7 +5,16 @@ import {
 } from '~/plugin/constants'
 
 export const onHistoryCreate = async (data: Report) => {
-  await figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.HISTORY, data)
+  let history = await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.HISTORY)
+
+  if (!Array.isArray(history)) {
+    history = []
+  }
+
+  history.push(data)
+  console.info('history to set', history)
+
+  await figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.HISTORY, history)
 }
 
 export const onRun = async () => {

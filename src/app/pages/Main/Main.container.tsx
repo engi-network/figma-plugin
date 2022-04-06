@@ -50,7 +50,7 @@ function MainContainer() {
   const [errors, setErrors] = useState<AnalyzeFormValues>()
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
   const [progress, setProgress] = useState(0)
-  const { setReport } = useAppContext()
+  const { setReport, setHistory } = useAppContext()
 
   const { width = 0, height = 0, commit, branch } = selectionData || {}
 
@@ -74,6 +74,7 @@ function MainContainer() {
         },
         '*',
       )
+      setHistory((prev) => [...prev, report])
 
       if (status.success) {
         setReport(report)
