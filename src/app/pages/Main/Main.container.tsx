@@ -22,7 +22,11 @@ import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
 import { Report } from '~/app/models/Report'
-import { LOCAL_STORAGE_KEY, SAME_STORY_FORM_UPDATE } from '~/plugin/constants'
+import {
+  LOCAL_STORAGE_KEY,
+  SAME_STORY_FORM_UPDATE,
+  SAME_STORY_HISTORY_CREATE,
+} from '~/plugin/constants'
 
 import styles from './Main.container.styles'
 import { MESSAGES } from './Main.types'
@@ -68,6 +72,15 @@ function MainContainer() {
         setIsLoading(false)
         setProgress(0)
       }
+
+      parent.postMessage({
+        pluginMessage: {
+          type: SAME_STORY_HISTORY_CREATE,
+          data: {
+            report,
+          },
+        },
+      })
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
         //set ui error in turn
