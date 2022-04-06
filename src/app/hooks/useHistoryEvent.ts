@@ -1,17 +1,22 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import * as PLUGIN_CONSTATNS from '~/plugin/constants'
 
+import { Report } from '../models/Report'
+
 function useHistoryEvent() {
+  const [history, setHistory] = useState<Array<Report>>([])
+
   const historyEventCallback = (event: MessageEvent) => {
     if (!event.data.pluginMessage) {
       return
     }
 
+    // initialize history to use in app once
     switch (event.data.pluginMessage.type) {
       case PLUGIN_CONSTATNS.SAME_STORY_HISTORY_LIST_PLUGIN_TO_UI: {
         const { data } = event.data.pluginMessage
-        console.info('got event data=>', data)
+        setHistory(data)
         break
       }
 
@@ -27,6 +32,11 @@ function useHistoryEvent() {
       removeEventListener('message', historyEventCallback)
     }
   }, [])
+
+  return {
+    history,
+    setHistory,
+  }
 }
 
 export default useHistoryEvent

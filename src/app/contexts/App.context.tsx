@@ -5,24 +5,23 @@ import { createContext } from '~/app/lib/utils/context'
 import { Report } from '~/app/models/Report'
 
 export interface AppContextProps {
+  history: Array<Report>
   report?: Report
-  reportList: Array<Report>
+  setHistory: Dispatch<SetStateAction<Report[]>>
   setReport: (value: Report) => void
-  setReportList: Dispatch<SetStateAction<Report[]>>
 }
 
 const AppContext = createContext<AppContextProps>()
 
 export function useAppContextSetup(): AppContextProps {
   const [report, setReport] = useState<Report>()
-  const [reportList, setReportList] = useState<Array<Report>>([])
-  useHistoryEvent()
+  const { history, setHistory } = useHistoryEvent()
 
   return {
+    history,
     report,
     setReport,
-    reportList,
-    setReportList,
+    setHistory,
   }
 }
 

@@ -1,24 +1,12 @@
 import cn from 'classnames'
-import { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useBlockLayout, useFilters, useSortBy, useTable } from 'react-table'
 import { FixedSizeList } from 'react-window'
 
 import Checkbox from '~/app/components/global/Checkbox/Checkbox'
+import { getScrollbarWidth } from '~/app/lib/utils/scrollbar'
 
-import scrollbarWidth from './scrollbarWidth'
-
-export interface Column {
-  Cell?: ReactNode
-  Header: string
-  accessor: number | string | ((_: number, index: number) => number)
-  height?: number
-  width?: number
-}
-export interface ColumnGroup extends Column {
-  columns?: Array<Column>
-}
-
-export type Cell = Record<string, string>
+import { Cell, Column, ColumnGroup } from './Table.types'
 
 interface Props {
   className?: string
@@ -44,7 +32,7 @@ function Table({
     [],
   )
 
-  const scrollBarSize = useMemo(() => scrollbarWidth(), [])
+  const scrollBarSize = useMemo(() => getScrollbarWidth(), [])
 
   const {
     getTableProps,
