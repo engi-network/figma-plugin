@@ -63,6 +63,18 @@ function MainContainer() {
   ) => {
     if (report) {
       console.info('successfully got report:::', report)
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+            data: {
+              report,
+            },
+          },
+        },
+        '*',
+      )
+
       if (status.success) {
         setReport(report)
         setProgress(100)
@@ -72,15 +84,6 @@ function MainContainer() {
         setIsLoading(false)
         setProgress(0)
       }
-
-      parent.postMessage({
-        pluginMessage: {
-          type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-          data: {
-            report,
-          },
-        },
-      })
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
         //set ui error in turn

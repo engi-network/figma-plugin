@@ -1,8 +1,4 @@
-import { useMemo } from 'react'
-
 import { SelectOption } from '~/app/components/global/Select/Select'
-import { CellText, Status } from '~/app/components/global/Table/Table'
-import { Column } from '~/app/components/global/Table/Table.types'
 import { randomString } from '~/app/lib/utils/string'
 import { Report } from '~/app/models/Report'
 
@@ -11,27 +7,6 @@ export const sortByOptions: Array<SelectOption> = [
   { value: 'story', name: 'Story' },
   { value: 'status', name: 'Status' },
 ]
-
-export const tableColumns: Array<Column> = useMemo(
-  () => [
-    {
-      Header: 'Component',
-      accessor: 'component',
-      Cell: CellText,
-    },
-    {
-      Header: 'Story',
-      accessor: 'story',
-      Cell: CellText,
-    },
-    {
-      Header: 'Status',
-      accessor: 'status',
-      Cell: Status,
-    },
-  ],
-  [],
-)
 
 export const mockReport: Report = {
   checkId: '293bdbd6-dee7-4e17-b3db-82765db6308f',

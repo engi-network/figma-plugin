@@ -3,7 +3,8 @@ import { useMemo, useState } from 'react'
 import Button from '~/app/components/global/Button/Button'
 import Input from '~/app/components/global/Input/Input'
 import Select from '~/app/components/global/Select/Select'
-import Table from '~/app/components/global/Table/Table'
+import Table, { CellText, Status } from '~/app/components/global/Table/Table'
+import { Column } from '~/app/components/global/Table/Table.types'
 import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
@@ -12,8 +13,6 @@ import {
   mockHistoryData,
   sortByOptions,
 } from '~/app/pages/History/History.data'
-
-import { tableColumns } from './History.data'
 
 function Historycontainer() {
   const data = useMemo(() => mapHistoryToTable(mockHistoryData), [])
@@ -34,6 +33,27 @@ function Historycontainer() {
   const handleSelectChange = (value: string) => {
     setSortBy(value)
   }
+
+  const tableColumns: Array<Column> = useMemo(
+    () => [
+      {
+        Header: 'Component',
+        accessor: 'component',
+        Cell: CellText,
+      },
+      {
+        Header: 'Story',
+        accessor: 'story',
+        Cell: CellText,
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: Status,
+      },
+    ],
+    [],
+  )
 
   return (
     <>

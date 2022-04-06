@@ -16,6 +16,7 @@ function useHistoryEvent() {
     switch (event.data.pluginMessage.type) {
       case PLUGIN_CONSTATNS.SAME_STORY_HISTORY_LIST_PLUGIN_TO_UI: {
         const { data } = event.data.pluginMessage
+        console.info('I am setting history data from plugin===>', data)
         setHistory(data)
         break
       }

@@ -32,7 +32,9 @@ function ResultContainer() {
     navigate('/')
   }
 
-  const handleViewHistory = () => {}
+  const handleViewHistory = () => {
+    navigate('/history')
+  }
 
   const handleCreateNew = () => {
     navigate('/')
