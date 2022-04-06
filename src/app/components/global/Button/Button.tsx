@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { ReactNode } from 'react'
 
 import { BUTTON_SIZE, BUTTON_STYLE } from '~/app/lib/constants'

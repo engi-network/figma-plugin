@@ -74,6 +74,7 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^5.0.1",
     "cssnano": "^5.1.0",
+    "emotion-ts-plugin": "^2.0.1",
     "eslint": "7",
     "eslint-config-next": "12.0.7",
     "eslint-config-prettier": "^8.3.0",

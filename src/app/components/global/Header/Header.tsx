@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { XIcon } from '@heroicons/react/solid'
 
 import Logo from '~/app/assets/icons/common/logo.svg'
