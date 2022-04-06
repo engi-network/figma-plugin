@@ -70,15 +70,17 @@ if (selection) {
 figma.on('selectionchange', () => {
   const selection = figma.currentPage.selection[0]
 
-  if (selection) {
-    onSelection(selection)
-    figma.ui.postMessage({
-      type: FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
-    })
-  } else {
+  if (!selection) {
     figma.ui.postMessage({
       type: FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
       error: { message: 'Select a frame!' },
     })
+
+    return
   }
+
+  onSelection(selection)
+  figma.ui.postMessage({
+    type: FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
+  })
 })
