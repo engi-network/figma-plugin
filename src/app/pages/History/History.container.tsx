@@ -9,19 +9,14 @@ import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import {
-  mockHistoryData,
-  sortByOptions,
-} from '~/app/pages/History/History.data'
+import { sortByOptions } from '~/app/pages/History/History.data'
 
 function Historycontainer() {
-  const data = useMemo(() => mapHistoryToTable(mockHistoryData), [])
+  const { history } = useAppContext()
+  const data = useMemo(() => mapHistoryToTable(history), [])
   const [sortBy, setSortBy] = useState('')
   const [filterBy, setFilterBy] = useState('')
   const [submitedValue, setSubmitedValue] = useState('')
-  const { history } = useAppContext()
-
-  console.info('hisory====>', history)
 
   const onSearchTermChange = (value: string) => {
     setFilterBy(value)
