@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 
 import Button from '~/app/components/global/Button/Button'
 import Input from '~/app/components/global/Input/Input'
-import Select, { SelectOption } from '~/app/components/global/Select/Select'
+import Select from '~/app/components/global/Select/Select'
 import Table, {
   CellText,
   Column,
@@ -11,13 +11,10 @@ import Table, {
 import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { mockHistoryData } from '~/app/pages/History/History.data'
-
-const sortByOptions: Array<SelectOption> = [
-  { value: 'component', name: 'Component' },
-  { value: 'story', name: 'Story' },
-  { value: 'status', name: 'Status' },
-]
+import {
+  mockHistoryData,
+  sortByOptions,
+} from '~/app/pages/History/History.data'
 
 function Historycontainer() {
   const data = useMemo(() => mapHistoryToTable(mockHistoryData), [])

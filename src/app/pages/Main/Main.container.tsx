@@ -25,7 +25,7 @@ import { Report } from '~/app/models/Report'
 import {
   LOCAL_STORAGE_KEY,
   SAME_STORY_FORM_UPDATE,
-  SAME_STORY_HISTORY_CREATE,
+  SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
 
 import styles from './Main.container.styles'
@@ -75,7 +75,7 @@ function MainContainer() {
 
       parent.postMessage({
         pluginMessage: {
-          type: SAME_STORY_HISTORY_CREATE,
+          type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
           data: {
             report,
           },

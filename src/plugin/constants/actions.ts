@@ -14,7 +14,7 @@ export const FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI = `${PRE
 export const SAME_STORY_FORM_UPDATE = `${PREFIX}_form_update`
 
 // history sync with localstorage
-export const SAME_STORY_HISTORY_CREATE = `${PREFIX}_history_create`
+export const SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN = `${PREFIX}_history_create_from_ui_to_plugin`
 export const SAME_STORY_HISTORY_UPDATE = `${PREFIX}_history_update`
 export const SAME_STORY_HISTORY_REMOVE = `${PREFIX}_history_remove`
-export const SAME_STORY_HISTORY_LIST = `${PREFIX}_history_list`
+export const SAME_STORY_HISTORY_LIST_PLUGIN_TO_UI = `${PREFIX}_history_list_plugin_to_ui`

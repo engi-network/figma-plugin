@@ -1,5 +1,12 @@
+import { SelectOption } from '~/app/components/global/Select/Select'
 import { randomString } from '~/app/lib/utils/string'
 import { Report } from '~/app/models/Report'
+
+export const sortByOptions: Array<SelectOption> = [
+  { value: 'component', name: 'Component' },
+  { value: 'story', name: 'Story' },
+  { value: 'status', name: 'Status' },
+]
 
 export const mockReport: Report = {
   checkId: '293bdbd6-dee7-4e17-b3db-82765db6308f',
