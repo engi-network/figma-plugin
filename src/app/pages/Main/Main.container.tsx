@@ -14,6 +14,7 @@ import Code, {
 import Preview from '~/app/components/modules/Preview/Preview'
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
+import { COLORS } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
   pollCheckReport,
@@ -228,8 +229,8 @@ function MainContainer() {
       </div>
       <footer className="flex justify-between px-6 mb-10">
         <a href="#" className="flex items-center">
-          <span className="text-sm text-[#B3B3B3] flex">
-            <InformationCircleIcon className="w-5 h-5 text-[#B3B3B3] mr-3" />
+          <span className="text-sm text-wf-secondary flex">
+            <InformationCircleIcon className="w-5 h-5 text-wf-secondary mr-3" />
             {ui('header.learnMore')}
           </span>
         </a>
@@ -237,7 +238,7 @@ function MainContainer() {
           primary
           onClick={handleSubmit}
           className="w-3/12"
-          backgroundColor="#18A0FB"
+          backgroundColor={COLORS.PRIMARY.BLUE}
         >
           {ui('main.analyze')}
         </Button>

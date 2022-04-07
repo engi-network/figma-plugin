@@ -17,8 +17,8 @@ function Checkbox({ checked, isDisabled = false, onChange, ...rest }: Props) {
   const iconWrapperClass = cn(
     'relative flex-shrink-0 h-4 w-4 overflow-hidden rounded',
     {
-      'bg-[#18A0FB]': !isDisabled && checked,
-      'opacity-50 bg-[#18A0FB]': !checked,
+      'bg-primary-blue': !isDisabled && checked,
+      'opacity-50 bg-primary-blue': !checked,
       'bg-red-500': isDisabled,
     },
   )

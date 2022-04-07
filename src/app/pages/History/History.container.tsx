@@ -8,6 +8,7 @@ import { Column } from '~/app/components/global/Table/Table.types'
 import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
+import { COLORS } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { sortByOptions } from '~/app/pages/History/History.data'
 
@@ -72,7 +73,7 @@ function Historycontainer() {
           />
           <Button
             onClick={onSearch}
-            backgroundColor="#18A0FB"
+            backgroundColor={COLORS.PRIMARY.BLUE}
             primary
             className="ml-8"
           >
