@@ -144,11 +144,10 @@ export const fetchCheckReport = async (checkId: string): Promise<Report> => {
           reject(error)
         } else {
           if (data.Body) {
-            console.info(data.Body)
-            const result = decodeFromBuffer(data.Body as ArrayLike<number>)
-
-            console.info(result)
-            resolve({ result: result as unknown as ReportResult, checkId })
+            const result: unknown = decodeFromBuffer(
+              data.Body as ArrayLike<number>,
+            )
+            resolve({ result: result as ReportResult, checkId })
           }
         }
       },

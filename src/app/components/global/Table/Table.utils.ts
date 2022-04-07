@@ -1,21 +1,24 @@
 import { History, isError } from '~/app/models/Report'
 
-import { Cell } from './Table'
+import { Cell } from './Table.types'
 
-export function mapHistoryToTable(history: History): Array<Cell> {
-  return history.map(({ result }) => {
+export const mapHistoryToTable = (history: History): Array<Cell> => {
+  return history.map(({ checkId, result }) => {
     const { component, story } = result
+    const baseObj = {
+      checkId,
+      component,
+      story,
+    }
 
     if (isError(result)) {
       return {
-        component,
-        story,
+        ...baseObj,
         status: 'fail',
       }
     } else {
       return {
-        component,
-        story,
+        ...baseObj,
         status: 'success',
       }
     }

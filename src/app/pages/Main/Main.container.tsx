@@ -19,6 +19,7 @@ import {
   uploadEncodedFrameToS3,
 } from '~/app/lib/utils/aws'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
+import { dispatchData } from '~/app/lib/utils/event'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
 import { Report } from '~/app/models/Report'
@@ -62,18 +63,11 @@ function MainContainer() {
     report?: Report,
   ) => {
     if (report) {
-      console.info('successfully got report:::', report)
-      parent.postMessage(
-        {
-          pluginMessage: {
-            type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-            data: {
-              report,
-            },
-          },
-        },
-        '*',
-      )
+      console.info('yay, successfully got report:::', report)
+      dispatchData({
+        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+        data: report,
+      })
       setHistory((prev) => [...prev, report])
 
       if (status.success) {
@@ -81,7 +75,7 @@ function MainContainer() {
         setProgress(100)
         navigate('/result')
       } else {
-        console.info('error report======>', report)
+        console.error('Oops, got an error report:::', report)
         setIsLoading(false)
         setProgress(0)
       }
@@ -103,17 +97,12 @@ function MainContainer() {
     setErrors(undefined)
 
     if (values) {
-      parent.postMessage(
-        {
-          pluginMessage: {
-            type: SAME_STORY_FORM_UPDATE,
-            data: {
-              [LOCAL_STORAGE_KEY.REPOSITORY]: values.repository,
-            },
-          },
+      dispatchData({
+        type: SAME_STORY_FORM_UPDATE,
+        data: {
+          [LOCAL_STORAGE_KEY.REPOSITORY]: values.repository,
         },
-        '*',
-      )
+      })
     }
   }
 

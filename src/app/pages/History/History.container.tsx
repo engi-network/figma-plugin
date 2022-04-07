@@ -33,6 +33,11 @@ function Historycontainer() {
   const tableColumns: Array<Column> = useMemo(
     () => [
       {
+        Header: 'CheckId',
+        accessor: 'checkId',
+        Cell: CellText,
+      },
+      {
         Header: 'Component',
         accessor: 'component',
         Cell: CellText,

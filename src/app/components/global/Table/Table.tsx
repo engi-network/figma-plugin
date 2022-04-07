@@ -1,12 +1,14 @@
 import cn from 'classnames'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useBlockLayout, useFilters, useSortBy, useTable } from 'react-table'
+import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
 import Checkbox from '~/app/components/global/Checkbox/Checkbox'
-import { getScrollbarWidth } from '~/app/lib/utils/scrollbar'
 
 import { Cell, Column, ColumnGroup } from './Table.types'
+
+// import { getScrollbarWidth } from '~/app/lib/utils/scrollbar'
 
 interface Props {
   className?: string
@@ -32,14 +34,12 @@ function Table({
     [],
   )
 
-  const scrollBarSize = useMemo(() => getScrollbarWidth(), [])
-
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
-    totalColumnsWidth,
+    // totalColumnsWidth,
     prepareRow,
     toggleSortBy,
     setFilter,
@@ -63,7 +63,7 @@ function Table({
           {...row.getRowProps({
             style,
           })}
-          className="tr"
+          className="tr justify-between"
         >
           {row.cells.map((cell, index) => {
             return (
@@ -116,15 +116,19 @@ function Table({
         </div>
       )}
 
-      <div {...getTableBodyProps()}>
-        <FixedSizeList
-          height={400}
-          itemCount={rows.length}
-          itemSize={35}
-          width={totalColumnsWidth + scrollBarSize}
-        >
-          {RenderRow}
-        </FixedSizeList>
+      <div {...getTableBodyProps()} css={{ height: 300 }}>
+        <AutoSizer>
+          {({ height, width }) => (
+            <FixedSizeList
+              height={height}
+              itemCount={rows.length}
+              itemSize={35}
+              width={width}
+            >
+              {RenderRow}
+            </FixedSizeList>
+          )}
+        </AutoSizer>
       </div>
     </div>
   )
@@ -139,7 +143,11 @@ export function Status({ value }: { value: string }) {
 }
 
 export function CellText({ value }: { value: string }) {
-  return <p className="text-sm text-wf-secondary">{value}</p>
+  return (
+    <p className="text-sm text-wf-secondary w-full overflow-hidden truncate">
+      {value}
+    </p>
+  )
 }
 
 export default Table

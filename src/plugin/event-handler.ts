@@ -1,3 +1,4 @@
+import { Report } from '~/app/models/Report'
 import {
   SAME_STORY_FORM_UPDATE,
   SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
@@ -18,7 +19,7 @@ figma.ui.onmessage = async (event: MessageEvent) => {
       break
     }
     case SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN: {
-      await onHistoryCreate(event.data.report)
+      await onHistoryCreate(event.data as Report)
       break
     }
     default:
