@@ -120,7 +120,7 @@ function Table({
         </div>
       )}
 
-      <div {...getTableBodyProps()} css={{ height: 300 }}>
+      <div {...getTableBodyProps()} css={{ height: 250 }}>
         <AutoSizer>
           {({ height, width }) => (
             <FixedSizeList

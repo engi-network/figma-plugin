@@ -65,7 +65,7 @@ function Select({
                 <Listbox.Option
                   key={option.value}
                   className={({ active }) =>
-                    `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                    `cursor-default select-none relative p-2 ${
                       active
                         ? 'text-primary-dark bg-wf-bg'
                         : 'text-primary-dark'

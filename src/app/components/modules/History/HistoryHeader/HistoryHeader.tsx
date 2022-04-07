@@ -13,7 +13,7 @@ function HistoryHeader() {
   }
 
   return (
-    <div className="flex justify-between border-y border-text-secondary px-7 py-5">
+    <div className="flex justify-between border-b border-text-secondary px-7 py-5">
       <div className="flex justify-center items-center">
         <IconButton
           className="text-wf-secondary"

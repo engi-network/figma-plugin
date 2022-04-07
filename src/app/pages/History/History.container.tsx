@@ -60,7 +60,7 @@ function Historycontainer() {
   return (
     <>
       <HistoryHeader />
-      <div className="p-8">
+      <div className="px-8 py-6 border-bottom border-text-secondary">
         <h2 className="text-2xl text-black mb-5 font-bold">
           {ui('history.history')}
         </h2>
@@ -81,13 +81,13 @@ function Historycontainer() {
           </Button>
         </div>
       </div>
-      <div className="px-8 mb-8">
+      <div className="px-8 mb-8 mt-4">
         <Select
           options={sortByOptions}
           onChange={handleSelectChange}
           value={sortBy}
-          placeholder="Select one..."
-          className="w-1/2"
+          placeholder="Sort by"
+          className="w-2/12"
         />
       </div>
       <Table
