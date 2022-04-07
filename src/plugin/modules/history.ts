@@ -12,8 +12,6 @@ export const onHistoryCreate = async (data: Report) => {
   }
 
   history.push(data)
-  console.info('history to set', history)
-
   await figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.HISTORY, history)
 }
 

@@ -2,7 +2,6 @@
 import { createServer, Factory, Model, RestSerializer } from 'miragejs'
 
 export function makeServer({ environment = 'development' }) {
-  console.info('creating server')
   return createServer({
     environment,
     models: {

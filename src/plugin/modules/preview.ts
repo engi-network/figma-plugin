@@ -84,3 +84,7 @@ figma.on('selectionchange', () => {
     type: FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
   })
 })
+
+/**
+ * @TODO implement the cases when memory router change in the app side
+ */

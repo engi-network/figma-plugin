@@ -21,6 +21,7 @@ function Historycontainer() {
   const onSearchTermChange = (value: string) => {
     setFilterBy(value)
   }
+
   const onSearch = () => {
     setSubmitedValue(filterBy)
   }

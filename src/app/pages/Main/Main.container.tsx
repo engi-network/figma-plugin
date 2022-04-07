@@ -148,8 +148,6 @@ function MainContainer() {
         width: width + '',
       }
 
-      console.info('message===>', message)
-
       const name = component + '-' + story
       const context = originCanvasRef.current.getContext(
         '2d',

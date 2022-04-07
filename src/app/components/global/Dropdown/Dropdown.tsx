@@ -10,6 +10,11 @@ interface DropdownProps {
   items: Array<DropdownItem>
 }
 
+/**
+ *
+ * @description incomplete component
+ */
+
 function Dropdown({ items }: DropdownProps) {
   console.info('items', items)
 
