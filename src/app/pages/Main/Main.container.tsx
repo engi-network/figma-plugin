@@ -204,7 +204,7 @@ function MainContainer() {
         <h1 className="font-base text-black font-medium">{ui('main.title')}</h1>
         <div className="flex justify-center items-center">
           <IconButton
-            className="text-wf-secondary"
+            className="text-wf-secondary text-sm"
             icon={
               <img
                 src={HistoryIcon}

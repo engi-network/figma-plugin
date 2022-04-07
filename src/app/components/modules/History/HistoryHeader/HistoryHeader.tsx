@@ -23,12 +23,17 @@ function HistoryHeader() {
           {ui('header.back')}
         </IconButton>
       </div>
-      <a href="#" className="flex items-center">
-        <span className="text-sm text-wf-secondary flex">
-          <InformationCircleIcon className="w-5 h-5 text-wf-secondary mr-3" />
-          {ui('header.learnMore')}
-        </span>
-      </a>
+      <div className="flex items-center">
+        <IconButton
+          className="text-wf-secondary text-sm"
+          icon={
+            <InformationCircleIcon className="w-5 h-5 text-wf-secondary mr-1" />
+          }
+          onClick={() => {}}
+        >
+          {ui('main.history')}
+        </IconButton>
+      </div>
     </div>
   )
 }
