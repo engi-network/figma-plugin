@@ -24,7 +24,9 @@ export const onSelection = async (selection: SceneNode): Promise<void> => {
       ...prevForm,
       component,
       height,
-      repository: initialSelection.repository, // need to be considered
+      repository: prevForm.repository
+        ? prevForm.repository
+        : initialSelection.repository, // need to be considered
       story,
       width,
     }
