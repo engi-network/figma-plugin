@@ -44,10 +44,19 @@ function Input({
     onChange(value)
   }
 
-  const classname = cn(
-    'border border-wf-tertiary text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+  const classes = cn(
+    'border text-sm rounded-lg block w-full p-2.5',
+    {
+      'text-gray-900 border-wf-tertiary focus:ring-wf-tertiary focus:border-wf-tertiary':
+        !error,
+    },
+    {
+      'border-red-500 text-red-600 placeholder:text-red-600 focus:ring-red-500 focus:border-red-500':
+        !!error,
+    },
     className,
   )
+
   const containerClassname = cn('flex flex-col relative w-full', containerClass)
 
   return (
@@ -64,7 +73,7 @@ function Input({
         value={value}
         required={required}
         type={type}
-        className={classname}
+        className={classes}
         placeholder={placeholder}
         {...rest}
       />

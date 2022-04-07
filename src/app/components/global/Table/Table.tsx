@@ -8,8 +8,6 @@ import Checkbox from '~/app/components/global/Checkbox/Checkbox'
 
 import { Cell, Column, ColumnGroup } from './Table.types'
 
-// import { getScrollbarWidth } from '~/app/lib/utils/scrollbar'
-
 interface Props {
   className?: string
   columns: Array<Column | ColumnGroup>
@@ -39,7 +37,6 @@ function Table({
     getTableBodyProps,
     headerGroups,
     rows,
-    // totalColumnsWidth,
     prepareRow,
     toggleSortBy,
     setFilter,
@@ -54,7 +51,7 @@ function Table({
     useSortBy,
   )
 
-  const RenderRow = useCallback(
+  const rowElements = useCallback(
     ({ index, style }) => {
       const row = rows[index]
       prepareRow(row)
@@ -91,6 +88,13 @@ function Table({
   }, [filterBy])
 
   const tableClasses = cn('table', className)
+
+  if (!rowElements.length) {
+    return (
+      <p className="text-sm text-wf-secondary">{"You don't have history!"}</p>
+    )
+  }
+
   return (
     <div {...getTableProps()} className={tableClasses} role="table">
       {!hideHeader && (
@@ -125,7 +129,7 @@ function Table({
               itemSize={35}
               width={width}
             >
-              {RenderRow}
+              {rowElements}
             </FixedSizeList>
           )}
         </AutoSizer>

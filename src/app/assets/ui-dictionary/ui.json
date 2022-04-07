@@ -10,7 +10,8 @@
     "analyze": "Analyze",
     "preview": {
       "design": "Design",
-      "code": "Code"
+      "code": "Code",
+      "seeMore": "See more options"
     },
     "history": "History"
   },

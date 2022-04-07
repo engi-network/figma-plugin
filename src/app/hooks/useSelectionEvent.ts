@@ -14,17 +14,17 @@ function useSelectionEvent() {
     }
 
     switch (event.data.pluginMessage.type) {
-      case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
+      case PLUGIN_CONSTATNS.SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
         const { data } = event.data.pluginMessage
         setSelectionData(data)
         break
       }
-      case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI: {
+      case PLUGIN_CONSTATNS.SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI: {
         console.error('error | from controller', event.data.pluginMessage.error)
         setErrorUI(event.data.pluginMessage.error)
         break
       }
-      case PLUGIN_CONSTATNS.FIGMA_MSG_TYPE_SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI: {
+      case PLUGIN_CONSTATNS.SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI: {
         setLoading(true)
         break
       }

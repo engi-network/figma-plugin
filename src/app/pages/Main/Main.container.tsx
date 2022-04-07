@@ -7,7 +7,10 @@ import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import ProgressBar from '~/app/components/global/ProgressBar/ProgressBar'
-import Code, { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
+import Code, {
+  AnalyzeFormValues,
+  FORM_FIELD,
+} from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
@@ -24,24 +27,13 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
 import { Report } from '~/app/models/Report'
 import {
-  LOCAL_STORAGE_KEY,
   SAME_STORY_FORM_UPDATE,
   SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
 
+import { DEMENSIONS } from './Main.container.data'
 import styles from './Main.container.styles'
 import { MESSAGES } from './Main.types'
-
-export const DEMENSIONS = {
-  SMALL: {
-    width: 300,
-    height: 240,
-  },
-  BIG: {
-    width: 300,
-    height: 240,
-  },
-}
 
 function MainContainer() {
   const navigate = useNavigate()
@@ -96,14 +88,14 @@ function MainContainer() {
     setValues(values)
     setErrors(undefined)
 
-    if (values) {
-      dispatchData({
-        type: SAME_STORY_FORM_UPDATE,
-        data: {
-          [LOCAL_STORAGE_KEY.REPOSITORY]: values.repository,
-        },
-      })
-    }
+    dispatchData({
+      type: SAME_STORY_FORM_UPDATE,
+      data: {
+        [FORM_FIELD.REPOSITORY]: values.repository,
+        [FORM_FIELD.COMMIT]: values.commit,
+        [FORM_FIELD.BRANCH]: values.branch,
+      },
+    })
   }
 
   const handleSubmit = useCallback(async () => {
@@ -167,12 +159,12 @@ function MainContainer() {
     }
 
     const {
-      name = '',
+      component,
+      story,
       repository = '',
       branch = '',
       commit = '',
     } = selectionData
-    const [component, story = ''] = name.split('-')
 
     setValues({
       branch,

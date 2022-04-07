@@ -1,7 +1,4 @@
 export enum LOCAL_STORAGE_KEY {
-  HEIGHT = 'ss_height',
+  FORM = 'ss_form',
   HISTORY = 'ss_history',
-  NAME = 'ss_name',
-  REPOSITORY = 'ss_repository',
-  WIDTH = 'ss_width',
 }

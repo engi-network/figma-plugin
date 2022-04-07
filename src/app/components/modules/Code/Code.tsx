@@ -94,11 +94,11 @@ function Code({ values: parentValues, onChange, errors }: Props) {
           />
           {showMore ? (
             <span
-              role="link"
-              className="text-sm text-wf-tertiary flex justify-end"
+              role="button"
+              className="text-sm text-wf-tertiary flex justify-end cursor-pointer"
               onClick={handleClickSeeMore}
             >
-              See more options
+              {ui('main.preview.seeMore')}
             </span>
           ) : (
             <>

@@ -1,7 +1,10 @@
-export const onFormChange = async (data) => {
-  const promises = Object.entries(data).map(async ([key, value]) => {
-    await figma.clientStorage.setAsync(key, value)
-  })
+import { AnalyzeFormValues } from '~/app/components/modules/Code/Code'
+import { initialSelection, LOCAL_STORAGE_KEY } from '~/plugin/constants'
 
-  await Promise.all(promises)
+export const onFormChange = async (data: AnalyzeFormValues) => {
+  const prevForm =
+    (await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.FORM)) ||
+    initialSelection
+  const updatedForm = { ...prevForm, ...data }
+  await figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.FORM, updatedForm)
 }

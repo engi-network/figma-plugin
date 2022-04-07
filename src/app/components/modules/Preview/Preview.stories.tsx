@@ -2,7 +2,7 @@ import { text } from '@storybook/addon-knobs'
 import { useRef } from 'react'
 
 import { decode } from '~/app/lib/utils/canvas'
-import { DEMENSIONS } from '~/app/pages/Main/Main.container'
+import { DEMENSIONS } from '~/app/pages/Main/Main.container.data'
 
 import Preview from './Preview'
 
