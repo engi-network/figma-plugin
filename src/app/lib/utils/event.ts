@@ -1,5 +1,5 @@
 interface DispatchParams {
-  data: Record<string, unknown> | unknown
+  data?: Record<string, unknown> | unknown
   type: string
 }
 

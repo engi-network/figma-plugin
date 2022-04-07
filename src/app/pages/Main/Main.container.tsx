@@ -28,6 +28,7 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Message } from '~/app/models/Message'
 import { Report } from '~/app/models/Report'
 import {
+  SAME_STORY_CHECK_INITIAL_SELECTION,
   SAME_STORY_FORM_UPDATE,
   SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
@@ -175,6 +176,10 @@ function MainContainer() {
       story,
     })
   }, [selectionData])
+
+  useEffect(() => {
+    dispatchData({ type: SAME_STORY_CHECK_INITIAL_SELECTION })
+  }, [])
 
   const handleViewHistory = () => {
     navigate('/history')

@@ -9,6 +9,7 @@ export const SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI = `${PREFIX}_send_error_fro
 export const SAME_STORY_SEND_PREPARATION_FROM_PLUGIN_TO_UI = `${PREFIX}_send_preparation_from_plugin_to_ui`
 export const SAME_STORY_SEND_ENCODED_FRAME_FROM_PLUGIN_TO_UI = `${PREFIX}_send_encoded_frame_from_plugin_to_ui`
 export const SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI = `${PREFIX}_send_selection_from_plugin_to_ui`
+export const SAME_STORY_CHECK_INITIAL_SELECTION = `${PREFIX}_check_inital_selection`
 
 // form sync with localstorage
 export const SAME_STORY_FORM_UPDATE = `${PREFIX}_form_update`

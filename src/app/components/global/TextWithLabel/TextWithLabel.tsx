@@ -14,7 +14,7 @@ function TextWithLabel({ id, label, text, placeholder }: Props) {
       <p
         id={id}
         aria-readonly
-        className="text-sm text-wf-tertiary min-h-[42px]  flex items-center text-ellipsis overflow-hidden"
+        className="text-sm text-wf-tertiary min-h-[42px]  flex items-center overflow-hidden truncate"
       >
         {text || placeholder}
       </p>

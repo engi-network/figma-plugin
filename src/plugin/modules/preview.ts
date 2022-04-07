@@ -14,17 +14,17 @@ import {
  * save a selection to storage + UI
  */
 
-const onSelection = async (selection: SceneNode) => {
+export const onSelection = async (selection: SceneNode): Promise<void> => {
   const { name, width, height } = selection
   try {
     const prevForm = await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.FORM)
 
     const [component, story = ''] = name.split('-')
     const newForm = {
-      ...initialSelection,
       ...prevForm,
       component,
       height,
+      repository: initialSelection.repository, // need to be considered
       story,
       width,
     }
@@ -50,24 +50,13 @@ const onSelection = async (selection: SceneNode) => {
   }
 }
 
-const selection = figma.currentPage.selection[0]
-
-if (selection) {
-  onSelection(selection)
-} else {
-  figma.ui.postMessage({
-    type: SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
-    error: { message: 'Select a frame!' },
-  })
-}
-
 figma.on('selectionchange', () => {
   const selection = figma.currentPage.selection[0]
 
   if (!selection) {
     figma.ui.postMessage({
       type: SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
-      error: { message: 'Select a frame!' },
+      error: { message: 'Please select a frame!' },
     })
 
     return
