@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { StorybookIcon } from '~/app/components/global/Icons'
 import Input from '~/app/components/global/Input/Input'
 import TextWithLabel from '~/app/components/global/TextWithLabel/TextWithLabel'
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -64,7 +65,12 @@ function Code({ values: parentValues, onChange, errors }: Props) {
       <h2 className="text-2xl text-black mb-5 font-bold text-center">
         {ui('main.preview.code')}
       </h2>
-      <div className="p-10 border-y border-r border-wf-tertiery">
+      <div className="p-10 border-y border-r border-wf-tertiery flex-1 relative">
+        <StorybookIcon
+          className="absolute right-1 top-[-1]"
+          width={41}
+          height={41}
+        />
         <div className="flex mb-5">
           <div className="w-6/12 flex flex-col">
             <TextWithLabel

@@ -1,5 +1,6 @@
 import Canvas, { CanvasRefType } from '~/app/components/global/Canvas/Canvas'
 import CanvasContainer from '~/app/components/global/Canvas/CanvasContainer'
+import { FigmaIcon } from '~/app/components/global/Icons'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 interface Props {
@@ -16,7 +17,12 @@ function Preview({ draw, originalCanvasRef, height, width, label }: Props) {
       <h2 className="text-2xl text-black mb-5 font-bold text-center">
         {ui('main.preview.design')}
       </h2>
-      <div className="flex justify-end flex-1 items-center border border-wf-tertiery">
+      <div className="flex justify-end flex-1 items-center border border-wf-tertiery relative">
+        <FigmaIcon
+          className="absolute right-1 top-[-1]"
+          width={41}
+          height={41}
+        />
         <CanvasContainer
           id="designs--frame-canvas"
           width={width}
