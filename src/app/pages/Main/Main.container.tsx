@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
+import { HistoryIcon } from '~/app/components/global/Icons'
 import ProgressBar from '~/app/components/global/ProgressBar/ProgressBar'
 import Code, {
   AnalyzeFormValues,
@@ -206,12 +206,7 @@ function MainContainer() {
           <IconButton
             className="text-wf-secondary text-sm"
             icon={
-              <img
-                src={HistoryIcon}
-                width={24}
-                height={24}
-                css={styles.historyIcon}
-              />
+              <HistoryIcon width={24} height={24} css={styles.historyIcon} />
             }
             onClick={handleViewHistory}
           >

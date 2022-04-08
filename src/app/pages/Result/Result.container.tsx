@@ -2,10 +2,10 @@ import { ArrowLeftIcon } from '@heroicons/react/solid'
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import HistoryIcon from '~/app/assets/icons/common/history.svg'
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import IconButton from '~/app/components/global/IconButton/IconButton'
+import { HistoryIcon } from '~/app/components/global/Icons'
 import { useAppContext } from '~/app/contexts/App.context'
 import { BUTTON_STYLE } from '~/app/lib/constants'
 import { fetchCheckReportDifference } from '~/app/lib/utils/aws'
@@ -102,7 +102,7 @@ function ResultContainer() {
             {ui('result.viewHistory')}
           </span>
           <IconButton
-            icon={<img src={HistoryIcon} width={24} height={24} />}
+            icon={<HistoryIcon width={24} height={24} />}
             buttonStyle={BUTTON_STYLE.OUTLINED}
           />
         </div>
