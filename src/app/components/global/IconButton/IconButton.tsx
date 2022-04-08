@@ -36,7 +36,7 @@ function IconButton({
       {...rest}
     >
       {leftIcon}
-      {children && <span css={styles.text}>{children}</span>}
+      {children && <span css={styles[iconPosition]}>{children}</span>}
       {rightIcon}
     </button>
   )

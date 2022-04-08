@@ -1,4 +1,4 @@
-import { BUTTON_STYLE, StylesMap } from '~/app/lib/constants'
+import { BUTTON_STYLE, DIRECTION, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
   root: {
@@ -8,11 +8,14 @@ const styles: StylesMap = {
     height: 30,
     justifyContent: 'center',
   },
-  text: {
-    marginLeft: 10,
-  },
   [BUTTON_STYLE.SOLID]: {},
   [BUTTON_STYLE.OUTLINED]: {},
+  [DIRECTION.LEFT]: {
+    marginLeft: 10,
+  },
+  [DIRECTION.RIGHT]: {
+    marginRight: 10,
+  },
 }
 
 export default styles

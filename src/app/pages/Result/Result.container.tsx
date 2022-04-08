@@ -7,7 +7,7 @@ import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { HistoryIcon } from '~/app/components/global/Icons'
 import { useAppContext } from '~/app/contexts/App.context'
-import { BUTTON_STYLE } from '~/app/lib/constants'
+import { BUTTON_STYLE, DIRECTION } from '~/app/lib/constants'
 import { fetchCheckReportDifference } from '~/app/lib/utils/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -96,13 +96,14 @@ function ResultContainer() {
           className="flex justify-end items-center h-fit"
           onClick={handleViewHistory}
         >
-          <span className="text-sm text-wf-secondary mr-5">
-            {ui('result.viewHistory')}
-          </span>
           <IconButton
+            className="text-wf-secondary text-sm"
             icon={<HistoryIcon width={24} height={24} />}
             buttonStyle={BUTTON_STYLE.OUTLINED}
-          />
+            iconPosition={DIRECTION.RIGHT}
+          >
+            {ui('result.viewHistory')}
+          </IconButton>
         </div>
       </div>
       <div className="flex mb-8">

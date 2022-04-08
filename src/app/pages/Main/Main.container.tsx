@@ -200,7 +200,7 @@ function MainContainer() {
 
   return (
     <>
-      <div className="flex justify-between border-y border-text-secondary px-7 py-5">
+      <div className="flex justify-between border-b border-text-secondary px-7 py-5">
         <h1 className="font-base text-black font-medium">{ui('main.title')}</h1>
         <div className="flex justify-center items-center">
           <IconButton

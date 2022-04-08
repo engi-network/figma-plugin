@@ -101,7 +101,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
           {showMore ? (
             <span
               role="button"
-              className="text-sm text-primary-blue flex justify-end cursor-pointer"
+              className="text-sm text-primary-blue flex justify-end cursor-pointer mt-4"
               onClick={handleClickSeeMore}
             >
               {ui('main.preview.seeMore')}
