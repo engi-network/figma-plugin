@@ -65,7 +65,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
       <h2 className="text-2xl text-black mb-5 font-bold text-center">
         {ui('main.preview.code')}
       </h2>
-      <div className="p-10 border-y border-r border-wf-tertiery flex-1 relative">
+      <div className="px-10 pt-8 border-y border-r border-wf-tertiery flex-1 relative">
         <StorybookIcon
           className="absolute right-1 top-[-1]"
           width={41}
@@ -101,7 +101,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
           {showMore ? (
             <span
               role="button"
-              className="text-sm text-wf-tertiary flex justify-end cursor-pointer"
+              className="text-sm text-primary-blue flex justify-end cursor-pointer"
               onClick={handleClickSeeMore}
             >
               {ui('main.preview.seeMore')}

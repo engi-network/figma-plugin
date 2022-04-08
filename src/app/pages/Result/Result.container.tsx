@@ -23,10 +23,7 @@ function ResultContainer() {
     return null
   }
 
-  const {
-    checkId,
-    result: { MAE },
-  } = report
+  const { checkId } = report
 
   const handleClickBack = () => {
     navigate('/')
@@ -88,8 +85,9 @@ function ResultContainer() {
         />
         <div className="absolute flex justify-center top-0 left-0 right-0 -z-10">
           <h1 className="text-2xl text-primary-dark w-6/12 text-center font-bold">
-            Well done <br />
-            <span className="bg-primary-green">{MAE}</span> match!
+            {ui('result.wellDone')} <br />
+            {ui('result.its')}
+            <span className="bg-primary-green">{ui('result.same')}</span>
           </h1>
         </div>
         <div

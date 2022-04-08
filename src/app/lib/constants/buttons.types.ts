@@ -8,3 +8,8 @@ export enum BUTTON_SIZE {
   MEDIUM = 'medium',
   SMALL = 'small',
 }
+
+export enum DIRECTION {
+  LEFT = 'left',
+  RIGHT = 'right',
+}

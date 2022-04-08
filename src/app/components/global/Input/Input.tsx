@@ -62,7 +62,7 @@ function Input({
   return (
     <div className={containerClassname}>
       {label && (
-        <label className="text-sm text-primary-dark mb-4" htmlFor={inputId}>
+        <label className="text-sm text-primary-dark mb-2" htmlFor={inputId}>
           {label}
         </label>
       )}

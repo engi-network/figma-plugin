@@ -11,7 +11,7 @@
     "preview": {
       "design": "Design",
       "code": "Code",
-      "seeMore": "See more options"
+      "seeMore": "More options"
     },
     "history": "History"
   },
@@ -19,7 +19,10 @@
     "blueScale": "Blue-scale Difference",
     "grayScale": "Gray-scale Difference",
     "createNew": "Create new",
-    "viewHistory": "View history"
+    "viewHistory": "View history",
+    "wellDone": "Well done!",
+    "its": "It's the",
+    "same": "Same Store"
   },
   "history": {
     "history": "History",
