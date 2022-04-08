@@ -3,7 +3,7 @@ import { PluginSelection } from '~/app/models/PluginSelection'
 export const ShowUIOptions = {
   title: 'Same story?',
   width: 728,
-  height: 620,
+  height: 670,
 }
 
 export const initialSelection: Partial<PluginSelection> = {

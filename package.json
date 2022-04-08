@@ -16,7 +16,8 @@
     "build-storybook": "build-storybook",
     "lint": "eslint \"src/**/*.{ts,tsx,md}\" \"scripts/**/*.{ts,tsx,md}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,md}\" --fix",
-    "storycap": "storycap --serverCmd \"start-storybook -p 9001\" http://localhost:9001"
+    "storycap": "storycap --serverCmd \"start-storybook -p 9001\" http://localhost:9001",
+    "generate-icons": "npx @svgr/cli --typescript --icon  -d src/app/components/global/Icons src/app/assets/icons/common"
   },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.55.0",
@@ -59,6 +60,7 @@
     "@storybook/manager-webpack5": "^6.4.19",
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
+    "@svgr/cli": "^6.2.1",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
