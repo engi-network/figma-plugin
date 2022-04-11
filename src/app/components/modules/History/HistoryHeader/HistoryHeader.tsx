@@ -31,7 +31,7 @@ function HistoryHeader() {
           }
           onClick={() => {}}
         >
-          {ui('main.learnMore')}
+          {ui('header.learnMore')}
         </IconButton>
       </div>
     </div>
