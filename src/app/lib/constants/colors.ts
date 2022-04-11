@@ -5,6 +5,10 @@ export const COLORS = {
     GREEN: '#65FEB7',
     BLUE: '#18A0FB',
   },
+  SECONDARY: {
+    BG: '#232323',
+    ERROR: '#F65151',
+  },
   WF: {
     BG: '#F3F5F9',
     LIGHT: '#EDEFF3',

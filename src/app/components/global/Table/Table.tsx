@@ -1,10 +1,9 @@
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid'
 import cn from 'classnames'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useBlockLayout, useFilters, useSortBy, useTable } from 'react-table'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
-
-import Checkbox from '~/app/components/global/Checkbox/Checkbox'
 
 import { Cell, Column, ColumnGroup } from './Table.types'
 
@@ -140,10 +139,14 @@ function Table({
 
 export function Status({ value }: { value: string }) {
   if (value === 'success') {
-    return <Checkbox checked readOnly />
+    return (
+      <CheckCircleIcon className="w-5 h-5 bg-primary-white text-primary-green" />
+    )
   }
 
-  return <Checkbox isDisabled readOnly />
+  return (
+    <XCircleIcon className="w-5 h-5 bg-primary-white text-secondary-error" />
+  )
 }
 
 export function CellText({ value }: { value: string }) {

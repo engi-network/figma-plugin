@@ -12,6 +12,10 @@ module.exports = {
           green: '#65FEB7',
           blue: '#18A0FB',
         },
+        secondary: {
+          bg: '#232323',
+          error: '#F65151',
+        },
         wf: {
           bg: '#F3F5F9',
           light: '#EDEFF3',
