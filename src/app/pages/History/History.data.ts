@@ -8,6 +8,13 @@ export const sortByOptions: Array<SelectOption> = [
   { value: 'status', name: 'Status' },
 ]
 
+export const filterByOptions: Array<SelectOption> = [
+  { value: 'component', name: 'Component' },
+  { value: 'story', name: 'Story' },
+  { value: 'status', name: 'Status' },
+  { value: 'repository', name: 'Repository' },
+]
+
 export const mockReport: Report = {
   checkId: '293bdbd6-dee7-4e17-b3db-82765db6308f',
   result: {

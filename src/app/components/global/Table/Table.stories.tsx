@@ -4,7 +4,8 @@ import Select, { SelectOption } from '~/app/components/global/Select/Select'
 import { mockHistoryData } from '~/app/pages/History/History.data'
 
 import Input from '../Input/Input'
-import Table, { CellText, Column, Status } from './Table'
+import Table, { CellText, Status } from './Table'
+import { Column } from './Table.types'
 import { mapHistoryToTable } from './Table.utils'
 
 export default {

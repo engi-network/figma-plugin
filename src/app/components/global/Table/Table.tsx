@@ -13,6 +13,7 @@ interface Props {
   data: Array<Cell>
   filterBy?: string
   hideHeader?: boolean
+  searchBy?: string
   sortBy?: string
 }
 
@@ -23,6 +24,7 @@ function Table({
   sortBy,
   filterBy,
   className,
+  searchBy,
 }: Props) {
   const defaultColumn = useMemo(
     () => ({
@@ -83,8 +85,8 @@ function Table({
   }, [sortBy])
 
   useEffect(() => {
-    setFilter('component', filterBy)
-  }, [filterBy])
+    setFilter(filterBy, searchBy)
+  }, [filterBy, searchBy])
 
   const tableClasses = cn('table', className)
 

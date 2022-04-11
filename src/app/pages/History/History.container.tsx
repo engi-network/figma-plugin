@@ -8,20 +8,28 @@ import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { sortByOptions } from '~/app/pages/History/History.data'
+import {
+  filterByOptions,
+  sortByOptions,
+} from '~/app/pages/History/History.data'
 
 function Historycontainer() {
   const { history } = useAppContext()
   const data = useMemo(() => mapHistoryToTable(history), [])
   const [sortBy, setSortBy] = useState('')
   const [filterBy, setFilterBy] = useState('')
+  const [searchBy, setSearchBy] = useState('')
 
   const onSearchTermChange = (value: string) => {
-    setFilterBy(value)
+    setSearchBy(value)
   }
 
   const handleSelectChange = (value: string) => {
     setSortBy(value)
+  }
+
+  const handleFilterByChange = (value: string) => {
+    setFilterBy(value)
   }
 
   const tableColumns: Array<Column> = useMemo(
@@ -68,7 +76,7 @@ function Historycontainer() {
             onChange={onSearchTermChange}
             placeholder={'Search...'}
             className=""
-            value={filterBy}
+            value={searchBy}
           />
         </div>
       </div>
@@ -80,12 +88,20 @@ function Historycontainer() {
           placeholder="Sort by"
           className="w-2/12"
         />
+        <Select
+          options={filterByOptions}
+          onChange={handleFilterByChange}
+          value={sortBy}
+          placeholder="Filter"
+          className="w-2/12"
+        />
       </div>
       <Table
         columns={tableColumns}
         data={data}
         sortBy={sortBy}
         filterBy={filterBy}
+        searchBy={searchBy}
         hideHeader
       />
     </>
