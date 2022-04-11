@@ -42,9 +42,15 @@ function Historycontainer() {
         Cell: CellText,
       },
       {
+        Header: 'Repository',
+        accessor: 'repository',
+        Cell: CellText,
+      },
+      {
         Header: 'Status',
         accessor: 'status',
         Cell: Status,
+        width: 40,
       },
     ],
     [],
@@ -53,7 +59,7 @@ function Historycontainer() {
   return (
     <>
       <HistoryHeader />
-      <div className="px-8 py-6 border-b border-text-secondary">
+      <div className="px-8 py-6 border-b border-text-secondary border-opacity-30">
         <h2 className="text-base text-black mb-5 font-bold">
           {ui('history.history')}
         </h2>
@@ -81,7 +87,6 @@ function Historycontainer() {
         sortBy={sortBy}
         filterBy={filterBy}
         hideHeader
-        className="px-8"
       />
     </>
   )

@@ -59,7 +59,7 @@ function Table({
           {...row.getRowProps({
             style,
           })}
-          className="tr justify-between"
+          className="tr justify-between border-b border-text-secondary border-opacity-30 py-4 px-7"
         >
           {row.cells.map((cell, index) => {
             return (
@@ -125,7 +125,7 @@ function Table({
             <FixedSizeList
               height={height}
               itemCount={rows.length}
-              itemSize={35}
+              itemSize={57}
               width={width}
             >
               {rowElements}
@@ -140,12 +140,12 @@ function Table({
 export function Status({ value }: { value: string }) {
   if (value === 'success') {
     return (
-      <CheckCircleIcon className="w-5 h-5 bg-primary-white text-primary-green" />
+      <CheckCircleIcon className="w-6 h-6 bg-primary-white text-primary-green" />
     )
   }
 
   return (
-    <XCircleIcon className="w-5 h-5 bg-primary-white text-secondary-error" />
+    <XCircleIcon className="w-6 h-6 bg-primary-white text-secondary-error" />
   )
 }
 
