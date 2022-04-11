@@ -22,7 +22,7 @@ function Table({
   data,
   hideHeader,
   sortBy,
-  filterBy,
+  filterBy = 'component',
   className,
   searchBy,
 }: Props) {
@@ -85,7 +85,7 @@ function Table({
   }, [sortBy])
 
   useEffect(() => {
-    setFilter(filterBy, searchBy)
+    setFilter(filterBy || 'component', searchBy)
   }, [filterBy, searchBy])
 
   const tableClasses = cn('table', className)

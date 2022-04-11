@@ -74,26 +74,26 @@ function Historycontainer() {
         <div className="flex">
           <Input
             onChange={onSearchTermChange}
-            placeholder={'Search...'}
+            placeholder={ui('history.searchPlaceholder')}
             className=""
             value={searchBy}
           />
         </div>
       </div>
-      <div className="px-8 mb-8 mt-4">
+      <div className="flex px-8 mb-8 mt-4">
         <Select
           options={sortByOptions}
           onChange={handleSelectChange}
           value={sortBy}
           placeholder="Sort by"
-          className="w-2/12"
+          className="w-24"
         />
         <Select
           options={filterByOptions}
           onChange={handleFilterByChange}
           value={sortBy}
           placeholder="Filter"
-          className="w-2/12"
+          className="w-24"
         />
       </div>
       <Table
