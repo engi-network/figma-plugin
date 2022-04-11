@@ -9,7 +9,7 @@ export const COLORS = {
     BG: '#F3F5F9',
     LIGHT: '#EDEFF3',
     PRIMARY: '#40444E',
-    SECONDARY: '#6B7690',
+    SECONDARY: '#B3B3B3',
     TERTIARY: '#AEB5C7',
   },
   TEXT: {

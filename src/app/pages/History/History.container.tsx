@@ -72,7 +72,7 @@ function Historycontainer() {
           onChange={handleSelectChange}
           value={sortBy}
           placeholder="Sort by"
-          className="w-2/12"
+          className="w-16"
         />
       </div>
       <Table

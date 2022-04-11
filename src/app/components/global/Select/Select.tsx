@@ -1,6 +1,6 @@
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid'
-import React, { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
@@ -50,9 +50,9 @@ function Select({
     <div className={className}>
       <Listbox value={selectedOption} onChange={handleSelectChange}>
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-full py-2 pl-3 pr-10  text-sm text-left text-wf-primary cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
+          <Listbox.Button className="flex justify-between items-center w-full p-2  text-sm text-left text-wf-primary cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
             <span className="block truncate">{label}</span>
-            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+            <span className="flex items-center pr-2 pointer-events-none">
               <ChevronDownIcon
                 className="w-4 h-4 text-wf-primary"
                 aria-hidden="true"
@@ -66,7 +66,7 @@ function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options
-              className="absolute z-10 mt-1 overflow-auto bg-white rounded-2xl max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none divide-y"
+              className="absolute z-10 mt-1 overflow-auto bg-white rounded-2xl max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none"
               css={styles.optionPanel}
             >
               {options.map((option) => (
