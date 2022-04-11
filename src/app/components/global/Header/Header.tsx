@@ -1,6 +1,6 @@
 import { XIcon } from '@heroicons/react/solid'
 
-import Logo from '~/app/assets/icons/common/logo.svg'
+import Logo from '~/app/components/global/Icons/LogoIcon'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 import styles from './Header.styles'
@@ -13,7 +13,7 @@ function Header() {
       <div className="flex justify-between items-center px-3.5 py-4">
         <div className="flex">
           <a href="#">
-            <img className="h-8 w-auto sm:h-10" src={Logo} alt="engi" />
+            <Logo className="h-8 w-auto sm:h-10" />
           </a>
           <h1 css={styles.title} className="ml-5 text-wf-primary">
             {ui('header.title')}

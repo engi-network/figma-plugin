@@ -27,5 +27,10 @@
   "history": {
     "history": "History",
     "search": "Search"
+  },
+  "components": {
+    "select": {
+      "placeholder": "Select one..."
+    }
   }
 }
