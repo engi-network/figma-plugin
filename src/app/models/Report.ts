@@ -12,8 +12,13 @@ export interface ErrorReport extends Specification {
   }
 }
 
+/**
+ * @TODO format property to camelCase
+ */
 export interface ReportResult extends Specification {
   MAE: string
+  completed_at: string
+  created_at: string
 }
 
 export interface Report {
