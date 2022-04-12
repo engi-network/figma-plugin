@@ -5,7 +5,7 @@ export enum ROUTES {
 }
 
 export const ROUTES_MAP: { [routeName: string]: string } = {
-  [ROUTES.HISTORY]: '/',
-  [ROUTES.HOME]: '/history',
+  [ROUTES.HOME]: '/',
+  [ROUTES.HISTORY]: '/history',
   [ROUTES.RESULT]: '/result',
 }

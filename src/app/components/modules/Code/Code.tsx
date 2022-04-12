@@ -40,8 +40,12 @@ function Code({ values: parentValues, onChange, errors }: Props) {
   }, [parentValues])
 
   return (
-    <ContainerWithTitle width={304} title={ui('main.preview.code')}>
-      <div className="border-y border-r border-wf-tertiery flex-1 relative">
+    <ContainerWithTitle
+      width={304}
+      title={ui('main.preview.code')}
+      contentClassName={'px-10 pt-8 border-y border-r'}
+    >
+      <>
         <StorybookIcon
           className="absolute right-1 top-[-1]"
           width={41}
@@ -105,7 +109,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
             </>
           )}
         </div>
-      </div>
+      </>
     </ContainerWithTitle>
   )
 }

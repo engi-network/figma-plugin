@@ -1,21 +1,38 @@
+import cn from 'classnames'
 import { ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
+  className?: string
+  contentClassName?: string
   description?: string
   title: string
   width?: number
 }
 
-function ContainerWithTitle({ width, title, children, description }: Props) {
+function ContainerWithTitle({
+  width,
+  title,
+  children,
+  description,
+  className,
+  contentClassName,
+}: Props) {
+  const rootClasses = cn(
+    `flex flex-col h-full ${width ? `w-[${width}px]` : 'w-full'}`,
+    className,
+  )
+  const contentClasses = cn(
+    'flex-1 relative  border-wf-tertiery',
+    contentClassName,
+  )
+
   return (
-    <div
-      className={`flex flex-col h-full ${width ? `w-[${width}px]` : 'w-full'}`}
-    >
+    <div className={rootClasses}>
       <h2 className="text-2xl text-black mb-6 font-bold text-center">
         {title}
       </h2>
-      <div className="px-10 pt-8 flex-1">{children}</div>
+      <div className={contentClasses}>{children}</div>
       {description && (
         <label className="text-base text-gray-400 text-center absolute -bottom-8 left-0 right-0">
           {description}
