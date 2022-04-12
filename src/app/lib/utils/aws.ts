@@ -5,7 +5,6 @@ import S3 from 'aws-sdk/clients/s3'
 import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
 import { MAX_RETRY_TIMES, POLLING_INTERVAL } from '~/app/lib/constants/aws'
-import { CheckItem, CheckTable } from '~/app/models/Check'
 import { Message } from '~/app/models/Message'
 import { isError, Report, ReportResult } from '~/app/models/Report'
 
@@ -70,14 +69,6 @@ export const startEcsCheck = async (
   return data
 }
 
-// all checks the user has started since the plugin has been open
-const checkTable: CheckTable = {
-  EXAMPLE_CHECK_ID: {
-    report: null,
-    reportPollId: undefined,
-  },
-}
-
 export const pollCheckReport = async (
   checkId: string,
   callback: (
@@ -85,27 +76,15 @@ export const pollCheckReport = async (
     data?: Report,
   ) => void,
 ) => {
-  if (
-    checkTable[checkId] &&
-    checkTable[checkId].reportPollId &&
-    checkTable[checkId].report
-  ) {
-    clearInterval(checkTable[checkId].reportPollId)
-    checkTable[checkId].reportPollId = undefined
-    return checkTable[checkId].report
-  }
-
   let retryTimes = 0
   let timerId = -1
 
   timerId = setInterval(async () => {
-    checkTable[checkId] = {} as CheckItem
     try {
       const report = await fetchCheckReport(checkId)
       clearInterval(timerId)
 
       if (!isError(report.result)) {
-        checkTable[checkId].report = report
         callback(
           {
             success: true,
