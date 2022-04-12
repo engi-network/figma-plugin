@@ -2,32 +2,11 @@ import { useEffect, useState } from 'react'
 
 import { StorybookIcon } from '~/app/components/global/Icons'
 import Input from '~/app/components/global/Input/Input'
+import ContainerWithTitle from '~/app/components/global/Layout/ContainerWithTitle/ContainerWithTitle'
 import TextWithLabel from '~/app/components/global/TextWithLabel/TextWithLabel'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-export enum FORM_FIELD {
-  BRANCH = 'branch',
-  COMMIT = 'commit',
-  COMPONENT = 'component',
-  REPOSITORY = 'repository',
-  STORY = 'story',
-}
-
-export interface AnalyzeFormValues {
-  [FORM_FIELD.STORY]: string
-  [FORM_FIELD.COMPONENT]: string
-  [FORM_FIELD.REPOSITORY]: string
-  [FORM_FIELD.BRANCH]: string
-  [FORM_FIELD.COMMIT]: string
-}
-
-const intialFormValue = {
-  [FORM_FIELD.COMPONENT]: '',
-  [FORM_FIELD.REPOSITORY]: '',
-  [FORM_FIELD.STORY]: '',
-  [FORM_FIELD.BRANCH]: '',
-  [FORM_FIELD.COMMIT]: '',
-}
+import { AnalyzeFormValues, FORM_FIELD, initialFormValue } from './Code.data'
 
 interface Props {
   errors?: AnalyzeFormValues
@@ -36,7 +15,7 @@ interface Props {
 }
 
 function Code({ values: parentValues, onChange, errors }: Props) {
-  const [values, setValues] = useState<AnalyzeFormValues>(intialFormValue)
+  const [values, setValues] = useState<AnalyzeFormValues>(initialFormValue)
   const [showMore, setShowMore] = useState<boolean>(true)
 
   const handleInputChange = (field: FORM_FIELD) => (value: string) => {
@@ -61,11 +40,8 @@ function Code({ values: parentValues, onChange, errors }: Props) {
   }, [parentValues])
 
   return (
-    <div className="flex flex-col h-full w-[304px]">
-      <h2 className="text-2xl text-black mb-5 font-bold text-center">
-        {ui('main.preview.code')}
-      </h2>
-      <div className="px-10 pt-8 border-y border-r border-wf-tertiery flex-1 relative">
+    <ContainerWithTitle width={304} title={ui('main.preview.code')}>
+      <div className="border-y border-r border-wf-tertiery flex-1 relative">
         <StorybookIcon
           className="absolute right-1 top-[-1]"
           width={41}
@@ -130,7 +106,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
           )}
         </div>
       </div>
-    </div>
+    </ContainerWithTitle>
   )
 }
 

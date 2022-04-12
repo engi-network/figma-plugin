@@ -1,14 +1,19 @@
 import ProgressBar, { ProgressBarProps } from './ProgressBar'
 
-interface Props extends ProgressBarProps {
+interface Props extends Omit<ProgressBarProps, 'label'> {
   title: string
 }
 
-function ProgressBarWithLabel({ title, ...rest }: Props) {
+function ProgressBarWithLabel({ title, percentage, ...rest }: Props) {
   return (
     <div className="flex justify-start items-center w-full">
       <label className="text-sm text-secondary-bg mr-6">{title}</label>
-      <ProgressBar className="flex-1" {...rest} />
+      <ProgressBar
+        percentage={percentage}
+        className="flex-1"
+        {...rest}
+        label={`${percentage}%`}
+      />
     </div>
   )
 }

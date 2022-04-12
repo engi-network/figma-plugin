@@ -6,11 +6,12 @@ import { v4 as uuidv4 } from 'uuid'
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { HistoryIcon } from '~/app/components/global/Icons'
-import ProgressBar from '~/app/components/global/ProgressBar/ProgressBar'
-import Code, {
+import ProgressBarWithLabel from '~/app/components/global/ProgressBar/ProgressBarWithLabel'
+import Code from '~/app/components/modules/Code/Code'
+import {
   AnalyzeFormValues,
   FORM_FIELD,
-} from '~/app/components/modules/Code/Code'
+} from '~/app/components/modules/Code/Code.data'
 import Preview from '~/app/components/modules/Preview/Preview'
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
@@ -57,7 +58,6 @@ function MainContainer() {
     report?: Report,
   ) => {
     if (report) {
-      console.info('yay, successfully got report:::', report)
       dispatchData({
         type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
         data: report,
@@ -65,6 +65,7 @@ function MainContainer() {
       setHistory((prev) => [...prev, report])
 
       if (status.success) {
+        console.info('Yay, successfully got report:::', report)
         setReport(report)
         setProgress(100)
         navigate(ROUTES_MAP[ROUTES.RESULT])
@@ -75,7 +76,7 @@ function MainContainer() {
       }
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
-        //set ui error in turn
+        //set timeout error
         setProgress(0)
         setIsLoading(false)
       } else {
@@ -185,18 +186,7 @@ function MainContainer() {
     navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 
-  if (isLoading) {
-    const step = Math.floor(progress / 20)
-    return (
-      <div className="flex flex-1 justify-center items-center">
-        <ProgressBar
-          percentage={progress}
-          label={MESSAGES[step]}
-          className={'w-8/12'}
-        />
-      </div>
-    )
-  }
+  const step = Math.floor(progress / 20)
 
   return (
     <>
@@ -214,7 +204,7 @@ function MainContainer() {
           </IconButton>
         </div>
       </div>
-      <div className="flex mb-10 p-10">
+      <div className="flex p-10">
         <section className="w-1/2 flex flex-col items-end">
           <Preview
             draw={draw}
@@ -226,6 +216,17 @@ function MainContainer() {
         <section className="w-1/2">
           <Code onChange={handleChange} values={values} errors={errors} />
         </section>
+      </div>
+      <div className="flex px-10 my-5">
+        {isLoading && (
+          <div className="flex flex-1 justify-center items-center">
+            <ProgressBarWithLabel
+              percentage={progress}
+              className={'w-8/12'}
+              title={MESSAGES[step]}
+            />
+          </div>
+        )}
       </div>
       <footer className="flex justify-between px-6 mb-10">
         <a href="#" className="flex items-center">

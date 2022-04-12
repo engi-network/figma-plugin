@@ -1,6 +1,7 @@
 import Canvas, { CanvasRefType } from '~/app/components/global/Canvas/Canvas'
 import CanvasContainer from '~/app/components/global/Canvas/CanvasContainer'
 import { FigmaIcon } from '~/app/components/global/Icons'
+import ContainerWithTitle from '~/app/components/global/Layout/ContainerWithTitle/ContainerWithTitle'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 interface Props {
@@ -13,10 +14,11 @@ interface Props {
 
 function Preview({ draw, originalCanvasRef, height, width, label }: Props) {
   return (
-    <div className="flex flex-col h-full w-[304px] relative">
-      <h2 className="text-2xl text-black mb-5 font-bold text-center">
-        {ui('main.preview.design')}
-      </h2>
+    <ContainerWithTitle
+      width={304}
+      title={ui('main.preview.design')}
+      description={label}
+    >
       <div className="flex justify-end flex-1 items-center border border-wf-tertiery relative">
         <FigmaIcon
           className="absolute right-1 top-[-1]"
@@ -38,12 +40,7 @@ function Preview({ draw, originalCanvasRef, height, width, label }: Props) {
           />
         </CanvasContainer>
       </div>
-      {label && (
-        <label className="text-base text-gray-400 text-center absolute -bottom-8 left-0 right-0">
-          {label}
-        </label>
-      )}
-    </div>
+    </ContainerWithTitle>
   )
 }
 

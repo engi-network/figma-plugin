@@ -26,7 +26,6 @@ export function ProgressBarWithLabelKnobs() {
       <ProgressBarWithLabel
         title={text('Title', 'Cloning repository:')}
         percentage={percent}
-        label={text('Label', `${percent}%`)}
       />
     </div>
   )
