@@ -32,12 +32,14 @@ function ContainerWithTitle({
       <h2 className="text-2xl text-black mb-6 font-bold text-center">
         {title}
       </h2>
-      <div className={contentClasses}>{children}</div>
-      {description && (
-        <label className="text-base text-gray-400 text-center absolute -bottom-8 left-0 right-0">
-          {description}
-        </label>
-      )}
+      <div className={contentClasses}>
+        {children}
+        {description && (
+          <label className="text-sm text-gray-400 text-center absolute -bottom-8 left-0 right-0">
+            {description}
+          </label>
+        )}
+      </div>
     </div>
   )
 }

@@ -79,8 +79,7 @@ function MainContainer() {
       }
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
-        //set timeout error
-        console.error('Time out!')
+        console.error('Api time out error!')
         setProgress(0)
         setIsLoading(false)
         setApiError('Something went wrong. Please double check the inputs.')
@@ -95,6 +94,7 @@ function MainContainer() {
   const handleChange = async (values: AnalyzeFormValues) => {
     setValues(values)
     setFormErrors(undefined)
+    setApiError('')
 
     dispatchData({
       type: SAME_STORY_FORM_UPDATE,
@@ -209,7 +209,7 @@ function MainContainer() {
           </IconButton>
         </div>
       </div>
-      <div className="flex px-10 pt-10">
+      <div className="flex px-10 pt-9">
         <section className="w-1/2 flex flex-col items-end">
           <Preview
             draw={draw}
