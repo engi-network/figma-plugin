@@ -1,6 +1,7 @@
 import ProgressBar, { ProgressBarProps } from './ProgressBar'
 
 interface Props extends Omit<ProgressBarProps, 'label'> {
+  rootClassName?: string
   title: string
 }
 

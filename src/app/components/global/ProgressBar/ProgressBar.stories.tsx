@@ -26,6 +26,7 @@ export function ProgressBarWithLabelKnobs() {
       <ProgressBarWithLabel
         title={text('Title', 'Cloning repository:')}
         percentage={percent}
+        progressMinWidth={40}
       />
     </div>
   )

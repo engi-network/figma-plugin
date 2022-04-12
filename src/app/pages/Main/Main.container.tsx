@@ -77,6 +77,7 @@ function MainContainer() {
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
         //set timeout error
+        console.error('Time out!')
         setProgress(0)
         setIsLoading(false)
       } else {
@@ -217,17 +218,15 @@ function MainContainer() {
           <Code onChange={handleChange} values={values} errors={errors} />
         </section>
       </div>
-      <div className="flex px-10 my-5">
-        {isLoading && (
-          <div className="flex flex-1 justify-center items-center">
-            <ProgressBarWithLabel
-              percentage={progress}
-              className={'w-8/12'}
-              title={MESSAGES[step]}
-            />
-          </div>
-        )}
-      </div>
+      {isLoading && (
+        <div className="flex px-12 mb-5 w-7/12">
+          <ProgressBarWithLabel
+            percentage={progress}
+            title={MESSAGES[step]}
+            progressMinWidth={30}
+          />
+        </div>
+      )}
       <footer className="flex justify-between px-6 mb-10">
         <a href="#" className="flex items-center">
           <span className="text-sm text-wf-secondary flex">

@@ -19,7 +19,7 @@ function ContainerWithTitle({
   contentClassName,
 }: Props) {
   const rootClasses = cn(
-    `flex flex-col h-full ${width ? `w-[${width}px]` : 'w-full'}`,
+    `flex flex-col h-full ${width ? 'w-full' : ''}`,
     className,
   )
   const contentClasses = cn(
@@ -28,7 +28,7 @@ function ContainerWithTitle({
   )
 
   return (
-    <div className={rootClasses}>
+    <div css={[width && { width }]} className={rootClasses}>
       <h2 className="text-2xl text-black mb-6 font-bold text-center">
         {title}
       </h2>
