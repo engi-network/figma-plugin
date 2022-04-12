@@ -35,7 +35,7 @@ function ContainerWithTitle({
       <div className={contentClasses}>
         {children}
         {description && (
-          <label className="text-sm text-gray-400 text-center absolute -bottom-8 left-0 right-0">
+          <label className="text-sm text-gray-400 text-center absolute -bottom-6 left-0 right-0">
             {description}
           </label>
         )}

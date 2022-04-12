@@ -192,6 +192,7 @@ function MainContainer() {
   }
 
   const step = Math.floor(progress / 20)
+  const showDemension = !isLoading && !apiError
 
   return (
     <>
@@ -214,7 +215,7 @@ function MainContainer() {
           <Preview
             draw={draw}
             originalCanvasRef={originCanvasRef}
-            label={`${width} ✕ ${height}`}
+            label={showDemension ? `${width} ✕ ${height}` : undefined}
             {...DEMENSIONS.SMALL}
           />
         </section>
