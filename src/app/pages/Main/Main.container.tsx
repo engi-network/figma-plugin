@@ -222,7 +222,12 @@ function MainContainer() {
           />
         </section>
         <section className="w-1/2">
-          <Code onChange={handleChange} values={values} errors={formErrors} />
+          <Code
+            onChange={handleChange}
+            values={values}
+            errors={formErrors}
+            isDisabled={isDisabled}
+          />
         </section>
       </div>
       {isLoading && (

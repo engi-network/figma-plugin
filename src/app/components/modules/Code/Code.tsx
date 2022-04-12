@@ -10,11 +10,12 @@ import { AnalyzeFormValues, FORM_FIELD, initialFormValue } from './Code.data'
 
 interface Props {
   errors?: AnalyzeFormValues
+  isDisabled?: boolean
   onChange: (values: AnalyzeFormValues) => void
   values?: AnalyzeFormValues
 }
 
-function Code({ values: parentValues, onChange, errors }: Props) {
+function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
   const [values, setValues] = useState<AnalyzeFormValues>(initialFormValue)
   const [showMore, setShowMore] = useState<boolean>(true)
 
@@ -77,6 +78,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
             value={values[FORM_FIELD.REPOSITORY]}
             onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
             error={errors && errors[FORM_FIELD.REPOSITORY]}
+            disabled={isDisabled}
           />
           {showMore ? (
             <span
@@ -96,6 +98,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
                 value={values[FORM_FIELD.BRANCH]}
                 onChange={handleInputChange(FORM_FIELD.BRANCH)}
                 error={errors && errors[FORM_FIELD.BRANCH]}
+                disabled={isDisabled}
               />
               <Input
                 id="commit"
@@ -105,6 +108,7 @@ function Code({ values: parentValues, onChange, errors }: Props) {
                 value={values[FORM_FIELD.COMMIT]}
                 onChange={handleInputChange(FORM_FIELD.COMMIT)}
                 error={errors && errors[FORM_FIELD.COMMIT]}
+                disabled={isDisabled}
               />
             </>
           )}

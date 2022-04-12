@@ -1,4 +1,4 @@
-import { text } from '@storybook/addon-knobs'
+import { boolean, text } from '@storybook/addon-knobs'
 import { useState } from 'react'
 
 import Input from './Input'
@@ -13,6 +13,7 @@ export function InputWithKnobs() {
   const handleChangeValue = (value: string) => {
     setValue(value)
   }
+  const isDisabled = boolean('Disabled?', false)
 
   return (
     <div className="bg-primary-white">
@@ -22,6 +23,7 @@ export function InputWithKnobs() {
         value={value}
         placeholder={text('Placehoder', 'placehoder')}
         error={text('Error', 'This field has an error!')}
+        disabled={isDisabled}
       />
     </div>
   )

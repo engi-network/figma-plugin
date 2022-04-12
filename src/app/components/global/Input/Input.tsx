@@ -45,7 +45,7 @@ function Input({
   }
 
   const classes = cn(
-    'border text-sm rounded-lg block w-full p-2.5',
+    'border text-sm rounded-lg block w-full p-2.5 disabled:text-wf-secondary',
     {
       'text-gray-900 border-wf-secondary focus:ring-wf-secondary focus:border-wf-secondary placeholder:text-text-secondary':
         !error,
