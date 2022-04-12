@@ -41,12 +41,14 @@ import { MESSAGES } from './Main.types'
 function MainContainer() {
   const navigate = useNavigate()
   const { selectionData, draw } = useSelectionData()
+  const { setReport, setHistory } = useAppContext()
+
   const [values, setValues] = useState<AnalyzeFormValues>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [errors, setErrors] = useState<AnalyzeFormValues>()
+  const [formErrors, setFormErrors] = useState<AnalyzeFormValues>()
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
   const [progress, setProgress] = useState(0)
-  const { setReport, setHistory } = useAppContext()
+  const [apiError, setApiError] = useState('')
 
   const { width = 0, height = 0, commit, branch } = selectionData || {}
 
@@ -73,6 +75,7 @@ function MainContainer() {
         console.error('Oops, got an error report:::', report)
         setIsLoading(false)
         setProgress(0)
+        setApiError('Something went wrong. Please double check the inputs.')
       }
     } else {
       if (status.retryTimes > MAX_RETRY_TIMES) {
@@ -80,6 +83,7 @@ function MainContainer() {
         console.error('Time out!')
         setProgress(0)
         setIsLoading(false)
+        setApiError('Something went wrong. Please double check the inputs.')
       } else {
         //calculate the progress based on the retry times
         const progress = Math.floor((status.retryTimes / MAX_RETRY_TIMES) * 100)
@@ -90,7 +94,7 @@ function MainContainer() {
 
   const handleChange = async (values: AnalyzeFormValues) => {
     setValues(values)
-    setErrors(undefined)
+    setFormErrors(undefined)
 
     dispatchData({
       type: SAME_STORY_FORM_UPDATE,
@@ -104,7 +108,7 @@ function MainContainer() {
 
   const handleSubmit = useCallback(async () => {
     if (!values || !values.repository) {
-      setErrors({
+      setFormErrors({
         branch: '',
         commit: '',
         component: '',
@@ -205,7 +209,7 @@ function MainContainer() {
           </IconButton>
         </div>
       </div>
-      <div className="flex p-10">
+      <div className="flex px-10 pt-10">
         <section className="w-1/2 flex flex-col items-end">
           <Preview
             draw={draw}
@@ -215,11 +219,11 @@ function MainContainer() {
           />
         </section>
         <section className="w-1/2">
-          <Code onChange={handleChange} values={values} errors={errors} />
+          <Code onChange={handleChange} values={values} errors={formErrors} />
         </section>
       </div>
       {isLoading && (
-        <div className="flex px-12 mb-5 w-7/12">
+        <div className="flex px-12 mt-5 w-7/12">
           <ProgressBarWithLabel
             percentage={progress}
             title={MESSAGES[step]}
@@ -227,10 +231,18 @@ function MainContainer() {
           />
         </div>
       )}
-      <footer className="flex justify-between px-6 mb-10">
+      {apiError && (
+        <div className="flex px-12 mt-5 justify-center items-center">
+          <span className="text-sm text-secondary-error flex">
+            <InformationCircleIcon className="w-5 h-5 text-secondary-error mr-2" />
+            {apiError}
+          </span>
+        </div>
+      )}
+      <footer className="flex justify-between px-6 my-8">
         <a href="#" className="flex items-center">
           <span className="text-sm text-wf-secondary flex">
-            <InformationCircleIcon className="w-5 h-5 text-wf-secondary mr-3" />
+            <InformationCircleIcon className="w-5 h-5 text-wf-secondary mr-2" />
             {ui('header.learnMore')}
           </span>
         </a>

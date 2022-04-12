@@ -5,7 +5,7 @@ import { decode } from '~/app/lib/utils/canvas'
 import useSelectionEvent from './useSelectionEvent'
 
 function usePreviewData() {
-  const { selectionData, errorUI, isLoading } = useSelectionEvent()
+  const { selectionData, selectionError, isLoading } = useSelectionEvent()
 
   const drawCallback = useCallback(
     async (canvas: HTMLCanvasElement, context: RenderingContext) => {
@@ -22,7 +22,7 @@ function usePreviewData() {
   return {
     draw: drawCallback,
     selectionData,
-    errorUI,
+    selectionError,
     isLoading,
   }
 }

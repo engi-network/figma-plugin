@@ -5,7 +5,7 @@ import * as PLUGIN_CONSTATNS from '~/plugin/constants'
 
 function useSelectionEvent() {
   const [selectionData, setSelectionData] = useState<PluginSelection>()
-  const [errorUI, setErrorUI] = useState()
+  const [selectionError, setSelectionError] = useState('')
   const [isLoading, setLoading] = useState(false)
 
   const selectionEventCallback = (event: MessageEvent) => {
@@ -20,8 +20,8 @@ function useSelectionEvent() {
         break
       }
       case PLUGIN_CONSTATNS.SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI: {
-        console.error('error | from controller', event.data.pluginMessage.error)
-        setErrorUI(event.data.pluginMessage.error)
+        console.error('Error | from controller', event.data.pluginMessage.error)
+        setSelectionError(event.data.pluginMessage.error)
         break
       }
       case PLUGIN_CONSTATNS.SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI: {
@@ -43,7 +43,7 @@ function useSelectionEvent() {
 
   return {
     selectionData,
-    errorUI,
+    selectionError,
     isLoading,
   }
 }
