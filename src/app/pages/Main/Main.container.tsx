@@ -14,7 +14,7 @@ import Code, {
 import Preview from '~/app/components/modules/Preview/Preview'
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
-import { COLORS } from '~/app/lib/constants'
+import { COLORS, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
   pollCheckReport,
@@ -67,7 +67,7 @@ function MainContainer() {
       if (status.success) {
         setReport(report)
         setProgress(100)
-        navigate('/result')
+        navigate(ROUTES_MAP[ROUTES.RESULT])
       } else {
         console.error('Oops, got an error report:::', report)
         setIsLoading(false)
@@ -182,7 +182,7 @@ function MainContainer() {
   }, [])
 
   const handleViewHistory = () => {
-    navigate('/history')
+    navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 
   if (isLoading) {

@@ -3,13 +3,14 @@ import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
+import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 function HistoryHeader() {
   const navigate = useNavigate()
 
   const handleBack = () => {
-    navigate('/')
+    navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
   return (

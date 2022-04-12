@@ -7,7 +7,12 @@ import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { HistoryIcon } from '~/app/components/global/Icons'
 import { useAppContext } from '~/app/contexts/App.context'
-import { BUTTON_STYLE, DIRECTION } from '~/app/lib/constants'
+import {
+  BUTTON_STYLE,
+  DIRECTION,
+  ROUTES,
+  ROUTES_MAP,
+} from '~/app/lib/constants'
 import { fetchCheckReportDifference } from '~/app/lib/utils/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -19,22 +24,22 @@ function ResultContainer() {
   const [buffers, setBuffers] = useState<Array<ArrayBuffer>>([])
 
   if (!report || !report.checkId || isError(report.result)) {
-    navigate('/')
+    navigate(ROUTES_MAP[ROUTES.HOME])
     return null
   }
 
   const { checkId } = report
 
   const handleClickBack = () => {
-    navigate('/')
+    navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
   const handleViewHistory = () => {
-    navigate('/history')
+    navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 
   const handleCreateNew = () => {
-    navigate('/')
+    navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
   const drawBlueCanvas = useCallback(
