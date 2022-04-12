@@ -107,6 +107,8 @@ function MainContainer() {
   }
 
   const handleSubmit = useCallback(async () => {
+    setFormErrors(undefined)
+    setApiError('')
     if (!values || !values.repository) {
       setFormErrors({
         branch: '',
@@ -192,7 +194,7 @@ function MainContainer() {
   }
 
   const step = Math.floor(progress / 20)
-  const showDemension = !isLoading && !apiError
+  const isDisabled = !!isLoading || !!apiError
 
   return (
     <>
@@ -215,7 +217,7 @@ function MainContainer() {
           <Preview
             draw={draw}
             originalCanvasRef={originCanvasRef}
-            label={showDemension ? `${width} ✕ ${height}` : undefined}
+            label={isDisabled ? undefined : `${width} ✕ ${height}`}
             {...DEMENSIONS.SMALL}
           />
         </section>
@@ -252,6 +254,7 @@ function MainContainer() {
           onClick={handleSubmit}
           className="w-3/12"
           backgroundColor={COLORS.PRIMARY.BLUE}
+          disabled={isDisabled}
         >
           {ui('main.analyze')}
         </Button>

@@ -16,6 +16,10 @@ const styles: StylesMap = {
       display: 'inlines-block',
     },
   ],
+  disabled: {
+    pointerEvents: 'none',
+    opacity: 0.3,
+  },
   large: {
     fontSize: 16,
     padding: '12px 24px',

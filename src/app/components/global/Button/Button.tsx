@@ -9,6 +9,7 @@ interface ButtonProps {
   buttonStyle?: BUTTON_STYLE
   children: ReactNode
   className?: string
+  disabled?: boolean
   label?: string
   onClick?: () => void
   primary?: boolean
@@ -22,6 +23,7 @@ function Button({
   className,
   onClick,
   children,
+  disabled,
   ...rest
 }: ButtonProps) {
   const mode = primary ? styles.primary : styles.secondary
@@ -33,10 +35,12 @@ function Button({
         styles.button,
         styles[size],
         mode,
+        disabled && styles.disabled,
         backgroundColor && { background: backgroundColor },
       ]}
       className={className}
       onClick={onClick}
+      disabled={disabled}
       {...rest}
     >
       {children}
