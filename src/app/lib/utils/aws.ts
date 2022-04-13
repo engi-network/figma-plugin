@@ -57,7 +57,7 @@ export const uploadEncodedFrameToS3 = async (
   return upload.promise()
 }
 
-export const sendMessageToSns = async (
+export const publishCommandToSns = async (
   message: Message,
 ): Promise<PublishCommandOutput> => {
   const params = {
@@ -65,7 +65,7 @@ export const sendMessageToSns = async (
     TopicArn: config.TOPIC_ARN,
   }
   const data = await snsClient.send(new PublishCommand(params))
-  console.info('Success from sns', data)
+  console.info('Success from sns::', data)
   return data
 }
 

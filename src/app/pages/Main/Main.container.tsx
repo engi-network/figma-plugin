@@ -11,6 +11,7 @@ import Code from '~/app/components/modules/Code/Code'
 import {
   AnalyzeFormValues,
   FORM_FIELD,
+  initialFormValue as initialErrorValues,
 } from '~/app/components/modules/Code/Code.data'
 import Preview from '~/app/components/modules/Preview/Preview'
 import { useAppContext } from '~/app/contexts/App.context'
@@ -19,7 +20,7 @@ import { COLORS, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
   pollReportById,
-  sendMessageToSns,
+  publishCommandToSns,
   uploadEncodedFrameToS3,
   uploadSpecificationToS3,
 } from '~/app/lib/utils/aws'
@@ -36,7 +37,7 @@ import {
 
 import { DEMENSIONS } from './Main.container.data'
 import styles from './Main.container.styles'
-import { MESSAGES } from './Main.types'
+import { STEP_MESSAGES } from './Main.types'
 
 function MainContainer() {
   const navigate = useNavigate()
@@ -45,7 +46,8 @@ function MainContainer() {
 
   const [values, setValues] = useState<AnalyzeFormValues>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [formErrors, setFormErrors] = useState<AnalyzeFormValues>()
+  const [formErrors, setFormErrors] =
+    useState<AnalyzeFormValues>(initialErrorValues)
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
   const [progress, setProgress] = useState(0)
   const [apiError, setApiError] = useState('')
@@ -93,7 +95,7 @@ function MainContainer() {
 
   const handleChange = async (values: AnalyzeFormValues) => {
     setValues(values)
-    setFormErrors(undefined)
+    setFormErrors(initialErrorValues)
     setApiError('')
 
     dispatchData({
@@ -106,17 +108,34 @@ function MainContainer() {
     })
   }
 
-  const handleSubmit = useCallback(async () => {
-    setFormErrors(undefined)
-    setApiError('')
-    if (!values || !values.repository) {
-      setFormErrors({
-        branch: '',
-        commit: '',
-        component: '',
+  const formValidate = (values?: AnalyzeFormValues): boolean => {
+    if (!values) {
+      return false
+    }
+
+    if (!values.repository) {
+      setFormErrors((prev) => ({
+        ...prev,
         repository: 'This field is required!',
-        story: '',
-      })
+      }))
+      return false
+    }
+
+    if (!values.path) {
+      setFormErrors((prev) => ({
+        ...prev,
+        path: 'This field is required!',
+      }))
+      return false
+    }
+
+    return true
+  }
+
+  const handleSubmit = useCallback(async () => {
+    setFormErrors(initialErrorValues)
+    setApiError('')
+    if (!formValidate(values)) {
       return
     }
 
@@ -126,7 +145,7 @@ function MainContainer() {
     setProgress(0)
     setIsLoading(true)
     try {
-      const { component, repository, story } = values
+      const { component, repository, story, path } = values as AnalyzeFormValues
       const checkId: string = uuidv4()
       const message: Message = {
         branch,
@@ -134,6 +153,7 @@ function MainContainer() {
         commit,
         component,
         height: height + '',
+        path,
         repository,
         story,
         width: width + '',
@@ -155,7 +175,8 @@ function MainContainer() {
 
       await uploadEncodedFrameToS3(name, checkId, frame)
       await uploadSpecificationToS3(message)
-      await sendMessageToSns(message)
+      await publishCommandToSns(message)
+      console.info('successfully submitted===>', message)
       await pollReportById(checkId, pollCallback)
     } catch (error) {
       console.error(error)
@@ -174,12 +195,14 @@ function MainContainer() {
       repository = '',
       branch = '',
       commit = '',
+      path = '',
     } = selectionData
 
     setValues({
       branch,
       commit,
       component,
+      path,
       repository,
       story,
     })
@@ -231,10 +254,10 @@ function MainContainer() {
         </section>
       </div>
       {isLoading && (
-        <div className="flex px-12 mt-5 w-7/12">
+        <div className="flex pl-14 mt-5 w-7/12">
           <ProgressBarWithLabel
             percentage={progress}
-            title={MESSAGES[step]}
+            title={STEP_MESSAGES[step]}
             progressMinWidth={30}
           />
         </div>

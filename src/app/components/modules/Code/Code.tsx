@@ -44,9 +44,9 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
     <ContainerWithTitle
       width={304}
       title={ui('main.preview.code')}
-      contentClassName={'px-10 pt-8 border-y border-r'}
+      contentClassName={'px-10 py-8 border-y border-r'}
     >
-      <>
+      <form className="mb-0">
         <StorybookIcon
           className="absolute right-1 top-[-1]"
           width={41}
@@ -79,6 +79,18 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
             onChange={handleInputChange(FORM_FIELD.REPOSITORY)}
             error={errors && errors[FORM_FIELD.REPOSITORY]}
             disabled={isDisabled}
+            required
+          />
+          <Input
+            id="path"
+            label="Path"
+            containerClass="mt-5"
+            placeholder="Storybook path"
+            value={values[FORM_FIELD.PATH]}
+            onChange={handleInputChange(FORM_FIELD.PATH)}
+            error={errors && errors[FORM_FIELD.PATH]}
+            disabled={isDisabled}
+            required
           />
           {showMore ? (
             <span
@@ -93,7 +105,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
               <Input
                 id="branch"
                 label="Branch name"
-                placeholder="feature/new-button"
+                placeholder="Branch name"
                 containerClass="mt-5"
                 value={values[FORM_FIELD.BRANCH]}
                 onChange={handleInputChange(FORM_FIELD.BRANCH)}
@@ -103,7 +115,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
               <Input
                 id="commit"
                 label="Commit hash"
-                placeholder="7e2c7d4"
+                placeholder="Commit has"
                 containerClass="mt-5"
                 value={values[FORM_FIELD.COMMIT]}
                 onChange={handleInputChange(FORM_FIELD.COMMIT)}
@@ -113,7 +125,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
             </>
           )}
         </div>
-      </>
+      </form>
     </ContainerWithTitle>
   )
 }

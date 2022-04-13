@@ -11,6 +11,7 @@ export const initialSelection: Partial<PluginSelection> = {
   commit: '',
   component: '',
   height: 0,
+  path: '',
   repository: 'engi-network/engi-ui',
   story: '',
   width: 0,

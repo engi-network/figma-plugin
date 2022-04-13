@@ -4,6 +4,7 @@ export interface Message {
   commit?: string
   component: string
   height: string
+  path: string
   repository: string
   story: string
   width: string

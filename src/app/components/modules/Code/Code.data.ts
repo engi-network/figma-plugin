@@ -2,6 +2,7 @@ export enum FORM_FIELD {
   BRANCH = 'branch',
   COMMIT = 'commit',
   COMPONENT = 'component',
+  PATH = 'path',
   REPOSITORY = 'repository',
   STORY = 'story',
 }
@@ -12,6 +13,7 @@ export interface AnalyzeFormValues {
   [FORM_FIELD.REPOSITORY]: string
   [FORM_FIELD.BRANCH]: string
   [FORM_FIELD.COMMIT]: string
+  [FORM_FIELD.PATH]: string
 }
 
 export const initialFormValue = {
@@ -20,4 +22,5 @@ export const initialFormValue = {
   [FORM_FIELD.STORY]: '',
   [FORM_FIELD.BRANCH]: '',
   [FORM_FIELD.COMMIT]: '',
+  [FORM_FIELD.PATH]: '',
 }
