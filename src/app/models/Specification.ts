@@ -1,6 +1,11 @@
-import { Message } from './Message'
-
-export type Specification = Pick<
-  Message,
-  'story' | 'component' | 'repository' | 'branch' | 'commit'
->
+export interface Specification {
+  branch?: string
+  check_id: string
+  commit?: string
+  component: string
+  height: string
+  path: string
+  repository: string
+  story: string
+  width: string
+}

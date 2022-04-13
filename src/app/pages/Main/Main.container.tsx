@@ -23,13 +23,12 @@ import {
   pollReportById,
   publishCommandToSns,
   uploadEncodedFrameToS3,
-  uploadSpecificationToS3,
 } from '~/app/lib/utils/aws'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { dispatchData } from '~/app/lib/utils/event'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { Message } from '~/app/models/Message'
 import { Report } from '~/app/models/Report'
+import { Specification } from '~/app/models/Specification'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
   SAME_STORY_FORM_UPDATE,
@@ -148,7 +147,7 @@ function MainContainer() {
     try {
       const { component, repository, story, path } = values as AnalyzeFormValues
       const checkId: string = uuidv4()
-      const message: Message = {
+      const message: Specification = {
         branch,
         check_id: checkId,
         commit,
@@ -174,7 +173,6 @@ function MainContainer() {
       const frame = await encode(copyRef, context, imageData)
 
       await uploadEncodedFrameToS3(story || component, checkId, frame)
-      await uploadSpecificationToS3(message)
       await publishCommandToSns(message)
       await pollReportById(checkId, pollCallback)
     } catch (error) {

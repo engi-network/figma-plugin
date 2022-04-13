@@ -5,41 +5,10 @@ import S3 from 'aws-sdk/clients/s3'
 import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
 import { MAX_RETRY_TIMES, POLLING_INTERVAL } from '~/app/lib/constants/aws'
-import { Message } from '~/app/models/Message'
 import { DIFF_TYPE, isError, Report, ReportResult } from '~/app/models/Report'
+import { Specification } from '~/app/models/Specification'
 
 import { decodeFromBuffer } from './buffer'
-
-export const uploadSpecificationToS3 = async ({
-  check_id,
-  component,
-  height,
-  repository,
-  story,
-  width,
-  path,
-}: Message): Promise<S3.ManagedUpload.SendData> => {
-  const key = `checks/${check_id}/specification.json`
-  const specification = JSON.stringify({
-    check_id,
-    component,
-    height,
-    path,
-    repository,
-    story,
-    width,
-  })
-
-  const upload = new S3.ManagedUpload({
-    params: {
-      Bucket: config.SAME_STORY_BUCKET_NAME,
-      Key: key,
-      Body: new Blob([specification], { type: 'text/json' }),
-    },
-  })
-
-  return upload.promise()
-}
 
 export const uploadEncodedFrameToS3 = async (
   name,
@@ -60,7 +29,7 @@ export const uploadEncodedFrameToS3 = async (
 }
 
 export const publishCommandToSns = async (
-  message: Message,
+  message: Specification,
 ): Promise<PublishCommandOutput> => {
   const params = {
     Message: JSON.stringify(message),

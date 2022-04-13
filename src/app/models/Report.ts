@@ -1,4 +1,5 @@
 import { Specification } from './Specification'
+
 export interface ErrorReport extends Specification {
   error: {
     aws?: string
