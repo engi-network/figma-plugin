@@ -19,6 +19,7 @@ import useSelectionData from '~/app/hooks/useSelectionData'
 import { COLORS, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
+  CallbackStatus,
   pollReportById,
   publishCommandToSns,
   uploadEncodedFrameToS3,
@@ -51,16 +52,15 @@ function MainContainer() {
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
   const [progress, setProgress] = useState(0)
   const [apiError, setApiError] = useState('')
+  const [currentTimerId, setTimerId] = useState(-1)
 
   const { width = 0, height = 0, commit, branch } = selectionData || {}
 
-  const pollCallback = (
-    status: {
-      retryTimes: number
-      success: boolean
-    },
-    report?: Report,
-  ) => {
+  const pollCallback = (status: CallbackStatus, report?: Report) => {
+    if (currentTimerId !== status.currentTimerId) {
+      setTimerId(status.currentTimerId)
+    }
+
     if (report) {
       dispatchData({
         type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
@@ -101,9 +101,10 @@ function MainContainer() {
     dispatchData({
       type: SAME_STORY_FORM_UPDATE,
       data: {
-        [FORM_FIELD.REPOSITORY]: values.repository,
-        [FORM_FIELD.COMMIT]: values.commit,
-        [FORM_FIELD.BRANCH]: values.branch,
+        [FORM_FIELD.REPOSITORY]: values[FORM_FIELD.REPOSITORY],
+        [FORM_FIELD.COMMIT]: values[FORM_FIELD.COMMIT],
+        [FORM_FIELD.BRANCH]: values[FORM_FIELD.BRANCH],
+        [FORM_FIELD.PATH]: values[FORM_FIELD.PATH],
       },
     })
   }
@@ -159,7 +160,6 @@ function MainContainer() {
         width: width + '',
       }
 
-      const name = component + '-' + story
       const context = originCanvasRef.current.getContext(
         '2d',
       ) as CanvasRenderingContext2D
@@ -173,10 +173,9 @@ function MainContainer() {
 
       const frame = await encode(copyRef, context, imageData)
 
-      await uploadEncodedFrameToS3(name, checkId, frame)
+      await uploadEncodedFrameToS3(story || component, checkId, frame)
       await uploadSpecificationToS3(message)
       await publishCommandToSns(message)
-      console.info('successfully submitted===>', message)
       await pollReportById(checkId, pollCallback)
     } catch (error) {
       console.error(error)
@@ -210,6 +209,12 @@ function MainContainer() {
 
   useEffect(() => {
     dispatchData({ type: SAME_STORY_CHECK_INITIAL_SELECTION })
+
+    return () => {
+      if (currentTimerId > 0) {
+        clearInterval(currentTimerId)
+      }
+    }
   }, [])
 
   const handleViewHistory = () => {

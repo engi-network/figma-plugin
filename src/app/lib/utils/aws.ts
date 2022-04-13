@@ -17,12 +17,14 @@ export const uploadSpecificationToS3 = async ({
   repository,
   story,
   width,
+  path,
 }: Message): Promise<S3.ManagedUpload.SendData> => {
   const key = `checks/${check_id}/specification.json`
   const specification = JSON.stringify({
     check_id,
     component,
     height,
+    path,
     repository,
     story,
     width,
@@ -41,10 +43,10 @@ export const uploadSpecificationToS3 = async ({
 
 export const uploadEncodedFrameToS3 = async (
   name,
-  check,
+  checkId,
   frame,
 ): Promise<S3.ManagedUpload.SendData> => {
-  const key = `checks/${check}/frames/${name}.png`
+  const key = `checks/${checkId}/frames/${name}.png`
 
   const upload = new S3.ManagedUpload({
     params: {
@@ -64,17 +66,21 @@ export const publishCommandToSns = async (
     Message: JSON.stringify(message),
     TopicArn: config.TOPIC_ARN,
   }
+
   const data = await snsClient.send(new PublishCommand(params))
   console.info('Success from sns::', data)
   return data
 }
 
+export interface CallbackStatus {
+  currentTimerId: number
+  retryTimes: number
+  success: boolean
+}
+
 export const pollReportById = async (
   checkId: string,
-  callback: (
-    status: { retryTimes: number; success: boolean },
-    data?: Report,
-  ) => void,
+  callback: (status: CallbackStatus, data?: Report) => void,
 ) => {
   let retryTimes = 0
   let timerId = -1
@@ -89,29 +95,33 @@ export const pollReportById = async (
           {
             success: true,
             retryTimes,
+            currentTimerId: timerId,
           },
           report,
         )
       } else {
-        callback({ success: false, retryTimes }, report)
+        callback(
+          { success: false, retryTimes, currentTimerId: timerId },
+          report,
+        )
       }
     } catch (error) {
       const statusCode = (error as AWSError).statusCode
 
       if (retryTimes >= MAX_RETRY_TIMES || statusCode !== 404) {
         clearInterval(timerId)
-        callback({ success: false, retryTimes })
+        callback({ success: false, retryTimes, currentTimerId: timerId })
         return
       }
 
       if (retryTimes < MAX_RETRY_TIMES && statusCode === 404) {
         retryTimes += 1
-        callback({ success: false, retryTimes })
+        callback({ success: false, retryTimes, currentTimerId: timerId })
         return
       }
 
       clearInterval(timerId)
-      callback({ success: false, retryTimes })
+      callback({ success: false, retryTimes, currentTimerId: timerId })
     }
   }, POLLING_INTERVAL)
 }
