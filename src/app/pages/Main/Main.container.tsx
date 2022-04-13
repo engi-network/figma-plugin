@@ -18,10 +18,10 @@ import useSelectionData from '~/app/hooks/useSelectionData'
 import { COLORS, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
-  pollCheckReport,
-  startEcsCheck,
-  uploadCheckSpecificationToS3,
+  pollReportById,
+  sendMessageToSns,
   uploadEncodedFrameToS3,
+  uploadSpecificationToS3,
 } from '~/app/lib/utils/aws'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { dispatchData } from '~/app/lib/utils/event'
@@ -78,7 +78,7 @@ function MainContainer() {
         setApiError('Something went wrong. Please double check the inputs.')
       }
     } else {
-      if (status.retryTimes > MAX_RETRY_TIMES) {
+      if (status.retryTimes >= MAX_RETRY_TIMES) {
         console.error('Api time out error!')
         setProgress(0)
         setIsLoading(false)
@@ -154,9 +154,9 @@ function MainContainer() {
       const frame = await encode(copyRef, context, imageData)
 
       await uploadEncodedFrameToS3(name, checkId, frame)
-      await uploadCheckSpecificationToS3(message)
-      await startEcsCheck(message)
-      await pollCheckReport(checkId, pollCallback)
+      await uploadSpecificationToS3(message)
+      await sendMessageToSns(message)
+      await pollReportById(checkId, pollCallback)
     } catch (error) {
       console.error(error)
       setIsLoading(false)
@@ -226,7 +226,7 @@ function MainContainer() {
             onChange={handleChange}
             values={values}
             errors={formErrors}
-            isDisabled={isDisabled}
+            isDisabled={isLoading}
           />
         </section>
       </div>
@@ -259,7 +259,7 @@ function MainContainer() {
           onClick={handleSubmit}
           className="w-3/12"
           backgroundColor={COLORS.PRIMARY.BLUE}
-          disabled={isDisabled}
+          disabled={isLoading}
         >
           {ui('main.analyze')}
         </Button>

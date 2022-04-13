@@ -33,3 +33,8 @@ export function isError(
 ): result is ErrorReport {
   return (result as ErrorReport).error !== undefined
 }
+
+export enum DIFF_TYPE {
+  BLUE = 'blue',
+  GRAY = 'gray',
+}

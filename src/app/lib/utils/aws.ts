@@ -6,11 +6,11 @@ import { s3Client, snsClient } from '~/app/lib/awsClients'
 import config from '~/app/lib/config'
 import { MAX_RETRY_TIMES, POLLING_INTERVAL } from '~/app/lib/constants/aws'
 import { Message } from '~/app/models/Message'
-import { isError, Report, ReportResult } from '~/app/models/Report'
+import { DIFF_TYPE, isError, Report, ReportResult } from '~/app/models/Report'
 
 import { decodeFromBuffer } from './buffer'
 
-export const uploadCheckSpecificationToS3 = async ({
+export const uploadSpecificationToS3 = async ({
   check_id,
   component,
   height,
@@ -57,7 +57,7 @@ export const uploadEncodedFrameToS3 = async (
   return upload.promise()
 }
 
-export const startEcsCheck = async (
+export const sendMessageToSns = async (
   message: Message,
 ): Promise<PublishCommandOutput> => {
   const params = {
@@ -69,7 +69,7 @@ export const startEcsCheck = async (
   return data
 }
 
-export const pollCheckReport = async (
+export const pollReportById = async (
   checkId: string,
   callback: (
     status: { retryTimes: number; success: boolean },
@@ -81,7 +81,7 @@ export const pollCheckReport = async (
 
   timerId = setInterval(async () => {
     try {
-      const report = await fetchCheckReport(checkId)
+      const report = await fetchReportById(checkId)
       clearInterval(timerId)
 
       if (!isError(report.result)) {
@@ -98,20 +98,25 @@ export const pollCheckReport = async (
     } catch (error) {
       const statusCode = (error as AWSError).statusCode
 
-      if (retryTimes > MAX_RETRY_TIMES || statusCode !== 404) {
+      if (retryTimes >= MAX_RETRY_TIMES || statusCode !== 404) {
         clearInterval(timerId)
         callback({ success: false, retryTimes })
+        return
       }
 
-      if (statusCode === 404) {
+      if (retryTimes < MAX_RETRY_TIMES && statusCode === 404) {
         retryTimes += 1
         callback({ success: false, retryTimes })
+        return
       }
+
+      clearInterval(timerId)
+      callback({ success: false, retryTimes })
     }
   }, POLLING_INTERVAL)
 }
 
-export const fetchCheckReport = async (checkId: string): Promise<Report> => {
+export const fetchReportById = async (checkId: string): Promise<Report> => {
   return new Promise((resolve, reject) => {
     s3Client.getObject(
       {
@@ -140,9 +145,10 @@ export const fetchCheckReport = async (checkId: string): Promise<Report> => {
  * @param difference 'blue' or 'gray'
  * @returns Promise of an array of bytes
  */
-export const fetchCheckReportDifference = async (
+
+export const fetchReportDifferenceById = async (
   checkId: string,
-  difference: string,
+  difference: DIFF_TYPE,
 ): Promise<ArrayBuffer> => {
   return new Promise((resolve, reject) => {
     s3Client.getObject(

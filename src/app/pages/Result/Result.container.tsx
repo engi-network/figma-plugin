@@ -13,10 +13,10 @@ import {
   ROUTES,
   ROUTES_MAP,
 } from '~/app/lib/constants'
-import { fetchCheckReportDifference } from '~/app/lib/utils/aws'
+import { fetchReportDifferenceById } from '~/app/lib/utils/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { isError } from '~/app/models/Report'
+import { DIFF_TYPE, isError } from '~/app/models/Report'
 
 function ResultContainer() {
   const navigate = useNavigate()
@@ -65,8 +65,8 @@ function ResultContainer() {
 
   const fetchSetDiffData = async (checkId) => {
     const promises = [
-      fetchCheckReportDifference(checkId, 'blue'),
-      fetchCheckReportDifference(checkId, 'gray'),
+      fetchReportDifferenceById(checkId, DIFF_TYPE.BLUE),
+      fetchReportDifferenceById(checkId, DIFF_TYPE.GRAY),
     ]
     const results = await Promise.all(promises)
     setBuffers(results)
