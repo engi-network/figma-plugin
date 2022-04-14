@@ -1,9 +1,10 @@
 export const COLORS = {
   PRIMARY: {
-    WHITE: '#FFFFFF',
-    DARK: '#070706',
-    GREEN: '#65FEB7',
     BLUE: '#18A0FB',
+    DARK: '#070706',
+    GRAY: '#C7C7C7',
+    GREEN: '#65FEB7',
+    WHITE: '#FFFFFF',
   },
   SECONDARY: {
     BG: '#232323',
@@ -17,6 +18,7 @@ export const COLORS = {
     TERTIARY: '#AEB5C7',
   },
   TEXT: {
-    SECONDARY: '#C7C7C7',
+    PRIAMRY: '#FFFFFF',
+    SECONDARY: '#D7D7D7',
   },
 }

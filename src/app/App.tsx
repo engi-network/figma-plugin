@@ -21,8 +21,9 @@ function App() {
             ROUTES_MAP[ROUTES.HOME],
             ROUTES_MAP[ROUTES.RESULT],
             ROUTES_MAP[ROUTES.HISTORY],
+            ROUTES_MAP[ROUTES.LOADING],
           ]}
-          initialIndex={0}
+          initialIndex={3}
         >
           <Layout>
             <Routes />

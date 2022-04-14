@@ -1,9 +1,4 @@
-import {
-  BORDER_STYLE,
-  BORDERS_RADIUS,
-  COLORS,
-  StylesMap,
-} from '~/app/lib/constants'
+import { BORDERS_RADIUS, COLORS, StylesMap } from '~/app/lib/constants'
 import { typography } from '~/app/styles/typography.styles'
 
 const styles: StylesMap = {
@@ -35,7 +30,6 @@ const styles: StylesMap = {
   secondary: {
     color: 'black',
     backgroundColor: COLORS.PRIMARY.WHITE,
-    border: BORDER_STYLE.SOLID_BLACK_1PX,
   },
   small: {
     fontSize: 12,

@@ -45,9 +45,9 @@ function Input({
   }
 
   const classes = cn(
-    'border text-sm rounded-lg block w-full p-2.5 disabled:text-wf-secondary',
+    'bg-transparent border border-opacity-30 text-sm rounded-lg block w-full p-2.5 disabled:text-primary-gray',
     {
-      'text-gray-900 border-wf-secondary focus:ring-wf-secondary focus:border-wf-secondary placeholder:text-text-secondary':
+      'text-gray-900 border-primary-gray focus:ring-primary-gray focus:border-primary-gray placeholder:text-text-secondary':
         !error,
     },
     {
@@ -62,7 +62,7 @@ function Input({
   return (
     <div className={containerClassname}>
       {label && (
-        <label className="text-sm text-primary-dark mb-2" htmlFor={inputId}>
+        <label className="text-sm text-text-primary mb-2" htmlFor={inputId}>
           {label}
         </label>
       )}

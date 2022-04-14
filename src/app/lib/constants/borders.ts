@@ -8,4 +8,5 @@ export const BORDERS_RADIUS = {
 
 export const BORDER_STYLE = {
   SOLID_BLACK_1PX: `1px solid ${COLORS.WF.PRIMARY}`,
+  SOLID_GRAY_1PX: `1px solid ${COLORS.PRIMARY.GRAY}`,
 }

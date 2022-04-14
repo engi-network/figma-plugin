@@ -34,5 +34,8 @@
     "select": {
       "placeholder": "Select one..."
     }
+  },
+  "loading": {
+    "analyzing": "Analyzing"
   }
 }

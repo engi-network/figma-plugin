@@ -10,10 +10,11 @@ module.exports = {
       },
       colors: {
         primary: {
-          white: '#FFFFFF',
-          dark: '#070706',
-          green: '#65FEB7',
           blue: '#18A0FB',
+          dark: '#070706',
+          gray: '#C7C7C7',
+          green: '#65FEB7',
+          white: '#FFFFFF',
         },
         secondary: {
           bg: '#232323',
@@ -28,7 +29,7 @@ module.exports = {
         },
         text: {
           primary: '#FFFFFF',
-          secondary: '#C7C7C7',
+          secondary: '#D7D7D7',
         },
       },
       borderRadius: {

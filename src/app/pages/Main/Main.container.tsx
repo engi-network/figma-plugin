@@ -16,7 +16,7 @@ import {
 import Preview from '~/app/components/modules/Preview/Preview'
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
-import { COLORS, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
+import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
   CallbackStatus,
@@ -278,20 +278,8 @@ function MainContainer() {
           </span>
         </div>
       )}
-      <footer className="flex justify-between px-6 my-8">
-        <a href="#" className="flex items-center">
-          <span className="text-sm text-wf-secondary flex">
-            <InformationCircleIcon className="w-5 h-5 text-wf-secondary mr-2" />
-            {ui('header.learnMore')}
-          </span>
-        </a>
-        <Button
-          primary
-          onClick={handleSubmit}
-          className="w-3/12"
-          backgroundColor={COLORS.PRIMARY.BLUE}
-          disabled={isLoading}
-        >
+      <footer className="flex justify-end px-6 my-8">
+        <Button onClick={handleSubmit} className="w-3/12" disabled={isLoading}>
           {ui('main.analyze')}
         </Button>
       </footer>

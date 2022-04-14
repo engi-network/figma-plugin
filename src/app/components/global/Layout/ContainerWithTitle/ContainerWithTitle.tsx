@@ -25,7 +25,7 @@ function ContainerWithTitle({
     className,
   )
   const contentClasses = cn(
-    'flex-1 relative border-text-secondary border-opacity-30',
+    'flex-1 relative border-primary-gray border-opacity-30',
     contentClassName,
   )
 
