@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid'
 import Button from '~/app/components/global/Button/Button'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { HistoryIcon } from '~/app/components/global/Icons'
-import ProgressBarWithLabel from '~/app/components/global/ProgressBar/ProgressBarWithLabel'
 import Code from '~/app/components/modules/Code/Code'
 import {
   AnalyzeFormValues,
@@ -36,7 +35,6 @@ import {
 } from '~/plugin/constants'
 
 import { DEMENSIONS } from './Main.container.data'
-import { STEP_MESSAGES } from './Main.types'
 
 function MainContainer() {
   const navigate = useNavigate()
@@ -48,7 +46,7 @@ function MainContainer() {
   const [formErrors, setFormErrors] =
     useState<AnalyzeFormValues>(initialErrorValues)
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
-  const [progress, setProgress] = useState(0)
+  const [_, setProgress] = useState(0)
   const [apiError, setApiError] = useState('')
   const [currentTimerId, setTimerId] = useState(-1)
 
@@ -218,8 +216,11 @@ function MainContainer() {
     navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 
-  const step = Math.floor(progress / 20)
   const isDisabled = !!isLoading || !!apiError
+
+  if (isLoading) {
+    navigate(ROUTES_MAP[ROUTES.LOADING])
+  }
 
   return (
     <>
@@ -240,7 +241,7 @@ function MainContainer() {
           {ui('header.learnMore')}
         </IconButton>
       </div>
-      <h3 className="text-base text-text-primary px-7 pt-4">
+      <h3 className="text-base text-text-primary font-meidum px-7 pt-4">
         {ui('main.subtitle')}
       </h3>
       <div className="flex px-10 pt-9">
@@ -261,15 +262,6 @@ function MainContainer() {
           />
         </section>
       </div>
-      {isLoading && (
-        <div className="flex pl-14 mt-5 w-7/12">
-          <ProgressBarWithLabel
-            percentage={progress}
-            title={STEP_MESSAGES[step]}
-            progressMinWidth={30}
-          />
-        </div>
-      )}
       {apiError && (
         <div className="flex px-12 mt-5 justify-center items-center">
           <span className="text-sm text-secondary-error flex">
