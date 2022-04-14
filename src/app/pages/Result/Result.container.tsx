@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
+import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { HistoryIcon } from '~/app/components/global/Icons'
 import { useAppContext } from '~/app/contexts/App.context'
@@ -81,66 +82,69 @@ function ResultContainer() {
   }, [checkId])
 
   return (
-    <div className="px-10 pt-10">
-      <div className="flex justify-between mb-16 relative">
-        <IconButton
-          icon={<ArrowLeftIcon className="w-4 h-4 text-primary-dark" />}
-          buttonStyle={BUTTON_STYLE.OUTLINED}
-          onClick={handleClickBack}
-        />
-        <div className="absolute flex justify-center top-0 left-0 right-0 -z-10">
-          <h1 className="text-2xl text-primary-dark w-6/12 text-center font-bold">
-            {ui('result.wellDone')} <br />
-            {ui('result.its')}
-            <span className="bg-primary-green">{ui('result.same')}</span>
-          </h1>
-        </div>
-        <div
-          role="button"
-          tabIndex={-1}
-          className="flex justify-end items-center h-fit"
-          onClick={handleViewHistory}
-        >
+    <>
+      <Header />
+      <div className="px-10 pt-10">
+        <div className="flex justify-between mb-16 relative">
           <IconButton
-            className="text-wf-secondary text-sm"
-            icon={<HistoryIcon width={24} height={24} />}
+            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-dark" />}
             buttonStyle={BUTTON_STYLE.OUTLINED}
-            iconPosition={DIRECTION.RIGHT}
+            onClick={handleClickBack}
+          />
+          <div className="absolute flex justify-center top-0 left-0 right-0 -z-10">
+            <h1 className="text-2xl text-primary-dark w-6/12 text-center font-bold">
+              {ui('result.wellDone')} <br />
+              {ui('result.its')}
+              <span className="bg-primary-green">{ui('result.same')}</span>
+            </h1>
+          </div>
+          <div
+            role="button"
+            tabIndex={-1}
+            className="flex justify-end items-center h-fit"
+            onClick={handleViewHistory}
           >
-            {ui('result.viewHistory')}
-          </IconButton>
+            <IconButton
+              className="text-wf-secondary text-sm"
+              icon={<HistoryIcon width={24} height={24} />}
+              buttonStyle={BUTTON_STYLE.OUTLINED}
+              iconPosition={DIRECTION.RIGHT}
+            >
+              {ui('result.viewHistory')}
+            </IconButton>
+          </div>
+        </div>
+        <div className="flex mb-8">
+          <div className="w-6/12 flex justify-start">
+            <Canvas
+              id="blue-scale"
+              className="mb-4 border-wf-tertiery"
+              width={210}
+              height={210}
+              draw={drawBlueCanvas}
+              options={{ contextId: '2d' }}
+              label={ui('result.blueScale')}
+            />
+          </div>
+          <div className="w-6/12 flex justify-end">
+            <Canvas
+              id="blue-scale"
+              className="mb-4 border border-wf-tertiery"
+              width={210}
+              height={210}
+              draw={drawGrayCanvas}
+              options={{ contextId: '2d' }}
+              label={ui('result.grayScale')}
+            />
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <Button onClick={handleCreateNew} className="w-5/12 capitalize">
+            {ui('result.createNew')}
+          </Button>
         </div>
       </div>
-      <div className="flex mb-8">
-        <div className="w-6/12 flex justify-start">
-          <Canvas
-            id="blue-scale"
-            className="mb-4 border-wf-tertiery"
-            width={210}
-            height={210}
-            draw={drawBlueCanvas}
-            options={{ contextId: '2d' }}
-            label={ui('result.blueScale')}
-          />
-        </div>
-        <div className="w-6/12 flex justify-end">
-          <Canvas
-            id="blue-scale"
-            className="mb-4 border border-wf-tertiery"
-            width={210}
-            height={210}
-            draw={drawGrayCanvas}
-            options={{ contextId: '2d' }}
-            label={ui('result.grayScale')}
-          />
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <Button onClick={handleCreateNew} className="w-5/12 capitalize">
-          {ui('result.createNew')}
-        </Button>
-      </div>
-    </div>
+    </>
   )
 }
 

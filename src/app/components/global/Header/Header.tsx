@@ -1,33 +1,35 @@
-import { XIcon } from '@heroicons/react/solid'
+import { InformationCircleIcon } from '@heroicons/react/outline'
+import { useNavigate } from 'react-router-dom'
 
-import Logo from '~/app/components/global/Icons/LogoIcon'
+import IconButton from '~/app/components/global/IconButton/IconButton'
+import { HistoryIcon } from '~/app/components/global/Icons'
+import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-import styles from './Header.styles'
-
 function Header() {
-  const handleClose = () => {}
+  const navigate = useNavigate()
+
+  const handleViewHistory = () => {
+    navigate(ROUTES_MAP[ROUTES.HISTORY])
+  }
 
   return (
-    <header className="bg-primary-white border-solid border-b border-wf-tertiary">
-      <div className="flex justify-between items-center px-3.5 py-4">
-        <div className="flex">
-          <a href="#">
-            <Logo className="h-8 w-auto sm:h-10" />
-          </a>
-          <h1 css={styles.title} className="ml-5 text-wf-primary">
-            {ui('header.title')}
-          </h1>
-        </div>
-        <div
-          className="flex items-center"
-          role="button"
-          tabIndex={-1}
-          onClick={handleClose}
-        >
-          <XIcon className="w-6 h-6" />
-        </div>
-      </div>
+    <header className="flex justify-between border-b border-text-secondary px-7 py-5">
+      <IconButton
+        className="text-text-secondary text-sm"
+        icon={<HistoryIcon className="text-text-secondary w-5 h-5" />}
+        onClick={handleViewHistory}
+      >
+        {ui('main.history')}
+      </IconButton>
+      <IconButton
+        className="text-primary-green text-sm"
+        icon={
+          <InformationCircleIcon className="w-5 h-5 bg-opacity-40 text-primary-green bg-primary-green rounded-full" />
+        }
+      >
+        {ui('header.learnMore')}
+      </IconButton>
     </header>
   )
 }
