@@ -36,7 +36,6 @@ import {
 } from '~/plugin/constants'
 
 import { DEMENSIONS } from './Main.container.data'
-import styles from './Main.container.styles'
 import { STEP_MESSAGES } from './Main.types'
 
 function MainContainer() {
@@ -225,19 +224,25 @@ function MainContainer() {
   return (
     <>
       <div className="flex justify-between border-b border-text-secondary px-7 py-5">
-        <h1 className="font-base text-black font-medium">{ui('main.title')}</h1>
-        <div className="flex justify-center items-center">
-          <IconButton
-            className="text-wf-secondary text-sm"
-            icon={
-              <HistoryIcon width={24} height={24} css={styles.historyIcon} />
-            }
-            onClick={handleViewHistory}
-          >
-            {ui('main.history')}
-          </IconButton>
-        </div>
+        <IconButton
+          className="text-text-secondary text-sm"
+          icon={<HistoryIcon className="text-text-secondary w-5 h-5" />}
+          onClick={handleViewHistory}
+        >
+          {ui('main.history')}
+        </IconButton>
+        <IconButton
+          className="text-primary-green text-sm"
+          icon={
+            <InformationCircleIcon className="w-5 h-5 bg-opacity-40 text-primary-green bg-primary-green rounded-full" />
+          }
+        >
+          {ui('header.learnMore')}
+        </IconButton>
       </div>
+      <h3 className="text-base text-text-primary px-7 pt-4">
+        {ui('main.subtitle')}
+      </h3>
       <div className="flex px-10 pt-9">
         <section className="w-1/2 flex flex-col items-end">
           <Preview

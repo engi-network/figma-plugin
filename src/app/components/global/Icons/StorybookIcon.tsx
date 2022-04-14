@@ -1,33 +1,59 @@
+import * as React from 'react'
 import { SVGProps } from 'react'
 
-function SvgStorybookIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
-      viewBox="0 0 41 41"
-      fill="none"
-      {...props}
-    >
+const SvgStorybookIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1em"
+    height="1em"
+    viewBox="0 0 48 48"
+    fill="none"
+    {...props}
+  >
+    <g filter="url(#storybook-icon_svg__a)">
       <path
-        d="M0 20.5C0 9.178 9.178 0 20.5 0S41 9.178 41 20.5 31.822 41 20.5 41 0 31.822 0 20.5Z"
-        fill="#030219"
+        d="M0 24C0 10.745 10.745 0 24 0s24 10.745 24 24-10.745 24-24 24S0 37.255 0 24Z"
+        fill="#000"
+        fillOpacity={0.4}
       />
       <path
-        d="m13.888 30.193-.92-18.869h-.691l.69 18.869h.92Z"
+        d="m16.259 35.348-1.078-22.09h-.808l.808 22.09h1.078Z"
         fill="#B57EE5"
       />
       <path
-        d="m14.271 30.192-.92-18.868 15.033-1.074v20.633l-14.113-.69Z"
+        d="m16.708 35.347-1.078-22.09L33.23 12v24.155l-16.522-.808Z"
         fill="#F1618C"
       />
       <path
-        d="m24.55 13.01.19-2.57 1.803-.153v2.723l-.906-.82-1.088.82ZM22.144 18.326l2.964-.074c.073-2.872-1.418-4.29-4.014-4.29-2.595 0-4.05 1.473-4.05 3.683 0 3.847 4.97 3.92 4.97 6.019 0 .589-.275.939-.883.939-.791 0-1.104-.516-1.067-1.952h-3.111c-.24 3.553 1.84 4.363 4.215 4.363 2.301 0 4.105-1.067 4.105-3.387 0-4.123-5.044-4.013-5.044-6.056 0-.829.59-.939.94-.939.367 0 1.03.147.975 1.694Z"
+        d="m28.74 15.233.225-3.008 2.11-.18v3.188l-1.06-.96-1.274.96ZM25.924 21.453l3.47-.086c.086-3.362-1.66-5.021-4.698-5.021-3.039 0-4.741 1.724-4.741 4.31 0 4.504 5.819 4.59 5.819 7.047 0 .69-.324 1.1-1.035 1.1-.927 0-1.293-.604-1.25-2.285h-3.642c-.28 4.16 2.155 5.107 4.935 5.107 2.694 0 4.806-1.25 4.806-3.965 0-4.827-5.905-4.698-5.905-7.09 0-.97.69-1.1 1.1-1.1.43 0 1.206.173 1.141 1.983Z"
         fill="#fff"
       />
-    </svg>
-  )
-}
+    </g>
+    <defs>
+      <filter
+        id="storybook-icon_svg__a"
+        x={-4}
+        y={-4}
+        width={56}
+        height={56}
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity={0} result="BackgroundImageFix" />
+        <feGaussianBlur in="BackgroundImage" stdDeviation={2} />
+        <feComposite
+          in2="SourceAlpha"
+          operator="in"
+          result="effect1_backgroundBlur_593_25697"
+        />
+        <feBlend
+          in="SourceGraphic"
+          in2="effect1_backgroundBlur_593_25697"
+          result="shape"
+        />
+      </filter>
+    </defs>
+  </svg>
+)
 
 export default SvgStorybookIcon

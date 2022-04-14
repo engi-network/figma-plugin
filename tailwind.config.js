@@ -27,6 +27,7 @@ module.exports = {
           tertiary: '#AEB5C7',
         },
         text: {
+          primary: '#FFFFFF',
           secondary: '#C7C7C7',
         },
       },

@@ -13,7 +13,8 @@
       "code": "Code",
       "seeMore": "More options"
     },
-    "history": "History"
+    "history": "History",
+    "subtitle": "Do these tell the same story?"
   },
   "result": {
     "blueScale": "Blue-scale Difference",
