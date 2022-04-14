@@ -5,6 +5,9 @@ module.exports = {
   content: [path.join(__dirname, './src/**/*.(js|jsx|ts|tsx)')],
   theme: {
     extend: {
+      backgroundImage: {
+        landing: "url('/src/app/assets/images/landing.svg')",
+      },
       colors: {
         primary: {
           white: '#FFFFFF',

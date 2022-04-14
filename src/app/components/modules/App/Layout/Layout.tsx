@@ -5,7 +5,9 @@ interface Props {
 }
 
 function Layout({ children }: Props) {
-  return <main className="flex flex-1 flex-col">{children}</main>
+  return (
+    <main className="flex flex-1 flex-col bg-landing bg-cover">{children}</main>
+  )
 }
 
 export default Layout
