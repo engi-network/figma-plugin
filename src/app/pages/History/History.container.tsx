@@ -20,6 +20,8 @@ function Historycontainer() {
   const [filterBy, setFilterBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
 
+  console.log('history===>', history)
+
   const onSearchTermChange = (value: string) => {
     setSearchBy(value)
   }
@@ -46,6 +48,20 @@ function Historycontainer() {
         disableGlobalFilter: true,
         Header: 'Path',
         id: 'path',
+      },
+      {
+        accessor: 'createdAt',
+        Cell: CellText,
+        disableGlobalFilter: true,
+        Header: 'Created at',
+        id: 'createdAt',
+      },
+      {
+        accessor: 'completedAt',
+        Cell: CellText,
+        disableGlobalFilter: true,
+        Header: 'Completed',
+        id: 'completedAt',
       },
       {
         accessor: 'story',

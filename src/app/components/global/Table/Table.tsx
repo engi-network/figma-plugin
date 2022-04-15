@@ -62,7 +62,7 @@ function Table({
   )
 
   useEffect(() => {
-    setHiddenColumns(['repository', 'checkId'])
+    setHiddenColumns(['repository', 'checkId', 'createdAt', 'completedAt'])
   }, [])
 
   const rowElements = useCallback(
