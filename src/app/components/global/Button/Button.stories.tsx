@@ -13,9 +13,9 @@ export function ButtonWithKnobs() {
   const mode = select('Primary', [true, false], false)
 
   return (
-    <div>
+    <div className="bg-slate-800 h-64 pl-10 pt-10">
       <Button
-        label="test"
+        label="Click me"
         primary={mode}
         onClick={action('button click')}
         disabled={isDisabled}

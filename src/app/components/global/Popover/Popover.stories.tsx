@@ -6,5 +6,11 @@ export default {
 }
 
 export function PopoverWithKnobs() {
-  return <Popover />
+  return (
+    <div className="h-64 bg-slate-700">
+      <Popover title={'Filter by'}>
+        <div>popover content</div>
+      </Popover>
+    </div>
+  )
 }
