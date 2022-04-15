@@ -1,7 +1,13 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid'
 import cn from 'classnames'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useBlockLayout, useFilters, useSortBy, useTable } from 'react-table'
+import {
+  useBlockLayout,
+  useFilters,
+  useGlobalFilter,
+  useSortBy,
+  useTable,
+} from 'react-table'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
@@ -22,7 +28,6 @@ function Table({
   data,
   hideHeader,
   sortBy,
-  filterBy = 'component',
   className,
   searchBy,
 }: Props) {
@@ -40,7 +45,9 @@ function Table({
     rows,
     prepareRow,
     toggleSortBy,
-    setFilter,
+    // setFilter,
+    state,
+    setGlobalFilter,
   } = useTable(
     {
       columns,
@@ -48,9 +55,12 @@ function Table({
       defaultColumn,
     },
     useBlockLayout,
+    useGlobalFilter,
     useFilters,
     useSortBy,
   )
+
+  console.info('state====>', state.globalFilter)
 
   const rowElements = useCallback(
     ({ index, style }) => {
@@ -85,8 +95,8 @@ function Table({
   }, [sortBy])
 
   useEffect(() => {
-    setFilter(filterBy || 'component', searchBy)
-  }, [filterBy, searchBy])
+    setGlobalFilter(searchBy)
+  }, [searchBy])
 
   const tableClasses = cn('table', className)
 
@@ -141,19 +151,15 @@ function Table({
 
 export function Status({ value }: { value: string }) {
   if (value === 'success') {
-    return (
-      <CheckCircleIcon className="w-6 h-6 bg-primary-white text-primary-green" />
-    )
+    return <CheckCircleIcon className="w-6 h-6 text-primary-green" />
   }
 
-  return (
-    <XCircleIcon className="w-6 h-6 bg-primary-white text-secondary-error" />
-  )
+  return <XCircleIcon className="w-6 h-6 text-secondary-error" />
 }
 
 export function CellText({ value }: { value: string }) {
   return (
-    <p className="text-sm text-wf-secondary w-full overflow-hidden truncate">
+    <p className="text-sm text-text-primary w-full overflow-hidden truncate">
       {value}
     </p>
   )

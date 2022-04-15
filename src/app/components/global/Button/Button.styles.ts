@@ -1,4 +1,4 @@
-import { BORDERS_RADIUS, COLORS, StylesMap } from '~/app/lib/constants'
+import { COLORS, StylesMap } from '~/app/lib/constants'
 import { typography } from '~/app/styles/typography.styles'
 
 const styles: StylesMap = {
@@ -6,7 +6,6 @@ const styles: StylesMap = {
     typography.tertiaryHeadline,
     {
       border: 0,
-      borderRadius: BORDERS_RADIUS.DEFAULT,
       cursor: 'pointer',
       display: 'inlines-block',
     },

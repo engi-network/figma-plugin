@@ -66,7 +66,7 @@ function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options
-              className="absolute z-10 mt-1 overflow-auto bg-[#232323] bg-opacity-20 max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none"
+              className="absolute z-10 mt-1 overflow-auto bg-[#23232333] backdrop-blur-[200px] max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none"
               css={styles.optionPanel}
             >
               {options.map((option) => (

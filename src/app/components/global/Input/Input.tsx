@@ -45,9 +45,9 @@ function Input({
   }
 
   const inputClasses = cn(
-    'bg-transparent border border-opacity-30 text-sm rounded-lg block w-full p-2.5 disabled:text-primary-gray',
+    'bg-transparent border border-opacity-30 text-sm rounded-lg block w-full p-2.5 disabled:text-primary-gray focus-visible:ring-primary-gray',
     {
-      'text-gray-900 border-primary-gray focus:ring-primary-gray focus:border-primary-gray placeholder:text-text-secondary':
+      'text-text-primary border-primary-gray focus:ring-primary-gray focus:border-primary-gray placeholder:text-text-secondary':
         !error,
     },
     {
