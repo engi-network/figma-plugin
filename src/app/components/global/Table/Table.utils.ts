@@ -4,12 +4,12 @@ import { Cell } from './Table.types'
 
 export const mapHistoryToTable = (history: History): Array<Cell> => {
   return history.map(({ checkId, result }) => {
-    const { component, story, repository } = result
+    const { path, story, repository } = result
     const baseObj = {
       checkId,
-      component,
-      story,
+      path,
       repository,
+      story,
     }
 
     if (isError(result)) {

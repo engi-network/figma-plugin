@@ -46,8 +46,9 @@ function Table({
     prepareRow,
     toggleSortBy,
     // setFilter,
-    state,
+    // state,
     setGlobalFilter,
+    setHiddenColumns,
   } = useTable(
     {
       columns,
@@ -60,7 +61,9 @@ function Table({
     useSortBy,
   )
 
-  console.info('state====>', state.globalFilter)
+  useEffect(() => {
+    setHiddenColumns(['repository', 'checkId'])
+  }, [])
 
   const rowElements = useCallback(
     ({ index, style }) => {
