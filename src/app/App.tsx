@@ -23,7 +23,7 @@ function App() {
             ROUTES_MAP[ROUTES.HISTORY],
             ROUTES_MAP[ROUTES.LOADING],
           ]}
-          initialIndex={3}
+          initialIndex={0}
         >
           <Layout>
             <Routes />

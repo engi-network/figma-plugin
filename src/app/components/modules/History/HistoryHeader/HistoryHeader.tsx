@@ -17,8 +17,8 @@ function HistoryHeader() {
     <div className="flex justify-between border-b border-text-secondary px-7 py-5">
       <div className="flex justify-center items-center">
         <IconButton
-          className="text-wf-secondary"
-          icon={<ChevronLeftIcon className="w-6 h-6 text-wf-secondary" />}
+          className="text-text-secondary"
+          icon={<ChevronLeftIcon className="w-5 h-5" />}
           onClick={handleBack}
         >
           {ui('header.back')}
@@ -26,11 +26,8 @@ function HistoryHeader() {
       </div>
       <div className="flex items-center">
         <IconButton
-          className="text-wf-secondary text-sm"
-          icon={
-            <InformationCircleIcon className="w-5 h-5 text-wf-secondary mr-1" />
-          }
-          onClick={() => {}}
+          className="text-text-secondary"
+          icon={<InformationCircleIcon className="w-5 h-5" />}
         >
           {ui('header.learnMore')}
         </IconButton>

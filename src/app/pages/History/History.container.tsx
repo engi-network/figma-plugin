@@ -68,7 +68,7 @@ function Historycontainer() {
     <>
       <HistoryHeader />
       <div className="px-8 py-6 border-b border-text-secondary border-opacity-30">
-        <h2 className="text-base text-black mb-5 font-bold">
+        <h2 className="text-base text-text-primary mb-5 font-bold">
           {ui('history.history')}
         </h2>
         <div className="flex">

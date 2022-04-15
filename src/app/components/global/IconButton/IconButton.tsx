@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import { ReactNode } from 'react'
 
 import { BUTTON_STYLE, DIRECTION } from '~/app/lib/constants'
@@ -26,11 +27,12 @@ function IconButton({
 }: Props) {
   const leftIcon = iconPosition === DIRECTION.LEFT && icon
   const rightIcon = iconPosition === DIRECTION.RIGHT && icon
+  const btnClasses = cn('text-sm', className)
 
   return (
     <button
       id={id}
-      className={className}
+      className={btnClasses}
       css={[styles.root, styles[buttonStyle]]}
       onClick={onClick}
       {...rest}

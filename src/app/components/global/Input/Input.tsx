@@ -44,7 +44,7 @@ function Input({
     onChange(value)
   }
 
-  const classes = cn(
+  const inputClasses = cn(
     'bg-transparent border border-opacity-30 text-sm rounded-lg block w-full p-2.5 disabled:text-primary-gray',
     {
       'text-gray-900 border-primary-gray focus:ring-primary-gray focus:border-primary-gray placeholder:text-text-secondary':
@@ -73,7 +73,7 @@ function Input({
         value={value}
         required={required}
         type={type}
-        className={classes}
+        className={inputClasses}
         placeholder={placeholder}
         {...rest}
       />
