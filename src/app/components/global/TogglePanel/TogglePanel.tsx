@@ -1,25 +1,37 @@
 import { Transition } from '@headlessui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid'
+import cn from 'classnames'
 import { ReactNode, useState } from 'react'
+
+import { CSSStylesProp } from '~/app/lib/constants'
 
 interface Props {
   children: ReactNode
   className?: string
+  customRootStyles?: CSSStylesProp
   initialOpen?: boolean
   title: string
 }
 
-function TogglePanel({ title, initialOpen, children, className }: Props) {
+function TogglePanel({
+  title,
+  initialOpen,
+  children,
+  className,
+  customRootStyles,
+}: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(!!initialOpen)
 
   const togglePanel = () => {
     setIsOpen((prev) => !prev)
   }
 
+  const rootClasses = cn('relative', className)
+
   return (
-    <div className={className}>
+    <div className={rootClasses} css={customRootStyles}>
       <div
-        className="text-base text-primary-white flex justify-between"
+        className="text-base text-primary-white flex justify-between cursor-pointer"
         onClick={togglePanel}
       >
         <p>{title}</p>

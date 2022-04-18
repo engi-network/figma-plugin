@@ -4,6 +4,7 @@ import { ChangeEvent, InputHTMLAttributes } from 'react'
 
 interface Props // use custom on change
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+  className?: string
   isDisabled?: boolean
   label?: string
   onChange?: (value?: boolean) => void
@@ -14,6 +15,7 @@ function Checkbox({
   isDisabled = false,
   onChange,
   label,
+  className,
   ...rest
 }: Props) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -30,8 +32,10 @@ function Checkbox({
     },
   )
 
+  const rootClasses = cn('flex items-center', className)
+
   return (
-    <label className="flex items-center">
+    <label className={rootClasses}>
       <input
         className="appearance-none opacity-0 disabled:pointer-events-none"
         aria-checked={checked}
@@ -43,12 +47,12 @@ function Checkbox({
       <span className={iconWrapperClass}>
         {!isDisabled && checked && (
           <span aria-hidden>
-            <CheckIcon className="w-4 h-4 text-wf-light" />
+            <CheckIcon className="w-4 h-4 text-[#140C36]" />
           </span>
         )}
         {isDisabled && (
           <span aria-hidden>
-            <MinusIcon className="w-4 h-4 text-wf-light" />
+            <MinusIcon className="w-4 h-4 text-[#140C36]" />
           </span>
         )}
       </span>
