@@ -1,4 +1,4 @@
-import { boolean } from '@storybook/addon-knobs'
+import { boolean, text } from '@storybook/addon-knobs'
 import { useState } from 'react'
 
 import Checkbox from './Checkbox'
@@ -15,11 +15,12 @@ export function CheckboxWithKnobs() {
   }
 
   return (
-    <div>
+    <div className="bg-slate-700 h-36">
       <Checkbox
         checked={value}
         onChange={handleChange}
         isDisabled={boolean('Disabled?', false)}
+        label={text('Checkbox Label', 'Check me')}
       />
     </div>
   )
