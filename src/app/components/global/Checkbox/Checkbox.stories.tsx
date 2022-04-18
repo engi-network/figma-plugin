@@ -15,7 +15,7 @@ export function CheckboxWithKnobs() {
   }
 
   return (
-    <div className="bg-slate-700 h-36">
+    <div className="bg-slate-700 h-screen">
       <Checkbox
         checked={value}
         onChange={handleChange}

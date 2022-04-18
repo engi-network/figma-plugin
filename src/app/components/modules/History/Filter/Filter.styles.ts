@@ -1,18 +1,20 @@
 import { COLORS, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
-  togglePanel: {
-    '&::after': {
+  form: {
+    '& > div::after': {
       borderBottom: `1px solid ${COLORS.TEXT.SECONDARY}`,
       bottom: 0,
       content: "' '",
       opacity: 0.3,
       position: 'absolute',
-      width: '100%',
+      right: -25,
+      width: 'calc(100% + 25px)',
       zIndex: 20,
     },
-    paddingBottom: 20,
-    paddingTop: 20,
+    '& > div:last-child::after': {
+      border: 'none',
+    },
   },
 }
 

@@ -14,7 +14,7 @@ export function DatepickerWithKnobs() {
   }
 
   return (
-    <div className="bg-slate-700 h-56 pt-10 pl-10">
+    <div className="bg-slate-700 h-screen pt-10 pl-10">
       <Datepicker value={value} onChange={onChange} />
     </div>
   )

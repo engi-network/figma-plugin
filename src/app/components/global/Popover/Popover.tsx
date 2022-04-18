@@ -1,15 +1,24 @@
 import { Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import cn from 'classnames'
 import React, { Fragment, ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
+  className?: string
+  panelClassName?: string
   title: string
 }
 
-function CustomPopover({ title, children }: Props) {
+function CustomPopover({ title, children, className, panelClassName }: Props) {
+  const rootClasses = cn('w-full max-w-sm px-4 fixed top-16', className)
+  const panelClasses = cn(
+    'px-6 overflow-hidden ring-1 ring-black ring-opacity-5 bg-[#23232333] backdrop-blur-[200px]',
+    panelClassName,
+  )
+
   return (
-    <div className="w-full max-w-sm px-4 fixed top-16">
+    <div className={rootClasses}>
       <Popover className="relative">
         {({ open }) => (
           <>
@@ -35,9 +44,7 @@ function CustomPopover({ title, children }: Props) {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className="absolute z-10 w-screen max-w-sm px-5 transform -translate-x-1/2 left-1/2">
-                <div className="px-6 py-5 overflow-hidden ring-1 ring-black ring-opacity-5 bg-[#23232333] backdrop-blur-[200px]">
-                  {children}
-                </div>
+                <div className={panelClasses}>{children}</div>
               </Popover.Panel>
             </Transition>
           </>

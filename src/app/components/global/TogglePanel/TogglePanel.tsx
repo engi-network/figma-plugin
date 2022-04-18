@@ -10,6 +10,7 @@ interface Props {
   className?: string
   customRootStyles?: CSSStylesProp
   initialOpen?: boolean
+  panelClassName?: string
   title: string
 }
 
@@ -19,6 +20,7 @@ function TogglePanel({
   children,
   className,
   customRootStyles,
+  panelClassName,
 }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(!!initialOpen)
 
@@ -27,6 +29,7 @@ function TogglePanel({
   }
 
   const rootClasses = cn('relative', className)
+  const panelClasses = cn('text-primary-white', panelClassName)
 
   return (
     <div className={rootClasses} css={customRootStyles}>
@@ -50,7 +53,7 @@ function TogglePanel({
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="py-4 text-primary-white">{children}</div>
+        <div className={panelClasses}>{children}</div>
       </Transition>
     </div>
   )

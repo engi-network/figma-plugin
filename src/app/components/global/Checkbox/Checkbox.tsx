@@ -7,7 +7,7 @@ interface Props // use custom on change
   className?: string
   isDisabled?: boolean
   label?: string
-  onChange?: (value?: boolean) => void
+  onChange?: (value: boolean) => void
 }
 
 function Checkbox({
