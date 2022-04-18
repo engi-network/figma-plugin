@@ -20,8 +20,6 @@ function Historycontainer() {
   const [filterBy, setFilterBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
 
-  console.log('history===>', history)
-
   const onSearchTermChange = (value: string) => {
     setSearchBy(value)
   }
