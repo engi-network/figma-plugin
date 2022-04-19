@@ -97,6 +97,13 @@ function Filter({ title }: Props) {
             onChange={handleChange(FILTER_FIELDS.CREATED_BEFORE)}
           />
         </TogglePanel>
+        <TogglePanel
+          title="Duration of the check"
+          panelClassName="pt-4"
+          className="py-4"
+        >
+          <div>slider</div>
+        </TogglePanel>
       </form>
     </Popover>
   )
