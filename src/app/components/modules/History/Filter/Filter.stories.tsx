@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import Filter, { FilterValues, initialFilterState } from './Filter'
+import Filter from './Filter'
+import { FilterValues, initialFilterState } from './Filter.data'
 
 export default {
   component: Filter,

@@ -5,19 +5,21 @@ import Select from '~/app/components/global/Select/Select'
 import Table, { CellText, Status } from '~/app/components/global/Table/Table'
 import { Column } from '~/app/components/global/Table/Table.types'
 import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
+import Filter from '~/app/components/modules/History/Filter/Filter'
+import {
+  FilterValues,
+  initialFilterState,
+} from '~/app/components/modules/History/Filter/Filter.data'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import {
-  filterByOptions,
-  sortByOptions,
-} from '~/app/pages/History/History.data'
+import { sortByOptions } from '~/app/pages/History/History.data'
 
 function Historycontainer() {
   const { history } = useAppContext()
   const data = useMemo(() => mapHistoryToTable(history), [])
+  const [filter, setFilter] = useState<FilterValues>(initialFilterState)
   const [sortBy, setSortBy] = useState('')
-  const [filterBy, setFilterBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
 
   const onSearchTermChange = (value: string) => {
@@ -28,8 +30,8 @@ function Historycontainer() {
     setSortBy(value)
   }
 
-  const handleFilterByChange = (value: string) => {
-    setFilterBy(value)
+  const handleFilterChange = (values: FilterValues) => {
+    setFilter(values)
   }
 
   const tableColumns: Array<Column> = useMemo(
@@ -110,19 +112,17 @@ function Historycontainer() {
           placeholder="Sort by"
           className="w-24"
         />
-        <Select
-          options={filterByOptions}
-          onChange={handleFilterByChange}
-          value={sortBy}
-          placeholder="Filter"
-          className="w-24"
+        <Filter
+          title={'Filter by'}
+          onChange={handleFilterChange}
+          value={filter}
         />
       </div>
       <Table
         columns={tableColumns}
         data={data}
         sortBy={sortBy}
-        filterBy={filterBy}
+        // filterBy={filterBy}
         searchBy={searchBy}
         hideHeader
       />

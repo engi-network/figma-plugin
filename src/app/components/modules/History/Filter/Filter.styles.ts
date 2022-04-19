@@ -15,6 +15,7 @@ const styles: StylesMap = {
     '& > div:last-child::after': {
       border: 'none',
     },
+    marginBottom: 0,
   },
 }
 
