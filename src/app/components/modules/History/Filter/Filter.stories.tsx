@@ -1,4 +1,6 @@
-import Filter from './Filter'
+import { useState } from 'react'
+
+import Filter, { FilterValues, initialFilterState } from './Filter'
 
 export default {
   component: Filter,
@@ -6,9 +8,19 @@ export default {
 }
 
 export function FilterWithKnobs() {
+  const [values, setValues] = useState<FilterValues>(initialFilterState)
+
+  const handleFilterChange = (values: FilterValues) => {
+    setValues(values)
+  }
+
   return (
     <div className="h-screen bg-slate-700">
-      <Filter title={'Filter by'} />
+      <Filter
+        title={'Filter by'}
+        onChange={handleFilterChange}
+        value={values}
+      />
     </div>
   )
 }

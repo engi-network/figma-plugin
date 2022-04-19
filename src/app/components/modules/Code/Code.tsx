@@ -20,12 +20,10 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
   const [showMore, setShowMore] = useState<boolean>(true)
 
   const handleInputChange = (field: FORM_FIELD) => (value: string) => {
-    setValues((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
+    const newValues = { ...values, [field]: value }
+    setValues(newValues)
 
-    onChange({ ...values, [field]: value })
+    onChange(newValues)
   }
 
   const handleClickSeeMore = () => {

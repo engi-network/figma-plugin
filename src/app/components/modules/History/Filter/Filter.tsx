@@ -10,7 +10,7 @@ import styles from './Filter.styles'
 
 const DURATION_RANGE = [0, 60]
 
-enum FILTER_FIELDS {
+export enum FILTER_FIELDS {
   CREATED_AFTER = 'createdAfter',
   CREATED_BEFORE = 'createdBefore',
   DURATION = 'duration',
@@ -19,7 +19,7 @@ enum FILTER_FIELDS {
   SUCCESS = 'success',
 }
 
-interface FilterValues {
+export interface FilterValues {
   [FILTER_FIELDS.SUCCESS]: boolean
   [FILTER_FIELDS.FAIL]: boolean
   [FILTER_FIELDS.IN_PROGRESS]: boolean
@@ -27,11 +27,13 @@ interface FilterValues {
   [FILTER_FIELDS.CREATED_BEFORE]: string
   [FILTER_FIELDS.DURATION]: Array<number>
 }
-interface Props {
+export interface FilterProps {
+  onChange: (values: FilterValues) => void
   title: string
+  value?: FilterValues
 }
 
-const initialFilterState: FilterValues = {
+export const initialFilterState: FilterValues = {
   [FILTER_FIELDS.SUCCESS]: false,
   [FILTER_FIELDS.FAIL]: false,
   [FILTER_FIELDS.IN_PROGRESS]: false,
@@ -46,15 +48,17 @@ const initialFilterState: FilterValues = {
  *
  */
 
-function Filter({ title }: Props) {
-  const [values, setValues] = useState<FilterValues>(initialFilterState)
+function Filter({ title, onChange, value }: FilterProps) {
+  const [values, setValues] = useState<FilterValues>(
+    value || initialFilterState,
+  )
 
   const handleChange =
     (fieldName: FILTER_FIELDS) => (value: boolean | string | Array<number>) => {
-      setValues((prev) => ({
-        ...prev,
-        [fieldName]: value,
-      }))
+      const newValues = { ...values, [fieldName]: value }
+
+      setValues(newValues)
+      onChange(newValues)
     }
 
   return (
