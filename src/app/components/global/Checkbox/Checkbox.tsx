@@ -1,4 +1,4 @@
-import { CheckIcon, MinusIcon } from '@heroicons/react/solid'
+import { CheckIcon } from '@heroicons/react/solid'
 import cn from 'classnames'
 import { ChangeEvent, InputHTMLAttributes } from 'react'
 
@@ -27,8 +27,9 @@ function Checkbox({
     'relative flex-shrink-0 h-4 w-4 overflow-hidden',
     {
       'bg-primary-green': !isDisabled && checked,
-      'opacity-50 bg-primary-green': !checked,
-      'bg-red-500': isDisabled,
+      'bg-primary-white bg-opacity-20 border border-primary-white border-opacitiy-60':
+        !checked,
+      'opacity-50': isDisabled,
     },
   )
 
@@ -45,14 +46,9 @@ function Checkbox({
         {...rest}
       />
       <span className={iconWrapperClass}>
-        {!isDisabled && checked && (
+        {checked && (
           <span aria-hidden>
-            <CheckIcon className="w-4 h-4 text-[#140C36]" />
-          </span>
-        )}
-        {isDisabled && (
-          <span aria-hidden>
-            <MinusIcon className="w-4 h-4 text-[#140C36]" />
+            <CheckIcon className="w-4 h-4 text-primary-dark" />
           </span>
         )}
       </span>

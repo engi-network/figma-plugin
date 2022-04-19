@@ -3,13 +3,15 @@ import ReactSlider, { ReactSliderProps } from 'react-slider'
 
 type Props = ReactSliderProps<Array<number>>
 
+const DEFAUTL_TRACKNAME = 'track'
 export default function Slider({
-  trackClassName,
+  trackClassName = DEFAUTL_TRACKNAME,
   markClassName,
   min,
   max,
   onChange,
   value,
+  className,
   ...rest
 }: Props) {
   const renderThumb = (
@@ -24,16 +26,19 @@ export default function Slider({
     )
     return (
       <div {...props} className={thumbClasses}>
-        <span className="-mt-10 text-xs text-green-400">{state.valueNow}</span>
+        <span className="-mt-10 text-xs text-primary-green">
+          {state.valueNow}
+        </span>
       </div>
     )
   }
 
   const renderTrack = (props) => {
     const trackClasses = cn(props.className, 'h-0.5 top-[5px]', {
-      'bg-primary-green': props.key === 'track-1',
+      'bg-primary-green': props.key === `${trackClassName}-1`,
       'bg-primary-white bg-opacity-30':
-        props.key === 'track-0' || props.key === 'track-2',
+        props.key === `${trackClassName}-0` ||
+        props.key === `${trackClassName}-2`,
     })
 
     return <div {...props} className={trackClasses} />
@@ -53,6 +58,7 @@ export default function Slider({
       max={max}
       value={value}
       onChange={onChange}
+      className={className}
       {...rest}
     />
   )
