@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import { ChangeEvent } from 'react'
 
 import { CalendarIcon } from '~/app/components/global/Icons'
@@ -5,18 +6,25 @@ import { CalendarIcon } from '~/app/components/global/Icons'
 import styles from './Datepicker.styles'
 
 interface Props {
+  className?: string
+  disabled?: boolean
   label?: string
   onChange?: (value: string) => void
   value?: string
 }
 
-function Datepicker({ onChange, value }: Props) {
+function Datepicker({ onChange, value, className, disabled }: Props) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange && onChange(event.target.value)
   }
 
+  const rootClasses = cn(
+    className,
+    'inline-flex items-center relative border border-text-primary border-opacity-30 pl-5',
+  )
+
   return (
-    <span className="inline-flex items-center relative border border-text-primary border-opacity-30 pl-5">
+    <span className={rootClasses}>
       <div className="flex items-center justify-center absolute left-4 h-full">
         <button
           className="inline-flex items-center justify-center select-none"
@@ -31,6 +39,7 @@ function Datepicker({ onChange, value }: Props) {
         value={value}
         css={styles.input}
         onChange={handleChange}
+        disabled={disabled}
       />
     </span>
   )
