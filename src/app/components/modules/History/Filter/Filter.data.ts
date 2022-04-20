@@ -4,7 +4,7 @@ export const DURATION_RANGE = [0, 60]
 
 export interface TableFilterItem {
   id: TB_ACCESSORS
-  value: string | number | Array<number> | boolean
+  value: string | number | Array<number | string> | boolean
 }
 
 export enum FILTER_FIELDS {
@@ -35,11 +35,9 @@ export const initialFilterState: FilterValues = {
 }
 
 export const mapFilterToAccessor = {
-  [FILTER_FIELDS.CREATED_AFTER]: TB_ACCESSORS.CREATED_AT,
-  [FILTER_FIELDS.CREATED_BEFORE]: TB_ACCESSORS.CREATED_AT,
   [FILTER_FIELDS.DURATION]: TB_ACCESSORS.DURATION,
-  [FILTER_FIELDS.FAIL]: TB_ACCESSORS.STATUS,
-  [FILTER_FIELDS.SUCCESS]: TB_ACCESSORS.STATUS,
+  status: TB_ACCESSORS.STATUS,
+  period: TB_ACCESSORS.CREATED_AT,
 }
 
 export enum TOGGLE_NAMES {

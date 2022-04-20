@@ -7,7 +7,8 @@ interface Props // use custom on change
   className?: string
   isDisabled?: boolean
   label?: string
-  onChange?: (value: boolean) => void
+  onChange?: (value: boolean | string) => void
+  toggleValues?: [string, string]
 }
 
 function Checkbox({
@@ -16,11 +17,18 @@ function Checkbox({
   onChange,
   label,
   className,
+  toggleValues,
   ...rest
 }: Props) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.checked
-    !isDisabled && onChange && onChange(value)
+    if (toggleValues) {
+      !isDisabled &&
+        onChange &&
+        onChange(value ? toggleValues[0] : toggleValues[1])
+    } else {
+      !isDisabled && onChange && onChange(value)
+    }
   }
 
   const iconWrapperClass = cn(

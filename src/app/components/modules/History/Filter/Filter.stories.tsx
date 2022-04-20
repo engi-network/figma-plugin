@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import Filter from './Filter'
 import { FilterValues, initialFilterState } from './Filter.data'
+import { mapFilterFormToTableFilter } from './Filter.utils'
 
 export default {
   component: Filter,
@@ -14,6 +15,9 @@ export function FilterWithKnobs() {
   const handleFilterChange = (values: FilterValues) => {
     setValues(values)
   }
+
+  const filterItems = mapFilterFormToTableFilter(values)
+  console.info('filter===>', filterItems)
 
   return (
     <div className="h-screen bg-slate-700">

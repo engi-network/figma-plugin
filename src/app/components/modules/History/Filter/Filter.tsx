@@ -81,20 +81,6 @@ function Filter({ title, onChange, value, className }: FilterProps) {
           />
         </TogglePanel>
         <TogglePanel
-          id={TOGGLE_NAMES.DATE_AFTER}
-          title="Date created after"
-          panelClassName="pt-4"
-          className="py-4"
-          onToggle={handleToggle(TOGGLE_NAMES.DATE_AFTER)}
-          initialOpen={toggleState[TOGGLE_NAMES.DATE_AFTER]}
-        >
-          <Datepicker
-            value={values[FILTER_FIELDS.CREATED_AFTER]}
-            onChange={handleChange(FILTER_FIELDS.CREATED_AFTER)}
-            className="w-full"
-          />
-        </TogglePanel>
-        <TogglePanel
           id={TOGGLE_NAMES.DATE_BEFORE}
           title="Date created before"
           panelClassName="pt-4"
@@ -105,6 +91,20 @@ function Filter({ title, onChange, value, className }: FilterProps) {
           <Datepicker
             value={values[FILTER_FIELDS.CREATED_BEFORE]}
             onChange={handleChange(FILTER_FIELDS.CREATED_BEFORE)}
+            className="w-full"
+          />
+        </TogglePanel>
+        <TogglePanel
+          id={TOGGLE_NAMES.DATE_AFTER}
+          title="Date created after"
+          panelClassName="pt-4"
+          className="py-4"
+          onToggle={handleToggle(TOGGLE_NAMES.DATE_AFTER)}
+          initialOpen={toggleState[TOGGLE_NAMES.DATE_AFTER]}
+        >
+          <Datepicker
+            value={values[FILTER_FIELDS.CREATED_AFTER]}
+            onChange={handleChange(FILTER_FIELDS.CREATED_AFTER)}
             className="w-full"
           />
         </TogglePanel>
