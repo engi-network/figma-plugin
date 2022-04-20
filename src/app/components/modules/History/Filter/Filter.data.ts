@@ -41,3 +41,19 @@ export const mapFilterToAccessor = {
   [FILTER_FIELDS.FAIL]: TB_ACCESSORS.STATUS,
   [FILTER_FIELDS.SUCCESS]: TB_ACCESSORS.STATUS,
 }
+
+export enum TOGGLE_NAMES {
+  COMPARE = 'compare',
+  DATE_AFTER = 'dateAfter',
+  DATE_BEFORE = 'dateBefore',
+  DURATION = 'duration',
+}
+
+export type ToggleValues = Record<TOGGLE_NAMES, boolean>
+
+export const toggleInitialState: ToggleValues = {
+  [TOGGLE_NAMES.COMPARE]: false,
+  [TOGGLE_NAMES.DATE_AFTER]: false,
+  [TOGGLE_NAMES.DATE_BEFORE]: false,
+  [TOGGLE_NAMES.DURATION]: false,
+}

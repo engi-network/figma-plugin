@@ -9,30 +9,35 @@ interface Props {
   children: ReactNode
   className?: string
   customRootStyles?: CSSStylesProp
+  id?: string
   initialOpen?: boolean
+  onToggle?: (state: boolean) => void
   panelClassName?: string
   title: string
 }
 
 function TogglePanel({
+  id,
   title,
   initialOpen,
   children,
   className,
   customRootStyles,
   panelClassName,
+  onToggle,
 }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(!!initialOpen)
 
   const togglePanel = () => {
     setIsOpen((prev) => !prev)
+    onToggle && onToggle(!isOpen)
   }
 
   const rootClasses = cn('relative', className)
   const panelClasses = cn('text-primary-white', panelClassName)
 
   return (
-    <div className={rootClasses} css={customRootStyles}>
+    <div className={rootClasses} css={customRootStyles} id={id}>
       <div
         className="text-base text-primary-white flex justify-between cursor-pointer"
         onClick={togglePanel}

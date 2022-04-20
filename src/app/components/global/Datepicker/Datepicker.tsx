@@ -1,9 +1,9 @@
 import cn from 'classnames'
 import { ChangeEvent } from 'react'
 
-import { CalendarIcon } from '~/app/components/global/Icons'
+// import styles from './Datepicker.styles'
 
-import styles from './Datepicker.styles'
+// import { CalendarIcon } from '~/app/components/global/Icons'
 
 interface Props {
   className?: string
@@ -30,7 +30,7 @@ function Datepicker({ onChange, value, className, disabled }: Props) {
           type="date"
           className="text-base text-text-primary border-none bg-transparent"
           value={value}
-          css={styles.input}
+          // css={styles.input}
           onChange={handleChange}
           disabled={disabled}
         />
