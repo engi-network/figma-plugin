@@ -11,7 +11,7 @@ import {
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
-import { FilterValues } from '~/app/components/modules/History/Filter/Filter.data'
+import { TableFilterItem } from '~/app/components/modules/History/Filter/Filter.data'
 
 import { Cell, Column, ColumnGroup } from './Table.types'
 
@@ -19,7 +19,7 @@ interface Props {
   className?: string
   columns: Array<Column | ColumnGroup>
   data: Array<Cell>
-  filterValues: FilterValues
+  filterItems: Array<TableFilterItem>
   hideHeader?: boolean
   searchBy?: string
   sortBy?: string
@@ -32,7 +32,7 @@ function Table({
   sortBy,
   className,
   searchBy,
-  filterValues,
+  filterItems,
 }: Props) {
   const defaultColumn = useMemo(
     () => ({
@@ -41,7 +41,7 @@ function Table({
     [],
   )
 
-  console.info('filterValues', filterValues)
+  console.info('filterValues=====>', filterItems)
 
   const {
     getTableProps,

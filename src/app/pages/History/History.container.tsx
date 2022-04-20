@@ -10,10 +10,11 @@ import {
   FilterValues,
   initialFilterState,
 } from '~/app/components/modules/History/Filter/Filter.data'
+import { mapFilterFormToTableFilter } from '~/app/components/modules/History/Filter/Filter.utils'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { sortByOptions } from '~/app/pages/History/History.data'
+import { sortByOptions, TB_ACCESSORS } from '~/app/pages/History/History.data'
 
 function Historycontainer() {
   const { history } = useAppContext()
@@ -37,56 +38,66 @@ function Historycontainer() {
   const tableColumns: Array<Column> = useMemo(
     () => [
       {
-        Header: 'CheckId',
-        accessor: 'checkId',
+        Header: TB_ACCESSORS.CHECKID,
+        accessor: TB_ACCESSORS.CHECKID,
         Cell: CellText,
-        id: 'checkId',
+        id: TB_ACCESSORS.CHECKID,
       },
       {
-        accessor: 'path',
-        Cell: CellText,
-        disableGlobalFilter: true,
-        Header: 'Path',
-        id: 'path',
-      },
-      {
-        accessor: 'createdAt',
+        accessor: TB_ACCESSORS.PATH,
         Cell: CellText,
         disableGlobalFilter: true,
-        Header: 'Created at',
-        id: 'createdAt',
+        Header: TB_ACCESSORS.PATH,
+        id: TB_ACCESSORS.PATH,
       },
       {
-        accessor: 'completedAt',
+        accessor: TB_ACCESSORS.CREATED_AT,
         Cell: CellText,
         disableGlobalFilter: true,
-        Header: 'Completed',
-        id: 'completedAt',
+        Header: TB_ACCESSORS.CREATED_AT,
+        id: TB_ACCESSORS.CREATED_AT,
       },
       {
-        accessor: 'story',
+        accessor: TB_ACCESSORS.COMPLETED_AT,
         Cell: CellText,
         disableGlobalFilter: true,
-        Header: 'Story',
-        id: 'story',
+        Header: TB_ACCESSORS.COMPLETED_AT,
+        id: TB_ACCESSORS.COMPLETED_AT,
       },
       {
-        accessor: 'repository',
+        accessor: TB_ACCESSORS.STORY,
         Cell: CellText,
         disableGlobalFilter: true,
-        Header: 'Repository',
-        id: 'repository',
+        Header: TB_ACCESSORS.STORY,
+        id: TB_ACCESSORS.STORY,
       },
       {
-        accessor: 'status',
+        accessor: TB_ACCESSORS.REPOSITORY,
+        Cell: CellText,
+        disableGlobalFilter: true,
+        Header: TB_ACCESSORS.REPOSITORY,
+        id: TB_ACCESSORS.REPOSITORY,
+      },
+      {
+        accessor: TB_ACCESSORS.DURATION,
+        disableGlobalFilter: true,
+        filter: 'between',
+        Header: TB_ACCESSORS.DURATION,
+        id: TB_ACCESSORS.DURATION,
+      },
+      {
+        accessor: TB_ACCESSORS.STATUS,
         Cell: Status,
         disableGlobalFilter: true,
-        Header: 'Status',
+        Header: TB_ACCESSORS.STATUS,
         width: 40,
       },
     ],
     [],
   )
+
+  console.info('filter===>', filter)
+  const filterItems = mapFilterFormToTableFilter(filter)
 
   return (
     <>
@@ -122,7 +133,7 @@ function Historycontainer() {
         columns={tableColumns}
         data={data}
         sortBy={sortBy}
-        filterValues={filter}
+        filterItems={filterItems}
         searchBy={searchBy}
         hideHeader
       />

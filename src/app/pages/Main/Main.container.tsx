@@ -34,6 +34,7 @@ import {
   SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
 
+import { LoadingScreen } from '../Loading/Loading.stories'
 import { DEMENSIONS } from './Main.container.data'
 
 function MainContainer() {
@@ -58,27 +59,26 @@ function MainContainer() {
     }
 
     if (report) {
-      dispatchData({
-        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-        data: report,
-      })
-
       const {
         checkId,
         result: { story, component },
       } = report
       const presignedUrl = await getPresignedUrl(story || component, checkId)
-      const newReport = { ...report, imageUrl: presignedUrl }
+      const detailedReport = { ...report, imageUrl: presignedUrl }
 
-      setHistory((prev) => [...prev, newReport])
+      dispatchData({
+        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+        data: detailedReport,
+      })
+      setHistory((prev) => [...prev, detailedReport])
 
       if (status.success) {
-        console.info('Yay, successfully got report:::', newReport)
-        setReport(newReport)
+        console.info('Yay, successfully got report:::', detailedReport)
+        setReport(detailedReport)
         setProgress(100)
         navigate(ROUTES_MAP[ROUTES.RESULT])
       } else {
-        console.error('Oops, got an error report:::', newReport)
+        console.error('Oops, got an error report:::', detailedReport)
         setIsLoading(false)
         setProgress(0)
         setApiError('Something went wrong. Please double check the inputs.')
@@ -221,7 +221,7 @@ function MainContainer() {
   const isDisabled = !!isLoading || !!apiError
 
   if (isLoading) {
-    navigate(ROUTES_MAP[ROUTES.LOADING])
+    return <LoadingScreen />
   }
 
   return (

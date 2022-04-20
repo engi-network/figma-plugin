@@ -1,19 +1,21 @@
-import { StylesMap } from '~/app/lib/constants'
+import { COLORS, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
   input: {
     '&::-webkit-calendar-picker-indicator': {
-      background: 'red',
+      color: COLORS.PRIMARY.WHITE,
       cursor: 'pointer',
-      left: 16,
-      marginTop: 20,
-      opacity: 0,
+      left: 0,
+      marginTop: 5,
       position: 'absolute',
       top: 0,
-      zIndex: 10,
+      zIndex: 1,
     },
     '&::-webkit-clear-button': {
       display: 'none',
+    },
+    '&::-webkit-datetime-edit-fields-wrapper': {
+      paddingLeft: 25,
     },
   },
 }

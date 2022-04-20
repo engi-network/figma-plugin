@@ -20,28 +20,22 @@ function Datepicker({ onChange, value, className, disabled }: Props) {
 
   const rootClasses = cn(
     className,
-    'inline-flex items-center relative border border-text-primary border-opacity-30 pl-5',
+    'inline-flex items-center border border-text-primary border-opacity-30 py-2 px-4',
   )
 
   return (
-    <span className={rootClasses}>
-      <div className="flex items-center justify-center absolute left-4 h-full">
-        <button
-          className="inline-flex items-center justify-center select-none"
-          tabIndex={0}
-        >
-          <CalendarIcon width={17} height={17} />
-        </button>
+    <div className={rootClasses}>
+      <div className="relative">
+        <input
+          type="date"
+          className="text-base text-text-primary border-none bg-transparent"
+          value={value}
+          css={styles.input}
+          onChange={handleChange}
+          disabled={disabled}
+        />
       </div>
-      <input
-        type="date"
-        className="text-base text-text-primary border-none pl-5 p-4 bg-transparent"
-        value={value}
-        css={styles.input}
-        onChange={handleChange}
-        disabled={disabled}
-      />
-    </span>
+    </div>
   )
 }
 
