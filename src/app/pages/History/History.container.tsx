@@ -97,7 +97,6 @@ function Historycontainer() {
   )
 
   const filterItems = mapFilterFormToTableFilter(filter)
-  console.info('filter===>', filterItems)
 
   return (
     <>

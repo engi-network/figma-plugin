@@ -27,13 +27,13 @@ function CustomPopover({ title, children, className, panelClassName }: Props) {
           <>
             <Popover.Button
               className={
-                'text-text-primary font-normal group rounded-md inline-flex items-center text-base hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                'text-text-primary font-normal rounded-md inline-flex items-center text-base hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
               }
             >
               <span className="text-sm">{title}</span>
               <ChevronDownIcon
                 className={`${open ? '' : 'text-opacity-70'}
-                  ml-2 h-5 w-5 text-text-primary group-hover:text-opacity-80 transition ease-in-out duration-150`}
+                  ml-1 mt-1 h-4 w-4 text-text-primary`}
                 aria-hidden="true"
               />
             </Popover.Button>
