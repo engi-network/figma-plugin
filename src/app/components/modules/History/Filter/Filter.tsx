@@ -72,6 +72,7 @@ function Filter({ title, onChange, value, className }: FilterProps) {
           <Datepicker
             value={values[FILTER_FIELDS.CREATED_AFTER]}
             onChange={handleChange(FILTER_FIELDS.CREATED_AFTER)}
+            className="w-full"
           />
         </TogglePanel>
         <TogglePanel
@@ -82,6 +83,7 @@ function Filter({ title, onChange, value, className }: FilterProps) {
           <Datepicker
             value={values[FILTER_FIELDS.CREATED_BEFORE]}
             onChange={handleChange(FILTER_FIELDS.CREATED_BEFORE)}
+            className="w-full"
           />
         </TogglePanel>
         <TogglePanel

@@ -10,10 +10,28 @@ import { Specification } from '~/app/models/Specification'
 
 import { decodeFromBuffer } from './buffer'
 
+export const getPresignedUrl = async (
+  name: string,
+  checkId: string,
+): Promise<string> => {
+  try {
+    const key = `checks/${checkId}/frames/${name}.png`
+
+    const params = {
+      Bucket: config.SAME_STORY_BUCKET_NAME,
+      Key: key,
+    }
+
+    return await s3Client.getSignedUrlPromise('getObject', params)
+  } catch (error) {
+    return ''
+  }
+}
+
 export const uploadEncodedFrameToS3 = async (
-  name,
-  checkId,
-  frame,
+  name: string,
+  checkId: string,
+  frame: Uint8Array,
 ): Promise<S3.ManagedUpload.SendData> => {
   const key = `checks/${checkId}/frames/${name}.png`
 

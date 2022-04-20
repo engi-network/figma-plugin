@@ -39,3 +39,8 @@ export enum DIFF_TYPE {
   BLUE = 'blue',
   GRAY = 'gray',
 }
+
+export interface DetailedReport extends Report {
+  duration?: number
+  imageUrl?: string
+}

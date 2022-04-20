@@ -18,6 +18,7 @@ import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
 import {
   CallbackStatus,
+  getPresignedUrl,
   pollReportById,
   publishCommandToSns,
   uploadEncodedFrameToS3,
@@ -51,7 +52,7 @@ function MainContainer() {
 
   const { width = 0, height = 0, commit, branch } = selectionData || {}
 
-  const pollCallback = (status: CallbackStatus, report?: Report) => {
+  const pollCallback = async (status: CallbackStatus, report?: Report) => {
     if (currentTimerId !== status.currentTimerId) {
       setTimerId(status.currentTimerId)
     }
@@ -61,15 +62,23 @@ function MainContainer() {
         type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
         data: report,
       })
-      setHistory((prev) => [...prev, report])
+
+      const {
+        checkId,
+        result: { story, component },
+      } = report
+      const presignedUrl = await getPresignedUrl(story || component, checkId)
+      const newReport = { ...report, imageUrl: presignedUrl }
+
+      setHistory((prev) => [...prev, newReport])
 
       if (status.success) {
-        console.info('Yay, successfully got report:::', report)
-        setReport(report)
+        console.info('Yay, successfully got report:::', newReport)
+        setReport(newReport)
         setProgress(100)
         navigate(ROUTES_MAP[ROUTES.RESULT])
       } else {
-        console.error('Oops, got an error report:::', report)
+        console.error('Oops, got an error report:::', newReport)
         setIsLoading(false)
         setProgress(0)
         setApiError('Something went wrong. Please double check the inputs.')
@@ -158,16 +167,14 @@ function MainContainer() {
       const context = originCanvasRef.current.getContext(
         '2d',
       ) as CanvasRenderingContext2D
-
       const copyRef = originCanvasRef.current
+
       const imageData = await decodeOriginal(
         originCanvasRef.current,
         context,
         selectionData.frame,
       )
-
       const frame = await encode(copyRef, context, imageData)
-
       await uploadEncodedFrameToS3(story || component, checkId, frame)
       await publishCommandToSns(message)
       await pollReportById(checkId, pollCallback)

@@ -18,7 +18,7 @@ module.exports = {
         },
         secondary: {
           bg: '#232323',
-          error: '#F65151',
+          error: '#FA7B7B',
         },
         wf: {
           bg: '#F3F5F9',

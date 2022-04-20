@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 
 import * as PLUGIN_CONSTATNS from '~/plugin/constants'
 
-import { Report } from '../models/Report'
+import { DetailedReport } from '../models/Report'
 
 function useHistoryEvent() {
-  const [history, setHistory] = useState<Array<Report>>([])
+  const [history, setHistory] = useState<Array<DetailedReport>>([])
 
   const historyEventCallback = (event: MessageEvent) => {
     if (!event.data.pluginMessage) {

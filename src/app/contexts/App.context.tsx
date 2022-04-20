@@ -2,19 +2,19 @@ import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
 
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
 import { createContext } from '~/app/lib/utils/context'
-import { Report } from '~/app/models/Report'
+import { DetailedReport, Report } from '~/app/models/Report'
 
 export interface AppContextProps {
-  history: Array<Report>
+  history: Array<DetailedReport>
   report?: Report
-  setHistory: Dispatch<SetStateAction<Report[]>>
-  setReport: (value: Report) => void
+  setHistory: Dispatch<SetStateAction<DetailedReport[]>>
+  setReport: (value: DetailedReport) => void
 }
 
 const AppContext = createContext<AppContextProps>()
 
 export function useAppContextSetup(): AppContextProps {
-  const [report, setReport] = useState<Report>()
+  const [report, setReport] = useState<DetailedReport>()
   const { history, setHistory } = useHistoryEvent()
 
   return {

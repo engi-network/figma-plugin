@@ -11,13 +11,15 @@ import {
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
+import { FilterValues } from '~/app/components/modules/History/Filter/Filter.data'
+
 import { Cell, Column, ColumnGroup } from './Table.types'
 
 interface Props {
   className?: string
   columns: Array<Column | ColumnGroup>
   data: Array<Cell>
-  filterBy?: string
+  filterValues: FilterValues
   hideHeader?: boolean
   searchBy?: string
   sortBy?: string
@@ -30,6 +32,7 @@ function Table({
   sortBy,
   className,
   searchBy,
+  filterValues,
 }: Props) {
   const defaultColumn = useMemo(
     () => ({
@@ -37,6 +40,8 @@ function Table({
     }),
     [],
   )
+
+  console.info('filterValues', filterValues)
 
   const {
     getTableProps,
@@ -47,6 +52,7 @@ function Table({
     toggleSortBy,
     // setFilter,
     // state,
+    // filters,
     setGlobalFilter,
     setHiddenColumns,
   } = useTable(

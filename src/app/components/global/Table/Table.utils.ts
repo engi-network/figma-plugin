@@ -18,10 +18,12 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         status: 'fail',
       }
     } else {
+      const { created_at, completed_at } = result
       return {
         ...baseObj,
-        createdAt: result.created_at,
-        completedAt: result.completed_at,
+        completedAt: completed_at,
+        createdAt: created_at,
+        duration: completed_at - created_at,
         status: 'success',
       }
     }

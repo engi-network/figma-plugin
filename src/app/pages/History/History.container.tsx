@@ -122,7 +122,7 @@ function Historycontainer() {
         columns={tableColumns}
         data={data}
         sortBy={sortBy}
-        // filterBy={filterBy}
+        filterValues={filter}
         searchBy={searchBy}
         hideHeader
       />
