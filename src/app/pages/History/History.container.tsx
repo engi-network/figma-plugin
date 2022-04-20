@@ -96,7 +96,10 @@ function Historycontainer() {
     [],
   )
 
-  const filterItems = mapFilterFormToTableFilter(filter)
+  const filterItems = useMemo(
+    () => mapFilterFormToTableFilter(filter),
+    [filter],
+  )
 
   return (
     <>

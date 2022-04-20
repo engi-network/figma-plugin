@@ -50,9 +50,9 @@ function Table({
     rows,
     prepareRow,
     toggleSortBy,
-    // setFilter,
+    setFilter,
     // state,
-    // filters,
+    filters,
     setGlobalFilter,
     setHiddenColumns,
   } = useTable(
@@ -66,6 +66,11 @@ function Table({
     useFilters,
     useSortBy,
   )
+
+  console.info('set filter state====>', filters)
+  useEffect(() => {
+    setFilter(filterItems)
+  }, [filterItems])
 
   useEffect(() => {
     setHiddenColumns(['repository', 'checkId', 'createdAt', 'completedAt'])
