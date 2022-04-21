@@ -87,12 +87,12 @@ function ResultContainer() {
       <div className="px-10 pt-10">
         <div className="flex justify-between mb-16 relative">
           <IconButton
-            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-dark" />}
+            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-white" />}
             buttonStyle={BUTTON_STYLE.OUTLINED}
             onClick={handleClickBack}
           />
-          <div className="absolute flex justify-center top-0 left-0 right-0 -z-10">
-            <h1 className="text-2xl text-primary-dark w-6/12 text-center font-bold">
+          <div className="absolute flex justify-center top-0 left-0 right-0 z-10">
+            <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold">
               {ui('result.wellDone')} <br />
               {ui('result.its')}
               <span className="bg-primary-green">{ui('result.same')}</span>
