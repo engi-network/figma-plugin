@@ -17,13 +17,13 @@
     "subtitle": "Do these tell the same story?"
   },
   "result": {
-    "blueScale": "Blue-scale Difference",
+    "greenScale": "Green-scale Difference",
     "grayScale": "Gray-scale Difference",
     "createNew": "Create new",
     "viewHistory": "View history",
     "wellDone": "Well done!",
     "its": "It's the ",
-    "same": "Same Store"
+    "same": "Same Story!"
   },
   "history": {
     "history": "History",

@@ -34,7 +34,7 @@ import {
   SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
 
-import { LoadingScreen } from '../Loading/Loading.stories'
+import LoadingScreen from '../Loading/Loading'
 import { DEMENSIONS } from './Main.container.data'
 
 function MainContainer() {

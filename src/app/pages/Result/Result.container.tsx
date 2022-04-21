@@ -123,7 +123,7 @@ function ResultContainer() {
               height={210}
               draw={drawBlueCanvas}
               options={{ contextId: '2d' }}
-              label={ui('result.blueScale')}
+              label={ui('result.greenScale')}
             />
           </div>
           <div className="w-6/12 flex justify-end">

@@ -5,6 +5,6 @@ export default {
   title: 'Global/Pages/Loading',
 }
 
-export function LoadingScreen() {
+export function LoadingScreenWithKnobs() {
   return <Loading />
 }
