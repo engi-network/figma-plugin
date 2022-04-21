@@ -9,7 +9,7 @@ import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 const hiddenColumns = [
   TB_ACCESSORS.REPOSITORY,
   TB_ACCESSORS.CHECKID,
-  // TB_ACCESSORS.CREATED_AT,
+  TB_ACCESSORS.CREATED_AT,
   TB_ACCESSORS.COMPLETED_AT,
   TB_ACCESSORS.DURATION,
 ]
