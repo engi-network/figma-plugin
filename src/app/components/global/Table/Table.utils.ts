@@ -15,6 +15,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
     if (isError(result)) {
       return {
         ...baseObj,
+        duration: 0,
         status: 'fail',
       }
     } else {
@@ -23,7 +24,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         ...baseObj,
         completedAt: completed_at,
         createdAt: created_at,
-        duration: (completed_at - created_at) / 100,
+        duration: (completed_at - created_at) / 100, //scaling because react-slider can't deal with a large number
         status: 'success',
       }
     }
