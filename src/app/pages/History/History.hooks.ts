@@ -6,6 +6,14 @@ import { FilterValues } from '~/app/components/modules/History/Filter/Filter.dat
 import { mapFilterFormToTableFilter } from '~/app/components/modules/History/Filter/Filter.utils'
 import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 
+const hiddenColumns = [
+  TB_ACCESSORS.REPOSITORY,
+  TB_ACCESSORS.CHECKID,
+  TB_ACCESSORS.CREATED_AT,
+  TB_ACCESSORS.COMPLETED_AT,
+  TB_ACCESSORS.DURATION,
+]
+
 export function useTableData(filter: FilterValues) {
   const columns: Array<Column> = useMemo(
     () => [
@@ -75,5 +83,5 @@ export function useTableData(filter: FilterValues) {
     [filter],
   )
 
-  return { columns, filterItems }
+  return { columns, filterItems, hiddenColumns }
 }

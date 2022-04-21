@@ -12,6 +12,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
 import { TableFilterItem } from '~/app/components/modules/History/Filter/Filter.data'
+import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 
 import { Cell, Column, ColumnGroup } from './Table.types'
 
@@ -20,6 +21,7 @@ interface Props {
   columns: Array<Column | ColumnGroup>
   data: Array<Cell>
   filterItems: Array<TableFilterItem>
+  hiddenColumns?: Array<TB_ACCESSORS>
   hideHeader?: boolean
   searchBy?: string
   sortBy?: string
@@ -33,6 +35,7 @@ function Table({
   className,
   searchBy,
   filterItems,
+  hiddenColumns,
 }: Props) {
   const defaultColumn = useMemo(
     () => ({
@@ -73,8 +76,12 @@ function Table({
   }, [filterItems])
 
   useEffect(() => {
-    setHiddenColumns(['repository', 'checkId', 'createdAt', 'completedAt'])
-  }, [])
+    if (!hiddenColumns) {
+      return
+    }
+
+    setHiddenColumns(hiddenColumns)
+  }, [hiddenColumns])
 
   const rowElements = useCallback(
     ({ index, style }) => {

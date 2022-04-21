@@ -22,7 +22,7 @@ function Historycontainer() {
   const [filter, setFilter] = useState<FilterValues>(initialFilterState)
   const [sortBy, setSortBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
-  const { columns, filterItems } = useTableData(filter)
+  const { columns, filterItems, hiddenColumns } = useTableData(filter)
 
   const onSearchTermChange = (value: string) => {
     setSearchBy(value)
@@ -73,6 +73,7 @@ function Historycontainer() {
         filterItems={filterItems}
         searchBy={searchBy}
         hideHeader
+        hiddenColumns={hiddenColumns}
       />
     </>
   )
