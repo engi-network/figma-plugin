@@ -1,3 +1,4 @@
+import { convertDateToUnix } from '~/app/lib/utils/time'
 import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 
 import {
@@ -12,7 +13,10 @@ import {
  * @returns object that has keys of table asscessors
  */
 export const mapFilterValuesToAccessor = (filter: FilterValues) => ({
-  period: [filter.createdBefore, filter.createdAfter],
+  period: [
+    convertDateToUnix(filter.createdBefore),
+    convertDateToUnix(filter.createdAfter),
+  ],
   duration: filter.duration,
   status: filter.success
     ? filter.fail
@@ -41,7 +45,7 @@ export const mapFilterFormToTableFilter = (
 
       if (mapFilterToAccessor[key] === TB_ACCESSORS.CREATED_AT) {
         const [start, end] = value
-        if (!start || !end) {
+        if (!start && !end) {
           return prev
         }
       }

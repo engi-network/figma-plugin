@@ -9,10 +9,33 @@ import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 const hiddenColumns = [
   TB_ACCESSORS.REPOSITORY,
   TB_ACCESSORS.CHECKID,
-  TB_ACCESSORS.CREATED_AT,
+  // TB_ACCESSORS.CREATED_AT,
   TB_ACCESSORS.COMPLETED_AT,
   TB_ACCESSORS.DURATION,
 ]
+
+function dateRangeFilter(rows, id, filterValue) {
+  const [start, end] = filterValue
+
+  const greaterThanPredicator = (row) => row.values[id] > start
+  const lessThanPredicator = (row) => row.values[id] < end
+  const rangePredicator = (row) =>
+    row.values[id] < end && row.values[id] > start
+
+  if (start && end) {
+    return rows.filter(rangePredicator)
+  }
+
+  if (start) {
+    return rows.filter(greaterThanPredicator)
+  }
+
+  if (end) {
+    return rows.filter(lessThanPredicator)
+  }
+}
+
+dateRangeFilter.autoRemove = ([start, end]: Array<number>) => !start && !end
 
 export function useTableData(filter: FilterValues) {
   const columns: Array<Column> = useMemo(
@@ -34,7 +57,7 @@ export function useTableData(filter: FilterValues) {
         accessor: TB_ACCESSORS.CREATED_AT,
         Cell: CellText,
         disableGlobalFilter: true,
-        filter: 'between',
+        filter: dateRangeFilter,
         Header: TB_ACCESSORS.CREATED_AT,
         id: TB_ACCESSORS.CREATED_AT,
       },
