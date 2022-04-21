@@ -1,6 +1,10 @@
 import cn from 'classnames'
 import ReactSlider, { ReactSliderProps } from 'react-slider'
 
+/**
+ * @TODO react-slider had peformance issue when max is big enough
+ */
+
 type Props = ReactSliderProps<Array<number>>
 
 const DEFAUTL_TRACKNAME = 'track'
@@ -57,7 +61,7 @@ export default function Slider({
       min={min}
       max={max}
       value={value}
-      onChange={onChange}
+      onAfterChange={onChange}
       className={className}
       {...rest}
     />

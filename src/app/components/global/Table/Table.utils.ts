@@ -23,7 +23,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         ...baseObj,
         completedAt: completed_at,
         createdAt: created_at,
-        duration: completed_at - created_at,
+        duration: (completed_at - created_at) / 100,
         status: 'success',
       }
     }

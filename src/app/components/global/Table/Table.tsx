@@ -50,7 +50,7 @@ function Table({
     rows,
     prepareRow,
     toggleSortBy,
-    setFilter,
+    setAllFilters,
     // state,
     filters,
     setGlobalFilter,
@@ -69,7 +69,7 @@ function Table({
 
   console.info('set filter state====>', filters)
   useEffect(() => {
-    setFilter(filterItems)
+    setAllFilters(filterItems)
   }, [filterItems])
 
   useEffect(() => {

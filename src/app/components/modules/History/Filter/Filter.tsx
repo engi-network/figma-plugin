@@ -118,9 +118,9 @@ function Filter({ title, onChange, value, className }: FilterProps) {
         >
           <div className="py-4">
             <Slider
-              min={0}
-              max={60}
-              minDistance={1}
+              min={10}
+              max={1000}
+              minDistance={40}
               value={values[FILTER_FIELDS.DURATION]}
               onChange={handleChange(FILTER_FIELDS.DURATION)}
             />

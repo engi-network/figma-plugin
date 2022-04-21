@@ -1,6 +1,6 @@
 import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 
-export const DURATION_RANGE = [0, 60]
+export const DURATION_RANGE = [0, 1000]
 
 export interface TableFilterItem {
   id: TB_ACCESSORS
