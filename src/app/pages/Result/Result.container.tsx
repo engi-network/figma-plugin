@@ -95,7 +95,9 @@ function ResultContainer() {
             <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold">
               {ui('result.wellDone')} <br />
               {ui('result.its')}
-              <span className="bg-primary-green">{ui('result.same')}</span>
+              <span className="bg-primary-green mix-blend-screen text-[#000]">
+                {ui('result.same')}
+              </span>
             </h1>
           </div>
           <div

@@ -1,5 +1,6 @@
 export { default as CalendarIcon } from './CalendarIcon'
 export { default as FigmaIcon } from './FigmaIcon'
 export { default as HistoryIcon } from './HistoryIcon'
+export { default as InfoIcon } from './InfoIcon'
 export { default as LogoIcon } from './LogoIcon'
 export { default as StorybookIcon } from './StorybookIcon'

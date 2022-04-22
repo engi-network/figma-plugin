@@ -1,8 +1,7 @@
-import { InformationCircleIcon } from '@heroicons/react/outline'
 import { useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
-import { HistoryIcon } from '~/app/components/global/Icons'
+import { HistoryIcon, InfoIcon } from '~/app/components/global/Icons'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
@@ -24,9 +23,7 @@ function Header() {
       </IconButton>
       <IconButton
         className="text-primary-green text-sm"
-        icon={
-          <InformationCircleIcon className="w-5 h-5 bg-opacity-40 text-primary-green bg-primary-green rounded-full" />
-        }
+        icon={<InfoIcon className="w-5 h-5 bg-opacity-40 text-primary-green" />}
       >
         {ui('header.learnMore')}
       </IconButton>
