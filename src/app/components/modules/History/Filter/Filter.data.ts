@@ -42,8 +42,7 @@ export const mapFilterToAccessor = {
 
 export enum TOGGLE_NAMES {
   COMPARE = 'compare',
-  DATE_AFTER = 'dateAfter',
-  DATE_BEFORE = 'dateBefore',
+  DATE_CREATED = 'dateCreated',
   DURATION = 'duration',
 }
 
@@ -51,7 +50,6 @@ export type ToggleValues = Record<TOGGLE_NAMES, boolean>
 
 export const toggleInitialState: ToggleValues = {
   [TOGGLE_NAMES.COMPARE]: false,
-  [TOGGLE_NAMES.DATE_AFTER]: false,
-  [TOGGLE_NAMES.DATE_BEFORE]: false,
+  [TOGGLE_NAMES.DATE_CREATED]: false,
   [TOGGLE_NAMES.DURATION]: false,
 }

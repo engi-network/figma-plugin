@@ -8,6 +8,7 @@ import ReactSlider, { ReactSliderProps } from 'react-slider'
 type Props = ReactSliderProps<Array<number>>
 
 const DEFAUTL_TRACKNAME = 'track'
+
 export default function Slider({
   trackClassName = DEFAUTL_TRACKNAME,
   markClassName,
@@ -31,7 +32,7 @@ export default function Slider({
     return (
       <div {...props} className={thumbClasses}>
         <span className="-mt-10 text-xs text-primary-green">
-          {state.valueNow}
+          {`${state.valueNow} min`}
         </span>
       </div>
     )
@@ -40,7 +41,7 @@ export default function Slider({
   const renderTrack = (props) => {
     const trackClasses = cn(props.className, 'h-0.5 top-[5px]', {
       'bg-primary-green': props.key === `${trackClassName}-1`,
-      'bg-primary-white bg-opacity-30':
+      'bg-primary-white/30':
         props.key === `${trackClassName}-0` ||
         props.key === `${trackClassName}-2`,
     })

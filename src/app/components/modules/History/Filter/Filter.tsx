@@ -5,6 +5,7 @@ import Checkbox from '~/app/components/global/Checkbox/Checkbox'
 import Datepicker from '~/app/components/global/Datepicker/Datepicker'
 import Popover from '~/app/components/global/Popover/Popover'
 import Slider from '~/app/components/global/Slider/Slider'
+import Tab from '~/app/components/global/Tab/Tab'
 import TogglePanel from '~/app/components/global/TogglePanel/TogglePanel'
 
 import {
@@ -81,32 +82,25 @@ function Filter({ title, onChange, value, className }: FilterProps) {
           />
         </TogglePanel>
         <TogglePanel
-          id={TOGGLE_NAMES.DATE_BEFORE}
-          title="Date created before"
+          id={TOGGLE_NAMES.DATE_CREATED}
+          title="Date created"
           panelClassName="pt-4"
           className="py-4"
-          onToggle={handleToggle(TOGGLE_NAMES.DATE_BEFORE)}
-          initialOpen={toggleState[TOGGLE_NAMES.DATE_BEFORE]}
+          onToggle={handleToggle(TOGGLE_NAMES.DATE_CREATED)}
+          initialOpen={toggleState[TOGGLE_NAMES.DATE_CREATED]}
         >
-          <Datepicker
-            value={values[FILTER_FIELDS.CREATED_BEFORE]}
-            onChange={handleChange(FILTER_FIELDS.CREATED_BEFORE)}
-            className="w-full"
-          />
-        </TogglePanel>
-        <TogglePanel
-          id={TOGGLE_NAMES.DATE_AFTER}
-          title="Date created after"
-          panelClassName="pt-4"
-          className="py-4"
-          onToggle={handleToggle(TOGGLE_NAMES.DATE_AFTER)}
-          initialOpen={toggleState[TOGGLE_NAMES.DATE_AFTER]}
-        >
-          <Datepicker
-            value={values[FILTER_FIELDS.CREATED_AFTER]}
-            onChange={handleChange(FILTER_FIELDS.CREATED_AFTER)}
-            className="w-full"
-          />
+          <Tab tabLabels={['After', 'Before']}>
+            <Datepicker
+              value={values[FILTER_FIELDS.CREATED_BEFORE]}
+              onChange={handleChange(FILTER_FIELDS.CREATED_BEFORE)}
+              className="w-full"
+            />
+            <Datepicker
+              value={values[FILTER_FIELDS.CREATED_AFTER]}
+              onChange={handleChange(FILTER_FIELDS.CREATED_AFTER)}
+              className="w-full"
+            />
+          </Tab>
         </TogglePanel>
         <TogglePanel
           id={TOGGLE_NAMES.DURATION}
