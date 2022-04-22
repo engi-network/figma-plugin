@@ -1,31 +1,11 @@
+import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
 import { convertDateToUnix } from '~/app/lib/utils/time'
-import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 
 import {
   FilterValues,
   mapFilterToAccessor,
   TableFilterItem,
 } from './Filter.data'
-
-/**
- *
- * @param filter map filter values from Filter component to table accessors
- * @returns object that has keys of table asscessors
- */
-export const mapFilterValuesToAccessor = (filter: FilterValues) => ({
-  period: [
-    convertDateToUnix(filter.createdBefore),
-    convertDateToUnix(filter.createdAfter),
-  ],
-  duration: filter.duration,
-  status: filter.success
-    ? filter.fail
-      ? ''
-      : 'success'
-    : filter.fail
-    ? 'fail'
-    : '',
-})
 
 /**
  * @description filter out when value is not suitable
@@ -37,7 +17,35 @@ export const mapFilterValuesToAccessor = (filter: FilterValues) => ({
 export const mapFilterFormToTableFilter = (
   filter: FilterValues,
 ): Array<TableFilterItem> => {
-  return Object.entries(mapFilterValuesToAccessor(filter)).reduce(
+  const branchNames = Object.entries(filter.branch).reduce(
+    (prev, [key, value]) => {
+      if (!value) {
+        return prev
+      }
+
+      prev.push(key)
+      return prev
+    },
+    [] as Array<string>,
+  )
+
+  const preFormattedFilterValues = {
+    period: [
+      convertDateToUnix(filter.createdBefore),
+      convertDateToUnix(filter.createdAfter),
+    ],
+    duration: filter.duration,
+    status: filter.success
+      ? filter.fail
+        ? ''
+        : 'success'
+      : filter.fail
+      ? 'fail'
+      : '',
+    branch: !!branchNames.length && branchNames,
+  }
+
+  return Object.entries(preFormattedFilterValues).reduce(
     (prev, [key, value]) => {
       if (!value) {
         return prev

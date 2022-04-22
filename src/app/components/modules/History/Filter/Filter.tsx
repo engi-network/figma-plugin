@@ -19,6 +19,7 @@ import {
 import styles from './Filter.styles'
 
 export interface FilterProps {
+  branchNames: Array<string>
   className?: string
   onChange: (values: FilterValues) => void
   title: string
@@ -31,7 +32,13 @@ export interface FilterProps {
  *
  */
 
-function Filter({ title, onChange, value, className }: FilterProps) {
+function Filter({
+  title,
+  onChange,
+  value,
+  className,
+  branchNames,
+}: FilterProps) {
   const [toggleState, setToggleState] =
     useState<ToggleValues>(toggleInitialState)
   const [values, setValues] = useState<FilterValues>(
@@ -50,6 +57,20 @@ function Filter({ title, onChange, value, className }: FilterProps) {
       onChange(newValues)
     }
 
+  const handleBranchChange =
+    (branchName: string) => (value: boolean | string) => {
+      const newValues = {
+        ...values,
+        [FILTER_FIELDS.BRANCH]: {
+          ...values[FILTER_FIELDS.BRANCH],
+          [branchName]: value as boolean,
+        },
+      }
+
+      setValues(newValues)
+      onChange(newValues)
+    }
+
   const rootClasses = cn(className, 'py-1 w-64')
 
   return (
@@ -58,8 +79,6 @@ function Filter({ title, onChange, value, className }: FilterProps) {
         <TogglePanel
           id={TOGGLE_NAMES.COMPARE}
           title="Сomparison & status"
-          panelClassName="pt-4"
-          className="py-4"
           onToggle={handleToggle(TOGGLE_NAMES.COMPARE)}
           initialOpen={toggleState[TOGGLE_NAMES.COMPARE]}
         >
@@ -84,8 +103,6 @@ function Filter({ title, onChange, value, className }: FilterProps) {
         <TogglePanel
           id={TOGGLE_NAMES.DATE_CREATED}
           title="Date created"
-          panelClassName="pt-4"
-          className="py-4"
           onToggle={handleToggle(TOGGLE_NAMES.DATE_CREATED)}
           initialOpen={toggleState[TOGGLE_NAMES.DATE_CREATED]}
         >
@@ -105,8 +122,6 @@ function Filter({ title, onChange, value, className }: FilterProps) {
         <TogglePanel
           id={TOGGLE_NAMES.DURATION}
           title="Duration of the check"
-          panelClassName="pt-4"
-          className="py-4"
           onToggle={handleToggle(TOGGLE_NAMES.DURATION)}
           initialOpen={toggleState[TOGGLE_NAMES.DURATION]}
         >
@@ -118,6 +133,24 @@ function Filter({ title, onChange, value, className }: FilterProps) {
               value={values[FILTER_FIELDS.DURATION]}
               onChange={handleChange(FILTER_FIELDS.DURATION)}
             />
+          </div>
+        </TogglePanel>
+        <TogglePanel
+          id={TOGGLE_NAMES.BRANCH}
+          title="Branch"
+          onToggle={handleToggle(TOGGLE_NAMES.BRANCH)}
+          initialOpen={toggleState[TOGGLE_NAMES.DURATION]}
+        >
+          <div css={styles.branch}>
+            {branchNames.map((branch) => (
+              <Checkbox
+                key={branch}
+                checked={values[FILTER_FIELDS.BRANCH][branch]}
+                onChange={handleBranchChange(branch)}
+                label={branch}
+                className="mb-4"
+              />
+            ))}
           </div>
         </TogglePanel>
       </form>

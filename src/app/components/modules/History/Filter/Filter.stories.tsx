@@ -25,6 +25,7 @@ export function FilterWithKnobs() {
         title={'Filter by'}
         onChange={handleFilterChange}
         value={values}
+        branchNames={['main', 'feature1', 'feature2']}
       />
     </div>
   )

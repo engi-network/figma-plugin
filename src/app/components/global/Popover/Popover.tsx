@@ -17,7 +17,7 @@ function CustomPopover({ title, children, className, panelClassName }: Props) {
   )
   const panelClasses = cn(
     panelClassName,
-    'px-6 overflow-x-hidden max-h-64 overflow-y-scroll ring-1 ring-black ring-opacity-5 bg-[#23232333] backdrop-blur-[200px]',
+    'px-6 overflow-x-hidden max-h-[400px] overflow-y-scroll ring-1 ring-black ring-opacity-5 bg-[#23232333] backdrop-blur-[200px]',
   )
 
   return (

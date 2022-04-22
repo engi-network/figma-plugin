@@ -15,6 +15,7 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import { sortByOptions } from '~/app/pages/History/History.data'
 
 import { useTableData } from './History.hooks'
+import { extractBranchNames } from './History.utils'
 
 function Historycontainer() {
   const { history } = useAppContext()
@@ -23,6 +24,7 @@ function Historycontainer() {
   const [sortBy, setSortBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
   const { columns, filterItems, hiddenColumns } = useTableData(filter)
+  const branchNames = extractBranchNames(history)
 
   const onSearchTermChange = (value: string) => {
     setSearchBy(value)
@@ -64,6 +66,7 @@ function Historycontainer() {
           title={'Filter by'}
           onChange={handleFilterChange}
           value={filter}
+          branchNames={branchNames}
         />
       </div>
       <Table

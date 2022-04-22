@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
 import { CellText, Status } from '~/app/components/global/Table/Table'
+import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
 import { Column } from '~/app/components/global/Table/Table.types'
 import { FilterValues } from '~/app/components/modules/History/Filter/Filter.data'
 import { mapFilterFormToTableFilter } from '~/app/components/modules/History/Filter/Filter.utils'
-import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 
 const hiddenColumns = [
   TB_ACCESSORS.REPOSITORY,
@@ -12,6 +12,7 @@ const hiddenColumns = [
   TB_ACCESSORS.CREATED_AT,
   TB_ACCESSORS.COMPLETED_AT,
   TB_ACCESSORS.DURATION,
+  TB_ACCESSORS.BRANCH,
 ]
 
 function dateRangeFilter(rows, id, filterValue) {
@@ -67,6 +68,12 @@ export function useTableData(filter: FilterValues) {
         disableGlobalFilter: true,
         Header: TB_ACCESSORS.COMPLETED_AT,
         id: TB_ACCESSORS.COMPLETED_AT,
+      },
+      {
+        accessor: TB_ACCESSORS.BRANCH,
+        disableGlobalFilter: true,
+        Header: TB_ACCESSORS.BRANCH,
+        id: TB_ACCESSORS.BRANCH,
       },
       {
         accessor: TB_ACCESSORS.STORY,

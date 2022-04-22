@@ -33,8 +33,8 @@ function TogglePanel({
     onToggle && onToggle(!isOpen)
   }
 
-  const rootClasses = cn('relative', className)
-  const panelClasses = cn('text-primary-white', panelClassName)
+  const rootClasses = cn(className, 'relative py-4')
+  const panelClasses = cn(panelClassName, 'text-primary-white pt-4')
 
   return (
     <div className={rootClasses} css={customRootStyles} id={id}>

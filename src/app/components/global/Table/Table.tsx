@@ -12,8 +12,8 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
 import { TableFilterItem } from '~/app/components/modules/History/Filter/Filter.data'
-import { TB_ACCESSORS } from '~/app/pages/History/History.data'
 
+import { TB_ACCESSORS } from './Table.data'
 import { Cell, Column, ColumnGroup } from './Table.types'
 
 interface Props {

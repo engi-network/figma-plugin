@@ -2,17 +2,6 @@ import { SelectOption } from '~/app/components/global/Select/Select'
 import { randomString } from '~/app/lib/utils/string'
 import { Report } from '~/app/models/Report'
 
-export enum TB_ACCESSORS {
-  CHECKID = 'checkId',
-  COMPLETED_AT = 'completedAt',
-  CREATED_AT = 'createdAt',
-  DURATION = 'duration',
-  PATH = 'path',
-  REPOSITORY = 'repository',
-  STATUS = 'status',
-  STORY = 'story',
-}
-
 export const sortByOptions: Array<SelectOption> = [
   { value: 'completedAt', name: 'Last updated' },
   { value: 'createdAt', name: 'Newest' },

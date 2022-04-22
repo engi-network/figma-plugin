@@ -2,11 +2,11 @@ import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
 
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
 import { createContext } from '~/app/lib/utils/context'
-import { DetailedReport, Report } from '~/app/models/Report'
+import { DetailedReport } from '~/app/models/Report'
 
 export interface AppContextProps {
   history: Array<DetailedReport>
-  report?: Report
+  report?: DetailedReport
   setHistory: Dispatch<SetStateAction<DetailedReport[]>>
   setReport: (value: DetailedReport) => void
 }

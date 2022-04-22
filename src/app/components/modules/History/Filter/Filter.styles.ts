@@ -1,6 +1,11 @@
 import { COLORS, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
+  branch: {
+    '& > label:last-child': {
+      marginBottom: 0,
+    },
+  },
   form: {
     '& > div::after': {
       borderBottom: `1px solid ${COLORS.TEXT.SECONDARY}`,
