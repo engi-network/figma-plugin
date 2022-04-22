@@ -6,14 +6,8 @@ import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
-import { HistoryIcon } from '~/app/components/global/Icons'
 import { useAppContext } from '~/app/contexts/App.context'
-import {
-  BUTTON_STYLE,
-  DIRECTION,
-  ROUTES,
-  ROUTES_MAP,
-} from '~/app/lib/constants'
+import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { fetchReportDifferenceById } from '~/app/lib/utils/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -33,10 +27,6 @@ function ResultContainer() {
 
   const handleClickBack = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
-  }
-
-  const handleViewHistory = () => {
-    navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 
   const handleCreateNew = () => {
@@ -99,21 +89,6 @@ function ResultContainer() {
                 {ui('result.same')}
               </span>
             </h1>
-          </div>
-          <div
-            role="button"
-            tabIndex={-1}
-            className="flex justify-end items-center h-fit"
-            onClick={handleViewHistory}
-          >
-            <IconButton
-              className="text-wf-secondary text-sm"
-              icon={<HistoryIcon width={24} height={24} />}
-              buttonStyle={BUTTON_STYLE.OUTLINED}
-              iconPosition={DIRECTION.RIGHT}
-            >
-              {ui('result.viewHistory')}
-            </IconButton>
           </div>
         </div>
         <div className="flex mb-8">
