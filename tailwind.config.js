@@ -14,11 +14,16 @@ module.exports = {
           dark: '#070706',
           gray: '#C7C7C7',
           green: '#65FEB7',
+          orange: '#F27B50',
+          purple: '#BA54EC',
           white: '#FFFFFF',
         },
         secondary: {
           bg: '#232323',
-          error: '#FA7B7B',
+          error: '#F65151',
+          green: '#59E1A2',
+          orange: '#DA6F49',
+          purple: '#A349CF',
         },
         wf: {
           bg: '#F3F5F9',
