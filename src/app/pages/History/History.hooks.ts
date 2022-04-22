@@ -36,7 +36,15 @@ function dateRangeFilter(rows, id, filterValue) {
   }
 }
 
+// this should be the same thing that has been done Filter.utils.ts line 50
 dateRangeFilter.autoRemove = ([start, end]: Array<number>) => !start && !end
+
+function inclusionFilter(rows, id, filterValue) {
+  return rows.filter((row) => filterValue.includes(row.values[id]))
+}
+
+// this should be the same thing that has been done Filter.utils.ts line 50
+inclusionFilter.autoRemove = (filterValue: Array<string>) => !filterValue.length
 
 export function useTableData(filter: FilterValues) {
   const columns: Array<Column> = useMemo(
@@ -72,6 +80,7 @@ export function useTableData(filter: FilterValues) {
       {
         accessor: TB_ACCESSORS.BRANCH,
         disableGlobalFilter: true,
+        filter: inclusionFilter,
         Header: TB_ACCESSORS.BRANCH,
         id: TB_ACCESSORS.BRANCH,
       },

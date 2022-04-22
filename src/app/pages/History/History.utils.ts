@@ -4,11 +4,11 @@ export const extractBranchNames = (
   history: Array<DetailedReport>,
 ): Array<string> => {
   return history.reduce((prev, { result: { branch } }) => {
-    if (prev.includes(branch + '')) {
+    if (!branch || prev.includes(branch)) {
       return prev
     }
 
-    prev.push(branch + '')
+    prev.push(branch)
     return prev
   }, [] as Array<string>)
 }
