@@ -49,7 +49,7 @@ function Select({
   return (
     <div className={className}>
       <Listbox value={selectedOption} onChange={handleSelectChange}>
-        <div className="relative mt-1">
+        <div className="relative">
           <Listbox.Button className="flex justify-between items-center w-full p-2  text-sm text-left text-text-primary cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500">
             <span className="block truncate">{label}</span>
             <span className="flex items-center pr-2 pointer-events-none">
