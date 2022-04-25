@@ -27,7 +27,7 @@ export interface Report {
   result: ReportResult | ErrorReport
 }
 
-export type History = Array<Report>
+export type History = Array<DetailedReport>
 
 export function isError(
   result: ReportResult | ErrorReport,

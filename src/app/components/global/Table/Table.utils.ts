@@ -3,11 +3,12 @@ import { History, isError } from '~/app/models/Report'
 import { Cell } from './Table.types'
 
 export const mapHistoryToTable = (history: History): Array<Cell> => {
-  return history.map(({ result }) => {
+  return history.map(({ result, imageUrl = '' }) => {
     const { check_id, path, story, repository, branch } = result
     const baseObj = {
       branch: branch + '',
       checkId: check_id,
+      imageUrl,
       path,
       repository,
       story,

@@ -1,4 +1,3 @@
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid'
 import cn from 'classnames'
 import { useCallback, useEffect, useMemo } from 'react'
 import {
@@ -167,22 +166,6 @@ function Table({
         </AutoSizer>
       </div>
     </div>
-  )
-}
-
-export function Status({ value }: { value: string }) {
-  if (value === 'success') {
-    return <CheckCircleIcon className="w-6 h-6 text-primary-green" />
-  }
-
-  return <XCircleIcon className="w-6 h-6 text-secondary-error" />
-}
-
-export function CellText({ value }: { value: string }) {
-  return (
-    <p className="text-sm text-text-primary w-full overflow-hidden truncate">
-      {value}
-    </p>
   )
 }
 

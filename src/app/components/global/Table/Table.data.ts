@@ -4,6 +4,7 @@ export enum TB_ACCESSORS {
   COMPLETED_AT = 'completedAt',
   CREATED_AT = 'createdAt',
   DURATION = 'duration',
+  IMAGE = 'image',
   PATH = 'path',
   REPOSITORY = 'repository',
   STATUS = 'status',

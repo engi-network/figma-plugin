@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 
-import { CellText, Status } from '~/app/components/global/Table/Table'
+import CellImage from '~/app/components/global/Table/CellImage/CellImage'
+import CellStatus from '~/app/components/global/Table/CellStatus/CellStatus'
+import CellText from '~/app/components/global/Table/CellText/CellText'
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
 import { Column } from '~/app/components/global/Table/Table.types'
 import { FilterValues } from '~/app/components/modules/History/Filter/Filter.data'
@@ -49,6 +51,12 @@ inclusionFilter.autoRemove = (filterValue: Array<string>) => !filterValue.length
 export function useTableData(filter: FilterValues) {
   const columns: Array<Column> = useMemo(
     () => [
+      {
+        Header: TB_ACCESSORS.IMAGE,
+        accessor: TB_ACCESSORS.IMAGE,
+        Cell: CellImage,
+        id: TB_ACCESSORS.IMAGE,
+      },
       {
         Header: TB_ACCESSORS.CHECKID,
         accessor: TB_ACCESSORS.CHECKID,
@@ -107,7 +115,7 @@ export function useTableData(filter: FilterValues) {
       },
       {
         accessor: TB_ACCESSORS.STATUS,
-        Cell: Status,
+        Cell: CellStatus,
         disableGlobalFilter: true,
         filter: 'equals',
         Header: TB_ACCESSORS.STATUS,

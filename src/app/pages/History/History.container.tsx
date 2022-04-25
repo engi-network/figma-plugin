@@ -19,12 +19,13 @@ import { extractBranchNames } from './History.utils'
 
 function Historycontainer() {
   const { history } = useAppContext()
-  const data = useMemo(() => mapHistoryToTable(history), [])
+  const data = useMemo(() => mapHistoryToTable(history), [history])
   const [filter, setFilter] = useState<FilterValues>(initialFilterState)
   const [sortBy, setSortBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
   const { columns, filterItems, hiddenColumns } = useTableData(filter)
-  const branchNames = extractBranchNames(history)
+  const branchNames = useMemo(() => extractBranchNames(history), [history])
+  console.info('history=====>', history)
 
   const onSearchTermChange = (value: string) => {
     setSearchBy(value)

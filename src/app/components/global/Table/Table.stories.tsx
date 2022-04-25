@@ -1,11 +1,16 @@
 import { useMemo, useState } from 'react'
 
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
+import Filter from '~/app/components/modules/History/Filter/Filter'
+import {
+  FilterValues,
+  initialFilterState,
+} from '~/app/components/modules/History/Filter/Filter.data'
 import { mockHistoryData } from '~/app/pages/History/History.data'
+import { useTableData } from '~/app/pages/History/History.hooks'
+import { extractBranchNames } from '~/app/pages/History/History.utils'
 
-import Input from '../Input/Input'
-import Table, { CellText, Status } from './Table'
-import { Column } from './Table.types'
+import Table from './Table'
 import { mapHistoryToTable } from './Table.utils'
 
 export default {
@@ -22,36 +27,18 @@ const sortByOptions: Array<SelectOption> = [
 export function TableWithKnobs() {
   const data = useMemo(() => mapHistoryToTable(mockHistoryData), [])
   const [sortBy, setSortBy] = useState('')
-  const [filterBy, setFilterBy] = useState('')
-
-  const columns: Array<Column> = useMemo(
-    () => [
-      {
-        Header: 'Component',
-        accessor: 'component',
-        Cell: CellText,
-      },
-      {
-        Header: 'Story',
-        accessor: 'story',
-        Cell: CellText,
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-        Cell: Status,
-      },
-    ],
-    [],
-  )
+  const [filter, setFilter] = useState<FilterValues>(initialFilterState)
+  const { columns, filterItems, hiddenColumns } = useTableData(filter)
 
   const handleSelectChange = (value: string) => {
     setSortBy(value)
   }
 
-  const handleFilterChange = (value: string) => {
-    setFilterBy(value)
+  const handleFilterChange = (values: FilterValues) => {
+    setFilter(values)
   }
+
+  const branchNames = extractBranchNames(mockHistoryData)
 
   return (
     <div>
@@ -62,10 +49,11 @@ export function TableWithKnobs() {
           value={sortBy}
           className={'mb-8'}
         />
-        <Input
+        <Filter
+          title={'Filter by'}
           onChange={handleFilterChange}
-          className="mb-8"
-          placeholder="Filter by..."
+          value={filter}
+          branchNames={branchNames}
         />
       </div>
       <Table
@@ -73,7 +61,8 @@ export function TableWithKnobs() {
         data={data}
         hideHeader
         sortBy={sortBy}
-        filterBy={filterBy}
+        hiddenColumns={hiddenColumns}
+        filterItems={filterItems}
       />
     </div>
   )
