@@ -52,10 +52,19 @@ export function useTableData(filter: FilterValues) {
   const columns: Array<Column> = useMemo(
     () => [
       {
-        Header: TB_ACCESSORS.IMAGE,
         accessor: TB_ACCESSORS.IMAGE,
         Cell: CellImage,
+        Header: TB_ACCESSORS.IMAGE,
         id: TB_ACCESSORS.IMAGE,
+        width: 140,
+      },
+      {
+        accessor: TB_ACCESSORS.STATUS,
+        Cell: CellStatus,
+        disableGlobalFilter: true,
+        filter: 'equals',
+        Header: TB_ACCESSORS.STATUS,
+        width: 40,
       },
       {
         Header: TB_ACCESSORS.CHECKID,
@@ -112,14 +121,6 @@ export function useTableData(filter: FilterValues) {
         filter: 'between',
         Header: TB_ACCESSORS.DURATION,
         id: TB_ACCESSORS.DURATION,
-      },
-      {
-        accessor: TB_ACCESSORS.STATUS,
-        Cell: CellStatus,
-        disableGlobalFilter: true,
-        filter: 'equals',
-        Header: TB_ACCESSORS.STATUS,
-        width: 40,
       },
     ],
     [],

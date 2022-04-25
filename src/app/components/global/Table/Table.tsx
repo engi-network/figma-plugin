@@ -157,7 +157,7 @@ function Table({
             <FixedSizeList
               height={height}
               itemCount={rows.length}
-              itemSize={57}
+              itemSize={102}
               width={width}
             >
               {rowElements}
