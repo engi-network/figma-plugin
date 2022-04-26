@@ -3,6 +3,7 @@ export interface PluginSelection {
   commit?: string
   component: string
   frame: BlobPart
+  github_token?: string
   height: number
   path?: string
   repository: string

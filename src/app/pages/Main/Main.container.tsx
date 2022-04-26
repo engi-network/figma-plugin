@@ -150,13 +150,20 @@ function MainContainer() {
     setProgress(0)
     setIsLoading(true)
     try {
-      const { component, repository, story, path } = values as AnalyzeFormValues
+      const {
+        component,
+        repository,
+        story,
+        path,
+        githubToken = '',
+      } = values as AnalyzeFormValues
       const checkId: string = uuidv4()
       const message: Specification = {
         branch,
         check_id: checkId,
         commit,
         component,
+        github_token: githubToken,
         height: height + '',
         path,
         repository,
@@ -196,12 +203,14 @@ function MainContainer() {
       branch = '',
       commit = '',
       path = '',
+      github_token = '',
     } = selectionData
 
     setValues({
       branch,
       commit,
       component,
+      githubToken: github_token,
       path,
       repository,
       story,

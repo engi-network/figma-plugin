@@ -116,6 +116,16 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
                 error={errors && errors[FORM_FIELD.COMMIT]}
                 disabled={isDisabled}
               />
+              <Input
+                id="pat"
+                label="Github token"
+                placeholder="Personal access token"
+                containerClass="mt-5"
+                value={values[FORM_FIELD.GH_TOKEN]}
+                onChange={handleInputChange(FORM_FIELD.GH_TOKEN)}
+                error={errors && errors[FORM_FIELD.GH_TOKEN]}
+                disabled={isDisabled}
+              />
             </>
           )}
         </div>
