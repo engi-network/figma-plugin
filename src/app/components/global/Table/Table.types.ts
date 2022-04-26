@@ -11,4 +11,4 @@ export interface ColumnGroup extends Column {
   columns?: Array<Column>
 }
 
-export type Cell = Record<string, string | number>
+export type Cell = Record<string, string | number | unknown>

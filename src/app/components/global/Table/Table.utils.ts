@@ -9,6 +9,10 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
       branch: branch + '',
       checkId: check_id,
       imageUrl,
+      name: {
+        story,
+        path,
+      },
       path,
       repository,
       story,

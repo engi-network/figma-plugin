@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import CellImage from '~/app/components/global/Table/CellImage/CellImage'
+import CellName from '~/app/components/global/Table/CellName/CellName'
 import CellStatus from '~/app/components/global/Table/CellStatus/CellStatus'
 import CellText from '~/app/components/global/Table/CellText/CellText'
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
@@ -14,7 +15,8 @@ const hiddenColumns = [
   TB_ACCESSORS.CREATED_AT,
   TB_ACCESSORS.COMPLETED_AT,
   TB_ACCESSORS.DURATION,
-  TB_ACCESSORS.BRANCH,
+  TB_ACCESSORS.PATH,
+  TB_ACCESSORS.STORY,
 ]
 
 function dateRangeFilter(rows, id, filterValue) {
@@ -67,6 +69,21 @@ export function useTableData(filter: FilterValues) {
         width: 40,
       },
       {
+        accessor: TB_ACCESSORS.NAME,
+        Cell: CellName,
+        disableGlobalFilter: true,
+        Header: TB_ACCESSORS.NAME,
+        width: 200,
+      },
+      {
+        accessor: TB_ACCESSORS.BRANCH,
+        Cell: CellText,
+        disableGlobalFilter: true,
+        filter: inclusionFilter,
+        Header: TB_ACCESSORS.BRANCH,
+        id: TB_ACCESSORS.BRANCH,
+      },
+      {
         Header: TB_ACCESSORS.CHECKID,
         accessor: TB_ACCESSORS.CHECKID,
         Cell: CellText,
@@ -93,13 +110,6 @@ export function useTableData(filter: FilterValues) {
         disableGlobalFilter: true,
         Header: TB_ACCESSORS.COMPLETED_AT,
         id: TB_ACCESSORS.COMPLETED_AT,
-      },
-      {
-        accessor: TB_ACCESSORS.BRANCH,
-        disableGlobalFilter: true,
-        filter: inclusionFilter,
-        Header: TB_ACCESSORS.BRANCH,
-        id: TB_ACCESSORS.BRANCH,
       },
       {
         accessor: TB_ACCESSORS.STORY,

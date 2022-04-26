@@ -95,7 +95,19 @@ function Table({
         >
           {row.cells.map((cell, index) => {
             return (
-              <div {...cell.getCellProps()} className="td" key={index}>
+              <div
+                {...cell.getCellProps([
+                  {
+                    style: {
+                      alignItems: 'center',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    },
+                  },
+                ])}
+                className="td"
+                key={index}
+              >
                 {cell.render('Cell')}
               </div>
             )
