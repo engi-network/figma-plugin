@@ -226,7 +226,7 @@ function MainContainer() {
 
   return (
     <>
-      <Header />
+      <Header numberOfProgress={2} />
       <h3 className="text-base text-text-primary font-meidum px-7 pt-4">
         {ui('main.subtitle')}
       </h3>

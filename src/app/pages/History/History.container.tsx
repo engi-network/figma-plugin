@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
+import { QueryState } from '~/app/@types/route'
 import Input from '~/app/components/global/Input/Input'
 import Select from '~/app/components/global/Select/Select'
 import Table from '~/app/components/global/Table/Table'
@@ -11,6 +13,7 @@ import {
 } from '~/app/components/modules/History/Filter/Filter.data'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
+import { getFilterStateFromQuery } from '~/app/lib/utils/query'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { sortByOptions } from '~/app/pages/History/History.data'
 
@@ -19,11 +22,18 @@ import { extractBranchNames } from './History.utils'
 
 function Historycontainer() {
   const { history } = useAppContext()
-  const data = useMemo(() => mapHistoryToTable(history), [history])
-  const [filter, setFilter] = useState<FilterValues>(initialFilterState)
+  const { state } = useLocation()
+  const statesFromQuery = getFilterStateFromQuery(state as QueryState)
+
+  const [filter, setFilter] = useState<FilterValues>({
+    ...initialFilterState,
+    ...statesFromQuery,
+  })
   const [sortBy, setSortBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
+
   const { columns, filterItems, hiddenColumns } = useTableData(filter)
+  const data = useMemo(() => mapHistoryToTable(history), [history])
   const branchNames = useMemo(() => extractBranchNames(history), [history])
   console.info('history=====>', history)
 
