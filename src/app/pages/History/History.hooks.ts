@@ -18,6 +18,7 @@ const hiddenColumns = [
   TB_ACCESSORS.DURATION,
   TB_ACCESSORS.PATH,
   TB_ACCESSORS.STORY,
+  TB_ACCESSORS.COMMIT,
 ]
 
 function dateRangeFilter(rows, id, filterValue) {
@@ -57,6 +58,7 @@ export function useTableData(filter: FilterValues) {
       {
         accessor: TB_ACCESSORS.IMAGE,
         Cell: CellImage,
+        disableGlobalFilter: true,
         Header: TB_ACCESSORS.IMAGE,
         id: TB_ACCESSORS.IMAGE,
         width: 140,
@@ -67,7 +69,7 @@ export function useTableData(filter: FilterValues) {
         disableGlobalFilter: true,
         filter: 'equals',
         Header: TB_ACCESSORS.STATUS,
-        width: 40,
+        width: 56,
       },
       {
         accessor: TB_ACCESSORS.CODE,
@@ -98,9 +100,14 @@ export function useTableData(filter: FilterValues) {
         id: TB_ACCESSORS.CHECKID,
       },
       {
+        Header: TB_ACCESSORS.COMMIT,
+        accessor: TB_ACCESSORS.COMMIT,
+        Cell: CellText,
+        id: TB_ACCESSORS.COMMIT,
+      },
+      {
         accessor: TB_ACCESSORS.PATH,
         Cell: CellText,
-        disableGlobalFilter: true,
         Header: TB_ACCESSORS.PATH,
         id: TB_ACCESSORS.PATH,
       },

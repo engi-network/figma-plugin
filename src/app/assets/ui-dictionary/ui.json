@@ -29,7 +29,8 @@
   "history": {
     "history": "History",
     "search": "Search",
-    "searchPlaceholder": "Search..."
+    "searchPlaceholder": "Search...",
+    "learnMore": "Learn more"
   },
   "components": {
     "select": {

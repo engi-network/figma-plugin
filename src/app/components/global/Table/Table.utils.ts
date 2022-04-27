@@ -9,11 +9,19 @@ const placeholder = `const TestCompenent = () => {
 
 export const mapHistoryToTable = (history: History): Array<Cell> => {
   return history.map(({ result, imageUrl = '' }) => {
-    const { check_id, path, story, repository, branch = '' } = result
+    const {
+      check_id,
+      path,
+      story,
+      repository,
+      branch = '',
+      commit = '',
+    } = result
     const baseObj = {
       branch,
       checkId: check_id,
       code: placeholder,
+      commit,
       imageUrl,
       name: {
         story,

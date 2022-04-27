@@ -29,7 +29,7 @@ function HistoryHeader() {
           className="text-text-secondary"
           icon={<InformationCircleIcon className="w-5 h-5" />}
         >
-          {ui('header.learnMore')}
+          {ui('history.learnMore')}
         </IconButton>
       </div>
     </div>
