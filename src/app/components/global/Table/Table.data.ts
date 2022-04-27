@@ -1,6 +1,7 @@
 export enum TB_ACCESSORS {
   BRANCH = 'branch',
   CHECKID = 'checkId',
+  CODE = 'code',
   COMPLETED_AT = 'completedAt',
   CREATED_AT = 'createdAt',
   DURATION = 'duration',

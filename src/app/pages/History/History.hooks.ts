@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import CellCodeBlock from '~/app/components/global/Table/CellCodeBlock/CellCodeBlock'
 import CellImage from '~/app/components/global/Table/CellImage/CellImage'
 import CellName from '~/app/components/global/Table/CellName/CellName'
 import CellStatus from '~/app/components/global/Table/CellStatus/CellStatus'
@@ -67,6 +68,13 @@ export function useTableData(filter: FilterValues) {
         filter: 'equals',
         Header: TB_ACCESSORS.STATUS,
         width: 40,
+      },
+      {
+        accessor: TB_ACCESSORS.CODE,
+        Cell: CellCodeBlock,
+        Header: TB_ACCESSORS.CODE,
+        id: TB_ACCESSORS.CODE,
+        width: 140,
       },
       {
         accessor: TB_ACCESSORS.NAME,
