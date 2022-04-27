@@ -28,7 +28,7 @@ function CanvasContainer({
   }, [id])
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center h-full">
       <Canvas
         id={inputId}
         draw={draw}

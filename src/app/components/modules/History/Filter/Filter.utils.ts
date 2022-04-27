@@ -1,4 +1,5 @@
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
+import { STATUS } from '~/app/components/global/Table/Table.types'
 import { convertDateToUnix } from '~/app/lib/utils/time'
 
 import {
@@ -38,9 +39,9 @@ export const mapFilterFormToTableFilter = (
     status: filter.success
       ? filter.fail
         ? ''
-        : 'success'
+        : STATUS.SUCCESS
       : filter.fail
-      ? 'fail'
+      ? STATUS.FAIL
       : '',
     branch: !!branchNames.length && branchNames,
   }
