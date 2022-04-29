@@ -39,10 +39,10 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         status: STATUS.FAIL,
       }
     } else {
-      const { created_at, completed_at, code } = result
+      const { created_at, completed_at, code_snippet } = result
       return {
         ...baseObj,
-        code,
+        code: code_snippet,
         completedAt: completed_at,
         createdAt: created_at,
         duration: (completed_at - created_at) / 60, //scaling because react-slider can't deal with a large number

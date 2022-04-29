@@ -18,7 +18,7 @@ export interface ErrorReport extends Specification {
  */
 export interface ReportResult extends Specification {
   MAE: string
-  code: string
+  code_snippet: string
   completed_at: number
   created_at: number
 }

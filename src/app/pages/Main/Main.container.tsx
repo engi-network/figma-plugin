@@ -109,6 +109,7 @@ function MainContainer() {
         [FORM_FIELD.COMMIT]: values[FORM_FIELD.COMMIT],
         [FORM_FIELD.BRANCH]: values[FORM_FIELD.BRANCH],
         [FORM_FIELD.PATH]: values[FORM_FIELD.PATH],
+        [FORM_FIELD.GH_TOKEN]: values[FORM_FIELD.GH_TOKEN],
       },
     })
   }
