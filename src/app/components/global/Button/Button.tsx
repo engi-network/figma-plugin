@@ -14,6 +14,7 @@ interface ButtonProps {
   onClick?: () => void
   primary?: boolean
   size?: BUTTON_SIZE
+  type?: 'button' | 'reset' | 'submit'
 }
 
 function Button({
@@ -24,13 +25,15 @@ function Button({
   onClick,
   children,
   disabled,
+  type,
   ...rest
 }: ButtonProps) {
   const mode = primary ? styles.primary : styles.secondary
 
   return (
     <button
-      type="button"
+      type={type}
+      role="button"
       css={[
         styles.button,
         styles[size],

@@ -6,6 +6,15 @@ module.exports = {
     '!**/*.types.ts',
     '!**/node_modules/**',
     '!**/*.stories.tsx',
+    '!**/dist/**',
+    '!**/script/**',
+    '!**/*.config.{js,ts}',
+    '!**/.*.{js,ts}',
+    '!**/.storybook/**',
+    '!**/coverage/**',
+    '!**/@types/**',
+    '!**/models/*.ts',
+    '!**/jest.emotionSerializer.ts',
   ],
   moduleNameMapper: {
     // Make sure this is the last mapper, since it will match any file extension
