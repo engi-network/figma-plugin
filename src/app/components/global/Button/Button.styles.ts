@@ -27,7 +27,7 @@ const styles: StylesMap = {
     backgroundColor: COLORS.WF.PRIMARY,
   },
   secondary: {
-    color: 'black',
+    color: COLORS.PRIMARY.DARK,
     backgroundColor: COLORS.PRIMARY.WHITE,
   },
   small: {

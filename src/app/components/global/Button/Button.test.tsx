@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { COLORS } from '~/app/lib/constants'
+
 import Button from './Button'
 
 describe('Button', () => {
@@ -40,5 +42,17 @@ describe('Button', () => {
     const button = screen.getByRole('button')
     fireEvent.click(button)
     expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('should have expected background color and color', () => {
+    render(
+      <Button label="Click me" onClick={jest.fn()} backgroundColor="white">
+        Button title
+      </Button>,
+    )
+
+    const button = screen.getByRole('button')
+    expect(button).toHaveStyle("background: 'white'")
+    expect(button).toHaveStyle(`color: ${COLORS.PRIMARY.DARK}`)
   })
 })
