@@ -32,6 +32,7 @@ function IconButton({
   return (
     <button
       id={id}
+      data-testid={id}
       className={btnClasses}
       css={[styles.root, styles[buttonStyle]]}
       onClick={onClick}
