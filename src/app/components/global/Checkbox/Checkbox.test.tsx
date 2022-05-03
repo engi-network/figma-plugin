@@ -11,7 +11,7 @@ describe('Checkbox', () => {
     )
 
     expect(checkboxContainer).toBeInTheDocument()
-    expect((checkboxContainer.firstChild as HTMLInputElement).checked).toEqual(
+    expect((checkboxContainer?.firstChild as HTMLInputElement).checked).toEqual(
       false,
     )
 
@@ -32,9 +32,9 @@ describe('Checkbox', () => {
       />,
     )
 
-    fireEvent.click(checkboxContainer)
+    fireEvent.click(checkboxContainer as ChildNode)
     expect(handleChange).toBeCalledTimes(1)
-    expect((checkboxContainer.firstChild as HTMLInputElement).checked).toEqual(
+    expect((checkboxContainer?.firstChild as HTMLInputElement).checked).toEqual(
       true,
     )
   })
@@ -48,7 +48,7 @@ describe('Checkbox', () => {
       <Checkbox onChange={handleChange} isDisabled label={'Check me'} />,
     )
 
-    fireEvent.click(checkboxContainer)
+    fireEvent.click(checkboxContainer as ChildNode)
     expect(handleChange).not.toBeCalled()
   })
 })
