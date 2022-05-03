@@ -68,6 +68,7 @@ function Input({
       )}
       <input
         id={id}
+        aria-label={label}
         disabled={disabled}
         onChange={handleChange}
         value={value}
@@ -78,7 +79,10 @@ function Input({
         {...rest}
       />
       {error && (
-        <span className="text-red-600 text-xs absolute bottom-[-20px]">
+        <span
+          className="text-red-600 text-xs absolute bottom-[-20px]"
+          role="alert"
+        >
           {error}
         </span>
       )}

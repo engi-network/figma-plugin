@@ -44,6 +44,7 @@ describe('Button', () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
+  //fail case to submit to Engi job
   it('should have expected background color and color', () => {
     render(
       <Button label="Click me" onClick={jest.fn()} backgroundColor="white">
@@ -53,6 +54,6 @@ describe('Button', () => {
 
     const button = screen.getByRole('button')
     expect(button).toHaveStyle("background: 'white'")
-    expect(button).toHaveStyle(`color: ${COLORS.PRIMARY.DARK}`)
+    // expect(button).toHaveStyle(`color: ${COLORS.PRIMARY.DARK}`)
   })
 })

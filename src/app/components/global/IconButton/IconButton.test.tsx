@@ -1,5 +1,5 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 
 import { BUTTON_STYLE } from '~/app/lib/constants'
 
