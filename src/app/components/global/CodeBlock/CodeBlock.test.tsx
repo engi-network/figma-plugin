@@ -8,7 +8,7 @@ const codeString = `const TestCompenent = () => {
 `
 
 describe('CodeBlock', () => {
-  test('shoould render correctly', () => {
+  test('should render correctly', () => {
     const tree = renderer
       .create(<CodeBlock codeString={codeString} className={'w-36 h-20'} />)
       .toJSON()

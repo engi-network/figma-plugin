@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CodeBlock shoould render correctly 1`] = `
+exports[`CodeBlock should render correctly 1`] = `
 <div
   className="w-36 h-20 border border-primary-gray/30 overflow-hidden p-[10px]"
 >

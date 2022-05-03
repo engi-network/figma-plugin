@@ -1,19 +1,23 @@
 import cn from 'classnames'
 import { ChangeEvent } from 'react'
 
-// import styles from './Datepicker.styles'
-
-// import { CalendarIcon } from '~/app/components/global/Icons'
-
 interface Props {
   className?: string
   disabled?: boolean
+  id?: string
   label?: string
   onChange?: (value: string) => void
   value?: string
 }
 
-function Datepicker({ onChange, value, className, disabled }: Props) {
+function Datepicker({
+  onChange,
+  value,
+  className,
+  disabled,
+  id,
+  ...rest
+}: Props) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange && onChange(event.target.value)
   }
@@ -24,15 +28,17 @@ function Datepicker({ onChange, value, className, disabled }: Props) {
   )
 
   return (
-    <div className={rootClasses}>
+    <div className={rootClasses} data-testid={id}>
       <div className="relative">
         <input
+          id={id}
           type="date"
           className="text-base text-text-primary border-none bg-transparent"
           value={value}
-          // css={styles.input}
           onChange={handleChange}
           disabled={disabled}
+          aria-label="datepicker"
+          {...rest}
         />
       </div>
     </div>
