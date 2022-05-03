@@ -43,6 +43,7 @@ function Canvas(
       className={classes}
       width={width}
       height={height}
+      data-testid={id}
       {...rest}
     >
       {children}
