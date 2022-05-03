@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import { string } from 'yargs'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { ClockIcon, HistoryIcon, InfoIcon } from '~/app/components/global/Icons'
