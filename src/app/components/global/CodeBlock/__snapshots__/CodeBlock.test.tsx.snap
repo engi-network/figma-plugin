@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodeBlock shoould render correctly 1`] = `
+<div
+  className="w-36 h-20 border border-primary-gray/30 overflow-hidden p-[10px]"
+>
+  <pre
+    style={
+      Object {
+        "background": "transparent",
+        "color": "#000",
+        "display": "block",
+        "fontSize": 10,
+        "fontWeight": 500,
+        "height": "100%",
+        "lineHeight": "15px",
+        "overflow": "hidden",
+        "overflowX": "auto",
+        "padding": 0,
+      }
+    }
+  >
+    <code
+      className="language-javascript"
+      style={
+        Object {
+          "whiteSpace": "pre-wrap",
+        }
+      }
+    >
+      <span
+        style={Object {}}
+      >
+        <span
+          style={
+            Object {
+              "color": "#954121",
+            }
+          }
+        >
+          const
+        </span>
+        <span
+          style={Object {}}
+        >
+           TestCompenent = 
+        </span>
+        <span
+          className="hljs-function"
+          style={Object {}}
+        >
+          () =&gt;
+        </span>
+        <span
+          style={Object {}}
+        >
+           {
+
+        </span>
+      </span>
+      <span
+        style={Object {}}
+      >
+        <span
+          style={Object {}}
+        >
+            
+        </span>
+        <span
+          style={
+            Object {
+              "color": "#954121",
+            }
+          }
+        >
+          return
+        </span>
+        <span
+          style={Object {}}
+        >
+           
+        </span>
+        <span
+          className="xml"
+          style={
+            Object {
+              "color": "#000080",
+              "fontWeight": "normal",
+            }
+          }
+        >
+          &lt;
+        </span>
+        <span
+          className="xml"
+          style={
+            Object {
+              "color": "#000080",
+              "fontWeight": "normal",
+            }
+          }
+        >
+          div
+        </span>
+        <span
+          className="xml"
+          style={
+            Object {
+              "color": "#000080",
+              "fontWeight": "normal",
+            }
+          }
+        >
+          &gt;
+        </span>
+        <span
+          className="xml"
+          style={Object {}}
+        >
+          Test
+        </span>
+        <span
+          className="xml"
+          style={
+            Object {
+              "color": "#000080",
+              "fontWeight": "normal",
+            }
+          }
+        >
+          &lt;/
+        </span>
+        <span
+          className="xml"
+          style={
+            Object {
+              "color": "#000080",
+              "fontWeight": "normal",
+            }
+          }
+        >
+          div
+        </span>
+        <span
+          className="xml"
+          style={
+            Object {
+              "color": "#000080",
+              "fontWeight": "normal",
+            }
+          }
+        >
+          &gt;
+        </span>
+        <span
+          style={Object {}}
+        >
+          
+
+        </span>
+      </span>
+      <span
+        style={Object {}}
+      >
+        }
+
+      </span>
+      <span
+        style={Object {}}
+      >
+        
+      </span>
+    </code>
+  </pre>
+</div>
+`;
