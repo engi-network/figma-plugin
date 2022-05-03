@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { COLORS } from '~/app/lib/constants'
-
 import Button from './Button'
+
+// import { COLORS } from '~/app/lib/constants'
 
 describe('Button', () => {
   it('has expected initial state', () => {

@@ -16,6 +16,7 @@ module.exports = {
     '!**/models/*.ts',
     '!**/jest.emotionSerializer.ts',
     '!**/*/Icons/**',
+    '!**/index.{js,jsx,ts,tsx}',
   ],
   moduleNameMapper: {
     // Make sure this is the last mapper, since it will match any file extension
