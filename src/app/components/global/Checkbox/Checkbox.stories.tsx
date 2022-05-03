@@ -10,7 +10,7 @@ export default {
 
 export function CheckboxWithKnobs() {
   const [value, setValue] = useState<boolean>(false)
-  const handleChange = (value?: boolean) => {
+  const handleChange = (value?: boolean | string) => {
     setValue(!!value)
   }
 
