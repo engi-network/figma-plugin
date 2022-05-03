@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { act } from '@testing-library/react-hooks'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Datepicker from './Datepicker'
 
@@ -34,10 +33,8 @@ describe('Datepicker', () => {
     )
 
     const input = screen.getByLabelText('datepicker') as HTMLInputElement
-    act(() => {
-      fireEvent.change(input, { target: { value: '2022-05-19' } })
-    })
+    fireEvent.change(input, { target: { value: '2022-05-19' } })
     expect(handleChange).toBeCalledTimes(1)
-    await waitFor(() => expect(input).toHaveValue('2022-05-19'))
+    expect(handleChange).toBeCalledWith('2022-05-19')
   })
 })
