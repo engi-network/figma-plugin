@@ -15,4 +15,9 @@ describe('Header', () => {
     const progressWrapper = screen.getByLabelText('In progress')
     expect(progressWrapper.lastChild.textContent).toBe('2')
   })
+
+  /**
+   * @REF https://v5.reactrouter.com/web/guides/testing
+   */
+  // it('should navigate to the specific page when clicking links', () => {})
 })
