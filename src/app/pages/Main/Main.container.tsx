@@ -1,4 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/outline'
+import * as Sentry from '@sentry/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -79,6 +80,17 @@ function MainContainer() {
         navigate(ROUTES_MAP[ROUTES.RESULT])
       } else {
         console.error('Oops, got an error report:::', detailedReport)
+
+        Sentry.captureException(
+          new Error(detailedReport.toString()),
+          (scope) => {
+            scope.clear()
+            scope.setTransactionName('GET /report')
+            scope.setTag('error_report', report.checkId.toString())
+            return scope
+          },
+        )
+
         setIsLoading(false)
         setProgress(0)
         setApiError('Something went wrong. Please double check the inputs.')
@@ -86,6 +98,13 @@ function MainContainer() {
     } else {
       if (status.retryTimes >= MAX_RETRY_TIMES) {
         console.error('Api time out error!')
+        Sentry.captureException(new Error('Api time out error!'), (scope) => {
+          scope.clear()
+          scope.setTransactionName('GET /polling')
+          scope.setTag('polling', status.retryTimes.toString())
+          return scope
+        })
+
         setProgress(0)
         setIsLoading(false)
         setApiError('Something went wrong. Please double check the inputs.')
