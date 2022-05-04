@@ -82,9 +82,9 @@ function MainContainer() {
         console.error('Oops, got an error report:::', detailedReport)
 
         Sentry.sendReport({
-          error: new Error('Error report'),
+          error: (report.result as ErrorReport).error,
           transactionName: SENTRY_TRANSACTION.GET_REPORT,
-          tagData: (report.result as ErrorReport).error,
+          tagData: { checkId: report.checkId },
         })
 
         setIsLoading(false)
@@ -98,7 +98,7 @@ function MainContainer() {
         Sentry.sendReport({
           error: new Error('Api time out error!'),
           transactionName: SENTRY_TRANSACTION.GET_POLLING,
-          tagData: { polling: status.retryTimes.toString() },
+          tagData: { retryTimes: status.retryTimes.toString() },
         })
 
         setProgress(0)
@@ -156,6 +156,7 @@ function MainContainer() {
   const handleSubmit = useCallback(async () => {
     setFormErrors(initialErrorValues)
     setApiError('')
+
     if (!formValidate(values)) {
       return
     }
@@ -163,8 +164,11 @@ function MainContainer() {
     if (!originCanvasRef || !originCanvasRef.current || !selectionData) {
       return
     }
+
     setProgress(0)
     setIsLoading(true)
+    const checkId: string = uuidv4()
+
     try {
       const {
         component,
@@ -173,7 +177,6 @@ function MainContainer() {
         path,
         githubToken = '',
       } = values as AnalyzeFormValues
-      const checkId: string = uuidv4()
       const message: Specification = {
         branch,
         check_id: checkId,
@@ -203,6 +206,12 @@ function MainContainer() {
       await pollReportById(checkId, pollCallback)
     } catch (error) {
       console.error(error)
+
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.FORM_SUBMIT,
+        tagData: { checkId },
+      })
       setIsLoading(false)
     }
   }, [values, selectionData, originCanvasRef])

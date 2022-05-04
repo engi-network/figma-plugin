@@ -4,6 +4,7 @@ import { BrowserTracing } from '@sentry/tracing'
 import config from '~/app/lib/config'
 
 export enum SENTRY_TRANSACTION {
+  FORM_SUBMIT = 'FORM SUBMIT',
   GET_POLLING = 'GET /polling',
   GET_REPORT = 'GET /report',
 }
@@ -26,10 +27,10 @@ class SentryReport {
   sendReport({
     error,
     transactionName,
-    tagData,
+    tagData = {},
   }: {
-    error: Error
-    tagData: Record<string, string>
+    error: unknown
+    tagData?: Record<string, string>
     transactionName: SENTRY_TRANSACTION
   }) {
     Sentry.captureException(error, (scope) => {
