@@ -1,5 +1,4 @@
 import { InformationCircleIcon } from '@heroicons/react/outline'
-import * as Sentry from '@sentry/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -26,6 +25,7 @@ import {
 } from '~/app/lib/utils/aws'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { dispatchData } from '~/app/lib/utils/event'
+import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/utils/sentry'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { Report } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
@@ -81,15 +81,11 @@ function MainContainer() {
       } else {
         console.error('Oops, got an error report:::', detailedReport)
 
-        Sentry.captureException(
-          new Error(detailedReport.toString()),
-          (scope) => {
-            scope.clear()
-            scope.setTransactionName('GET /report')
-            scope.setTag('error_report', report.checkId.toString())
-            return scope
-          },
-        )
+        Sentry.sendReport({
+          error: new Error(detailedReport.toString()),
+          transactionName: SENTRY_TRANSACTION.GET_REPORT,
+          tagData: { error_report: report.checkId.toString() },
+        })
 
         setIsLoading(false)
         setProgress(0)
@@ -98,11 +94,11 @@ function MainContainer() {
     } else {
       if (status.retryTimes >= MAX_RETRY_TIMES) {
         console.error('Api time out error!')
-        Sentry.captureException(new Error('Api time out error!'), (scope) => {
-          scope.clear()
-          scope.setTransactionName('GET /polling')
-          scope.setTag('polling', status.retryTimes.toString())
-          return scope
+
+        Sentry.sendReport({
+          error: new Error('Api time out error!'),
+          transactionName: SENTRY_TRANSACTION.GET_POLLING,
+          tagData: { polling: status.retryTimes.toString() },
         })
 
         setProgress(0)
