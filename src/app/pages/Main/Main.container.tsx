@@ -27,7 +27,7 @@ import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { dispatchData } from '~/app/lib/utils/event'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/utils/sentry'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { Report } from '~/app/models/Report'
+import { ErrorReport, Report } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
@@ -82,9 +82,9 @@ function MainContainer() {
         console.error('Oops, got an error report:::', detailedReport)
 
         Sentry.sendReport({
-          error: new Error(detailedReport.toString()),
+          error: new Error('Error report'),
           transactionName: SENTRY_TRANSACTION.GET_REPORT,
-          tagData: { error_report: report.checkId.toString() },
+          tagData: (report.result as ErrorReport).error,
         })
 
         setIsLoading(false)
