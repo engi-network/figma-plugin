@@ -31,6 +31,7 @@
     "classnames": "^2.3.1",
     "dompurify": "^2.3.6",
     "dotenv": "^16.0.0",
+    "lottie-react": "^2.2.1",
     "namor": "^2.0.3",
     "postcss-loader": "^4.2.1",
     "react": "^17.0.2",

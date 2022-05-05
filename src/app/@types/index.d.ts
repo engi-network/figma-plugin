@@ -2,3 +2,4 @@
 /// <reference types="aws-sdk" />
 
 declare module '*.svg'
+declare module '*.json'
