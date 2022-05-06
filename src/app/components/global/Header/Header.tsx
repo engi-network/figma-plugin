@@ -1,8 +1,15 @@
 import { useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { ClockIcon, HistoryIcon, InfoIcon } from '~/app/components/global/Icons'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
+import {
+  GA_EVENT_NAMES,
+  MeasurementData,
+  sendMeasurementToGa,
+} from '~/app/lib/utils/ga'
+import { convertDateToUnix } from '~/app/lib/utils/time'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 interface Props {
@@ -12,7 +19,15 @@ interface Props {
 function Header({ numberOfProgress }: Props) {
   const navigate = useNavigate()
 
-  const handleViewHistory = () => {
+  const handleViewHistory = async () => {
+    const queryParams: MeasurementData = {
+      cid: uuidv4(),
+      en: GA_EVENT_NAMES.PAGE_VIEW,
+      sid: convertDateToUnix(new Date().toString()) + '',
+      dp: '/history',
+    }
+
+    await sendMeasurementToGa(queryParams)
     navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 

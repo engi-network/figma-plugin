@@ -8,7 +8,6 @@ import { makeServer } from './mockServer/server'
 if (process.env.NODE_ENV === 'test') {
   makeServer({ environment: 'development' })
 }
-
 SentryReport.init()
 
 ReactDOM.render(<App />, document.getElementById('root'))
