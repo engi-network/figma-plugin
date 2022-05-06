@@ -22,9 +22,12 @@ function Header({ numberOfProgress }: Props) {
   const handleViewHistory = async () => {
     const queryParams: MeasurementData = {
       cid: uuidv4(),
+      dp: '/history',
+      dt: 'history',
       en: GA_EVENT_NAMES.PAGE_VIEW,
       sid: convertDateToUnix(new Date().toString()) + '',
-      dp: '/history',
+      sr: '600x800',
+      user_id: uuidv4(),
     }
 
     await sendMeasurementToGa(queryParams)

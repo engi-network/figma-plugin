@@ -33,6 +33,7 @@ export interface MeasurementData {
   sr?: string
   //user language : en-gb
   ul?: string
+  user_id: string
 }
 
 export async function sendMeasurementToGa(
