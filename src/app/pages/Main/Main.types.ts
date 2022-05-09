@@ -8,9 +8,9 @@ export enum STEPS {
 }
 
 export const STEP_MESSAGES: Record<STEPS, string> = {
-  [STEPS.CLONE]: 'Cloning repository:',
-  [STEPS.INSTALL]: 'Installing dependencies:',
-  [STEPS.RENDER]: 'Rendering Storybook:',
-  [STEPS.CAPTURE]: 'Capturing screenshots:',
-  [STEPS.COMPARE]: 'Running visual comparison:',
+  [STEPS.CLONE]: 'Cloning repository...',
+  [STEPS.INSTALL]: 'Installing dependencies...',
+  [STEPS.RENDER]: 'Rendering Storybook...',
+  [STEPS.CAPTURE]: 'Capturing screenshots...',
+  [STEPS.COMPARE]: 'Running visual comparison...',
 }

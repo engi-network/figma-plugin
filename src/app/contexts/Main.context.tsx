@@ -1,6 +1,7 @@
 import {
   Dispatch,
   ReactNode,
+  RefObject,
   SetStateAction,
   useCallback,
   useEffect,
@@ -49,6 +50,7 @@ export interface MainContextProps {
   handleChange: (values: AnalyzeFormValues) => Promise<void>
   handleSubmit: () => void
   isLoading: boolean
+  originCanvasRef: RefObject<HTMLCanvasElement>
   progress: number
   selectionData: PluginSelection | undefined
   setIsLoading: Dispatch<SetStateAction<boolean>>
@@ -282,6 +284,7 @@ export function useMainContextSetup(): MainContextProps {
     handleChange,
     handleSubmit,
     isLoading,
+    originCanvasRef,
     progress,
     selectionData,
     setIsLoading,

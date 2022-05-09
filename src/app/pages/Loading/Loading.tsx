@@ -12,12 +12,14 @@ interface Props {
   step?: STEPS
 }
 
+type QueryState = null | Record<string, string>
+
 function Loading({ step }: Props) {
   const navigate = useNavigate()
-  const { state = {} } = useLocation()
+  const location = useLocation()
+  const state = (location.state as QueryState) ?? {}
 
   const stepFromQuery = (state as Record<string, string>).step as unknown
-  console.log('step======>', step, stepFromQuery)
 
   const handleCreateNew = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
@@ -27,14 +29,14 @@ function Loading({ step }: Props) {
     ? (stepFromQuery as STEPS)
     : step
     ? step
-    : STEPS.CAPTURE
+    : STEPS.CLONE
 
   return (
     <>
       <div className="flex ml-auto mr-auto mt-20">
         <Loader step={internalStep} />
       </div>
-      <h2 className="text-2xl font-bold text-text-primary text-center my-10">
+      <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
         {STEP_MESSAGES[internalStep]}
       </h2>
       <div className="flex justify-center">
