@@ -1,17 +1,23 @@
-import { useLottie } from 'lottie-react'
+import LottieView from '~/app/components/global/LottieView/LottieView'
+import { mapStepToAnimation } from '~/app/lib/utils/animations'
+import { STEPS } from '~/app/pages/Main/Main.types'
 
-import Loading from '~/app/assets/animations/loading.json'
+interface Props {
+  step: STEPS
+}
 
-function Loader() {
-  const options = {
-    animationData: Loading,
-    loop: true,
-    autoplay: true,
+function Loader({ step }: Props) {
+  const data = mapStepToAnimation[step]
+
+  if (!data) {
+    return null
   }
 
-  const { View } = useLottie(options)
-
-  return View
+  return (
+    <div>
+      <LottieView animation={data} />
+    </div>
+  )
 }
 
 export default Loader
