@@ -20,17 +20,11 @@ import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
-import {
-  CallbackStatus,
-  getPresignedUrl,
-  pollReportById,
-  publishCommandToSns,
-  uploadEncodedFrameToS3,
-} from '~/app/lib/utils/aws'
+import AWS, { CallbackStatus } from '~/app/lib/services/aws'
+import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
-import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/utils/sentry'
 import { ErrorReport, Report } from '~/app/models/Report'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
@@ -87,7 +81,10 @@ export function useMainContextSetup(): MainContextProps {
         checkId,
         result: { story, component },
       } = report
-      const presignedUrl = await getPresignedUrl(story || component, checkId)
+      const presignedUrl = await AWS.getPresignedUrl(
+        story || component,
+        checkId,
+      )
       const detailedReport = { ...report, imageUrl: presignedUrl }
 
       dispatchData({
@@ -207,9 +204,9 @@ export function useMainContextSetup(): MainContextProps {
         selectionData.frame,
       )
       const frame = await encode(copyRef, context, imageData)
-      await uploadEncodedFrameToS3(story || component, checkId, frame)
-      await publishCommandToSns(message)
-      await pollReportById(checkId, pollCallback)
+      await AWS.uploadEncodedFrameToS3(story || component, checkId, frame)
+      await AWS.publishCommandToSns(message)
+      await AWS.pollReportById(checkId, pollCallback)
     } catch (error) {
       console.error(error)
 
