@@ -1,6 +1,4 @@
-import { QueryState } from '~/app/@types/route'
-
-export const getFilterStateFromQuery = (state: QueryState) => {
+export const getFilterStateFromQuery = (state: Record<string, string>) => {
   if (!state || !state.filter) {
     return {}
   }

@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { QueryState } from '~/app/@types/route'
 import Input from '~/app/components/global/Input/Input'
 import Select from '~/app/components/global/Select/Select'
 import Table from '~/app/components/global/Table/Table'
@@ -23,7 +22,9 @@ import { extractBranchNames } from './History.utils'
 function Historycontainer() {
   const { history } = useAppContext()
   const { state } = useLocation()
-  const statesFromQuery = getFilterStateFromQuery(state as QueryState)
+  const statesFromQuery = getFilterStateFromQuery(
+    state as Record<string, string>,
+  )
 
   const [filter, setFilter] = useState<FilterValues>({
     ...initialFilterState,
