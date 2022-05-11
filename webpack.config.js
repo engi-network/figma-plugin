@@ -102,9 +102,19 @@ module.exports = (env, argv) => {
         template: './src/app/index.html',
         filename: 'ui.html',
         chunks: ['ui'],
+        excludeAssets: [
+          /worker/,
+          (asset) => asset.attributes && asset.attributes['x-skip'],
+        ],
       }),
       new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
-    ].filter(Boolean),
+      // new HtmlWebpackSkipAssetsPlugin({
+      //   excludeAssets: [
+      //     /worker/,
+      //     (asset) => asset.attributes && asset.attributes['x-skip'],
+      //   ],
+      // }),
+    ],
 
     devServer: {
       liveReload: false,

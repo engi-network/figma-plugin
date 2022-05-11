@@ -8,7 +8,7 @@ import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { useAppContext } from '~/app/contexts/App.context'
 import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import { fetchReportDifferenceById } from '~/app/lib/utils/aws'
+import AWS from '~/app/lib/services/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { DIFF_TYPE, isError } from '~/app/models/Report'
@@ -56,8 +56,8 @@ function ResultContainer() {
 
   const fetchSetDiffData = async (checkId) => {
     const promises = [
-      fetchReportDifferenceById(checkId, DIFF_TYPE.BLUE),
-      fetchReportDifferenceById(checkId, DIFF_TYPE.GRAY),
+      AWS.fetchReportDifferenceById(checkId, DIFF_TYPE.BLUE),
+      AWS.fetchReportDifferenceById(checkId, DIFF_TYPE.GRAY),
     ]
     const results = await Promise.all(promises)
     setBuffers(results)

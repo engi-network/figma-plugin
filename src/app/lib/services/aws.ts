@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import {
   PublishCommand,
   PublishCommandOutput,
@@ -28,9 +29,9 @@ const awsConfig = {
 
 class CustomizedAWS {
   isInitialized = false
-  snsClient
-  s3Client
-  sqsClient
+  snsClient: SNSClient | undefined
+  s3Client: AWS.S3 | undefined
+  sqsClient: AWS.SQS | undefined
   constructor() {}
 
   initialize() {
@@ -49,6 +50,12 @@ class CustomizedAWS {
   async publishCommandToSns(
     message: Specification,
   ): Promise<PublishCommandOutput> {
+    if (!this.snsClient) {
+      return Promise.reject({
+        message: 'AWS has not been configured',
+      } as AWSError)
+    }
+
     const params = {
       Message: JSON.stringify(message),
       TopicArn: config.TOPIC_ARN,
@@ -59,26 +66,39 @@ class CustomizedAWS {
     return data
   }
 
-  async receiveMessageFromSQS() {
-    const params = {
-      MaxNumberOfMessages: 10,
-      QueueUrl: 'STRING_VALUE',
-      ReceiveRequestAttemptId: 'STRING_VALUE',
-      VisibilityTimeout: 1000 * 10,
-      WaitTimeSeconds: 1000 * 1,
+  async receiveMessageFromSQS(): Promise<
+    AWS.Request<AWS.SQS.ReceiveMessageResult, AWSError>
+  > {
+    if (!this.sqsClient) {
+      return Promise.reject({
+        message: 'AWS has not been configured',
+      } as AWSError)
     }
 
-    this.sqsClient.receiveMessage(params, function (err, data) {
-      if (err) {
-        console.info(err, err.stack)
-      } // an error occurred
-      else {
-        console.info(data)
-      } // successful response
-    })
+    const params = {
+      MaxNumberOfMessages: 10,
+      QueueUrl: config.QUEUE_URL,
+      VisibilityTimeout: 10,
+      WaitTimeSeconds: 1,
+    }
+
+    try {
+      const result = await this.sqsClient.receiveMessage(params)
+      console.info(result)
+      return result
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(error as AWSError)
+    }
   }
 
   async getPresignedUrl(name: string, checkId: string): Promise<string> {
+    if (!this.s3Client) {
+      return Promise.reject({
+        message: 'AWS has not been configured',
+      } as AWSError)
+    }
+
     try {
       const key = `checks/${checkId}/frames/${name}.png`
 
@@ -87,7 +107,7 @@ class CustomizedAWS {
         Key: key,
       }
 
-      return await this.s3Client.getSignedUrlPromise('getObject', params)
+      return await this.s3Client?.getSignedUrlPromise('getObject', params)
     } catch (error) {
       return ''
     }
@@ -113,6 +133,12 @@ class CustomizedAWS {
 
   async fetchReportById(checkId: string): Promise<Report> {
     return new Promise((resolve, reject) => {
+      if (!this.s3Client) {
+        return reject({
+          message: 'AWS has not been configured',
+        } as AWSError)
+      }
+
       this.s3Client.getObject(
         {
           Bucket: config.SAME_STORY_BUCKET_NAME,
@@ -146,6 +172,12 @@ class CustomizedAWS {
     difference: DIFF_TYPE,
   ): Promise<ArrayBuffer> {
     return new Promise((resolve, reject) => {
+      if (!this.s3Client) {
+        return Promise.reject({
+          message: 'AWS has not been configured',
+        } as AWSError)
+      }
+
       this.s3Client.getObject(
         {
           Bucket: config.SAME_STORY_BUCKET_NAME,

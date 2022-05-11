@@ -98,6 +98,7 @@
     "eslint-plugin-typescript-sort-keys": "^2.0.0",
     "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "^5.5.0",
+    "html-webpack-skip-assets-plugin": "^1.0.3",
     "import-sort": "^6.0.0",
     "import-sort-style-wes": "^3.0.2",
     "jest": "^27.5.1",
