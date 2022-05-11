@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 
-import useCanvas, { CanvasOption } from './useCanvas'
+import useCanvas, { CanvasOption } from '../useCanvas'
 
 // import { act } from 'react-test-renderer'
 

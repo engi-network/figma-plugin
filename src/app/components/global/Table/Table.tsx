@@ -52,7 +52,7 @@ function Table({
     toggleSortBy,
     setAllFilters,
     // state,
-    filters,
+    // filters,
     setGlobalFilter,
     setHiddenColumns,
   } = useTable(
