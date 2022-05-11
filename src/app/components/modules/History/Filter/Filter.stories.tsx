@@ -17,7 +17,7 @@ export function FilterWithKnobs() {
   }
 
   const filterItems = mapFilterFormToTableFilter(values)
-  console.info('filter===>', filterItems)
+  console.info('filter:', filterItems)
 
   return (
     <div className="h-screen bg-slate-700">

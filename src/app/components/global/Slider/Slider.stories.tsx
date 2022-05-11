@@ -12,7 +12,6 @@ export function SliderWithKnobs() {
 
   const handleChange = (value: Array<number>) => {
     const [min, max] = value
-    console.info('value', value)
     setSliderValue([min, max])
   }
 

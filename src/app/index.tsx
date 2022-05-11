@@ -2,9 +2,11 @@ import ReactDOM from 'react-dom'
 
 import AWS from '~/app/lib/services/aws'
 import SentryReport from '~/app/lib/services/sentry'
+import MySocket from '~/app/lib/services/socket'
 import MyWorker from '~/app/lib/services/worker'
 
 import App from './App'
+// import config from './lib/config'
 import { makeServer } from './mockServer/server'
 
 /**
@@ -17,16 +19,18 @@ if (process.env.NODE_ENV === 'test') {
 
 SentryReport.init()
 
-if (AWS.isInitialized) {
-  AWS.receiveMessageFromSQS()
-}
+ReactDOM.render(<App />, document.getElementById('root'))
 
 MyWorker.initialize()
 MyWorker.start()
 
-ReactDOM.render(<App />, document.getElementById('root'))
-
 AWS.initialize()
+if (AWS.isInitialized) {
+  AWS.receiveMessageFromSQS()
+}
+
+// MySocket.initialize(config.SOCKET_URL)
+MySocket.initialize('wss://socketsbay.com/wss/v2/2/demo/')
 
 if (module.hot) {
   module.hot.accept()

@@ -19,7 +19,7 @@ interface Props {
 function Header({ numberOfProgress }: Props) {
   const navigate = useNavigate()
 
-  const handleViewHistory = async () => {
+  const handleViewHistory = () => {
     const queryParams: MeasurementData = {
       cid: uuidv4(),
       dp: '/history',
@@ -30,7 +30,8 @@ function Header({ numberOfProgress }: Props) {
       user_id: uuidv4(),
     }
 
-    await sendMeasurementToGa(queryParams)
+    // don't need to await
+    sendMeasurementToGa(queryParams)
     navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 

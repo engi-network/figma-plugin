@@ -43,8 +43,6 @@ function Table({
     [],
   )
 
-  console.info('filterValues=====>', filterItems)
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -69,7 +67,6 @@ function Table({
     useSortBy,
   )
 
-  console.info('set filter state====>', filters)
   useEffect(() => {
     setAllFilters(filterItems)
   }, [filterItems])

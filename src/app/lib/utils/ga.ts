@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 import config from '../config'
 
@@ -39,7 +39,7 @@ export interface MeasurementData {
 export async function sendMeasurementToGa(
   queryParams: MeasurementData,
   payload?: Record<string, string>,
-) {
+): Promise<AxiosResponse> {
   const query = new URLSearchParams({
     tid: config.GA_MEASUREMENT_ID,
     v: '2',
@@ -51,5 +51,5 @@ export async function sendMeasurementToGa(
     payload,
   )
 
-  console.info('result====>', result)
+  return result
 }
