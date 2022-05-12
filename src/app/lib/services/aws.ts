@@ -40,7 +40,7 @@ class CustomizedAWS {
 
       this.snsClient = new SNSClient(awsConfig)
       this.s3Client = new AWS.S3(awsConfig)
-      this.sqsClient = new AWS.SQS(awsConfig)
+      // this.sqsClient = new AWS.SQS(awsConfig)
       this.isInitialized = true
     } catch (error) {
       this.isInitialized = false

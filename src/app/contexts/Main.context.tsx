@@ -19,13 +19,13 @@ import {
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import { MAX_RETRY_TIMES } from '~/app/lib/constants/aws'
-import AWS, { CallbackStatus } from '~/app/lib/services/aws'
+import AWS from '~/app/lib/services/aws'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
+import MySocket, { CustomSocket } from '~/app/lib/services/socket'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
-import { ErrorReport, Report } from '~/app/models/Report'
+import { isError, SocketData } from '~/app/models/Report'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
   SAME_STORY_FORM_UPDATE,
@@ -71,19 +71,25 @@ export function useMainContextSetup(): MainContextProps {
 
   const { height = 0, width = 0, commit, branch } = selectionData || {}
 
-  const pollCallback = async (status: CallbackStatus, report?: Report) => {
-    if (currentTimerId !== status.currentTimerId) {
-      setTimerId(status.currentTimerId)
+  const websocketCallback = async (
+    event: MessageEvent,
+    mySocket: CustomSocket,
+  ) => {
+    const { check_id, step, step_count, error, report } = JSON.parse(
+      event.data,
+    ) as SocketData
+
+    if (!report) {
+      console.info('step/step_count', (step / step_count) * 100)
+      setProgress(step)
+      return
     }
 
-    if (report) {
-      const {
-        checkId,
-        result: { story, component },
-      } = report
+    if (isError(report.result)) {
+      const { story, component } = report.result
       const presignedUrl = await AWS.getPresignedUrl(
         story || component,
-        checkId,
+        check_id,
       )
       const detailedReport = { ...report, imageUrl: presignedUrl }
 
@@ -91,44 +97,24 @@ export function useMainContextSetup(): MainContextProps {
         type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
         data: detailedReport,
       })
+
       setHistory((prev) => [...prev, detailedReport])
+      setReport(detailedReport)
+      setProgress(100)
+      navigate(ROUTES_MAP[ROUTES.RESULT])
+    }
 
-      if (status.success) {
-        console.info('Yay, successfully got report:::', detailedReport)
-        setReport(detailedReport)
-        setProgress(100)
-        navigate(ROUTES_MAP[ROUTES.RESULT])
-      } else {
-        console.error('Oops, got an error report:::', detailedReport)
+    if (error) {
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.GET_REPORT,
+        tagData: { check_id },
+      })
 
-        Sentry.sendReport({
-          error: (report.result as ErrorReport).error,
-          transactionName: SENTRY_TRANSACTION.GET_REPORT,
-          tagData: { checkId: report.checkId },
-        })
-
-        setIsLoading(false)
-        setProgress(0)
-        setApiError('Something went wrong. Please double check the inputs.')
-      }
-    } else {
-      if (status.retryTimes >= MAX_RETRY_TIMES) {
-        console.error('Api time out error!')
-
-        Sentry.sendReport({
-          error: new Error('Api time out error!'),
-          transactionName: SENTRY_TRANSACTION.GET_POLLING,
-          tagData: { retryTimes: status.retryTimes.toString() },
-        })
-
-        setProgress(0)
-        setIsLoading(false)
-        setApiError('Something went wrong. Please double check the inputs.')
-      } else {
-        //calculate the progress based on the retry times
-        const progress = Math.floor((status.retryTimes / MAX_RETRY_TIMES) * 100)
-        setProgress(progress)
-      }
+      setIsLoading(false)
+      setProgress(0)
+      setApiError('Something went wrong. Please double check the inputs.')
+      mySocket?.terminate(1, 'Error happened!')
     }
   }
 
@@ -206,7 +192,14 @@ export function useMainContextSetup(): MainContextProps {
       const frame = await encode(copyRef, context, imageData)
       await AWS.uploadEncodedFrameToS3(story || component, checkId, frame)
       await AWS.publishCommandToSns(message)
-      await AWS.pollReportById(checkId, pollCallback)
+
+      MySocket.subscribeToSocket(
+        {
+          message: 'subscribe',
+          check_id: checkId,
+        },
+        websocketCallback,
+      )
     } catch (error) {
       console.error(error)
 

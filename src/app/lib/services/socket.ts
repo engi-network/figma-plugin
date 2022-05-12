@@ -1,6 +1,7 @@
-class MySocket {
+export class CustomSocket {
   websocket: WebSocket | undefined
   isInitialized = false
+  callback: (event: MessageEvent, mySocket: CustomSocket) => void = () => {}
   construct() {}
 
   initialize(sockerUrl: string) {
@@ -35,30 +36,28 @@ class MySocket {
       undefined,
     )
 
-    console.info('socket succcessfully connected to=====>', sockerUrl)
     this.isInitialized = true
   }
 
-  sendMessage(data: Record<string, string>): void {
+  subscribeToSocket(
+    data: Record<string, string>,
+    callback,
+  ): CustomSocket | undefined {
     if (!this.websocket) {
       return
     }
-
-    console.info('send message to server===>', data)
+    this.callback = callback
+    console.info('send message to server=====>', data)
     this.websocket.send(JSON.stringify(data))
-  }
-
-  handleSocketOpen() {
-    const data = {
-      message: 'subscribe',
-      check_id: '2e2883d3-8d9a-445a-80bc-96a6a99cb3e7',
-    }
-
-    this.sendMessage(data)
+    return this
   }
 
   receiveMessage(event: MessageEvent) {
-    console.info('socket message received: ', event.data)
+    this.callback(event, this)
+  }
+
+  handleSocketOpen() {
+    console.info('socket has been open!')
   }
 
   handleError(error) {
@@ -68,6 +67,10 @@ class MySocket {
   handleClose() {
     console.info('socket for polling closed')
   }
+
+  terminate(code: number, reason: string) {
+    this.websocket?.close(code, reason)
+  }
 }
 
-export default new MySocket()
+export default new CustomSocket()

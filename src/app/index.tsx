@@ -26,9 +26,6 @@ MyWorker.initialize(workerScript)
 MyWorker.start()
 
 AWS.initialize()
-if (AWS.isInitialized) {
-  AWS.receiveMessageFromSQS()
-}
 
 MySocket.initialize(config.SOCKET_URL)
 

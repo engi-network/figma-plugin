@@ -87,7 +87,6 @@ function Historycontainer() {
         sortBy={sortBy}
         filterItems={filterItems}
         searchBy={searchBy}
-        hideHeader
         hiddenColumns={hiddenColumns}
       />
     </>

@@ -1,16 +1,25 @@
 import { Specification } from './Specification'
 
+interface ErrorData {
+  aws?: string
+  branch?: string
+  clone?: string
+  commit?: string
+  comp?: string
+  frame?: string
+  install?: string
+  storycap?: string
+}
+export interface SocketData {
+  check_id: string
+  error?: ErrorData
+  report?: Report
+  step: number
+  step_count: number
+}
+
 export interface ErrorReport extends Specification {
-  error: {
-    aws?: string
-    branch?: string
-    clone?: string
-    commit?: string
-    comp?: string
-    frame?: string
-    install?: string
-    storycap?: string
-  }
+  error: ErrorData
 }
 
 /**
