@@ -29,6 +29,12 @@ class MySocket {
       undefined,
     )
 
+    this.websocket.addEventListener(
+      'close',
+      this.handleClose.bind(this),
+      undefined,
+    )
+
     console.info('socket succcessfully connected to=====>', sockerUrl)
     this.isInitialized = true
   }
@@ -38,13 +44,14 @@ class MySocket {
       return
     }
 
+    console.info('send message to server===>', data)
     this.websocket.send(JSON.stringify(data))
   }
 
   handleSocketOpen() {
     const data = {
       message: 'subscribe',
-      topic: 'sports',
+      check_id: '2e2883d3-8d9a-445a-80bc-96a6a99cb3e7',
     }
 
     this.sendMessage(data)
@@ -56,6 +63,10 @@ class MySocket {
 
   handleError(error) {
     console.error('socket error!', error)
+  }
+
+  handleClose() {
+    console.info('socket for polling closed')
   }
 }
 
