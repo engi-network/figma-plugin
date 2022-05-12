@@ -45,11 +45,11 @@ export interface MainContextProps {
   handleSubmit: () => void
   isLoading: boolean
   originCanvasRef: RefObject<HTMLCanvasElement>
-  progress: number
   selectionData: PluginSelection | undefined
   setIsLoading: Dispatch<SetStateAction<boolean>>
-  setProgress: Dispatch<SetStateAction<number>>
+  setStep: Dispatch<SetStateAction<number>>
   setTimerId: Dispatch<SetStateAction<number>>
+  step: number
 }
 
 const MainContext = createContext<MainContextProps>()
@@ -65,7 +65,7 @@ export function useMainContextSetup(): MainContextProps {
   const [formErrors, setFormErrors] =
     useState<AnalyzeFormValues>(initialErrorValues)
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
-  const [progress, setProgress] = useState(0)
+  const [step, setStep] = useState(0)
   const [apiError, setApiError] = useState('')
   const [currentTimerId, setTimerId] = useState(-1)
 
@@ -75,17 +75,17 @@ export function useMainContextSetup(): MainContextProps {
     event: MessageEvent,
     mySocket: CustomSocket,
   ) => {
-    const { check_id, step, step_count, error, report } = JSON.parse(
+    const { check_id, step, step_count, report } = JSON.parse(
       event.data,
     ) as SocketData
 
     if (!report) {
       console.info('step/step_count', (step / step_count) * 100)
-      setProgress(step)
+      setStep(step)
       return
     }
 
-    if (isError(report.result)) {
+    if (!isError(report.result)) {
       const { story, component } = report.result
       const presignedUrl = await AWS.getPresignedUrl(
         story || component,
@@ -100,19 +100,18 @@ export function useMainContextSetup(): MainContextProps {
 
       setHistory((prev) => [...prev, detailedReport])
       setReport(detailedReport)
-      setProgress(100)
+      setStep(step_count)
+      mySocket?.terminate(0, 'close after success!')
       navigate(ROUTES_MAP[ROUTES.RESULT])
-    }
-
-    if (error) {
+    } else {
       Sentry.sendReport({
-        error,
+        error: report.result.error,
         transactionName: SENTRY_TRANSACTION.GET_REPORT,
         tagData: { check_id },
       })
 
       setIsLoading(false)
-      setProgress(0)
+      setStep(0)
       setApiError('Something went wrong. Please double check the inputs.')
       mySocket?.terminate(1, 'Error happened!')
     }
@@ -154,7 +153,7 @@ export function useMainContextSetup(): MainContextProps {
       return
     }
 
-    setProgress(0)
+    setStep(0)
     setIsLoading(true)
     const checkId: string = uuidv4()
 
@@ -275,11 +274,11 @@ export function useMainContextSetup(): MainContextProps {
     handleSubmit,
     isLoading,
     originCanvasRef,
-    progress,
     selectionData,
     setIsLoading,
-    setProgress,
+    setStep,
     setTimerId,
+    step,
   }
 }
 

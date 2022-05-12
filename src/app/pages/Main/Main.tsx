@@ -16,7 +16,7 @@ function Main() {
     draw,
     selectionData,
     isLoading,
-    progress,
+    step,
     handleChange,
     formValues,
     formErrors,
@@ -29,7 +29,6 @@ function Main() {
   const isDisabled = !!isLoading || !!apiError
 
   if (isLoading) {
-    const step = Math.floor(progress / 20)
     return <LoadingScreen step={step} />
   }
 
