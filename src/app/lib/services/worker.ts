@@ -4,8 +4,6 @@ class MyWorker {
 
   initialize(workerScript: string) {
     if (window.Worker) {
-      // const textScript = document.getElementById('my-worker')
-      //   ?.textContent as string
       const blob = new Blob([workerScript])
 
       this.worker = new Worker(window.URL.createObjectURL(blob))

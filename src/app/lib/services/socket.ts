@@ -2,11 +2,12 @@ export class CustomSocket {
   websocket: WebSocket | undefined
   isInitialized = false
   callback: (event: MessageEvent, mySocket: CustomSocket) => void = () => {}
-  construct() {}
 
-  initialize(sockerUrl: string) {
-    this.websocket = new WebSocket(sockerUrl)
+  constructor(socketUrl: string) {
+    this.websocket = new WebSocket(socketUrl)
+  }
 
+  initialize() {
     if (!this.websocket) {
       this.isInitialized = false
       return
@@ -52,6 +53,10 @@ export class CustomSocket {
     return this
   }
 
+  sendMessage(data: Record<string, string>) {
+    this.websocket?.send(JSON.stringify(data))
+  }
+
   receiveMessage(event: MessageEvent) {
     this.callback(event, this)
   }
@@ -72,6 +77,8 @@ export class CustomSocket {
   terminate(code: number, reason: string) {
     this.websocket?.close(code, reason)
   }
-}
 
-export default new CustomSocket()
+  isReady() {
+    return !!this.websocket?.readyState
+  }
+}

@@ -2,12 +2,11 @@ import ReactDOM from 'react-dom'
 
 import AWS from '~/app/lib/services/aws'
 import SentryReport from '~/app/lib/services/sentry'
-import MySocket from '~/app/lib/services/socket'
+import SocketManager from '~/app/lib/services/socket-manager'
 import MyWorker from '~/app/lib/services/worker'
 import { workerScript } from '~/app/scripts/worker'
 
 import App from './App'
-import config from './lib/config'
 import { makeServer } from './mockServer/server'
 
 /**
@@ -27,7 +26,7 @@ MyWorker.start()
 
 AWS.initialize()
 
-MySocket.initialize(config.SOCKET_URL)
+SocketManager.initialize()
 
 if (module.hot) {
   module.hot.accept()

@@ -10,7 +10,7 @@ export enum SENTRY_TRANSACTION {
 }
 
 class SentryReport {
-  construct() {}
+  constructor() {}
 
   isInitialized = false
   init() {

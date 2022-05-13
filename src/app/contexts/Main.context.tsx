@@ -21,7 +21,7 @@ import useSelectionData from '~/app/hooks/useSelectionData'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWS from '~/app/lib/services/aws'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
-import MySocket, { CustomSocket } from '~/app/lib/services/socket'
+import { CustomSocket } from '~/app/lib/services/socket'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
@@ -32,6 +32,7 @@ import {
   SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
 
+import SocketManager from '../lib/services/socket-manager'
 import { PluginSelection } from '../models/PluginSelection'
 import { Specification } from '../models/Specification'
 
@@ -192,13 +193,13 @@ export function useMainContextSetup(): MainContextProps {
       await AWS.uploadEncodedFrameToS3(story || component, checkId, frame)
       await AWS.publishCommandToSns(message)
 
-      MySocket.subscribeToSocket(
-        {
+      const ws = SocketManager.createWs(checkId)
+      if (ws.isReady()) {
+        ws.sendMessage({
           message: 'subscribe',
           check_id: checkId,
-        },
-        websocketCallback,
-      )
+        })
+      }
     } catch (error) {
       console.error(error)
 
