@@ -30,6 +30,10 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
       path,
       repository,
       story,
+      version: {
+        commit,
+        branch,
+      },
     }
 
     if (isError(result)) {

@@ -12,4 +12,5 @@ export enum TB_ACCESSORS {
   REPOSITORY = 'repository',
   STATUS = 'status',
   STORY = 'story',
+  VERSION = 'version',
 }

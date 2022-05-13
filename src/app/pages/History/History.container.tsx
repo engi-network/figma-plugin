@@ -36,7 +36,6 @@ function Historycontainer() {
   const { columns, filterItems, hiddenColumns } = useTableData(filter)
   const data = useMemo(() => mapHistoryToTable(history), [history])
   const branchNames = useMemo(() => extractBranchNames(history), [history])
-  // console.info('history=====>', history)
 
   const onSearchTermChange = (value: string) => {
     setSearchBy(value)

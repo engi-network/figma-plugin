@@ -5,6 +5,7 @@ import CellImage from '~/app/components/global/Table/CellImage/CellImage'
 import CellName from '~/app/components/global/Table/CellName/CellName'
 import CellStatus from '~/app/components/global/Table/CellStatus/CellStatus'
 import CellText from '~/app/components/global/Table/CellText/CellText'
+import CellVersion from '~/app/components/global/Table/CellVersion/CellVersion'
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
 import { Column } from '~/app/components/global/Table/Table.types'
 import { FilterValues } from '~/app/components/modules/History/Filter/Filter.data'
@@ -19,6 +20,7 @@ const hiddenColumns = [
   TB_ACCESSORS.PATH,
   TB_ACCESSORS.STORY,
   TB_ACCESSORS.COMMIT,
+  TB_ACCESSORS.BRANCH,
 ]
 
 function dateRangeFilter(rows, id, filterValue) {
@@ -59,7 +61,7 @@ export function useTableData(filter: FilterValues) {
         accessor: TB_ACCESSORS.IMAGE,
         Cell: CellImage,
         disableGlobalFilter: true,
-        Header: TB_ACCESSORS.IMAGE,
+        Header: 'Designs',
         id: TB_ACCESSORS.IMAGE,
         width: 140,
       },
@@ -74,9 +76,7 @@ export function useTableData(filter: FilterValues) {
       {
         accessor: TB_ACCESSORS.CODE,
         Cell: CellCodeBlock,
-        Header: () => {
-          return <div>{TB_ACCESSORS.CODE}</div>
-        },
+        Header: 'Rendered Code',
         id: TB_ACCESSORS.CODE,
         width: 140,
       },
@@ -85,18 +85,19 @@ export function useTableData(filter: FilterValues) {
         Cell: CellName,
         disableGlobalFilter: true,
         Header: () => {
-          return <div className="pl-8">{TB_ACCESSORS.NAME}</div>
+          return <div className="pl-8">{'Component'}</div>
         },
         width: 200,
       },
       {
-        accessor: TB_ACCESSORS.BRANCH,
-        Cell: CellText,
+        accessor: TB_ACCESSORS.VERSION,
+        Cell: CellVersion,
         disableGlobalFilter: true,
         filter: inclusionFilter,
-        Header: TB_ACCESSORS.BRANCH,
-        id: TB_ACCESSORS.BRANCH,
+        Header: 'Version',
+        id: TB_ACCESSORS.VERSION,
       },
+
       {
         Header: TB_ACCESSORS.CHECKID,
         accessor: TB_ACCESSORS.CHECKID,
@@ -150,6 +151,14 @@ export function useTableData(filter: FilterValues) {
         filter: 'between',
         Header: TB_ACCESSORS.DURATION,
         id: TB_ACCESSORS.DURATION,
+      },
+      {
+        accessor: TB_ACCESSORS.BRANCH,
+        Cell: CellText,
+        disableGlobalFilter: true,
+        filter: inclusionFilter,
+        Header: TB_ACCESSORS.BRANCH,
+        id: TB_ACCESSORS.BRANCH,
       },
     ],
     [],
