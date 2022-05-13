@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 export interface Column {
   Cell?: ReactNode
-  Header: string
+  Header: string | ReactNode
   accessor: number | string | ((_: number, index: number) => number)
   height?: number
   width?: number

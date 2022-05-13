@@ -141,13 +141,27 @@ function Table({
         <div>
           {headerGroups.map((headerGroup, index) => (
             <div
-              {...headerGroup.getHeaderGroupProps()}
-              className="tr"
+              {...headerGroup.getHeaderGroupProps([
+                {
+                  style: {
+                    width: '100%',
+                  },
+                },
+              ])}
+              className="tr py-3 px-7 text-sm text-text-secondary bg-primary-white/20"
               key={index}
             >
               {headerGroup.headers.map((column, index) => (
                 <div
-                  {...column.getHeaderProps()}
+                  {...column.getHeaderProps([
+                    {
+                      style: {
+                        alignItems: 'center',
+                        display: 'flex',
+                        justifyContent: 'start',
+                      },
+                    },
+                  ])}
                   className="th"
                   key={index}
                   role="columnheader"

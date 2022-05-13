@@ -68,13 +68,15 @@ export function useTableData(filter: FilterValues) {
         Cell: CellStatus,
         disableGlobalFilter: true,
         filter: 'equals',
-        Header: TB_ACCESSORS.STATUS,
+        Header: '',
         width: 56,
       },
       {
         accessor: TB_ACCESSORS.CODE,
         Cell: CellCodeBlock,
-        Header: TB_ACCESSORS.CODE,
+        Header: () => {
+          return <div>{TB_ACCESSORS.CODE}</div>
+        },
         id: TB_ACCESSORS.CODE,
         width: 140,
       },
@@ -82,7 +84,9 @@ export function useTableData(filter: FilterValues) {
         accessor: TB_ACCESSORS.NAME,
         Cell: CellName,
         disableGlobalFilter: true,
-        Header: TB_ACCESSORS.NAME,
+        Header: () => {
+          return <div className="pl-8">{TB_ACCESSORS.NAME}</div>
+        },
         width: 200,
       },
       {

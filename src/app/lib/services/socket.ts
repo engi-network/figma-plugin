@@ -66,6 +66,7 @@ export class CustomSocket {
 
   handleClose() {
     console.info('socket for polling closed')
+    this.terminate(2, 'socket hang out')
   }
 
   terminate(code: number, reason: string) {
