@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import Loader from '~/app/components/modules/Loader/Loader'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import SocketManager from '~/app/lib/services/socket-manager'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { SocketData } from '~/app/models/Report'
 
 import { STEP_MESSAGES } from '../Main/Main.types'
 
@@ -21,6 +22,11 @@ type QueryState = null | Record<string, string>
 function Loading() {
   const navigate = useNavigate()
   const location = useLocation()
+  const [status, setStatus] = useState<SocketData>({
+    step: 0,
+    step_count: 8,
+    message: 'job started',
+  } as SocketData)
   const state = (location.state as QueryState) ?? {}
 
   const checkId = (state as Record<string, string>).checkId as unknown as string
@@ -31,7 +37,6 @@ function Loading() {
   }
 
   const ws = SocketManager.getSocketById(checkId)
-  console.log('ws======>', ws)
 
   useEffect(() => {
     if (!ws) {
@@ -40,7 +45,7 @@ function Loading() {
 
     const { wsHandler } = ws
     wsHandler.subscribe((event: MessageEvent) => {
-      console.info('=====>', JSON.parse(event.data))
+      setStatus(JSON.parse(event.data))
     })
 
     return () => {
@@ -48,10 +53,14 @@ function Loading() {
     }
   }, [ws])
 
+  console.log('status=========>', status)
+
+  const { step, step_count, message } = status
+
   return (
     <>
       <div className="flex ml-auto mr-auto mt-20">
-        <Loader step={0} />
+        <Loader step={step} />
       </div>
       <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
         {STEP_MESSAGES[0]}

@@ -14,19 +14,14 @@ export class CustomSocket {
 
   constructor(socketUrl: string) {
     this.websocket = new WebSocket(socketUrl)
+    this.initialize()
   }
 
-  initialize() {
+  private initialize() {
     if (!this.websocket) {
       this.isInitialized = false
       return
     }
-
-    this.websocket.addEventListener(
-      'message',
-      this.receiveMessage.bind(this),
-      undefined,
-    )
 
     this.websocket.addEventListener(
       'open',
@@ -43,6 +38,12 @@ export class CustomSocket {
     this.websocket.addEventListener(
       'close',
       this.handleClose.bind(this),
+      undefined,
+    )
+
+    this.websocket.addEventListener(
+      'message',
+      this.receiveMessage.bind(this),
       undefined,
     )
 
@@ -71,8 +72,8 @@ export class CustomSocket {
     this.lastMessage = JSON.parse(event.data)
   }
 
-  handleSocketOpen() {
-    console.info('socket has been open!')
+  handleSocketOpen(event: Event) {
+    console.info('socket has been open!', event)
   }
 
   handleError(error) {
