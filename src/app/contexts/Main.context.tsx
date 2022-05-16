@@ -21,15 +21,13 @@ import useSelectionData from '~/app/hooks/useSelectionData'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWS from '~/app/lib/services/aws'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
-import { CustomSocket } from '~/app/lib/services/socket'
+import { READ_STATE } from '~/app/lib/services/socket'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
-import { isError, SocketData } from '~/app/models/Report'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
   SAME_STORY_FORM_UPDATE,
-  SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
 
 import SocketManager from '../lib/services/socket-manager'
@@ -57,7 +55,7 @@ const MainContext = createContext<MainContextProps>()
 
 export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
-  const { setReport, setHistory } = useAppContext()
+  const { wsCallback } = useAppContext()
 
   const { selectionData, draw } = useSelectionData()
 
@@ -71,52 +69,6 @@ export function useMainContextSetup(): MainContextProps {
   const [currentTimerId, setTimerId] = useState(-1)
 
   const { height = 0, width = 0, commit, branch } = selectionData || {}
-
-  const websocketCallback = async (
-    event: MessageEvent,
-    mySocket: CustomSocket,
-  ) => {
-    const { check_id, step, step_count, report } = JSON.parse(
-      event.data,
-    ) as SocketData
-
-    if (!report) {
-      console.info('step/step_count', (step / step_count) * 100)
-      setStep(step)
-      return
-    }
-
-    if (!isError(report.result)) {
-      const { story, component } = report.result
-      const presignedUrl = await AWS.getPresignedUrl(
-        story || component,
-        check_id,
-      )
-      const detailedReport = { ...report, imageUrl: presignedUrl }
-
-      dispatchData({
-        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-        data: detailedReport,
-      })
-
-      setHistory((prev) => [...prev, detailedReport])
-      setReport(detailedReport)
-      setStep(step_count)
-      mySocket?.terminate(0, 'close after success!')
-      navigate(ROUTES_MAP[ROUTES.RESULT])
-    } else {
-      Sentry.sendReport({
-        error: report.result.error,
-        transactionName: SENTRY_TRANSACTION.GET_REPORT,
-        tagData: { check_id },
-      })
-
-      setIsLoading(false)
-      setStep(0)
-      setApiError('Something went wrong. Please double check the inputs.')
-      mySocket?.terminate(1, 'Error happened!')
-    }
-  }
 
   const formValidate = (values?: AnalyzeFormValues): boolean => {
     if (!values) {
@@ -194,10 +146,16 @@ export function useMainContextSetup(): MainContextProps {
       await AWS.publishCommandToSns(message)
 
       const ws = SocketManager.createWs(checkId)
-      if (ws.isReady()) {
+
+      if (ws.isReady() === READ_STATE.OPEN) {
         ws.sendMessage({
           message: 'subscribe',
           check_id: checkId,
+        })
+
+        ws.subscribe(wsCallback)
+        navigate(ROUTES_MAP[ROUTES.LOADING], {
+          state: { checkId },
         })
       }
     } catch (error) {
@@ -289,3 +247,49 @@ export function MainContextProvider({ children }: { children: ReactNode }) {
 }
 
 export const useMainContext = MainContext.useContext
+
+// const websocketCallback = async (
+//   event: MessageEvent,
+//   mySocket: CustomSocket,
+// ) => {
+//   const { check_id, step, step_count, report } = JSON.parse(
+//     event.data,
+//   ) as SocketData
+
+//   if (!report) {
+//     console.info('step/step_count', (step / step_count) * 100)
+//     setStep(step)
+//     return
+//   }
+
+//   if (!isError(report.result)) {
+//     const { story, component } = report.result
+//     const presignedUrl = await AWS.getPresignedUrl(
+//       story || component,
+//       check_id,
+//     )
+//     const detailedReport = { ...report, imageUrl: presignedUrl }
+
+//     dispatchData({
+//       type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+//       data: detailedReport,
+//     })
+
+//     setHistory((prev) => [...prev, detailedReport])
+//     setReport(detailedReport)
+//     setStep(step_count)
+//     mySocket?.terminate(0, 'close after success!')
+//     navigate(ROUTES_MAP[ROUTES.RESULT])
+//   } else {
+//     Sentry.sendReport({
+//       error: report.result.error,
+//       transactionName: SENTRY_TRANSACTION.GET_REPORT,
+//       tagData: { check_id },
+//     })
+
+//     setIsLoading(false)
+//     setStep(0)
+//     setApiError('Something went wrong. Please double check the inputs.')
+//     mySocket?.terminate(1, 'Error happened!')
+//   }
+// }

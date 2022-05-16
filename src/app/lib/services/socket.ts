@@ -1,7 +1,16 @@
+export enum READ_STATE {
+  CLOSING = 2,
+  CONNECTING = 0,
+  OPEN = 1,
+  CLOSED = 3,
+}
+
+type CallbackType = (event: MessageEvent, mySocket?: CustomSocket) => void
 export class CustomSocket {
   websocket: WebSocket | undefined
   isInitialized = false
-  callback: (event: MessageEvent, mySocket: CustomSocket) => void = () => {}
+  subscribers: Array<CallbackType> = []
+  lastMessage
 
   constructor(socketUrl: string) {
     this.websocket = new WebSocket(socketUrl)
@@ -40,17 +49,13 @@ export class CustomSocket {
     this.isInitialized = true
   }
 
-  subscribeToSocket(
-    data: Record<string, string>,
-    callback,
-  ): CustomSocket | undefined {
-    if (!this.websocket) {
-      return
-    }
-    this.callback = callback
-    console.info('send message to server=====>', data)
-    this.websocket.send(JSON.stringify(data))
+  subscribe(callback): CustomSocket | undefined {
+    this.subscribers.push(callback)
     return this
+  }
+
+  publish(event: MessageEvent) {
+    this.subscribers.forEach((callback) => callback(event))
   }
 
   sendMessage(data: Record<string, string>) {
@@ -58,7 +63,8 @@ export class CustomSocket {
   }
 
   receiveMessage(event: MessageEvent) {
-    this.callback(event, this)
+    this.publish(event)
+    this.lastMessage = JSON.parse(event.data)
   }
 
   handleSocketOpen() {
@@ -78,7 +84,11 @@ export class CustomSocket {
     this.websocket?.close(code, reason)
   }
 
-  isReady() {
-    return !!this.websocket?.readyState
+  isReady(): READ_STATE {
+    if (!this.websocket) {
+      return 3
+    }
+
+    return this.websocket?.readyState
   }
 }

@@ -37,7 +37,9 @@ function Loading() {
     }
 
     const { wsHandler } = ws
-    wsHandler.subscribeToSocket({}, () => {})
+    wsHandler.subscribe((event: MessageEvent) => {
+      console.info('=====>', JSON.parse(event.data))
+    })
 
     return () => {
       // do we really need to terminate maybe used in later in history screen?
