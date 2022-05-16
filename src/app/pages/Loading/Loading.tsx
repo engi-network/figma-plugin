@@ -9,8 +9,6 @@ import SocketManager from '~/app/lib/services/socket-manager'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { SocketData } from '~/app/models/Report'
 
-import { STEP_MESSAGES } from '../Main/Main.types'
-
 type QueryState = null | Record<string, string>
 
 /**
@@ -30,7 +28,6 @@ function Loading() {
   const state = (location.state as QueryState) ?? {}
 
   const checkId = (state as Record<string, string>).checkId as unknown as string
-  console.log('check id==========>', checkId)
 
   const handleCreateNew = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
@@ -62,8 +59,8 @@ function Loading() {
       <div className="flex ml-auto mr-auto mt-20">
         <Loader step={step} />
       </div>
-      <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
-        {STEP_MESSAGES[0]}
+      <h2 className="text-2xl font-bold text-text-primary text-center mb-10 uppercase">
+        {message}
       </h2>
       <div className="flex justify-center">
         <Button onClick={handleCreateNew} className="w-2/12 capitalize">

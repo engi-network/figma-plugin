@@ -1,19 +1,22 @@
-// import CamToFigma from '~/app/assets/animations/camera-to-figma.json'
-// import Camra from '~/app/assets/animations/camera.json'
-// import Figma from '~/app/assets/animations/figma.json'
-// import File from '~/app/assets/animations/file.json'
+import CamToFigma from '~/app/assets/animations/camera-to-figma.json'
 // import Sb from '~/app/assets/animations/sb.json'
 import Clone from '~/app/assets/animations/clone.json'
+// import Camara from '~/app/assets/animations/camera.json'
+import Figma from '~/app/assets/animations/figma.json'
 import FileToTool from '~/app/assets/animations/file-to-tool.json'
+import File from '~/app/assets/animations/file.json'
 import SbToCamera from '~/app/assets/animations/sb-to-camera.json'
 import ToolToSb from '~/app/assets/animations/tool-to-sb.json'
 import Tool from '~/app/assets/animations/tool.json'
 import { STEPS } from '~/app/pages/Main/Main.types'
 
 export const mapStepToAnimation = {
-  [STEPS.CAPTURE]: SbToCamera,
-  [STEPS.CLONE]: Clone,
-  [STEPS.COMPARE]: ToolToSb,
-  [STEPS.INSTALL]: FileToTool,
-  [STEPS.RENDER]: Tool,
+  [STEPS.INIT]: Tool,
+  [STEPS.DOWNLOAD_FIGMA_CHECK_FRAME]: Clone,
+  [STEPS.CHECKED_OUT_CODE]: FileToTool,
+  [STEPS.INSTATALLED_PACKAGES]: ToolToSb,
+  [STEPS.CAPTURED_SCREENSHOTS]: SbToCamera,
+  [STEPS.VISUAL_COMPARE]: CamToFigma,
+  [STEPS.NUMERIC_COMPARE]: Figma,
+  [STEPS.UPLOADED_SCREENSHOTS]: File,
 }
