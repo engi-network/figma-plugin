@@ -28,6 +28,7 @@ function useSelectionEvent() {
         setLoading(true)
         break
       }
+
       default:
         break
     }

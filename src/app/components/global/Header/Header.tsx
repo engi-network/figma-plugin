@@ -16,15 +16,23 @@ interface Props {
   numberOfProgress?: number
 }
 
+/**
+ *
+ * @TODO sid and cid should be handled in the app
+ */
+
 function Header({ numberOfProgress }: Props) {
   const navigate = useNavigate()
 
   const handleViewHistory = () => {
     const queryParams: MeasurementData = {
+      _s: '1',
+      _ss: '1',
       cid: uuidv4(),
       dp: '/history',
-      dt: 'history',
+      dt: 'History',
       en: GA_EVENT_NAMES.PAGE_VIEW,
+      seg: '0',
       sid: convertDateToUnix(new Date().toString()) + '',
       sr: '600x800',
       user_id: uuidv4(),

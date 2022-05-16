@@ -1,6 +1,7 @@
 import {
   initialSelection,
   LOCAL_STORAGE_KEY,
+  SAME_STORY_APP_CLOSE,
   SAME_STORY_HISTORY_LIST_PLUGIN_TO_UI,
   ShowUIOptions,
 } from '~/plugin/constants'
@@ -11,7 +12,7 @@ import {
 
 figma.showUI(__html__, ShowUIOptions)
 
-const handleInitialize = async () => {
+const handleInitialization = async () => {
   const initialForm =
     (await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.FORM)) ||
     initialSelection
@@ -28,4 +29,11 @@ const handleInitialize = async () => {
   })
 }
 
-figma.on('run', handleInitialize)
+const handleClose = async () => {
+  figma.ui.postMessage({
+    type: SAME_STORY_APP_CLOSE,
+  })
+}
+
+figma.on('run', handleInitialization)
+figma.on('close', handleClose)

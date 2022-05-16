@@ -3,10 +3,16 @@ import axios, { AxiosResponse } from 'axios'
 import config from '../config'
 
 export enum GA_EVENT_NAMES {
+  APP_CLOSE = 'app_close',
+  APP_OPEN = 'app_open',
   CLICK = 'click',
+  COMPLETE = 'complete',
+  ERROR = 'error',
   PAGE_VIEW = 'page_view',
+  SEARCH = 'search',
+  SELECT_LAYER = 'select_layer',
+  START_ANALYZE = 'start_ananlyze',
   USER_ENGAGEMENT = 'user_engagement',
-  VIEW_SEARCH_RESULTS = 'view_search_results',
 }
 
 export interface MeasurementData {

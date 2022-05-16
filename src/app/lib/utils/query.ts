@@ -7,3 +7,9 @@ export const getFilterStateFromQuery = (state: Record<string, string>) => {
     [key]: value,
   }))
 }
+
+export const buildQueryString = (params: Record<string, string>): string => {
+  return Object.keys(params)
+    .map((key) => `${key}=${params[key]}`)
+    .join('&')
+}

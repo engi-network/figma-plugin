@@ -18,7 +18,7 @@ export class SocketServiceManager {
     this.isInitialized = true
   }
 
-  createWs(id: string) {
+  createWs(id: string): CustomSocket {
     const wsHandler = new CustomSocket(config.SOCKET_URL)
     this.wsList?.push({
       id,
@@ -28,15 +28,21 @@ export class SocketServiceManager {
     return wsHandler
   }
 
-  terminateById(id: string) {
-    const item = this.wsList?.find((item) => item.id === id)
-    item?.wsHandler.terminate(1, 'tell me why - reason')
+  terminateById(id: string): boolean {
+    try {
+      const item = this.wsList?.find((item) => item.id === id)
+      item?.wsHandler.terminate(1, 'tell me why - reason')
 
-    const filteredList = this.wsList?.filter((item) => item.id !== id)
-    this.wsList = filteredList
+      const filteredList = this.wsList?.filter((item) => item.id !== id)
+      this.wsList = filteredList
+      return true
+    } catch (error) {
+      console.error('error in termination of socket', error)
+      return false
+    }
   }
 
-  getSocketById(id: string) {
+  getSocketById(id: string): WebSocketItem | undefined {
     const item = this.wsList?.find((item) => item.id === id)
     return item
   }
