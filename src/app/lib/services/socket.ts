@@ -89,6 +89,6 @@ export class CustomSocket {
       return 3
     }
 
-    return this.websocket?.readyState
+    return this.websocket.readyState
   }
 }

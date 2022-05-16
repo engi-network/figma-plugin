@@ -7,7 +7,6 @@ import Preview from '~/app/components/modules/Preview/Preview'
 import { useMainContext } from '~/app/contexts/Main.context'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-import LoadingScreen from '../Loading/Loading'
 import { DEMENSIONS } from './Main.container.data'
 
 function Main() {
@@ -16,7 +15,6 @@ function Main() {
     draw,
     selectionData,
     isLoading,
-    step,
     handleChange,
     formValues,
     formErrors,
@@ -27,10 +25,6 @@ function Main() {
   const { width = 0, height = 0 } = selectionData || {}
 
   const isDisabled = !!isLoading || !!apiError
-
-  if (isLoading) {
-    return <LoadingScreen step={step} />
-  }
 
   return (
     <>

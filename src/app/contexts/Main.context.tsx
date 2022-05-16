@@ -147,20 +147,30 @@ export function useMainContextSetup(): MainContextProps {
 
       const ws = SocketManager.createWs(checkId)
 
-      if (ws.isReady() === READ_STATE.OPEN) {
-        ws.sendMessage({
-          message: 'subscribe',
-          check_id: checkId,
-        })
+      const retry = 0
+      const timerId = setInterval(() => {
+        if (retry > 5) {
+          //set error
+          console.error('Socket is not ready!====>', ws.isReady())
+          clearInterval(timerId)
+        }
 
-        ws.subscribe(wsCallback)
-        navigate(ROUTES_MAP[ROUTES.LOADING], {
-          state: { checkId },
-        })
-      }
+        if (ws.isReady() === READ_STATE.OPEN) {
+          ws.sendMessage({
+            message: 'subscribe',
+            check_id: checkId,
+          })
+
+          ws.subscribe(wsCallback)
+
+          clearInterval(timerId)
+          navigate(ROUTES_MAP[ROUTES.LOADING], {
+            state: { checkId },
+          })
+        }
+      }, 1000)
     } catch (error) {
       console.error(error)
-
       Sentry.sendReport({
         error,
         transactionName: SENTRY_TRANSACTION.FORM_SUBMIT,
@@ -247,49 +257,3 @@ export function MainContextProvider({ children }: { children: ReactNode }) {
 }
 
 export const useMainContext = MainContext.useContext
-
-// const websocketCallback = async (
-//   event: MessageEvent,
-//   mySocket: CustomSocket,
-// ) => {
-//   const { check_id, step, step_count, report } = JSON.parse(
-//     event.data,
-//   ) as SocketData
-
-//   if (!report) {
-//     console.info('step/step_count', (step / step_count) * 100)
-//     setStep(step)
-//     return
-//   }
-
-//   if (!isError(report.result)) {
-//     const { story, component } = report.result
-//     const presignedUrl = await AWS.getPresignedUrl(
-//       story || component,
-//       check_id,
-//     )
-//     const detailedReport = { ...report, imageUrl: presignedUrl }
-
-//     dispatchData({
-//       type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-//       data: detailedReport,
-//     })
-
-//     setHistory((prev) => [...prev, detailedReport])
-//     setReport(detailedReport)
-//     setStep(step_count)
-//     mySocket?.terminate(0, 'close after success!')
-//     navigate(ROUTES_MAP[ROUTES.RESULT])
-//   } else {
-//     Sentry.sendReport({
-//       error: report.result.error,
-//       transactionName: SENTRY_TRANSACTION.GET_REPORT,
-//       tagData: { check_id },
-//     })
-
-//     setIsLoading(false)
-//     setStep(0)
-//     setApiError('Something went wrong. Please double check the inputs.')
-//     mySocket?.terminate(1, 'Error happened!')
-//   }
-// }

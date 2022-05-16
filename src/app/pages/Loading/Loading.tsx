@@ -24,12 +24,14 @@ function Loading() {
   const state = (location.state as QueryState) ?? {}
 
   const checkId = (state as Record<string, string>).checkId as unknown as string
+  console.log('check id==========>', checkId)
 
   const handleCreateNew = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
   const ws = SocketManager.getSocketById(checkId)
+  console.log('ws======>', ws)
 
   useEffect(() => {
     if (!ws) {
