@@ -1,15 +1,13 @@
 import { useNavigate } from 'react-router-dom'
-import { v4 as uuidv4 } from 'uuid'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { ClockIcon, HistoryIcon, InfoIcon } from '~/app/components/global/Icons'
+import { useUserContext } from '~/app/contexts/User.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import {
+import GAService, {
   GA_EVENT_NAMES,
   MeasurementData,
-  sendMeasurementToGa,
-} from '~/app/lib/utils/ga'
-import { convertDateToUnix } from '~/app/lib/utils/time'
+} from '~/app/lib/services/ga'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 interface Props {
@@ -23,23 +21,23 @@ interface Props {
 
 function Header({ numberOfProgress }: Props) {
   const navigate = useNavigate()
+  const { userId, sessionId } = useUserContext()
 
   const handleViewHistory = () => {
     const queryParams: MeasurementData = {
-      _s: '1',
-      _ss: '1',
-      cid: uuidv4(),
+      _ss: '0',
+      cid: userId,
       dp: '/history',
       dt: 'History',
       en: GA_EVENT_NAMES.PAGE_VIEW,
       seg: '0',
-      sid: convertDateToUnix(new Date().toString()) + '',
+      sid: sessionId,
       sr: '600x800',
-      user_id: uuidv4(),
+      user_id: userId,
     }
 
     // don't need to await
-    sendMeasurementToGa(queryParams)
+    GAService.sendMeasurementData(queryParams)
     navigate(ROUTES_MAP[ROUTES.HISTORY])
   }
 

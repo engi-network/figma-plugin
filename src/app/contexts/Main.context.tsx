@@ -20,6 +20,10 @@ import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWS from '~/app/lib/services/aws'
+import GAService, {
+  GA_EVENT_NAMES,
+  MeasurementData,
+} from '~/app/lib/services/ga'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { READ_STATE } from '~/app/lib/services/socket'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
@@ -33,6 +37,7 @@ import {
 import SocketManager from '../lib/services/socket-manager'
 import { PluginSelection } from '../models/PluginSelection'
 import { Specification } from '../models/Specification'
+import { useUserContext } from './User.context'
 
 export interface MainContextProps {
   apiError: string
@@ -56,6 +61,7 @@ const MainContext = createContext<MainContextProps>()
 export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
   const { wsCallback } = useAppContext()
+  const { userId, sessionId } = useUserContext()
 
   const { selectionData, draw } = useSelectionData()
 
@@ -148,6 +154,7 @@ export function useMainContextSetup(): MainContextProps {
       const ws = SocketManager.createWs(checkId)
 
       const retry = 0
+
       const timerId = setInterval(() => {
         if (retry > 5) {
           //set error
@@ -162,13 +169,25 @@ export function useMainContextSetup(): MainContextProps {
           })
 
           ws.subscribe(wsCallback)
-
           clearInterval(timerId)
+
           navigate(ROUTES_MAP[ROUTES.LOADING], {
             state: { checkId },
           })
         }
       }, 1000)
+
+      const queryParams: MeasurementData = {
+        _ss: '0',
+        cid: userId,
+        dp: '/',
+        dt: 'Home',
+        en: GA_EVENT_NAMES.START_ANALYZE,
+        seg: '0',
+        sid: sessionId,
+        user_id: userId,
+      }
+      GAService.sendMeasurementData(queryParams)
     } catch (error) {
       console.error(error)
       Sentry.sendReport({
@@ -176,6 +195,18 @@ export function useMainContextSetup(): MainContextProps {
         transactionName: SENTRY_TRANSACTION.FORM_SUBMIT,
         tagData: { checkId },
       })
+
+      const queryParams: MeasurementData = {
+        _ss: '0',
+        cid: userId,
+        dp: '/',
+        dt: 'Home',
+        en: GA_EVENT_NAMES.ERROR,
+        seg: '0',
+        sid: sessionId,
+        user_id: userId,
+      }
+      GAService.sendMeasurementData(queryParams)
       setIsLoading(false)
     }
   }, [values, selectionData, originCanvasRef])

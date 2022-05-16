@@ -45,7 +45,6 @@ function Loading() {
 
     return () => {
       // do we really need to terminate maybe used in later in history screen?
-      wsHandler.terminate(0, 'success')
     }
   }, [ws])
 

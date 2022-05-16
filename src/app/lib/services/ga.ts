@@ -42,20 +42,36 @@ export interface MeasurementData {
   user_id: string
 }
 
-export async function sendMeasurementToGa(
-  queryParams: MeasurementData,
-  payload?: Record<string, string>,
-): Promise<AxiosResponse> {
-  const query = new URLSearchParams({
-    tid: config.GA_MEASUREMENT_ID,
-    v: '2',
-    ...queryParams,
-  }).toString()
+class GoogleAnalytics {
+  isInitialized = false
+  //hit count for a session
+  hitCount = 0
+  constructor() {}
 
-  const result = await axios.post(
-    `https://google-analytics.com/g/collect?${query}`,
-    payload,
-  )
+  initialize() {
+    this.isInitialized = true
+  }
 
-  return result
+  async sendMeasurementData(
+    queryParams: MeasurementData,
+    payload?: Record<string, string>,
+  ): Promise<AxiosResponse> {
+    this.hitCount += 1
+
+    const query = new URLSearchParams({
+      tid: config.GA_MEASUREMENT_ID,
+      v: '2',
+      _s: this.hitCount + '',
+      ...queryParams,
+    }).toString()
+
+    const result = await axios.post(
+      `https://google-analytics.com/g/collect?${query}`,
+      payload,
+    )
+
+    return result
+  }
 }
+
+export default new GoogleAnalytics()

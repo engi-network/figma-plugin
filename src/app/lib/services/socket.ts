@@ -58,6 +58,10 @@ export class CustomSocket {
     this.subscribers.forEach((callback) => callback(event))
   }
 
+  unsubscribe() {
+    this.subscribers = []
+  }
+
   sendMessage(data: Record<string, string>) {
     this.websocket?.send(JSON.stringify(data))
   }
@@ -80,6 +84,7 @@ export class CustomSocket {
     this.terminate(2, 'socket hang out')
   }
 
+  //code should be either 1000, or between 3000 and 4999
   terminate(code: number, reason: string) {
     this.websocket?.close(code, reason)
   }

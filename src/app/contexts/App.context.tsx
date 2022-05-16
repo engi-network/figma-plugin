@@ -1,5 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
 
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
 import AWS from '~/app/lib/services/aws'
@@ -14,12 +13,6 @@ import {
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
 import { dispatchData } from '../lib/utils/event'
-import {
-  GA_EVENT_NAMES,
-  MeasurementData,
-  sendMeasurementToGa,
-} from '../lib/utils/ga'
-import { convertDateToUnix } from '../lib/utils/time'
 
 export interface AppContextProps {
   history: History
@@ -67,22 +60,6 @@ export function useAppContextSetup(): AppContextProps {
       setReport(detailedReport)
     }
   }
-
-  useEffect(() => {
-    const queryParams: MeasurementData = {
-      _s: '1',
-      _ss: '1',
-      cid: uuidv4(), //wrong cid
-      dp: '/',
-      dt: 'Home',
-      en: GA_EVENT_NAMES.APP_OPEN,
-      seg: '0',
-      sid: convertDateToUnix(new Date().toString()) + '', //wrong sid
-      user_id: uuidv4(),
-    }
-
-    sendMeasurementToGa(queryParams)
-  }, [])
 
   return {
     history,

@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom'
 
 import AWS from '~/app/lib/services/aws'
+import GAService from '~/app/lib/services/ga'
 import SentryReport from '~/app/lib/services/sentry'
 import SocketManager from '~/app/lib/services/socket-manager'
 import MyWorker from '~/app/lib/services/worker'
@@ -18,12 +19,12 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 SentryReport.init()
+GAService.initialize()
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
 MyWorker.initialize(workerScript)
 MyWorker.start()
-
 AWS.initialize()
 
 SocketManager.initialize()
