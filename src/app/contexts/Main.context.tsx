@@ -40,16 +40,17 @@ import { Specification } from '../models/Specification'
 import { useUserContext } from './User.context'
 
 export interface MainContextProps {
-  apiError: string
   currentTimerId: number
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => Promise<void>
   formErrors: AnalyzeFormValues
   formValues: AnalyzeFormValues | undefined
+  globalError: string
   handleChange: (values: AnalyzeFormValues) => Promise<void>
   handleSubmit: () => void
   isLoading: boolean
   originCanvasRef: RefObject<HTMLCanvasElement>
   selectionData: PluginSelection | undefined
+  setGlobalError: (value: string) => void
   setIsLoading: Dispatch<SetStateAction<boolean>>
   setStep: Dispatch<SetStateAction<number>>
   setTimerId: Dispatch<SetStateAction<number>>
@@ -60,7 +61,7 @@ const MainContext = createContext<MainContextProps>()
 
 export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
-  const { wsCallback } = useAppContext()
+  const { wsCallback, setGlobalError, globalError } = useAppContext()
   const { userId, sessionId } = useUserContext()
 
   const { selectionData, draw } = useSelectionData()
@@ -71,7 +72,6 @@ export function useMainContextSetup(): MainContextProps {
     useState<AnalyzeFormValues>(initialErrorValues)
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
   const [step, setStep] = useState(0)
-  const [apiError, setApiError] = useState('')
   const [currentTimerId, setTimerId] = useState(-1)
 
   const { height = 0, width = 0, commit, branch } = selectionData || {}
@@ -102,7 +102,7 @@ export function useMainContextSetup(): MainContextProps {
 
   const handleSubmit = useCallback(async () => {
     setFormErrors(initialErrorValues)
-    setApiError('')
+    setGlobalError('')
 
     if (!formValidate(values)) {
       return
@@ -214,7 +214,7 @@ export function useMainContextSetup(): MainContextProps {
   const handleChange = async (values: AnalyzeFormValues) => {
     setValues(values)
     setFormErrors(initialErrorValues)
-    setApiError('')
+    setGlobalError('')
 
     dispatchData({
       type: SAME_STORY_FORM_UPDATE,
@@ -265,16 +265,17 @@ export function useMainContextSetup(): MainContextProps {
   }, [])
 
   return {
-    apiError,
     currentTimerId,
     draw,
     formErrors,
     formValues: values,
+    globalError,
     handleChange,
     handleSubmit,
     isLoading,
     originCanvasRef,
     selectionData,
+    setGlobalError,
     setIsLoading,
     setStep,
     setTimerId,

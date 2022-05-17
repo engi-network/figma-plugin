@@ -14,7 +14,6 @@ export interface SocketData {
   check_id: string
   error?: ErrorData
   message: string
-  report?: Report
   step: number
   step_count: number
 }

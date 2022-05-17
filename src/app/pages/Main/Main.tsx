@@ -4,6 +4,7 @@ import Button from '~/app/components/global/Button/Button'
 import Header from '~/app/components/global/Header/Header'
 import Code from '~/app/components/modules/Code/Code'
 import Preview from '~/app/components/modules/Preview/Preview'
+import { useAppContext } from '~/app/contexts/App.context'
 import { useMainContext } from '~/app/contexts/Main.context'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
@@ -18,13 +19,13 @@ function Main() {
     handleChange,
     formValues,
     formErrors,
-    apiError,
     originCanvasRef,
   } = useMainContext()
+  const { globalError } = useAppContext()
 
   const { width = 0, height = 0 } = selectionData || {}
 
-  const isDisabled = !!isLoading || !!apiError
+  const isDisabled = !!isLoading || !!globalError
 
   return (
     <>
@@ -50,11 +51,11 @@ function Main() {
           />
         </section>
       </div>
-      {apiError && (
+      {globalError && (
         <div className="flex px-12 mt-5 justify-center items-center">
           <span className="text-sm text-secondary-error flex">
             <InformationCircleIcon className="w-5 h-5 text-secondary-error mr-2" />
-            {apiError}
+            {globalError}
           </span>
         </div>
       )}
