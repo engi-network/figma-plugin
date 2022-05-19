@@ -19,6 +19,7 @@ export const SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN = `${PREFIX}_history_cr
 export const SAME_STORY_HISTORY_UPDATE = `${PREFIX}_history_update`
 export const SAME_STORY_HISTORY_REMOVE = `${PREFIX}_history_remove`
 export const SAME_STORY_HISTORY_LIST_PLUGIN_TO_UI = `${PREFIX}_history_list_plugin_to_ui`
+export const SAME_STORY_CLEAR_HISTORY = `${PREFIX}_history_clear`
 
 // open and close
 export const SAME_STORY_APP_OPEN = `${PREFIX}_app_open`

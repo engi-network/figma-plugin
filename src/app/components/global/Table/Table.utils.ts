@@ -1,7 +1,8 @@
-import { History, InProgressResult, ReportResult } from '~/app/models/Report'
+import { History, ReportResult, STATUS } from '~/app/models/Report'
 
-import { Cell, STATUS } from './Table.types'
+import { Cell } from './Table.types'
 
+//test placeholder
 const placeholder = `const TestCompenent = () => {
   return <div>Test</div>
 }
@@ -37,14 +38,14 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
     }
 
     switch (status) {
-      case 'error': {
+      case STATUS.FAIL: {
         return {
           ...baseObj,
           duration: 0,
           status: STATUS.FAIL,
         }
       }
-      case 'success': {
+      case STATUS.SUCCESS: {
         const { created_at, completed_at, code_snippet } =
           result as ReportResult
         return {
@@ -52,14 +53,16 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
           code: code_snippet,
           completedAt: completed_at,
           createdAt: created_at,
-          duration: (completed_at - created_at) / 60, //scaling because react-slider can't deal with a large number
+          //scaling because react-slider can't deal with a large number
+          duration: (completed_at - created_at) / 60,
           status: STATUS.SUCCESS,
         }
       }
-      case 'inProgress':
-        // const {} = result as InProgressResult
+      case STATUS.IN_PROGRESS:
         return {
           ...baseObj,
+          duration: 0,
+          status: STATUS.IN_PROGRESS,
         }
       default: {
         return {

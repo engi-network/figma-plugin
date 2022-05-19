@@ -12,9 +12,3 @@ export interface ColumnGroup extends Column {
 }
 
 export type Cell = Record<string, string | number | unknown>
-
-export enum STATUS {
-  FAIL = 'fail',
-  IN_PROGRESS = 'inProgress',
-  SUCCESS = 'success',
-}

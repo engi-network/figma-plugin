@@ -1,6 +1,6 @@
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
-import { STATUS } from '~/app/components/global/Table/Table.types'
 import { convertDateToUnix } from '~/app/lib/utils/time'
+import { STATUS } from '~/app/models/Report'
 
 import {
   FilterValues,
@@ -36,6 +36,7 @@ export const mapFilterFormToTableFilter = (
       convertDateToUnix(filter.createdAfter),
     ],
     duration: filter.duration,
+    // @TODO has to change this logic for inprogress
     status: filter.success
       ? filter.fail
         ? ''

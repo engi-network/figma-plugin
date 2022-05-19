@@ -2,13 +2,18 @@ import { useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { ClockIcon, HistoryIcon, InfoIcon } from '~/app/components/global/Icons'
+import { useAppContext } from '~/app/contexts/App.context'
 import { useUserContext } from '~/app/contexts/User.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import GAService, {
   GA_EVENT_NAMES,
   MeasurementData,
 } from '~/app/lib/services/ga'
+import { dispatchData } from '~/app/lib/utils/event'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { SAME_STORY_CLEAR_HISTORY } from '~/plugin/constants'
+
+import Button from '../Button/Button'
 
 interface Props {
   numberOfProgress?: number
@@ -22,6 +27,7 @@ interface Props {
 function Header({ numberOfProgress }: Props) {
   const navigate = useNavigate()
   const { userId, sessionId } = useUserContext()
+  const { setHistory } = useAppContext()
 
   const handleViewHistory = () => {
     const queryParams: MeasurementData = {
@@ -45,6 +51,13 @@ function Header({ numberOfProgress }: Props) {
     navigate(ROUTES_MAP[ROUTES.HISTORY], {
       state: { filter: { inProgress: true } },
     })
+  }
+
+  const handleClearHistory = () => {
+    dispatchData({
+      type: SAME_STORY_CLEAR_HISTORY,
+    })
+    setHistory([])
   }
 
   return (
@@ -76,6 +89,7 @@ function Header({ numberOfProgress }: Props) {
             </span>
           )}
         </div>
+        <Button onClick={handleClearHistory}>Clear history</Button>
       </div>
       <IconButton
         className="text-primary-green"

@@ -13,6 +13,7 @@ import {
   ErrorResult,
   Report,
   ReportResult,
+  STATUS,
 } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 
@@ -134,10 +135,7 @@ class CustomizedAWS {
     return upload.promise()
   }
 
-  async fetchReportById(
-    checkId: string,
-    status: 'success' | 'error',
-  ): Promise<Report> {
+  async fetchReportById(checkId: string, status: STATUS): Promise<Report> {
     return new Promise((resolve, reject) => {
       if (!this.s3Client) {
         return reject({
@@ -149,7 +147,7 @@ class CustomizedAWS {
         {
           Bucket: config.SAME_STORY_BUCKET_NAME,
           Key: `checks/${checkId}/report/${
-            status === 'success' ? 'results' : 'errors'
+            status === STATUS.SUCCESS ? 'results' : 'errors'
           }.json`,
         },
         async (error, data) => {
@@ -160,7 +158,7 @@ class CustomizedAWS {
               const result: unknown = decodeFromBuffer(
                 data.Body as ArrayLike<number>,
               )
-              if (status === 'success') {
+              if (status === STATUS.SUCCESS) {
                 resolve({ result: result as ReportResult, checkId, status })
               } else {
                 resolve({ result: result as ErrorResult, checkId, status })

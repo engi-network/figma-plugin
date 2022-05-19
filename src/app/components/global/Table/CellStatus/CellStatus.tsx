@@ -1,8 +1,7 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid'
 
 import { ProgressIcon } from '~/app/components/global/Icons'
-
-import { STATUS } from '../Table.types'
+import { STATUS } from '~/app/models/Report'
 
 function CellStatus({ value }: { value: STATUS }) {
   if (value === STATUS.SUCCESS) {

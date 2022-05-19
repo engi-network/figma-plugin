@@ -19,24 +19,25 @@ import {
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import AWS from '~/app/lib/services/aws'
+import AWSService from '~/app/lib/services/aws'
 import GAService, {
   GA_EVENT_NAMES,
   MeasurementData,
 } from '~/app/lib/services/ga'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { READ_STATE } from '~/app/lib/services/socket'
+import SocketManager from '~/app/lib/services/socket-manager'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
+import { PluginSelection } from '~/app/models/PluginSelection'
+import { Report, STATUS } from '~/app/models/Report'
+import { Specification } from '~/app/models/Specification'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
   SAME_STORY_FORM_UPDATE,
 } from '~/plugin/constants'
 
-import SocketManager from '../lib/services/socket-manager'
-import { PluginSelection } from '../models/PluginSelection'
-import { Specification } from '../models/Specification'
 import { useUserContext } from './User.context'
 
 export interface MainContextProps {
@@ -61,7 +62,8 @@ const MainContext = createContext<MainContextProps>()
 
 export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
-  const { wsCallback, setGlobalError, globalError } = useAppContext()
+  const { wsCallback, setGlobalError, globalError, setHistory } =
+    useAppContext()
   const { userId, sessionId } = useUserContext()
 
   const { selectionData, draw } = useSelectionData()
@@ -148,17 +150,32 @@ export function useMainContextSetup(): MainContextProps {
         selectionData.frame,
       )
       const frame = await encode(copyRef, context, imageData)
-      await AWS.uploadEncodedFrameToS3(story || component, checkId, frame)
-      await AWS.publishCommandToSns(message)
+      await AWSService.uploadEncodedFrameToS3(
+        story || component,
+        checkId,
+        frame,
+      )
+      const presignedUrl = await AWSService.getPresignedUrl(
+        story || component,
+        checkId,
+      )
+      await AWSService.publishCommandToSns(message)
 
+      const reportInProgress = {
+        status: STATUS.IN_PROGRESS,
+        checkId,
+        result: {
+          presignedUrl,
+          ...message,
+        },
+      } as Report
+
+      setHistory((prev) => [...prev, reportInProgress])
       const ws = SocketManager.createWs(checkId)
 
-      const retry = 0
-
+      let retry = 0
       const timerId = setInterval(() => {
         if (retry > 5) {
-          //set error
-          console.error('Socket is not ready!====>', ws.isReady())
           clearInterval(timerId)
         }
 
@@ -175,6 +192,7 @@ export function useMainContextSetup(): MainContextProps {
             state: { checkId },
           })
         }
+        retry += 1
       }, 1000)
 
       const queryParams: MeasurementData = {

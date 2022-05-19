@@ -1,11 +1,12 @@
 import { Report } from '~/app/models/Report'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
+  SAME_STORY_CLEAR_HISTORY,
   SAME_STORY_FORM_UPDATE,
   SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
 } from '~/plugin/constants'
 import { onFormChange } from '~/plugin/modules/form'
-import { onHistoryCreate } from '~/plugin/modules/history'
+import { onClearHistory, onCreateHistory } from '~/plugin/modules/history'
 import { onSelection } from '~/plugin/modules/preview'
 
 /**
@@ -21,7 +22,7 @@ figma.ui.onmessage = async (event: MessageEvent) => {
       break
     }
     case SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN: {
-      await onHistoryCreate(event.data as Report)
+      await onCreateHistory(event.data as Report)
       break
     }
     case SAME_STORY_CHECK_INITIAL_SELECTION: {
@@ -33,6 +34,11 @@ figma.ui.onmessage = async (event: MessageEvent) => {
       await onSelection(selection)
       break
     }
+    case SAME_STORY_CLEAR_HISTORY: {
+      await onClearHistory()
+      return
+    }
+
     default:
       break
   }
