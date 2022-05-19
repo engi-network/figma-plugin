@@ -8,8 +8,12 @@ import AWS, { AWSError } from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
 
 import config from '~/app/lib/config'
-import { MAX_RETRY_TIMES, POLLING_INTERVAL } from '~/app/lib/constants/aws'
-import { DIFF_TYPE, isError, Report, ReportResult } from '~/app/models/Report'
+import {
+  DIFF_TYPE,
+  ErrorResult,
+  Report,
+  ReportResult,
+} from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 
 import { decodeFromBuffer } from '../utils/buffer'
@@ -40,7 +44,6 @@ class CustomizedAWS {
 
       this.snsClient = new SNSClient(awsConfig)
       this.s3Client = new AWS.S3(awsConfig)
-      // this.sqsClient = new AWS.SQS(awsConfig)
       this.isInitialized = true
     } catch (error) {
       this.isInitialized = false
@@ -131,7 +134,10 @@ class CustomizedAWS {
     return upload.promise()
   }
 
-  async fetchReportById(checkId: string): Promise<Report> {
+  async fetchReportById(
+    checkId: string,
+    status: 'success' | 'error',
+  ): Promise<Report> {
     return new Promise((resolve, reject) => {
       if (!this.s3Client) {
         return reject({
@@ -142,7 +148,9 @@ class CustomizedAWS {
       this.s3Client.getObject(
         {
           Bucket: config.SAME_STORY_BUCKET_NAME,
-          Key: `checks/${checkId}/report/results.json`,
+          Key: `checks/${checkId}/report/${
+            status === 'success' ? 'results' : 'errors'
+          }.json`,
         },
         async (error, data) => {
           if (error) {
@@ -152,7 +160,11 @@ class CustomizedAWS {
               const result: unknown = decodeFromBuffer(
                 data.Body as ArrayLike<number>,
               )
-              resolve({ result: result as ReportResult, checkId })
+              if (status === 'success') {
+                resolve({ result: result as ReportResult, checkId, status })
+              } else {
+                resolve({ result: result as ErrorResult, checkId, status })
+              }
             }
           }
         },
@@ -192,54 +204,6 @@ class CustomizedAWS {
         },
       )
     })
-  }
-
-  async pollReportById(
-    checkId: string,
-    callback: (status: CallbackStatus, data?: Report) => void,
-  ) {
-    let retryTimes = 0
-    let timerId = -1
-
-    timerId = setInterval(async () => {
-      try {
-        const report = await this.fetchReportById(checkId)
-        clearInterval(timerId)
-
-        if (!isError(report.result)) {
-          callback(
-            {
-              success: true,
-              retryTimes,
-              currentTimerId: timerId,
-            },
-            report,
-          )
-        } else {
-          callback(
-            { success: false, retryTimes, currentTimerId: timerId },
-            report,
-          )
-        }
-      } catch (error) {
-        const statusCode = (error as AWSError).statusCode
-
-        if (retryTimes >= MAX_RETRY_TIMES || statusCode !== 404) {
-          clearInterval(timerId)
-          callback({ success: false, retryTimes, currentTimerId: timerId })
-          return
-        }
-
-        if (retryTimes < MAX_RETRY_TIMES && statusCode === 404) {
-          retryTimes += 1
-          callback({ success: false, retryTimes, currentTimerId: timerId })
-          return
-        }
-
-        clearInterval(timerId)
-        callback({ success: false, retryTimes, currentTimerId: timerId })
-      }
-    }, POLLING_INTERVAL)
   }
 }
 

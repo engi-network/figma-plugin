@@ -29,7 +29,7 @@ function Loading() {
   const [status, setStatus] = useState<SocketData>({
     step: 0,
     step_count: 8,
-    message: 'job started',
+    message: 'job started.',
   } as SocketData)
   const state = (location.state as QueryState) ?? {}
 
@@ -42,7 +42,7 @@ function Loading() {
   const ws = SocketManager.getSocketById(checkId)
 
   const fetchReport = async (checkId) => {
-    const report = await AWSService.fetchReportById(checkId)
+    const report = await AWSService.fetchReportById(checkId, 'success')
     const { story, component } = report.result
     const presignedUrl = await AWSService.getPresignedUrl(
       story || component,
@@ -67,6 +67,8 @@ function Loading() {
     }
 
     const { wsHandler } = ws
+
+    // this ws callback for handling things in foreground in loading state
     wsHandler.subscribe((event: MessageEvent) => {
       const data = JSON.parse(event.data) as SocketData
       setStatus(data)

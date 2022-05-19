@@ -18,7 +18,7 @@ export interface SocketData {
   step_count: number
 }
 
-export interface ErrorReport extends Specification {
+export interface ErrorResult extends Specification {
   error: ErrorData
 }
 
@@ -32,17 +32,20 @@ export interface ReportResult extends Specification {
   created_at: number
 }
 
+export type InProgressResult = Specification
+
 export interface Report {
   checkId: string
-  result: ReportResult | ErrorReport
+  result: ReportResult | ErrorResult | InProgressResult
+  status: 'success' | 'error' | 'inProgress'
 }
 
 export type History = Array<DetailedReport>
 
 export function isError(
-  result: ReportResult | ErrorReport,
-): result is ErrorReport {
-  return (result as ErrorReport).error !== undefined
+  result: ReportResult | ErrorResult,
+): result is ErrorResult {
+  return (result as ErrorResult).error !== undefined
 }
 
 export enum DIFF_TYPE {
