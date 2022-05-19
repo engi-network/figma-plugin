@@ -31,7 +31,7 @@ import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
 import { PluginSelection } from '~/app/models/PluginSelection'
-import { Report, STATUS } from '~/app/models/Report'
+import { DetailedReport, STATUS } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
@@ -155,7 +155,7 @@ export function useMainContextSetup(): MainContextProps {
         checkId,
         frame,
       )
-      const presignedUrl = await AWSService.getPresignedUrl(
+      const imageUrl = await AWSService.getPresignedUrl(
         story || component,
         checkId,
       )
@@ -164,11 +164,11 @@ export function useMainContextSetup(): MainContextProps {
       const reportInProgress = {
         status: STATUS.IN_PROGRESS,
         checkId,
+        imageUrl,
         result: {
-          presignedUrl,
           ...message,
         },
-      } as Report
+      } as DetailedReport
 
       setHistory((prev) => [...prev, reportInProgress])
       const ws = SocketManager.createWs(checkId)

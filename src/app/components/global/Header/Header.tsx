@@ -1,8 +1,8 @@
+import { TrashIcon } from '@heroicons/react/solid'
 import { useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { ClockIcon, HistoryIcon, InfoIcon } from '~/app/components/global/Icons'
-import { useAppContext } from '~/app/contexts/App.context'
 import { useUserContext } from '~/app/contexts/User.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import GAService, {
@@ -11,12 +11,12 @@ import GAService, {
 } from '~/app/lib/services/ga'
 import { dispatchData } from '~/app/lib/utils/event'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { History } from '~/app/models/Report'
 import { SAME_STORY_CLEAR_HISTORY } from '~/plugin/constants'
-
-import Button from '../Button/Button'
 
 interface Props {
   numberOfProgress?: number
+  setHistory?: (value: History) => void
 }
 
 /**
@@ -24,10 +24,10 @@ interface Props {
  * @TODO sid and cid should be handled in the app
  */
 
-function Header({ numberOfProgress }: Props) {
+const isDev = process.env.NODE_ENV === 'development'
+function Header({ numberOfProgress, setHistory }: Props) {
   const navigate = useNavigate()
   const { userId, sessionId } = useUserContext()
-  const { setHistory } = useAppContext()
 
   const handleViewHistory = () => {
     const queryParams: MeasurementData = {
@@ -57,7 +57,7 @@ function Header({ numberOfProgress }: Props) {
     dispatchData({
       type: SAME_STORY_CLEAR_HISTORY,
     })
-    setHistory([])
+    setHistory && setHistory([])
   }
 
   return (
@@ -89,7 +89,15 @@ function Header({ numberOfProgress }: Props) {
             </span>
           )}
         </div>
-        <Button onClick={handleClearHistory}>Clear history</Button>
+        {isDev && (
+          <IconButton
+            className="text-text-secondary ml-2"
+            icon={<TrashIcon className="text-text-secondary w-5 h-5" />}
+            onClick={handleClearHistory}
+          >
+            {'Clear History'}
+          </IconButton>
+        )}
       </div>
       <IconButton
         className="text-primary-green"

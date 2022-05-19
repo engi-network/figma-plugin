@@ -11,14 +11,14 @@ import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWS from '~/app/lib/services/aws'
 import { decode } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { DIFF_TYPE, isError } from '~/app/models/Report'
+import { DIFF_TYPE, STATUS } from '~/app/models/Report'
 
 function ResultContainer() {
   const navigate = useNavigate()
   const { report } = useAppContext()
   const [buffers, setBuffers] = useState<Array<ArrayBuffer>>([])
 
-  if (!report || !report.checkId || isError(report.result)) {
+  if (!report || !report.checkId || report.status !== STATUS.SUCCESS) {
     navigate(ROUTES_MAP[ROUTES.HOME])
     return null
   }

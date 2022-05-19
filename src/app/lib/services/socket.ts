@@ -59,8 +59,12 @@ export class CustomSocket {
     this.subscribers.forEach((callback) => callback(event))
   }
 
-  unsubscribe() {
-    this.subscribers = []
+  unsubscribe(callback) {
+    const filteredCallbacks = this.subscribers.filter(
+      (func) => func.name !== callback.name,
+    )
+
+    this.subscribers = filteredCallbacks
   }
 
   sendMessage(data: Record<string, string>) {
@@ -81,8 +85,7 @@ export class CustomSocket {
   }
 
   handleClose() {
-    console.info('socket for polling closed')
-    this.terminate(2, 'socket hang out')
+    this.terminate(1000, 'Socket has been closed successfully!')
   }
 
   //code should be either 1000, or between 3000 and 4999

@@ -21,7 +21,7 @@ function Main() {
     formErrors,
     originCanvasRef,
   } = useMainContext()
-  const { globalError } = useAppContext()
+  const { globalError, numberOfInProgress, setHistory } = useAppContext()
 
   const { width = 0, height = 0 } = selectionData || {}
 
@@ -29,7 +29,7 @@ function Main() {
 
   return (
     <>
-      <Header numberOfProgress={2} />
+      <Header numberOfProgress={numberOfInProgress} setHistory={setHistory} />
       <h3 className="text-base text-text-primary font-meidum px-7 pt-4">
         {ui('main.subtitle')}
       </h3>

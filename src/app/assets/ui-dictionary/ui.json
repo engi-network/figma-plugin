@@ -4,7 +4,8 @@
     "learnMore": "Learn more about Engi",
     "companyName": "engi.com",
     "back": "Back",
-    "inProgress": "In progress"
+    "inProgress": "In progress",
+    "clearHistory": "Clear history"
   },
   "main": {
     "title": "Сompare existing design",

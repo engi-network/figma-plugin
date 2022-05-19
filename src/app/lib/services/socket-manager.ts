@@ -28,10 +28,10 @@ export class SocketServiceManager {
     return wsHandler
   }
 
-  terminateById(id: string): boolean {
+  terminateById(id: string, code: number, reason: string): boolean {
     try {
       const item = this.wsList?.find((item) => item.id === id)
-      item?.wsHandler.terminate(1, 'tell me why - reason')
+      item?.wsHandler.terminate(code, reason)
 
       const filteredList = this.wsList?.filter((item) => item.id !== id)
       this.wsList = filteredList
