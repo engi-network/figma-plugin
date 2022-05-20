@@ -49,6 +49,8 @@ function Historycontainer() {
     setFilter(values)
   }
 
+  console.log('history on history=====>', history)
+
   return (
     <>
       <HistoryHeader />

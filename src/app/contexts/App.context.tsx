@@ -93,11 +93,28 @@ export function useAppContextSetup(): AppContextProps {
         check_id,
         STATUS.FAIL,
       )
+
       console.error('error report=====> in the background', errorReport)
+      const baseReport = history.find((item) => item.checkId === check_id)
+      const detailedReport: DetailedReport = {
+        checkId: check_id,
+        imageUrl: baseReport?.imageUrl,
+        result: {
+          ...baseReport?.result,
+          ...errorReport.result,
+        },
+        status: STATUS.FAIL,
+      }
+
       const filteredHistory = history.filter(
         (item) => item.checkId !== check_id,
       )
-      setHistory(filteredHistory)
+      setHistory([...filteredHistory, detailedReport])
+      dispatchData({
+        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+        data: detailedReport,
+      })
+
       Sentry.sendReport({
         error,
         transactionName: SENTRY_TRANSACTION.GET_REPORT,
@@ -108,6 +125,7 @@ export function useAppContextSetup(): AppContextProps {
         setGlobalError('Something went wrong. Please double check the inputs.')
         navigate(ROUTES_MAP[ROUTES.HOME])
       }
+
       SocketManager.terminateById(
         check_id,
         1000,
