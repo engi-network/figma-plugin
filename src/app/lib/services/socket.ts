@@ -67,6 +67,15 @@ export class CustomSocket {
     this.subscribers = filteredCallbacks
   }
 
+  updateSubscribe(name, callback) {
+    const foundIndex = this.subscribers.findIndex((fn) => fn.name === name)
+
+    if (foundIndex >= 0) {
+      console.log('updated=======> callbacks')
+      this.subscribers[foundIndex] = callback
+    }
+  }
+
   sendMessage(data: Record<string, string>) {
     this.websocket?.send(JSON.stringify(data))
   }

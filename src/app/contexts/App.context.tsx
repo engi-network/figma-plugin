@@ -53,19 +53,23 @@ export function useAppContextSetup(): AppContextProps {
     if (step === step_count - 1) {
       const report = await AWSService.fetchReportById(check_id, STATUS.SUCCESS)
       const baseReport = history.find((item) => item.checkId === check_id)
-      const detailedReport = {
-        ...report,
-        ...baseReport,
+      const detailedReport: DetailedReport = {
+        checkId: check_id,
+        imageUrl: baseReport?.imageUrl,
+        result: {
+          ...baseReport?.result,
+          ...report.result,
+        },
         status: STATUS.SUCCESS,
       }
 
-      console.log('=========> before filtering', history)
-      console.log('=========> detailed report', detailedReport)
+      console.debug('=========> before filtering', history)
+      console.debug('=========> detailed report', detailedReport)
 
       const filteredHistory = history.filter(
         (item) => item.checkId !== check_id,
       )
-      console.log('========> filtered history', filteredHistory)
+      console.debug('========> filtered history', filteredHistory)
       setHistory([...filteredHistory, detailedReport])
       dispatchData({
         type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
@@ -73,7 +77,7 @@ export function useAppContextSetup(): AppContextProps {
       })
       setReport(detailedReport)
       // if this is the current one
-      console.log('checkId and check_id====>', checkId, check_id)
+      console.debug('checkId and check_id====>', checkId, check_id)
       if (checkId === check_id) {
         navigate(ROUTES_MAP[ROUTES.RESULT])
       }
@@ -114,6 +118,12 @@ export function useAppContextSetup(): AppContextProps {
 
     // when in progress
   }
+
+  useEffect(() => {
+    SocketManager.wsList?.forEach((ws) => {
+      ws.wsHandler.updateSubscribe('wsCallback', wsCallback)
+    })
+  }, [checkId, history])
 
   useEffect(() => {
     const numberOfInProgress = history.filter(
