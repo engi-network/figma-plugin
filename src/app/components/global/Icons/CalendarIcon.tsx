@@ -1,6 +1,6 @@
 import { SVGProps } from 'react'
 
-function CalendarIcon(props: SVGProps<SVGSVGElement>) {
+function SvgCalendarIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -18,4 +18,4 @@ function CalendarIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export default CalendarIcon
+export default SvgCalendarIcon

@@ -9,8 +9,14 @@ export default { component: Loader, title: 'Modules/Loader' }
 export function LoaderWithAnimationWithKnobs() {
   const step = select(
     'Step',
-    [STEPS.CAPTURE, STEPS.CLONE, STEPS.COMPARE, STEPS.INSTALL, STEPS.RENDER],
-    STEPS.CAPTURE,
+    [
+      STEPS.CAPTURED_SCREENSHOTS,
+      STEPS.CHECKED_OUT_CODE,
+      STEPS.DOWNLOAD_FIGMA_CHECK_FRAME,
+      STEPS.INIT,
+      STEPS.INSTATALLED_PACKAGES,
+    ],
+    STEPS.INIT,
   )
   return (
     <div className="w-64 h-64">
