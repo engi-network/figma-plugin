@@ -30,6 +30,7 @@ import SocketManager from '~/app/lib/services/socket-manager'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
+import { makeCompact } from '~/app/lib/utils/object'
 import { PluginSelection } from '~/app/models/PluginSelection'
 import { DetailedReport, STATUS } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
@@ -159,7 +160,7 @@ export function useMainContextSetup(): MainContextProps {
         story || component,
         checkId,
       )
-      await AWSService.publishCommandToSns(message)
+      await AWSService.publishCommandToSns(makeCompact(message))
 
       const reportInProgress = {
         status: STATUS.IN_PROGRESS,
