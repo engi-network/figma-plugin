@@ -1,5 +1,12 @@
 import { useState } from 'react'
 
+import {
+  CameraIcon,
+  CompareIcon,
+  FolderIcon,
+  StorybookIcon,
+  WrenchIcon,
+} from '../Icons'
 import Stepper from './Stepper'
 
 export default {
@@ -13,10 +20,21 @@ export function StepperWithKnobs() {
   return (
     <div className="bg-slate-800 h-96 pl-10 pt-10">
       <Stepper activeStep={step}>
-        <div>Item1</div>
-        <div>Item2</div>
-        <div>Item3</div>
-        <div>Item4</div>
+        <div>
+          <FolderIcon width={20} height={20} />
+        </div>
+        <div>
+          <WrenchIcon width={20} height={20} />
+        </div>
+        <div>
+          <StorybookIcon width={20} height={20} />
+        </div>
+        <div>
+          <CameraIcon width={20} height={20} />
+        </div>
+        <div>
+          <CompareIcon width={20} height={20} />
+        </div>
       </Stepper>
     </div>
   )

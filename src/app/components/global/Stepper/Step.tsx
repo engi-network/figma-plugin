@@ -12,10 +12,10 @@ function Step({ children, step, isLast }: StepperItemProps) {
   const { activeStep } = useStepperContext()
 
   const isPassed = activeStep > step
-  const bgColor = isPassed ? 'bg-primary-white' : 'bg-primary-white/30'
+  const bgColor = isPassed ? 'bg-primary-white' : 'bg-[#ffffff4d]'
 
   return (
-    <li className={`relative ${isLast ? '' : 'h-20'}`}>
+    <li className={`relative  ${isLast ? '' : 'h-20'}`}>
       {!isLast && (
         <div
           className="absolute inset-0 flex justify-center "
@@ -25,7 +25,7 @@ function Step({ children, step, isLast }: StepperItemProps) {
         </div>
       )}
       <div
-        className={`flex items-center justify-center ${bgColor} rounded-full`}
+        className={`relative flex items-center justify-center ${bgColor} rounded-full p-2`}
       >
         {children}
       </div>
