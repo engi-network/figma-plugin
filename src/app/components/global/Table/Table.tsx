@@ -43,6 +43,8 @@ function Table({
     [],
   )
 
+  console.log('filteredItems======>', filterItems)
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -67,9 +69,9 @@ function Table({
     useSortBy,
   )
 
-  useEffect(() => {
-    setAllFilters(filterItems)
-  }, [filterItems])
+  // useEffect(() => {
+  //   setAllFilters(filterItems)
+  // }, [filterItems])
 
   useEffect(() => {
     if (!hiddenColumns) {

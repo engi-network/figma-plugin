@@ -1,8 +1,9 @@
 import React from 'react'
-import "../src/app/styles/tailwind.css";
 import { addDecorator, addParameters } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { AppContextProvider } from '../src/app/contexts/App.context'
+import { MemoryRouter as Router } from 'react-router-dom'
+import "../src/app/styles/tailwind.css";
 
 
 export const parameters = {
@@ -16,11 +17,13 @@ export const parameters = {
 }
 
 const withGlobal = (cb) => {
-  return <>
-    <AppContextProvider>
-      {cb()}
-    </AppContextProvider>
-  </>
+  return (
+    <Router>
+      <AppContextProvider>
+        {cb()}
+      </AppContextProvider>
+    </Router>
+  )
 }
 
 addParameters(parameters)

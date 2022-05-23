@@ -13,7 +13,7 @@ describe('Header', () => {
 
     expect(container).toBeInTheDocument()
     const progressWrapper = screen.getByLabelText('In progress')
-    expect(progressWrapper.lastChild.textContent).toBe('2')
+    expect(progressWrapper?.lastChild?.textContent).toBe('2')
   })
 
   /**

@@ -44,7 +44,6 @@ export function useAppContextSetup(): AppContextProps {
   const state = (location.state as QueryState) ?? {}
   const checkId = (state as Record<string, string>).checkId as unknown as string
 
-  console.info('I am on loading screen===>', checkId)
   // this ws callback for handling things in background in the case of not on loading state for other websockets
   const wsCallback = async (event: MessageEvent) => {
     const { check_id, step, step_count, error } = JSON.parse(
@@ -64,21 +63,17 @@ export function useAppContextSetup(): AppContextProps {
         status: STATUS.SUCCESS,
       }
 
-      console.debug('=========> before filtering', history)
-      console.debug('=========> detailed report', detailedReport)
-
       const filteredHistory = history.filter(
         (item) => item.checkId !== check_id,
       )
-      console.debug('========> filtered history', filteredHistory)
       setHistory([...filteredHistory, detailedReport])
       dispatchData({
         type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
         data: detailedReport,
       })
       setReport(detailedReport)
-      // if this is the current one
-      console.debug('checkId and check_id====>', checkId, check_id)
+
+      // if this is the current one, redirect to the result page
       if (checkId === check_id) {
         navigate(ROUTES_MAP[ROUTES.RESULT])
       }
