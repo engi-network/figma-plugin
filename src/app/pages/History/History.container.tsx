@@ -49,7 +49,7 @@ function Historycontainer() {
     setFilter(values)
   }
 
-  console.log('history on history=====>', history)
+  console.log('history on history=====>', history, data)
 
   return (
     <>

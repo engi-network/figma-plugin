@@ -71,7 +71,6 @@ export class CustomSocket {
     const foundIndex = this.subscribers.findIndex((fn) => fn.name === name)
 
     if (foundIndex >= 0) {
-      console.log('updated=======> callbacks')
       this.subscribers[foundIndex] = callback
     }
   }

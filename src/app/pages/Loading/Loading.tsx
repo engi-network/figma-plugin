@@ -16,7 +16,7 @@ function Loading() {
   const [status, setStatus] = useState<SocketData>({
     step: 0,
     step_count: 8,
-    message: 'job started.',
+    message: 'job started',
   } as SocketData)
   const state = (location.state as QueryState) ?? {}
 

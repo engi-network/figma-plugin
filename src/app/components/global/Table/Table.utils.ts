@@ -48,6 +48,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
       case STATUS.SUCCESS: {
         const { created_at, completed_at, code_snippet } =
           result as ReportResult
+
         return {
           ...baseObj,
           code: code_snippet,

@@ -17,6 +17,7 @@ function App() {
         ROUTES_MAP[ROUTES.RESULT],
         ROUTES_MAP[ROUTES.HISTORY],
         ROUTES_MAP[ROUTES.LOADING],
+        ROUTES_MAP[ROUTES.ERROR],
       ]}
       initialIndex={0}
     >

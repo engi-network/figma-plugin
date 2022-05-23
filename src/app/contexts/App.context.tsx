@@ -11,6 +11,7 @@ import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
 import {
   DetailedReport,
+  ErrorResult,
   History,
   SocketData,
   STATUS,
@@ -89,20 +90,14 @@ export function useAppContextSetup(): AppContextProps {
     // error
     if (error) {
       console.error('api error background socket callback', check_id, error)
-      const errorReport = await AWSService.fetchReportById(
-        check_id,
-        STATUS.FAIL,
-      )
-
-      console.error('error report=====> in the background', errorReport)
       const baseReport = history.find((item) => item.checkId === check_id)
       const detailedReport: DetailedReport = {
         checkId: check_id,
         imageUrl: baseReport?.imageUrl,
         result: {
           ...baseReport?.result,
-          ...errorReport.result,
-        },
+          error,
+        } as ErrorResult,
         status: STATUS.FAIL,
       }
 
@@ -123,7 +118,7 @@ export function useAppContextSetup(): AppContextProps {
 
       if (checkId === check_id) {
         setGlobalError('Something went wrong. Please double check the inputs.')
-        navigate(ROUTES_MAP[ROUTES.HOME])
+        navigate(ROUTES_MAP[ROUTES.ERROR])
       }
 
       SocketManager.terminateById(
@@ -136,6 +131,8 @@ export function useAppContextSetup(): AppContextProps {
 
     // when in progress
   }
+
+  // update subscribe when history and check id change
 
   useEffect(() => {
     SocketManager.wsList?.forEach((ws) => {
