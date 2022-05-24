@@ -77,7 +77,7 @@ function ResultContainer() {
       <div className="px-10 pt-10">
         <div className="flex justify-between mb-16 relative">
           <IconButton
-            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-white" />}
+            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-white z-20" />}
             buttonStyle={BUTTON_STYLE.OUTLINED}
             onClick={handleClickBack}
           />
