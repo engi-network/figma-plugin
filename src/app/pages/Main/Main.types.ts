@@ -11,12 +11,13 @@ export enum STEPS {
 }
 
 export const STEP_MESSAGES: Record<STEPS, string> = {
-  [STEPS.INIT]: 'Job starts',
-  [STEPS.DOWNLOAD_FIGMA_CHECK_FRAME]: 'downloaded Figma check frame',
-  [STEPS.CHECKED_OUT_CODE]: 'checked out code',
-  [STEPS.INSTATALLED_PACKAGES]: 'installed packages',
-  [STEPS.CAPTURED_SCREENSHOTS]: 'captured screenshots',
-  [STEPS.VISUAL_COMPARE]: 'completed visual comparisons',
-  [STEPS.NUMERIC_COMPARE]: 'completed numeric comparisons',
-  [STEPS.UPLOADED_SCREENSHOTS]: 'uploaded screenshots',
+  [STEPS.INIT]: 'Cloning Repository',
+  [STEPS.DOWNLOAD_FIGMA_CHECK_FRAME]: 'Cloning Repository',
+  [STEPS.CHECKED_OUT_CODE]: 'Cloning Repository',
+  [STEPS.INSTATALLED_PACKAGES]:
+    'Installing dependencies and buiding the project',
+  [STEPS.CAPTURED_SCREENSHOTS]: 'Rendering Storybook',
+  [STEPS.VISUAL_COMPARE]: 'Capturing screenshots',
+  [STEPS.NUMERIC_COMPARE]: 'Analyizing similarities',
+  [STEPS.UPLOADED_SCREENSHOTS]: 'Analyizing similarities',
 }

@@ -74,9 +74,9 @@ export function useAppContextSetup(): AppContextProps {
       setReport(detailedReport)
 
       // if this is the current one, redirect to the result page
-      if (checkId === check_id) {
-        navigate(ROUTES_MAP[ROUTES.RESULT])
-      }
+      // if (checkId === check_id) {
+      //   navigate(ROUTES_MAP[ROUTES.RESULT])
+      // }
 
       SocketManager.terminateById(check_id, 1000, 'Successfully closed')
       return
@@ -111,10 +111,10 @@ export function useAppContextSetup(): AppContextProps {
         tagData: { check_id },
       })
 
-      if (checkId === check_id) {
-        setGlobalError('Something went wrong. Please double check the inputs.')
-        navigate(ROUTES_MAP[ROUTES.ERROR])
-      }
+      // if (checkId === check_id) {
+      //   setGlobalError('Something went wrong. Please double check the inputs.')
+      //   navigate(ROUTES_MAP[ROUTES.ERROR])
+      // }
 
       SocketManager.terminateById(
         check_id,
