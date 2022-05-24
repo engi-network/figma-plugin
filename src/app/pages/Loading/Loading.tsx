@@ -15,7 +15,7 @@ import { SocketData } from '~/app/models/Report'
 import { STEP_MESSAGES } from '../Main/Main.types'
 
 const queue = new Queue<SocketData>()
-const ANIMATION_DURATION_MS = 2500
+const ANIMATION_DURATION_MS = 3000
 const initialStatus = {
   step: 0,
   step_count: 8,
