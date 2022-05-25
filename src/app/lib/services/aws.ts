@@ -32,17 +32,17 @@ const awsConfig = {
   }),
 }
 
-class CustomizedAWS {
+class AWSService {
   isInitialized = false
-  snsClient: SNSClient | undefined
-  s3Client: AWS.S3 | undefined
-  sqsClient: AWS.SQS | undefined
+  private snsClient: SNSClient | undefined
+  private s3Client: AWS.S3 | undefined
+  private sqsClient: AWS.SQS | undefined
+
   constructor() {}
 
   initialize() {
     try {
       AWS.config.update(awsConfig)
-
       this.snsClient = new SNSClient(awsConfig)
       this.s3Client = new AWS.S3(awsConfig)
       this.isInitialized = true
@@ -205,4 +205,4 @@ class CustomizedAWS {
   }
 }
 
-export default new CustomizedAWS()
+export default new AWSService()

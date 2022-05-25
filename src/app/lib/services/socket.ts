@@ -9,8 +9,8 @@ type CallbackType = (event: MessageEvent, mySocket?: CustomSocket) => void
 export class CustomSocket {
   websocket: WebSocket | undefined
   isInitialized = false
-  subscribers: Array<CallbackType> = []
-  lastMessage
+  private subscribers: Array<CallbackType> = []
+  // private lastMessage
 
   constructor(socketUrl: string) {
     this.websocket = new WebSocket(socketUrl)
@@ -81,7 +81,7 @@ export class CustomSocket {
 
   receiveMessage(event: MessageEvent) {
     this.publish(event)
-    this.lastMessage = JSON.parse(event.data)
+    // this.lastMessage = JSON.parse(event.data)
   }
 
   handleSocketOpen(event: Event) {

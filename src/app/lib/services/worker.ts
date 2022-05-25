@@ -1,5 +1,5 @@
 class MyWorker {
-  worker
+  private worker
   constructor() {}
 
   initialize(workerScript: string) {

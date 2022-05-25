@@ -10,9 +10,10 @@ export enum SENTRY_TRANSACTION {
 }
 
 class SentryReport {
+  isInitialized = false
+
   constructor() {}
 
-  isInitialized = false
   init() {
     Sentry.init({
       dsn: config.SENTRY_DNS,
