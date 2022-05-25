@@ -1,5 +1,4 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid'
-import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import Button from '~/app/components/global/Button/Button'
@@ -8,22 +7,25 @@ import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { useAppContext } from '~/app/contexts/App.context'
 import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import AWS from '~/app/lib/services/aws'
-import { decode } from '~/app/lib/utils/canvas'
+import { drawImage } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { DIFF_TYPE, STATUS } from '~/app/models/Report'
+import { ReportResult, STATUS } from '~/app/models/Report'
 
 function ResultContainer() {
   const navigate = useNavigate()
   const { report } = useAppContext()
-  const [buffers, setBuffers] = useState<Array<ArrayBuffer>>([])
 
-  if (!report || !report.checkId || report.status !== STATUS.SUCCESS) {
+  if (!report || report.status !== STATUS.SUCCESS) {
     navigate(ROUTES_MAP[ROUTES.HOME])
     return null
   }
 
-  const { checkId } = report
+  const { originalImageUrl, result } = report
+
+  const { url_blue_difference, url_gray_difference, url_screenshot } =
+    result as ReportResult
+
+  console.log('report======> ', report)
 
   const handleClickBack = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
@@ -33,43 +35,11 @@ function ResultContainer() {
     navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
-  const drawBlueCanvas = useCallback(
-    async (canvas: HTMLCanvasElement, context: RenderingContext) => {
-      if (!buffers[0]) {
-        return
-      }
-
-      await decode(canvas, context as CanvasRenderingContext2D, buffers[0])
-    },
-    [buffers],
-  )
-
-  const drawGrayCanvas = useCallback(
-    async (canvas: HTMLCanvasElement, context: RenderingContext) => {
-      if (!buffers[1]) {
-        return
-      }
-      await decode(canvas, context as CanvasRenderingContext2D, buffers[1])
-    },
-    [buffers],
-  )
-
-  const fetchSetDiffData = async (checkId) => {
-    const promises = [
-      AWS.fetchReportDifferenceById(checkId, DIFF_TYPE.BLUE),
-      AWS.fetchReportDifferenceById(checkId, DIFF_TYPE.GRAY),
-    ]
-    const results = await Promise.all(promises)
-    setBuffers(results)
-  }
-
-  useEffect(() => {
-    if (!checkId) {
-      return
+  const drawCallback =
+    (imageUrl: string) =>
+    (canvas: HTMLCanvasElement, context: RenderingContext) => {
+      drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
     }
-
-    fetchSetDiffData(checkId)
-  }, [checkId])
 
   return (
     <>
@@ -98,7 +68,7 @@ function ResultContainer() {
               className="mb-4 border-wf-tertiery"
               width={210}
               height={210}
-              draw={drawBlueCanvas}
+              draw={drawCallback(originalImageUrl + '')}
               options={{ contextId: '2d' }}
               label={ui('result.greenScale')}
             />
@@ -109,7 +79,7 @@ function ResultContainer() {
               className="mb-4 border border-wf-tertiery"
               width={210}
               height={210}
-              draw={drawGrayCanvas}
+              draw={drawCallback(url_screenshot + '')}
               options={{ contextId: '2d' }}
               label={ui('result.grayScale')}
             />

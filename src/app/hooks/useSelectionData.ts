@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { decode } from '~/app/lib/utils/canvas'
+import { drawImage } from '~/app/lib/utils/canvas'
 
 import useSelectionEvent from './useSelectionEvent'
 
@@ -14,7 +14,7 @@ function usePreviewData() {
       }
 
       const { frame } = selectionData
-      await decode(canvas, context as CanvasRenderingContext2D, frame)
+      await drawImage(canvas, context as CanvasRenderingContext2D, frame)
     },
     [selectionData],
   )

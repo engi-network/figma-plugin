@@ -156,7 +156,7 @@ export function useMainContextSetup(): MainContextProps {
         checkId,
         frame,
       )
-      const imageUrl = await AWSService.getPresignedUrl(
+      const originalImageUrl = await AWSService.getPresignedUrl(
         story || component,
         checkId,
       )
@@ -165,7 +165,7 @@ export function useMainContextSetup(): MainContextProps {
       const reportInProgress = {
         status: STATUS.IN_PROGRESS,
         checkId,
-        imageUrl,
+        originalImageUrl,
         result: {
           ...message,
         },

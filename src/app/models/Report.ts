@@ -30,6 +30,9 @@ export interface ReportResult extends Specification {
   code_snippet: string
   completed_at: number
   created_at: number
+  url_blue_difference: string
+  url_gray_difference: string
+  url_screenshot: string
 }
 
 export type InProgressResult = Specification
@@ -60,5 +63,5 @@ export enum DIFF_TYPE {
 
 export interface DetailedReport extends Report {
   duration?: number
-  imageUrl?: string
+  originalImageUrl?: string
 }

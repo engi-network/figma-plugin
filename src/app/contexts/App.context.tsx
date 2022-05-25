@@ -51,7 +51,7 @@ export function useAppContextSetup(): AppContextProps {
       const baseReport = history.find((item) => item.checkId === check_id)
       const detailedReport: DetailedReport = {
         checkId: check_id,
-        imageUrl: baseReport?.imageUrl,
+        originalImageUrl: baseReport?.originalImageUrl,
         result: {
           ...baseReport?.result,
           ...report.result,
@@ -79,7 +79,7 @@ export function useAppContextSetup(): AppContextProps {
       const baseReport = history.find((item) => item.checkId === check_id)
       const detailedReport: DetailedReport = {
         checkId: check_id,
-        imageUrl: baseReport?.imageUrl,
+        originalImageUrl: baseReport?.originalImageUrl,
         result: {
           ...baseReport?.result,
           error,

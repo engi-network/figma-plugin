@@ -9,7 +9,7 @@ const placeholder = `const TestCompenent = () => {
 `
 
 export const mapHistoryToTable = (history: History): Array<Cell> => {
-  return history.map(({ result, status, imageUrl = '' }) => {
+  return history.map(({ result, status, originalImageUrl = '' }) => {
     const {
       check_id,
       path,
@@ -23,7 +23,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
       checkId: check_id,
       code: placeholder,
       commit,
-      imageUrl,
+      imageUrl: originalImageUrl,
       name: {
         story,
         path,

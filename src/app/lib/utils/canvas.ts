@@ -16,12 +16,13 @@ export async function encode(
   })
 }
 
-export async function decode(
+export async function drawImage(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
-  frame: BlobPart,
+  data: BlobPart | string,
 ): Promise<[ImageData, string]> {
-  const url = URL.createObjectURL(new Blob([frame]))
+  const url =
+    typeof data === 'string' ? data : URL.createObjectURL(new Blob([data]))
 
   const image: HTMLImageElement = await new Promise((resolve, reject) => {
     const img = new Image()
