@@ -13,6 +13,7 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import { SocketData } from '~/app/models/Report'
 
 import { STEP_MESSAGES } from '../Main/Main.types'
+import LoadingStepper from './LoadingStepper/LoadingStepper'
 
 const queue = new Queue<SocketData>()
 const ANIMATION_DURATION_MS = 3000
@@ -105,6 +106,7 @@ function Loading() {
           {ui('result.createNew')}
         </Button>
       </div>
+      <LoadingStepper step={step % 5} className="absolute top-4 right-4" />
     </>
   )
 }
