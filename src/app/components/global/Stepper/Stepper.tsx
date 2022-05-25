@@ -1,24 +1,23 @@
 import { Children, ReactNode } from 'react'
 
 import Step from './Step'
-import { StepperContextProvider } from './Stepper.context'
 
-interface StepperContainerProps {
+interface StepperProps {
   activeStep: number
   children: ReactNode
 }
 
-interface StepperProps {
-  children: ReactNode
-}
-
-function Stepper({ children }: StepperProps) {
+function Stepper({ children, activeStep }: StepperProps) {
   return (
     <div>
       <nav aria-label="Progress">
         <ol role="list" className="flex items-center flex-col">
           {Children.map(children, (child, index) => (
-            <Step step={index} isLast={index === Children.count(children) - 1}>
+            <Step
+              step={index}
+              isLast={index === Children.count(children) - 1}
+              activeStep={activeStep}
+            >
               {child}
             </Step>
           ))}
@@ -28,12 +27,4 @@ function Stepper({ children }: StepperProps) {
   )
 }
 
-function StepperContainer({ children, activeStep }: StepperContainerProps) {
-  return (
-    <StepperContextProvider step={activeStep}>
-      <Stepper>{children}</Stepper>
-    </StepperContextProvider>
-  )
-}
-
-export default StepperContainer
+export default Stepper

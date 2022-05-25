@@ -1,16 +1,13 @@
 import { ReactNode } from 'react'
 
-import { useStepperContext } from './Stepper.context'
-
 interface StepperItemProps {
+  activeStep: number
   children: ReactNode
   isLast: boolean
   step: number
 }
 
-function Step({ children, step, isLast }: StepperItemProps) {
-  const { activeStep } = useStepperContext()
-
+function Step({ children, step, isLast, activeStep }: StepperItemProps) {
   const isPassed = activeStep > step
   const bgColor = isPassed ? 'bg-primary-white' : 'bg-[#ffffff4d]'
 
