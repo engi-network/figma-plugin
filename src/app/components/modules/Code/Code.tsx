@@ -43,7 +43,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
       width={304}
       title={ui('main.preview.code')}
       contentClassName={'px-10 py-8 border-y border-r'}
-      icon={<StorybookIcon width={41} height={41} />}
+      icon={<StorybookIcon width={32} height={32} />}
     >
       <form className="mb-0">
         <div className="flex mb-5">

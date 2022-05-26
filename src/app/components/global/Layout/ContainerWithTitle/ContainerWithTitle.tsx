@@ -31,11 +31,13 @@ function ContainerWithTitle({
 
   return (
     <div css={[width && { width }]} className={rootClasses}>
-      <h2 className="text-2xl text-text-primary mb-6 font-bold text-center">
-        {title}
-      </h2>
+      <div className="flex mb-6 justify-center items-center">
+        <h2 className="text-2xl text-text-primary font-bold text-center">
+          {title}
+        </h2>
+        {icon && <div className="ml-3">{icon}</div>}
+      </div>
       <div className={contentClasses}>
-        {icon && <div className="absolute right-1 top-[-1]">{icon}</div>}
         {children}
         {description && (
           <label className="text-sm text-gray-400 text-center absolute -bottom-6 left-0 right-0">

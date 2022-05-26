@@ -25,7 +25,7 @@ function ResultContainer() {
   const { url_blue_difference, url_gray_difference, url_screenshot } =
     result as ReportResult
 
-  console.log('report======> ', report)
+  console.info('report======> ', url_blue_difference, url_gray_difference)
 
   const handleClickBack = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
