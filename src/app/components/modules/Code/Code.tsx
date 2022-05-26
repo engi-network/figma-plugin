@@ -88,7 +88,10 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
             required
           />
           {showMore ? (
-            <LinkButton onClick={handleClickSeeMore}>
+            <LinkButton
+              onClick={handleClickSeeMore}
+              className="justify-end mt-2"
+            >
               {ui('main.preview.moreOptions')}
             </LinkButton>
           ) : (

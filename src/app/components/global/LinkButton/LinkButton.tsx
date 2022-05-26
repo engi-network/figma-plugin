@@ -16,13 +16,11 @@ function LinkButton({ href, onClick, children, className }: Props) {
     onClick && onClick()
   }
 
-  const textClasses = cn(
-    className,
-    'text-xs font-medium text-text-primary underline',
-  )
+  const textClasses = cn('text-xs font-medium text-text-primary underline')
+  const btnClasses = cn(className, 'inline-flex')
 
   return (
-    <button onClick={handleClick}>
+    <button onClick={handleClick} className={btnClasses}>
       <span className={textClasses}>{children}</span>
     </button>
   )

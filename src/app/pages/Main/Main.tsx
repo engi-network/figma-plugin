@@ -30,7 +30,7 @@ function Main() {
   return (
     <>
       <Header numberOfProgress={numberOfInProgress} setHistory={setHistory} />
-      <h3 className="text-base text-text-primary font-meidum px-7 pt-4">
+      <h3 className="text-base text-text-primary font-medium px-7 pt-4">
         {ui('main.subtitle')}
       </h3>
       <div className="flex px-10 pt-9">
