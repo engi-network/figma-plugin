@@ -13,7 +13,7 @@
     "preview": {
       "design": "Design",
       "code": "Code",
-      "seeMore": "More options"
+      "moreOptions": "More options"
     },
     "history": "History",
     "subtitle": "Do these tell the same story?"

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { StorybookIcon } from '~/app/components/global/Icons'
 import Input from '~/app/components/global/Input/Input'
 import ContainerWithTitle from '~/app/components/global/Layout/ContainerWithTitle/ContainerWithTitle'
+import LinkButton from '~/app/components/global/LinkButton/LinkButton'
 import TextWithLabel from '~/app/components/global/TextWithLabel/TextWithLabel'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
@@ -87,13 +88,9 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
             required
           />
           {showMore ? (
-            <span
-              role="button"
-              className="text-sm text-primary-blue flex justify-end cursor-pointer mt-4"
-              onClick={handleClickSeeMore}
-            >
-              {ui('main.preview.seeMore')}
-            </span>
+            <LinkButton onClick={handleClickSeeMore}>
+              {ui('main.preview.moreOptions')}
+            </LinkButton>
           ) : (
             <>
               <Input
