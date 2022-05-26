@@ -32,6 +32,8 @@ const awsConfig = {
   }),
 }
 
+console.log('aws config ======> ', awsConfig)
+
 class AWSService {
   isInitialized = false
   private snsClient: SNSClient | undefined

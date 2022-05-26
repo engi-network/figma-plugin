@@ -106,7 +106,7 @@ function Loading() {
           {ui('result.createNew')}
         </Button>
       </div>
-      <LoadingStepper step={step % 5} className="absolute top-4 right-4" />
+      <LoadingStepper step={step % 5} className="absolute top-12 right-8" />
     </>
   )
 }

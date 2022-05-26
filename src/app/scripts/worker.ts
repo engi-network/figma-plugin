@@ -5,15 +5,15 @@ onmessage = (event) => {
 
   switch (workerData.connectionStatus) {
     case 'init':
-      console.info('init....')
+      console.info('Initialize worker.')
       break
 
     case 'stop':
-      console.info('stop worker from working...')
+      console.info('Stop worker from working.')
       break
 
     default:
-      postMessage('[WORKER] Web worker onmessage get to default')
+      postMessage('Worker is woring.')
   }
 }  
 `
