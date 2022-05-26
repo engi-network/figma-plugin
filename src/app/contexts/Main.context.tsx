@@ -151,6 +151,7 @@ export function useMainContextSetup(): MainContextProps {
         selectionData.frame,
       )
       const frame = await encode(copyRef, context, imageData)
+
       await AWSService.uploadEncodedFrameToS3(
         story || component,
         checkId,
@@ -160,6 +161,7 @@ export function useMainContextSetup(): MainContextProps {
         story || component,
         checkId,
       )
+
       await AWSService.publishCommandToSns(makeCompact(message))
 
       const reportInProgress = {

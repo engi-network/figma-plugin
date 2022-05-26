@@ -1,12 +1,14 @@
-/* eslint-disable no-constant-condition */
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import {
   PublishCommand,
   PublishCommandOutput,
   SNSClient,
 } from '@aws-sdk/client-sns'
-import AWS, { AWSError } from 'aws-sdk'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import AWS from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
 
+import { AWSError } from '~/app/@types/aws-error'
 import config from '~/app/lib/config'
 import {
   DIFF_TYPE,
@@ -32,13 +34,18 @@ const awsConfig = {
   }),
 }
 
-console.log('aws config ======> ', awsConfig)
+export const streamToString = (stream) =>
+  new Promise((resolve, reject) => {
+    const chunks: Array<Uint8Array> = []
+    stream.on('data', (chunk) => chunks.push(chunk))
+    stream.on('error', reject)
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
+  })
 
 class AWSService {
   isInitialized = false
   private snsClient: SNSClient | undefined
-  private s3Client: AWS.S3 | undefined
-  private sqsClient: AWS.SQS | undefined
+  private s3Client: S3Client | undefined
 
   constructor() {}
 
@@ -46,7 +53,7 @@ class AWSService {
     try {
       AWS.config.update(awsConfig)
       this.snsClient = new SNSClient(awsConfig)
-      this.s3Client = new AWS.S3(awsConfig)
+      this.s3Client = new S3Client(awsConfig)
       this.isInitialized = true
     } catch (error) {
       this.isInitialized = false
@@ -72,32 +79,6 @@ class AWSService {
     return data
   }
 
-  async receiveMessageFromSQS(): Promise<
-    AWS.Request<AWS.SQS.ReceiveMessageResult, AWSError>
-  > {
-    if (!this.sqsClient) {
-      return Promise.reject({
-        message: 'AWS has not been configured',
-      } as AWSError)
-    }
-
-    const params = {
-      MaxNumberOfMessages: 10,
-      QueueUrl: config.QUEUE_URL,
-      VisibilityTimeout: 10,
-      WaitTimeSeconds: 1,
-    }
-
-    try {
-      const result = await this.sqsClient.receiveMessage(params)
-      console.info(result)
-      return result
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(error as AWSError)
-    }
-  }
-
   async getPresignedUrl(name: string, checkId: string): Promise<string> {
     if (!this.s3Client) {
       return Promise.reject({
@@ -113,7 +94,12 @@ class AWSService {
         Key: key,
       }
 
-      return await this.s3Client?.getSignedUrlPromise('getObject', params)
+      const command = new GetObjectCommand(params)
+      const url = await getSignedUrl(this.s3Client, command, {
+        expiresIn: 3600,
+      })
+
+      return url
     } catch (error) {
       return ''
     }
@@ -124,86 +110,89 @@ class AWSService {
     checkId: string,
     frame: Uint8Array,
   ): Promise<S3.ManagedUpload.SendData> {
+    if (!this.s3Client) {
+      throw {
+        message: 'AWS has not been configured',
+      } as AWSError
+    }
+
     const key = `checks/${checkId}/frames/${name}.png`
 
+    const uploadParams = {
+      Bucket: config.SAME_STORY_BUCKET_NAME,
+      Key: key,
+      Body: frame,
+    }
+
     const upload = new S3.ManagedUpload({
-      params: {
-        Bucket: config.SAME_STORY_BUCKET_NAME,
-        Key: key,
-        Body: frame,
-      },
+      params: uploadParams,
     })
 
     return upload.promise()
   }
 
   async fetchReportById(checkId: string, status: STATUS): Promise<Report> {
-    return new Promise((resolve, reject) => {
-      if (!this.s3Client) {
-        return reject({
-          message: 'AWS has not been configured',
-        } as AWSError)
-      }
+    if (!this.s3Client) {
+      throw {
+        message: 'AWS has not been configured',
+      } as AWSError
+    }
 
-      this.s3Client.getObject(
-        {
-          Bucket: config.SAME_STORY_BUCKET_NAME,
-          Key: `checks/${checkId}/report/${
-            status === STATUS.SUCCESS ? 'results' : 'errors'
-          }.json`,
-        },
-        async (error, data) => {
-          if (error) {
-            reject(error)
-          } else {
-            if (data.Body) {
-              const result: unknown = decodeFromBuffer(
-                data.Body as ArrayLike<number>,
-              )
-              if (status === STATUS.SUCCESS) {
-                resolve({ result: result as ReportResult, checkId, status })
-              } else {
-                resolve({ result: result as ErrorResult, checkId, status })
-              }
-            }
-          }
-        },
+    const downloadParams = {
+      Bucket: config.SAME_STORY_BUCKET_NAME,
+      Key: `checks/${checkId}/report/${
+        status === STATUS.SUCCESS ? 'results' : 'errors'
+      }.json`,
+    }
+
+    try {
+      const data = await this.s3Client.send(
+        new GetObjectCommand(downloadParams),
       )
-    })
+      if (data.Body) {
+        const result: unknown = decodeFromBuffer(
+          data.Body as unknown as ArrayLike<number>,
+        )
+        if (status === STATUS.SUCCESS) {
+          return { result: result as ReportResult, checkId, status }
+        } else {
+          return { result: result as ErrorResult, checkId, status }
+        }
+      } else {
+        throw {
+          message: 'There is no body in data.',
+        } as AWSError
+      }
+    } catch (error) {
+      throw {
+        message: 'Error in fetching data.',
+      } as AWSError
+    }
   }
-
-  /**
-   *
-   * @param checkId uuid for check
-   * @param difference 'blue' or 'gray'
-   * @returns Promise of an array of bytes
-   */
 
   async fetchReportDifferenceById(
     checkId: string,
     difference: DIFF_TYPE,
   ): Promise<ArrayBuffer> {
-    return new Promise((resolve, reject) => {
-      if (!this.s3Client) {
-        return Promise.reject({
-          message: 'AWS has not been configured',
-        } as AWSError)
-      }
+    if (!this.s3Client) {
+      throw {
+        message: 'AWS has not been configured',
+      } as AWSError
+    }
 
-      this.s3Client.getObject(
-        {
-          Bucket: config.SAME_STORY_BUCKET_NAME,
-          Key: `checks/${checkId}/report/${difference}_difference.png`,
-        },
-        async (error, data) => {
-          if (error) {
-            reject(error)
-          } else {
-            resolve(data.Body as ArrayBuffer)
-          }
-        },
-      )
-    })
+    const downloadParams = {
+      Bucket: config.SAME_STORY_BUCKET_NAME,
+      Key: `checks/${checkId}/report/${difference}_difference.png`,
+    }
+
+    try {
+      const data = this.s3Client.send(new GetObjectCommand(downloadParams))
+      return (await data).Body as unknown as ArrayBuffer
+    } catch (error) {
+      throw {
+        message: 'AWS has not been configured',
+      } as AWSError
+    }
   }
 }
 

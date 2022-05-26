@@ -79,7 +79,6 @@ export async function decodeOriginal(
     img.onload = () => resolve(img)
     img.onerror = () => reject()
 
-    // kick off load
     img.src = url
   })
 
