@@ -109,7 +109,7 @@ class AWSService {
     name: string,
     checkId: string,
     frame: Uint8Array,
-  ): Promise<S3.ManagedUpload.SendData> {
+  ): Promise<string> {
     if (!this.s3Client) {
       throw {
         message: 'AWS has not been configured',
@@ -119,16 +119,24 @@ class AWSService {
     const key = `checks/${checkId}/frames/${name}.png`
 
     const uploadParams = {
-      Bucket: config.SAME_STORY_BUCKET_NAME,
-      Key: key,
+      ACL: 'public-read',
       Body: frame,
+      Bucket: config.SAME_STORY_BUCKET_NAME,
+      ContentDisposition: 'inline',
+      ContentType: 'image/png',
+      Key: key,
     }
 
     const upload = new S3.ManagedUpload({
       params: uploadParams,
     })
 
-    return upload.promise()
+    await upload.promise()
+    const url = `https://${config.SAME_STORY_BUCKET_NAME}.s3.${
+      config.AWS_DEFAULT_REGION
+    }.amazonaws.com/${encodeURI(uploadParams.Key)}`
+
+    return url
   }
 
   async fetchReportById(checkId: string, status: STATUS): Promise<Report> {

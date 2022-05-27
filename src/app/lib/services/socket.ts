@@ -5,15 +5,23 @@ export enum READ_STATE {
   CLOSED = 3,
 }
 
-type CallbackType = (event: MessageEvent, mySocket?: CustomSocket) => void
+export type CallbackType = (
+  event: MessageEvent | Event,
+  mySocket?: CustomSocket,
+) => void
+
 export class CustomSocket {
   websocket: WebSocket | undefined
   isInitialized = false
+  private callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
   private subscribers: Array<CallbackType> = []
-  // private lastMessage
 
-  constructor(socketUrl: string) {
+  constructor(
+    socketUrl: string,
+    callbacks: Record<string | 'onError' | 'onSuccess', CallbackType>,
+  ) {
     this.websocket = new WebSocket(socketUrl)
+    this.callbacks = callbacks
     this.initialize()
   }
 
@@ -81,15 +89,20 @@ export class CustomSocket {
 
   receiveMessage(event: MessageEvent) {
     this.publish(event)
-    // this.lastMessage = JSON.parse(event.data)
   }
 
   handleSocketOpen(event: Event) {
     console.info('socket has been open!', event)
+    if (this.callbacks.onSuccess) {
+      this.callbacks.onSuccess(event)
+    }
   }
 
   handleError(error) {
     console.error('socket error!', error)
+    if (this.callbacks.onError) {
+      this.callbacks.onError(error)
+    }
   }
 
   handleClose() {

@@ -1,6 +1,6 @@
 import config from '~/app/lib/config'
 
-import { CustomSocket } from './socket'
+import { CallbackType, CustomSocket } from './socket'
 
 interface WebSocketItem {
   id: string
@@ -18,8 +18,11 @@ export class SocketServiceManager {
     this.isInitialized = true
   }
 
-  createWs(id: string): CustomSocket {
-    const wsHandler = new CustomSocket(config.SOCKET_URL)
+  createWs(
+    id: string,
+    callbacks: Record<'onSuccess' | 'onError' | string, CallbackType>,
+  ): CustomSocket {
+    const wsHandler = new CustomSocket(config.SOCKET_URL, callbacks)
     this.wsList?.push({
       id,
       wsHandler,

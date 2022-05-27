@@ -152,14 +152,10 @@ export function useMainContextSetup(): MainContextProps {
       )
       const frame = await encode(copyRef, context, imageData)
 
-      await AWSService.uploadEncodedFrameToS3(
+      const originalImageUrl = await AWSService.uploadEncodedFrameToS3(
         story || component,
         checkId,
         frame,
-      )
-      const originalImageUrl = await AWSService.getPresignedUrl(
-        story || component,
-        checkId,
       )
 
       await AWSService.publishCommandToSns(makeCompact(message))
@@ -174,41 +170,64 @@ export function useMainContextSetup(): MainContextProps {
       } as DetailedReport
 
       setHistory((prev) => [...prev, reportInProgress])
-      const ws = SocketManager.createWs(checkId)
+      const ws = SocketManager.createWs(checkId, {
+        onSuccess: () => {
+          let retry = 0
+          const timerId = setInterval(() => {
+            if (retry > 5) {
+              clearInterval(timerId)
+            }
 
-      let retry = 0
-      const timerId = setInterval(() => {
-        if (retry > 5) {
-          clearInterval(timerId)
-        }
+            if (ws.isReady() === READ_STATE.OPEN) {
+              ws.sendMessage({
+                message: 'subscribe',
+                check_id: checkId,
+              })
 
-        if (ws.isReady() === READ_STATE.OPEN) {
-          ws.sendMessage({
-            message: 'subscribe',
-            check_id: checkId,
+              ws.subscribe(wsCallback)
+              clearInterval(timerId)
+
+              navigate(ROUTES_MAP[ROUTES.LOADING], {
+                state: { checkId },
+              })
+            }
+            retry += 1
+          }, 1000)
+
+          const queryParams: MeasurementData = {
+            _ss: '0',
+            cid: userId,
+            dp: '/',
+            dt: 'Home',
+            en: GA_EVENT_NAMES.START_ANALYZE,
+            seg: '0',
+            sid: sessionId,
+            user_id: userId,
+          }
+          GAService.sendMeasurementData(queryParams)
+        },
+        onError: () => {
+          Sentry.sendReport({
+            error: 'Socket error!',
+            transactionName: SENTRY_TRANSACTION.FORM_SUBMIT,
+            tagData: { checkId },
           })
 
-          ws.subscribe(wsCallback)
-          clearInterval(timerId)
-
-          navigate(ROUTES_MAP[ROUTES.LOADING], {
-            state: { checkId },
-          })
-        }
-        retry += 1
-      }, 1000)
-
-      const queryParams: MeasurementData = {
-        _ss: '0',
-        cid: userId,
-        dp: '/',
-        dt: 'Home',
-        en: GA_EVENT_NAMES.START_ANALYZE,
-        seg: '0',
-        sid: sessionId,
-        user_id: userId,
-      }
-      GAService.sendMeasurementData(queryParams)
+          const queryParams: MeasurementData = {
+            _ss: '0',
+            cid: userId,
+            dp: '/',
+            dt: 'Home',
+            en: GA_EVENT_NAMES.ERROR,
+            seg: '0',
+            sid: sessionId,
+            user_id: userId,
+          }
+          GAService.sendMeasurementData(queryParams)
+          setGlobalError('Something went wrong with Socket, please try again!')
+          setIsLoading(false)
+        },
+      })
     } catch (error) {
       console.error(error)
       Sentry.sendReport({
@@ -229,6 +248,7 @@ export function useMainContextSetup(): MainContextProps {
       }
       GAService.sendMeasurementData(queryParams)
       setIsLoading(false)
+      setGlobalError('Something went wrong, please try again!')
     }
   }, [values, selectionData, originCanvasRef])
 
