@@ -10,6 +10,7 @@ import S3 from 'aws-sdk/clients/s3'
 
 import { AWSError } from '~/app/@types/aws-error'
 import config from '~/app/lib/config'
+import { readDataFromStream } from '~/app/lib/utils/buffer'
 import {
   DIFF_TYPE,
   ErrorResult,
@@ -18,8 +19,6 @@ import {
   STATUS,
 } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
-
-import { decodeFromBuffer } from '../utils/buffer'
 
 export interface CallbackStatus {
   currentTimerId: number
@@ -33,14 +32,6 @@ const awsConfig = {
     IdentityPoolId: config.IDENTITY_POOL_ID,
   }),
 }
-
-export const streamToString = (stream) =>
-  new Promise((resolve, reject) => {
-    const chunks: Array<Uint8Array> = []
-    stream.on('data', (chunk) => chunks.push(chunk))
-    stream.on('error', reject)
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
-  })
 
 class AWSService {
   isInitialized = false
@@ -154,13 +145,15 @@ class AWSService {
     }
 
     try {
-      const data = await this.s3Client.send(
+      const { Body } = await this.s3Client.send(
         new GetObjectCommand(downloadParams),
       )
-      if (data.Body) {
-        const result: unknown = decodeFromBuffer(
-          data.Body as unknown as ArrayLike<number>,
-        )
+
+      if (Body) {
+        const streamData = await readDataFromStream(Body as ReadableStream)
+
+        const result = await new Response(streamData).json()
+
         if (status === STATUS.SUCCESS) {
           return { result: result as ReportResult, checkId, status }
         } else {
@@ -168,10 +161,11 @@ class AWSService {
         }
       } else {
         throw {
-          message: 'There is no body in data.',
+          message: 'Error in fetching data.',
         } as AWSError
       }
     } catch (error) {
+      console.error('error in aws', error)
       throw {
         message: 'Error in fetching data.',
       } as AWSError

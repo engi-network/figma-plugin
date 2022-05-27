@@ -25,7 +25,7 @@ function ResultContainer() {
   const { url_blue_difference, url_gray_difference, url_screenshot } =
     result as ReportResult
 
-  console.info('report======> ', url_blue_difference, url_gray_difference)
+  console.info('report in result======> ', report)
 
   const handleClickBack = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
@@ -36,9 +36,10 @@ function ResultContainer() {
   }
 
   const drawCallback =
-    (imageUrl: string) =>
+    (imageUrl?: string) =>
     (canvas: HTMLCanvasElement, context: RenderingContext) => {
-      drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
+      !!imageUrl &&
+        drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
     }
 
   return (

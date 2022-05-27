@@ -12,7 +12,7 @@ import { Queue } from '~/app/lib/utils/queue'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { SocketData } from '~/app/models/Report'
 
-import { STEP_MESSAGES } from '../Main/Main.types'
+import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '../Main/Main.types'
 import LoadingStepper from './LoadingStepper/LoadingStepper'
 
 const queue = new Queue<SocketData>()
@@ -106,7 +106,10 @@ function Loading() {
           {ui('result.createNew')}
         </Button>
       </div>
-      <LoadingStepper step={step % 5} className="absolute top-12 right-8" />
+      <LoadingStepper
+        step={STEP_MAP_TO_STEPPER[step]}
+        className="absolute top-12 right-8"
+      />
     </>
   )
 }

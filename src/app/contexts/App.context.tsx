@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { QueryState } from '~/app/@types/route'
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
@@ -16,6 +16,8 @@ import {
   STATUS,
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
+
+import { ROUTES, ROUTES_MAP } from '../lib/constants'
 
 export interface AppContextProps {
   globalError: string
@@ -39,6 +41,7 @@ export function useAppContextSetup(): AppContextProps {
 
   const state = (location.state as QueryState) ?? {}
   const checkId = (state as Record<string, string>).checkId as unknown as string
+  const navigate = useNavigate()
 
   // this ws callback for handling things in background in the case of not on loading state for other websockets
   const wsCallback = async (event: MessageEvent) => {
@@ -46,68 +49,82 @@ export function useAppContextSetup(): AppContextProps {
       event.data,
     ) as SocketData
 
-    if (step === step_count - 1) {
-      const report = await AWSService.fetchReportById(check_id, STATUS.SUCCESS)
-      const baseReport = history.find((item) => item.checkId === check_id)
-      const detailedReport: DetailedReport = {
-        checkId: check_id,
-        originalImageUrl: baseReport?.originalImageUrl,
-        result: {
-          ...baseReport?.result,
-          ...report.result,
-        },
-        status: STATUS.SUCCESS,
+    try {
+      if (step === step_count - 1) {
+        const report = await AWSService.fetchReportById(
+          check_id,
+          STATUS.SUCCESS,
+        )
+        const baseReport = history.find((item) => item.checkId === check_id)
+        const detailedReport: DetailedReport = {
+          checkId: check_id,
+          originalImageUrl: baseReport?.originalImageUrl,
+          result: {
+            ...baseReport?.result,
+            ...report.result,
+          },
+          status: STATUS.SUCCESS,
+        }
+
+        const filteredHistory = history.filter(
+          (item) => item.checkId !== check_id,
+        )
+        setHistory([...filteredHistory, detailedReport])
+        dispatchData({
+          type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+          data: detailedReport,
+        })
+        setReport(detailedReport)
+
+        SocketManager.terminateById(check_id, 1000, 'Successfully closed')
+        return
       }
 
-      const filteredHistory = history.filter(
-        (item) => item.checkId !== check_id,
-      )
-      setHistory([...filteredHistory, detailedReport])
-      dispatchData({
-        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-        data: detailedReport,
-      })
-      setReport(detailedReport)
+      // error
+      if (error) {
+        console.error('api error background socket callback', check_id, error)
+        const baseReport = history.find((item) => item.checkId === check_id)
+        const detailedReport: DetailedReport = {
+          checkId: check_id,
+          originalImageUrl: baseReport?.originalImageUrl,
+          result: {
+            ...baseReport?.result,
+            error,
+          } as ErrorResult,
+          status: STATUS.FAIL,
+        }
 
-      SocketManager.terminateById(check_id, 1000, 'Successfully closed')
-      return
-    }
+        const filteredHistory = history.filter(
+          (item) => item.checkId !== check_id,
+        )
+        setHistory([...filteredHistory, detailedReport])
+        dispatchData({
+          type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+          data: detailedReport,
+        })
 
-    // error
-    if (error) {
-      console.error('api error background socket callback', check_id, error)
-      const baseReport = history.find((item) => item.checkId === check_id)
-      const detailedReport: DetailedReport = {
-        checkId: check_id,
-        originalImageUrl: baseReport?.originalImageUrl,
-        result: {
-          ...baseReport?.result,
+        Sentry.sendReport({
           error,
-        } as ErrorResult,
-        status: STATUS.FAIL,
+          transactionName: SENTRY_TRANSACTION.GET_REPORT,
+          tagData: { check_id },
+        })
+
+        SocketManager.terminateById(
+          check_id,
+          1000,
+          'Got error report from server',
+        )
+        return
       }
-
-      const filteredHistory = history.filter(
-        (item) => item.checkId !== check_id,
-      )
-      setHistory([...filteredHistory, detailedReport])
-      dispatchData({
-        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-        data: detailedReport,
-      })
-
+    } catch (error) {
       Sentry.sendReport({
         error,
         transactionName: SENTRY_TRANSACTION.GET_REPORT,
         tagData: { check_id },
       })
-
-      SocketManager.terminateById(
-        check_id,
-        1000,
-        'Got error report from server',
-      )
-      return
+      const message = (error as Error).message
+      setGlobalError(message || 'Something went wrong with socket callback!')
+      navigate(ROUTES_MAP[ROUTES.ERROR])
     }
   }
 
