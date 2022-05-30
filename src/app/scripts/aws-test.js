@@ -1,4 +1,4 @@
-// Load the required clients and packages
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { CognitoIdentityClient } = require('@aws-sdk/client-cognito-identity')
 const {
   fromCognitoIdentityPool,
@@ -8,6 +8,7 @@ const {
   PutObjectCommand,
   GetObjectCommand,
 } = require('@aws-sdk/client-s3')
+const config = require('~/app/lib/config')
 
 // Set the AWS Region
 const REGION = 'us-west-2' //REGION
@@ -17,7 +18,7 @@ const s3 = new S3Client({
   region: REGION,
   credentials: fromCognitoIdentityPool({
     client: new CognitoIdentityClient({ region: REGION }),
-    identityPoolId: 'us-west-2:8263742e-301a-493b-8b2c-5f90bb0da1a5', // IDENTITY_POOL_ID
+    identityPoolId: config.IDENTITY_POOL_ID, // IDENTITY_POOL_ID
   }),
 })
 
@@ -31,7 +32,7 @@ const addFile = async () => {
     Body: 'foo',
   }
   const data = await s3.send(new PutObjectCommand(uploadParams))
-  console.log(data)
+  console.info(data)
 }
 
 const streamToString = (stream) =>
@@ -49,8 +50,8 @@ const getFile = async () => {
   }
   const { Body } = await s3.send(new GetObjectCommand(downloadParams))
   const bodyContents = await streamToString(Body)
-  console.log(bodyContents)
+  console.info(bodyContents)
 }
 
 addFile()
-// getFile()
+getFile()

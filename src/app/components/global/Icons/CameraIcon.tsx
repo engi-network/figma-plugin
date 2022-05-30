@@ -26,7 +26,6 @@ function SvgCameraIcon(props: SVGProps<SVGSVGElement>) {
       <defs>
         <linearGradient
           id="camera-icon_svg__a"
-          x1={1.028}
           y1={13.118}
           x2={16.59}
           y2={9.146}
