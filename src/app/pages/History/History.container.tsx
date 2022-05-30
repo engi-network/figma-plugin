@@ -14,7 +14,7 @@ import HistoryHeader from '~/app/components/modules/History/HistoryHeader/Histor
 import { useAppContext } from '~/app/contexts/App.context'
 import { getFilterStateFromQuery } from '~/app/lib/utils/query'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { sortByOptions } from '~/app/pages/History/History.data'
+import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
 
 import { useTableData } from './History.hooks'
 import { extractBranchNames } from './History.utils'
@@ -49,7 +49,7 @@ function Historycontainer() {
     setFilter(values)
   }
 
-  console.log('history on history=====>', history, data)
+  console.info('history on history=====>', history, data)
 
   return (
     <>
@@ -69,7 +69,7 @@ function Historycontainer() {
       </div>
       <div className="flex px-8 mb-8 mt-4">
         <Select
-          options={sortByOptions}
+          options={SORT_BY_OPTIONS}
           onChange={handleSelectChange}
           value={sortBy}
           placeholder="Sort by"

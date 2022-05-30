@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { sortByOptions } from '~/app/pages/History/History.data'
+import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
 
 import Select from './Select'
 
@@ -10,16 +10,16 @@ export default {
 }
 
 export function SelectWithKnobs() {
-  const [sortBy, setSortBy] = useState('')
+  const [sortBy, setSortBy] = useState(SORT_BY_OPTIONS[0].value)
 
   const handleSelectChange = (value: string) => {
     setSortBy(value)
   }
 
   return (
-    <div>
+    <div className="h-[100vh] w-full bg-slate-800">
       <Select
-        options={sortByOptions}
+        options={SORT_BY_OPTIONS}
         onChange={handleSelectChange}
         value={sortBy}
         placeholder="Sort by"

@@ -1,19 +1,29 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid'
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
+import { FigmaIcon } from '~/app/components/global/Icons'
+import Select, { SelectOption } from '~/app/components/global/Select/Select'
 import { useAppContext } from '~/app/contexts/App.context'
 import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { ReportResult, STATUS } from '~/app/models/Report'
 
+const IMAGE_SELECT_OPTIONS: Array<SelectOption> = [
+  { value: 'capture', name: 'Storycap captured' },
+  { value: 'gray-diff', name: 'Gray-scale Difference' },
+  { value: 'blue-diff', name: 'Blue-scale Difference' },
+]
+
 function ResultContainer() {
   const navigate = useNavigate()
   const { report } = useAppContext()
+  const [selectedImage, setSelectedImage] = useState()
 
   if (!report || report.status !== STATUS.SUCCESS) {
     navigate(ROUTES_MAP[ROUTES.HOME])
@@ -22,8 +32,13 @@ function ResultContainer() {
 
   const { originalImageUrl, result } = report
 
-  const { url_blue_difference, url_gray_difference, url_screenshot } =
-    result as ReportResult
+  const {
+    url_blue_difference,
+    url_gray_difference,
+    url_screenshot,
+    width,
+    height,
+  } = result as ReportResult
 
   console.info('report in result======> ', report)
 
@@ -33,6 +48,10 @@ function ResultContainer() {
 
   const handleCreateNew = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
+  }
+
+  const handleSelectChange = (value: string) => {
+    setSelectedImage(value)
   }
 
   const drawCallback =
@@ -65,13 +84,14 @@ function ResultContainer() {
         <div className="flex mb-8">
           <div className="w-6/12 flex justify-start">
             <Canvas
-              id="blue-scale"
+              id="orignal-image"
               className="mb-4 border border-wf-tertiery"
               width={210}
               height={210}
               draw={drawCallback(originalImageUrl + '')}
               options={{ contextId: '2d' }}
-              label={ui('result.greenScale')}
+              label={`${width} ✕ ${height}`}
+              icon={<FigmaIcon width={32} height={32} />}
             />
           </div>
           <div className="w-6/12 flex justify-end">
@@ -83,6 +103,13 @@ function ResultContainer() {
               draw={drawCallback(url_screenshot + '')}
               options={{ contextId: '2d' }}
               label={ui('result.grayScale')}
+            />
+            <Select
+              options={IMAGE_SELECT_OPTIONS}
+              onChange={handleSelectChange}
+              value={selectedImage}
+              placeholder="Result Images"
+              className=""
             />
           </div>
         </div>
