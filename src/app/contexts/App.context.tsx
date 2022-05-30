@@ -3,11 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { QueryState } from '~/app/@types/route'
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
+import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWSService from '~/app/lib/services/aws'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import SocketManager from '~/app/lib/services/socket-manager'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
+import { replaceItemInArray } from '~/app/lib/utils/object'
 import {
   DetailedReport,
   ErrorResult,
@@ -16,8 +18,6 @@ import {
   STATUS,
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
-
-import { ROUTES, ROUTES_MAP } from '../lib/constants'
 
 export interface AppContextProps {
   globalError: string
@@ -66,14 +66,20 @@ export function useAppContextSetup(): AppContextProps {
           status: STATUS.SUCCESS,
         }
 
-        const filteredHistory = history.filter(
-          (item) => item.checkId !== check_id,
+        const replacedArray = replaceItemInArray(
+          history,
+          'checkId',
+          check_id,
+          detailedReport,
         )
-        setHistory([...filteredHistory, detailedReport])
+        console.info('log=====>', replacedArray)
+        setHistory(replacedArray)
+
         dispatchData({
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
           data: detailedReport,
         })
+
         setReport(detailedReport)
 
         SocketManager.terminateById(check_id, 1000, 'Successfully closed')
@@ -94,10 +100,14 @@ export function useAppContextSetup(): AppContextProps {
           status: STATUS.FAIL,
         }
 
-        const filteredHistory = history.filter(
-          (item) => item.checkId !== check_id,
+        const replacedArray = replaceItemInArray(
+          history,
+          'checkId',
+          check_id,
+          detailedReport,
         )
-        setHistory([...filteredHistory, detailedReport])
+
+        setHistory(replacedArray)
         dispatchData({
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
           data: detailedReport,
@@ -114,6 +124,7 @@ export function useAppContextSetup(): AppContextProps {
           1000,
           'Got error report from server',
         )
+        navigate(ROUTES_MAP[ROUTES.ERROR])
         return
       }
     } catch (error) {

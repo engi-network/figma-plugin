@@ -1,18 +1,26 @@
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid'
-
-import { ProgressIcon } from '~/app/components/global/Icons'
+import {
+  CheckIcon,
+  FailIcon,
+  ProgressIcon,
+} from '~/app/components/global/Icons'
 import { STATUS } from '~/app/models/Report'
 
 function CellStatus({ value }: { value: STATUS }) {
   if (value === STATUS.SUCCESS) {
-    return <CheckCircleIcon className="w-6 h-6 text-primary-green" />
+    return <CheckIcon className="text-primary-green" width={23} height={23} />
   }
 
   if (value === STATUS.FAIL) {
-    return <XCircleIcon className="w-6 h-6 text-secondary-error" />
+    return (
+      <FailIcon
+        className="w-6 h-6 text-secondary-error"
+        width={24}
+        height={24}
+      />
+    )
   }
 
-  return <ProgressIcon className="text-primary-orange" width={20} height={20} />
+  return <ProgressIcon className="text-primary-orange" width={24} height={24} />
 }
 
 export default CellStatus

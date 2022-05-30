@@ -6,7 +6,11 @@ import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
 import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
-import { FigmaIcon, StorybookIcon } from '~/app/components/global/Icons'
+import {
+  CheckIcon,
+  FigmaIcon,
+  StorybookIcon,
+} from '~/app/components/global/Icons'
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
 import { useAppContext } from '~/app/contexts/App.context'
 import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
@@ -88,7 +92,7 @@ function ResultContainer() {
           </div>
         </div>
         <div className="flex mb-8">
-          <div className="w-6/12 flex justify-start">
+          <div className="flex justify-start">
             <Canvas
               id="orignal-image"
               className="mb-4 border border-wf-tertiery"
@@ -100,8 +104,10 @@ function ResultContainer() {
               icon={<FigmaIcon width={32} height={32} />}
             />
           </div>
-          <div></div>
-          <div className="w-6/12 flex flex-col items-end">
+          <div className="flex justify-center items-center flex-1">
+            <CheckIcon className="w-7 h-7" />
+          </div>
+          <div className="flex flex-col items-end">
             <div>
               <Canvas
                 id="blue-scale"
