@@ -1,6 +1,8 @@
 import { Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import cn from 'classnames'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import React, { Fragment, ReactNode } from 'react'
 
 interface Props {
