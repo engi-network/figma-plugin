@@ -8,7 +8,7 @@ import {
   StorybookIcon,
   WrenchIcon,
 } from '../Icons'
-import Step from './Step'
+import Step from './Step/Step'
 import Stepper from './Stepper'
 
 export default {

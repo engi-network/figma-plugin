@@ -5,6 +5,7 @@ interface StepRootProps {
   active: boolean
   children: ReactNode
   completed: boolean
+  connector?: ReactNode
   disabled?: boolean
   last: boolean
   orientation: 'horizontal' | 'vertical'
@@ -17,6 +18,7 @@ function StepRoot({
   active,
   orientation,
   completed,
+  connector,
 }: StepRootProps) {
   const borderColor = completed ? 'border-primary-green' : 'border-[ffffff4d]'
 
@@ -53,12 +55,20 @@ function StepRoot({
   return (
     <div className={rootClasses}>
       <div className={bodyClasses}>{children}</div>
-      {!last && (
+      {!last && !connector && (
         <div
           className="flex justify-center items-center flex-1"
           aria-hidden="true"
         >
           <div className={connectorClasses} />
+        </div>
+      )}
+      {!last && connector && (
+        <div
+          className="flex justify-center items-center flex-1"
+          aria-hidden="true"
+        >
+          {connector}
         </div>
       )}
     </div>

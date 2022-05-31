@@ -12,6 +12,7 @@ export interface StepperProps {
   activeStep: number
   children: ReactNode
   className?: string
+  connector?: ReactNode
   orientation?: 'horizontal' | 'vertical'
 }
 
@@ -20,13 +21,15 @@ function Stepper({
   activeStep,
   className,
   orientation = 'horizontal',
+  connector,
 }: StepperProps) {
   const contextValues = useMemo(
     () => ({
       activeStep,
       orientation,
+      connector,
     }),
-    [activeStep, orientation],
+    [activeStep, orientation, connector],
   )
 
   const childrenArray = Children.toArray(children).filter(Boolean)

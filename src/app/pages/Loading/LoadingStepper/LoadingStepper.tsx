@@ -5,7 +5,7 @@ import {
   StorybookIcon,
   WrenchIcon,
 } from '~/app/components/global/Icons'
-import Step from '~/app/components/global/Stepper/Step'
+import Step from '~/app/components/global/Stepper/Step/Step'
 import Stepper from '~/app/components/global/Stepper/Stepper'
 
 interface Props {

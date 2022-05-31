@@ -1,13 +1,14 @@
 import { ReactNode, useMemo } from 'react'
 
-import { useStepperContext } from './Stepper.context'
-import { StepContextProvider } from './Steps/Step.context'
-import StepRoot from './Steps/StepRoot'
+import { useStepperContext } from '../Stepper.context'
+import { StepContextProvider } from './Step.context'
+import StepRoot from './StepRoot'
 
 export interface StepProps {
   active?: boolean
   children: ReactNode
   completed?: boolean
+  connector?: ReactNode
   disabled?: boolean
   index?: number
   last?: boolean
@@ -21,7 +22,7 @@ function Step({
   index = 0,
   last = false,
 }: StepProps) {
-  const { orientation, activeStep } = useStepperContext()
+  const { orientation, activeStep, connector } = useStepperContext()
 
   let [active = false, completed = false, disabled = false] = [
     activeProp,
@@ -57,6 +58,7 @@ function Step({
         active={active}
         completed={completed}
         disabled={disabled}
+        connector={connector}
       >
         <li>{children}</li>
       </StepRoot>

@@ -4,6 +4,7 @@ import { createContext } from '~/app/lib/utils/context'
 
 export interface StepperContextProps {
   activeStep: number
+  connector?: ReactNode
   orientation: 'horizontal' | 'vertical'
 }
 
@@ -12,11 +13,12 @@ const StepperContext = createContext<StepperContextProps>()
 export function useStepperContextSetup(
   values: Partial<StepperContextProps>,
 ): StepperContextProps {
-  const { activeStep = 0, orientation = 'horizontal' } = values
+  const { activeStep = 0, orientation = 'horizontal', connector } = values
 
   return {
     activeStep,
     orientation,
+    connector,
   }
 }
 
