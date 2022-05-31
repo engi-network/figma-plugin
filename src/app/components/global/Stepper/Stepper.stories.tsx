@@ -1,3 +1,4 @@
+import { select } from '@storybook/addon-knobs'
 import { useState } from 'react'
 
 import {
@@ -7,6 +8,7 @@ import {
   StorybookIcon,
   WrenchIcon,
 } from '../Icons'
+import Step from './Step'
 import Stepper from './Stepper'
 
 export default {
@@ -15,26 +17,31 @@ export default {
 }
 
 export function StepperWithKnobs() {
-  const [step, _] = useState(2)
+  const [step, _] = useState(0)
+  const orientation = select(
+    'Orientation',
+    ['horizontal', 'vertical'],
+    'horizontal',
+  )
 
   return (
     <div className="bg-slate-800 h-full p-10">
-      <Stepper activeStep={step}>
-        <div>
+      <Stepper activeStep={step} orientation={orientation}>
+        <Step>
           <FolderIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <WrenchIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <StorybookIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <CameraIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <CompareIcon width={20} height={20} />
-        </div>
+        </Step>
       </Stepper>
     </div>
   )
