@@ -5,6 +5,7 @@ import {
   StorybookIcon,
   WrenchIcon,
 } from '~/app/components/global/Icons'
+import Step from '~/app/components/global/Stepper/Step'
 import Stepper from '~/app/components/global/Stepper/Stepper'
 
 interface Props {
@@ -16,21 +17,21 @@ function LoadingStepper({ step, className }: Props) {
   return (
     <div className={className}>
       <Stepper activeStep={step}>
-        <div>
+        <Step>
           <FolderIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <WrenchIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <StorybookIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <CameraIcon width={20} height={20} />
-        </div>
-        <div>
+        </Step>
+        <Step>
           <CompareIcon width={20} height={20} />
-        </div>
+        </Step>
       </Stepper>
     </div>
   )

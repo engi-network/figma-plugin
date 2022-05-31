@@ -1,29 +1,29 @@
 import cn from 'classnames'
 import { ReactNode } from 'react'
 
-interface StepperItemProps {
-  activeStep: number
+interface StepRootProps {
+  active: boolean
   children: ReactNode
-  isLast: boolean
+  completed: boolean
+  disabled?: boolean
+  last: boolean
   orientation: 'horizontal' | 'vertical'
-  step: number
+  step?: number
 }
 
-function StepContainer({
+function StepRoot({
   children,
-  step,
-  isLast,
-  activeStep,
+  last,
+  active,
   orientation,
-}: StepperItemProps) {
-  const isPassed = activeStep > step
-  const isCurrent = activeStep === step
-  const borderColor = isPassed ? 'border-primary-green' : 'border-[ffffff4d]'
+  completed,
+}: StepRootProps) {
+  const borderColor = completed ? 'border-primary-green' : 'border-[ffffff4d]'
 
   const bodyClasses = cn(
-    { 'border-primary-green': isCurrent },
+    { 'border-primary-green': active },
     `relative flex items-center justify-center rounded-full p-2 border ${borderColor}`,
-    { 'bg-primary-green': isCurrent },
+    { 'bg-primary-green': active },
   )
 
   const isHorizontal = orientation === 'horizontal'
@@ -34,13 +34,13 @@ function StepContainer({
       'flex-row': isHorizontal,
     },
     { 'flex-col': !isHorizontal },
-    { 'w-20': !isLast && isHorizontal },
-    { 'h-20': !isLast && !isHorizontal },
-    { 'w-0': isLast && isHorizontal },
-    { 'h-0': isLast && !isHorizontal },
+    { 'w-20': !last && isHorizontal },
+    { 'h-20': !last && !isHorizontal },
+    { 'w-0': last && isHorizontal },
+    { 'h-0': last && !isHorizontal },
   )
 
-  const bridgeClasses = cn(
+  const connectorClasses = cn(
     `border-[0.5px] ${borderColor}`,
     {
       'w-full h-[1px]': isHorizontal,
@@ -51,18 +51,18 @@ function StepContainer({
   )
 
   return (
-    <li className={rootClasses}>
+    <div className={rootClasses}>
       <div className={bodyClasses}>{children}</div>
-      {!isLast && (
+      {!last && (
         <div
           className="flex justify-center items-center flex-1"
           aria-hidden="true"
         >
-          <div className={bridgeClasses} />
+          <div className={connectorClasses} />
         </div>
       )}
-    </li>
+    </div>
   )
 }
 
-export default StepContainer
+export default StepRoot
