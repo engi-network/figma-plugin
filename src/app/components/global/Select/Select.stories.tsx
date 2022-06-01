@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
 import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
 
 import Select from './Select'
@@ -17,7 +18,7 @@ export function SelectWithKnobs() {
   }
 
   return (
-    <div className="h-[100vh] w-full bg-slate-800">
+    <StoryContainer>
       <Select
         options={SORT_BY_OPTIONS}
         onChange={handleSelectChange}
@@ -25,6 +26,6 @@ export function SelectWithKnobs() {
         placeholder="Sort by"
         className="w-1/12"
       />
-    </div>
+    </StoryContainer>
   )
 }

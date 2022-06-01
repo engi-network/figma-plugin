@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import Container from '~/app/components/modules/Storybook/Container/Container'
+import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
 
 import StatusStepper from './StatusStepper'
 
@@ -13,8 +13,8 @@ export function StatusStepperWithKnobs() {
   const [step, _] = useState(3)
 
   return (
-    <Container>
+    <StoryContainer>
       <StatusStepper activeStep={step} />
-    </Container>
+    </StoryContainer>
   )
 }

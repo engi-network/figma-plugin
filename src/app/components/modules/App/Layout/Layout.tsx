@@ -6,7 +6,7 @@ interface Props {
 
 function Layout({ children }: Props) {
   return (
-    <main className="flex flex-1 flex-col bg-landing bg-cover relative">
+    <main className="flex flex-1 flex-col bg-landing bg-cover relative overflow-x-hidden">
       {children}
     </main>
   )
