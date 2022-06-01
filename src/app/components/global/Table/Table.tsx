@@ -148,7 +148,7 @@ function Table({
                   },
                 },
               ])}
-              className="tr py-3 px-7 text-sm text-text-secondary bg-primary-white/20"
+              className="tr py-3 px-7 text-sm text-text-secondary bg-primary-dark/20"
               key={index}
             >
               {headerGroup.headers.map((column, index) => (
@@ -156,7 +156,7 @@ function Table({
                   {...column.getHeaderProps([
                     {
                       style: {
-                        alignItems: 'center',
+                        alignItems: 'start',
                         display: 'flex',
                         justifyContent: 'start',
                       },

@@ -8,6 +8,7 @@ import CellText from '~/app/components/global/Table/CellText/CellText'
 import CellVersion from '~/app/components/global/Table/CellVersion/CellVersion'
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
 import { Column } from '~/app/components/global/Table/Table.types'
+import TableHeader from '~/app/components/global/Table/TableHeader/TableHeader'
 import { FilterValues } from '~/app/components/modules/History/Filter/Filter.data'
 import { mapFilterFormToTableFilter } from '~/app/components/modules/History/Filter/Filter.utils'
 
@@ -61,7 +62,7 @@ export function useTableData(filter: FilterValues) {
         accessor: TB_ACCESSORS.IMAGE,
         Cell: CellImage,
         disableGlobalFilter: true,
-        Header: 'Designs',
+        Header: <TableHeader title="Designs" />,
         id: TB_ACCESSORS.IMAGE,
         width: 140,
       },
@@ -76,7 +77,7 @@ export function useTableData(filter: FilterValues) {
       {
         accessor: TB_ACCESSORS.CODE,
         Cell: CellCodeBlock,
-        Header: 'Rendered Code',
+        Header: <TableHeader title="Rendered code" />,
         id: TB_ACCESSORS.CODE,
         width: 140,
       },
@@ -84,9 +85,13 @@ export function useTableData(filter: FilterValues) {
         accessor: TB_ACCESSORS.NAME,
         Cell: CellName,
         disableGlobalFilter: true,
-        Header: () => {
-          return <div className="pl-8">{'Component'}</div>
-        },
+        Header: (
+          <TableHeader
+            title="Components"
+            subtitle="Branch name"
+            className="pl-8"
+          />
+        ),
         width: 200,
       },
       {
@@ -94,7 +99,7 @@ export function useTableData(filter: FilterValues) {
         Cell: CellVersion,
         disableGlobalFilter: true,
         filter: inclusionFilter,
-        Header: 'Version',
+        Header: <TableHeader title="Version" subtitle="Commit hash" />,
         id: TB_ACCESSORS.VERSION,
       },
 
