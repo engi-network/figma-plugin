@@ -1,13 +1,8 @@
 import { select } from '@storybook/addon-knobs'
 import { useState } from 'react'
 
-import {
-  CameraIcon,
-  CompareIcon,
-  FolderIcon,
-  StorybookIcon,
-  WrenchIcon,
-} from '../Icons'
+import { mapStepToIcon } from '~/app/components/pages/ResultPage/StatusStepper/StatusStepper'
+
 import Step from './Step/Step'
 import Stepper from './Stepper'
 
@@ -17,7 +12,7 @@ export default {
 }
 
 export function StepperWithKnobs() {
-  const [step, _] = useState(0)
+  const [step, _] = useState(2)
   const orientation = select(
     'Orientation',
     ['horizontal', 'vertical'],
@@ -27,21 +22,13 @@ export function StepperWithKnobs() {
   return (
     <div className="bg-slate-800 h-full p-10">
       <Stepper activeStep={step} orientation={orientation}>
-        <Step>
-          <FolderIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <WrenchIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <StorybookIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <CameraIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <CompareIcon width={20} height={20} />
-        </Step>
+        {Array(5)
+          .fill(0)
+          .map((_, index) => (
+            <Step className="p-2" key={index}>
+              {mapStepToIcon(20, 20)[index]}
+            </Step>
+          ))}
       </Stepper>
     </div>
   )

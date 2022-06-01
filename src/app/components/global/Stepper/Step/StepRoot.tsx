@@ -20,13 +20,17 @@ function StepRoot({
   orientation,
   completed,
   connector,
+  disabled,
 }: StepRootProps) {
-  const borderColor = completed ? 'border-primary-green' : 'border-[#ffffff4d]'
+  const borderColor = completed
+    ? 'border-primary-green'
+    : 'border-primary-white/30'
 
   const bodyClasses = cn(
     { 'border-primary-green': active },
     `relative flex items-center justify-center rounded-full border ${borderColor}`,
     { 'bg-primary-green': active },
+    { 'bg-primary-white/30': completed || disabled },
   )
 
   const isHorizontal = orientation === 'horizontal'
@@ -46,10 +50,10 @@ function StepRoot({
   const connectorClasses = cn(
     `border-[0.5px] ${borderColor}`,
     {
-      'w-14 h-[1px]': isHorizontal,
+      'w-10 h-[1px]': isHorizontal,
     },
     {
-      'h-14 w-[1px]': !isHorizontal,
+      'h-10 w-[1px]': !isHorizontal,
     },
   )
 
