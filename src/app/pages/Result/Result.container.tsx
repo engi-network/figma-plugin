@@ -74,7 +74,7 @@ function ResultContainer() {
   return (
     <>
       <Header />
-      <div className="px-10 pt-10">
+      <div className="px-16 pt-10">
         <div className="flex justify-between mb-16 relative">
           <IconButton
             icon={<ArrowLeftIcon className="w-4 h-4 text-primary-white z-20" />}
@@ -104,14 +104,14 @@ function ResultContainer() {
               icon={<FigmaIcon width={32} height={32} />}
             />
           </div>
-          <div className="flex justify-center items-center flex-1">
+          <div className="flex justify-center items-center flex-1 pb-11">
             <CheckIcon className="w-7 h-7" />
           </div>
           <div className="flex flex-col items-end">
             <div>
               <Canvas
                 id="blue-scale"
-                className="mb-4 border border-wf-tertiery"
+                className="mb-2 border border-wf-tertiery"
                 width={210}
                 height={210}
                 draw={drawCallback(url_screenshot + '')}
@@ -127,7 +127,8 @@ function ResultContainer() {
                 onChange={handleSelectChange}
                 value={selectedImage}
                 placeholder="Result Images"
-                className="flex justify-center"
+                className="flex justify-center pl-2"
+                buttonClassName="text-text-secondary"
               />
             </div>
           </div>

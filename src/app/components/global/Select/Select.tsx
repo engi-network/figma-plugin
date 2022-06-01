@@ -1,5 +1,6 @@
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid'
+import cn from 'classnames'
 import { Fragment, useEffect, useState } from 'react'
 
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -12,6 +13,7 @@ export interface SelectOption {
 }
 
 interface SelectProps {
+  buttonClassName?: string
   className?: string
   onChange: (value: string) => void
   options: Array<SelectOption>
@@ -25,6 +27,7 @@ function Select({
   value,
   placeholder,
   className,
+  buttonClassName,
 }: SelectProps) {
   const [selectedOption, setSelectedOption] = useState<SelectOption>()
 
@@ -46,16 +49,16 @@ function Select({
     ? selectedOption.name
     : placeholder || ui('components.select.placeholder')
 
+  const buttonClasses = cn(
+    buttonClassName,
+    'flex justify-between items-center w-full p-2 text-sm text-left text-text-primary cursor-default focus:outline-none',
+  )
+
   return (
     <div className={className}>
       <Listbox value={selectedOption} onChange={handleSelectChange}>
         <div className="relative">
-          <Listbox.Button
-            className={`flex justify-between items-center w-full p-2 text-sm text-left 
-              text-text-primary cursor-default focus:outline-none focus-visible:ring-2 
-              focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 
-              focus-visible:ring-offset-2 focus-visible:border-indigo-500`}
-          >
+          <Listbox.Button className={buttonClasses}>
             <span className="block truncate">{label}</span>
             <span className="flex items-center pr-2 pointer-events-none">
               <ChevronDownIcon

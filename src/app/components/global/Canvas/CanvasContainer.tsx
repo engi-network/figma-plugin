@@ -30,7 +30,7 @@ function CanvasContainer({
   }, [id])
 
   return (
-    <div className="flex flex-col items-center justify-center relative w-fit">
+    <div className="flex flex-col items-center justify-start relative w-fit">
       <Canvas
         id={inputId}
         draw={draw}
@@ -43,7 +43,7 @@ function CanvasContainer({
         {children}
       </Canvas>
       {label && (
-        <label className="text-base text-gray-400" htmlFor={inputId}>
+        <label className="text-sm text-text-secondary" htmlFor={inputId}>
           {label}
         </label>
       )}
