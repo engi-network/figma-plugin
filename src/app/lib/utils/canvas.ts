@@ -20,7 +20,7 @@ export async function drawImage(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
   data: BlobPart | string,
-): Promise<[ImageData, string]> {
+): Promise<void> {
   const url =
     typeof data === 'string' ? data : URL.createObjectURL(new Blob([data]))
 
@@ -31,11 +31,9 @@ export async function drawImage(
     img.src = url
   })
 
-  // scale and center image in canvas
   const horizontalRatio = canvas.width / image.width
   const verticalRatio = canvas.height / image.height
 
-  // only scale large frames down
   const ratio = Math.min(
     horizontalRatio < 1 ? horizontalRatio : 1,
     verticalRatio < 1 ? verticalRatio : 1,
@@ -50,20 +48,13 @@ export async function drawImage(
     image,
     0,
     0,
-    // selection frame source dimensions
     image.width,
     image.height,
-    // center scaled frame image in canvas
     xCenterOffset,
     yCenterOffset,
-    // canvas destination dimensions
     image.width * ratio,
     image.height * ratio,
   )
-
-  const imageData = context.getImageData(0, 0, image.width, image.height)
-
-  return [imageData, url]
 }
 
 export async function decodeOriginal(

@@ -44,8 +44,6 @@ function ResultContainer() {
     { value: url_blue_difference, name: 'Blue-scale Difference' },
   ]
 
-  console.info('report in result======> ', report)
-
   const handleClickBack = () => {
     navigate(ROUTES_MAP[ROUTES.HOME])
   }
@@ -60,9 +58,12 @@ function ResultContainer() {
 
   const drawCallback =
     (imageUrl?: string) =>
-    (canvas: HTMLCanvasElement, context: RenderingContext) => {
-      !!imageUrl &&
-        drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
+    async (canvas: HTMLCanvasElement, context: RenderingContext) => {
+      if (!imageUrl) {
+        return
+      }
+
+      await drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
     }
 
   useEffect(() => {
@@ -114,7 +115,7 @@ function ResultContainer() {
                 className="mb-2 border border-wf-tertiery"
                 width={210}
                 height={210}
-                draw={drawCallback(url_screenshot + '')}
+                draw={drawCallback(selectedImage)}
                 options={{ contextId: '2d' }}
                 icon={
                   isStorybook ? (
