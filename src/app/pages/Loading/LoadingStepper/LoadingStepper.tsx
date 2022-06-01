@@ -1,12 +1,6 @@
-import {
-  CameraIcon,
-  CompareIcon,
-  FolderIcon,
-  StorybookIcon,
-  WrenchIcon,
-} from '~/app/components/global/Icons'
 import Step from '~/app/components/global/Stepper/Step/Step'
 import Stepper from '~/app/components/global/Stepper/Stepper'
+import { mapStepToIcon } from '~/app/components/pages/ResultPage/StatusStepper/StatusStepper'
 
 interface Props {
   className?: string
@@ -16,22 +10,14 @@ interface Props {
 function LoadingStepper({ step, className }: Props) {
   return (
     <div className={className}>
-      <Stepper activeStep={step}>
-        <Step>
-          <FolderIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <WrenchIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <StorybookIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <CameraIcon width={20} height={20} />
-        </Step>
-        <Step>
-          <CompareIcon width={20} height={20} />
-        </Step>
+      <Stepper activeStep={step} orientation="vertical">
+        {Array(5)
+          .fill(0)
+          .map((_, index) => (
+            <Step className="p-2" key={index}>
+              {mapStepToIcon(20, 20)[index]}
+            </Step>
+          ))}
       </Stepper>
     </div>
   )

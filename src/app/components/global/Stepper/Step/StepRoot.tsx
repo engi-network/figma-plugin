@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 interface StepRootProps {
   active: boolean
   children: ReactNode
+  className?: string
   completed: boolean
   connector?: ReactNode
   disabled?: boolean
@@ -20,11 +21,11 @@ function StepRoot({
   completed,
   connector,
 }: StepRootProps) {
-  const borderColor = completed ? 'border-primary-green' : 'border-[ffffff4d]'
+  const borderColor = completed ? 'border-primary-green' : 'border-[#ffffff4d]'
 
   const bodyClasses = cn(
     { 'border-primary-green': active },
-    `relative flex items-center justify-center rounded-full p-2 border ${borderColor}`,
+    `relative flex items-center justify-center rounded-full border ${borderColor}`,
     { 'bg-primary-green': active },
   )
 
@@ -36,8 +37,8 @@ function StepRoot({
       'flex-row': isHorizontal,
     },
     { 'flex-col': !isHorizontal },
-    { 'w-20': !last && isHorizontal },
-    { 'h-20': !last && !isHorizontal },
+    { 'max-w-20': !last && isHorizontal },
+    { 'max-h-20': !last && !isHorizontal },
     { 'w-0': last && isHorizontal },
     { 'h-0': last && !isHorizontal },
   )
@@ -45,10 +46,10 @@ function StepRoot({
   const connectorClasses = cn(
     `border-[0.5px] ${borderColor}`,
     {
-      'w-full h-[1px]': isHorizontal,
+      'w-14 h-[1px]': isHorizontal,
     },
     {
-      'h-full w-[1px]': !isHorizontal,
+      'h-14 w-[1px]': !isHorizontal,
     },
   )
 

@@ -7,6 +7,7 @@ import StepRoot from './StepRoot'
 export interface StepProps {
   active?: boolean
   children: ReactNode
+  className?: string
   completed?: boolean
   connector?: ReactNode
   disabled?: boolean
@@ -21,6 +22,7 @@ function Step({
   completed: completedProp,
   index = 0,
   last = false,
+  className,
 }: StepProps) {
   const { orientation, activeStep, connector } = useStepperContext()
 
@@ -59,8 +61,9 @@ function Step({
         completed={completed}
         disabled={disabled}
         connector={connector}
+        className={className}
       >
-        <li>{children}</li>
+        <li className={className}>{children}</li>
       </StepRoot>
     </StepContextProvider>
   )
