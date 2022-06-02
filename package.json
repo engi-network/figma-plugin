@@ -25,13 +25,13 @@
     "@aws-sdk/client-sns": "^3.55.0",
     "@aws-sdk/credential-provider-cognito-identity": "^3.99.0",
     "@aws-sdk/s3-request-presigner": "^3.99.0",
-    "aws-sdk": "^2.1098.0",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
     "@sentry/react": "^6.19.7",
     "@sentry/tracing": "^6.19.7",
+    "aws-sdk": "^2.1098.0",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "dompurify": "^2.3.6",
@@ -49,6 +49,7 @@
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.6",
     "storycap": "^3.1.5",
+    "swiper": "^8.2.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
