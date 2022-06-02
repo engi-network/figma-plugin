@@ -1,3 +1,5 @@
+import { SocketData } from '~/app/models/Report'
+
 export enum READ_STATE {
   CLOSING = 2,
   CONNECTING = 0,
@@ -15,6 +17,7 @@ export class CustomSocket {
   isInitialized = false
   private callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
   private subscribers: Array<CallbackType> = []
+  lastData: SocketData | undefined
 
   constructor(
     socketUrl: string,
@@ -89,6 +92,7 @@ export class CustomSocket {
 
   receiveMessage(event: MessageEvent) {
     this.publish(event)
+    this.lastData = JSON.parse(event.data)
   }
 
   handleSocketOpen(event: Event) {

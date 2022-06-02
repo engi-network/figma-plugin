@@ -2,12 +2,6 @@ import { History, ReportResult, STATUS } from '~/app/models/Report'
 
 import { Cell } from './Table.types'
 
-//test placeholder
-const placeholder = `const TestCompenent = () => {
-  return <div>Test</div>
-}
-`
-
 export const mapHistoryToTable = (history: History): Array<Cell> => {
   return history.map(({ result, status, originalImageUrl = '' }) => {
     const {
@@ -21,7 +15,10 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
     const baseObj = {
       branch,
       checkId: check_id,
-      code: placeholder,
+      code: {
+        codeSnippet: '',
+        checkId: check_id,
+      },
       commit,
       imageUrl: originalImageUrl,
       name: {
@@ -38,20 +35,17 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
     }
 
     switch (status) {
-      case STATUS.FAIL: {
-        return {
-          ...baseObj,
-          duration: 0,
-          status: STATUS.FAIL,
-        }
-      }
       case STATUS.SUCCESS: {
         const { created_at, completed_at, code_snippet } =
           result as ReportResult
 
         return {
           ...baseObj,
-          code: code_snippet,
+          code: {
+            status: STATUS.SUCCESS,
+            codeSnippet: code_snippet,
+            checkId: check_id,
+          },
           completedAt: completed_at,
           createdAt: created_at,
           //scaling because react-slider can't deal with a large number
@@ -59,12 +53,26 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
           status: STATUS.SUCCESS,
         }
       }
-      case STATUS.IN_PROGRESS:
+      case STATUS.IN_PROGRESS: {
+        const { code_snippet } = result as ReportResult
         return {
           ...baseObj,
+          code: {
+            status: STATUS.IN_PROGRESS,
+            codeSnippet: code_snippet,
+            checkId: check_id,
+          },
           duration: 0,
           status: STATUS.IN_PROGRESS,
         }
+      }
+      case STATUS.FAIL: {
+        return {
+          ...baseObj,
+          duration: 0,
+          status: STATUS.FAIL,
+        }
+      }
       default: {
         return {
           ...baseObj,

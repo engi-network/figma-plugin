@@ -1,7 +1,8 @@
 import { select } from '@storybook/addon-knobs'
 
-import { STEPS } from '~/app/pages/Main/Main.types'
+import { STEP_MESSAGES, STEPS } from '~/app/pages/Main/Main.types'
 
+import StoryContainer from '../Storybook/StoryContainer/StoryContainer'
 import Loader from './Loader'
 
 export default { component: Loader, title: 'Modules/Loader' }
@@ -22,9 +23,13 @@ export function LoaderWithAnimationWithKnobs() {
     ],
     STEPS.INIT,
   )
+
   return (
-    <div className="w-64 h-64">
+    <StoryContainer className="flex-col">
       <Loader step={step} />
-    </div>
+      <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
+        {STEP_MESSAGES[step]}
+      </h2>
+    </StoryContainer>
   )
 }

@@ -46,15 +46,15 @@ function Loading() {
     const { wsHandler } = ws
 
     // this ws callback for handling things in foreground in loading state
-    const callback = (event: MessageEvent) => {
+    const callbackInLoading = (event: MessageEvent) => {
       const data = JSON.parse(event.data) as SocketData
       queue.enqueue(data)
     }
 
-    wsHandler.subscribe(callback)
+    wsHandler.subscribe(callbackInLoading)
 
     return () => {
-      ws.wsHandler.unsubscribe(callback)
+      ws.wsHandler.unsubscribe(callbackInLoading)
     }
   }, [ws])
 

@@ -72,7 +72,6 @@ export function useAppContextSetup(): AppContextProps {
           check_id,
           detailedReport,
         )
-        console.info('log=====>', replacedArray)
         setHistory(replacedArray)
 
         dispatchData({
