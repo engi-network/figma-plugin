@@ -11,7 +11,9 @@ import {
   FigmaIcon,
   StorybookIcon,
 } from '~/app/components/global/Icons'
+import Modal from '~/app/components/global/Modal/Modal'
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
+import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/ImageCarousel'
 import { useAppContext } from '~/app/contexts/App.context'
 import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
@@ -22,6 +24,7 @@ function ResultContainer() {
   const navigate = useNavigate()
   const { report } = useAppContext()
   const [selectedImage, setSelectedImage] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
 
   if (!report || report.status !== STATUS.SUCCESS) {
     navigate(ROUTES_MAP[ROUTES.HOME])
@@ -54,6 +57,14 @@ function ResultContainer() {
 
   const handleSelectChange = (value: string) => {
     setSelectedImage(value)
+  }
+
+  const handleOpenModal = () => {
+    setIsOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsOpen(false)
   }
 
   const drawCallback =
@@ -122,6 +133,7 @@ function ResultContainer() {
                     <StorybookIcon width={32} height={32} />
                   ) : undefined
                 }
+                onClick={handleOpenModal}
               />
               <Select
                 options={imageSelectionOptions}
@@ -140,6 +152,11 @@ function ResultContainer() {
           </Button>
         </div>
       </div>
+      <Modal isOpen={isOpen} onClose={handleCloseModal}>
+        <ImageCarousel
+          imageUrls={[url_screenshot, url_gray_difference, url_blue_difference]}
+        />
+      </Modal>
     </>
   )
 }

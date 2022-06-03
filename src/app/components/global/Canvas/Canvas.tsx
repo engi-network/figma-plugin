@@ -10,6 +10,7 @@ export interface CanvasProps {
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => void
   height?: number
   id?: string
+  onClick?: () => void
   options: CanvasOption
   width?: number
 }
