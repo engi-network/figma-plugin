@@ -1,3 +1,7 @@
+import { useState } from 'react'
+
+import Button from '~/app/components/global/Button/Button'
+import Modal from '~/app/components/global/Modal/Modal'
 import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
 
 import ImageCarousel from './ImageCarousel'
@@ -14,9 +18,22 @@ const imageUrls = [
 ]
 
 export function ImageCarouselStory() {
+  const [isOpen, setOpen] = useState(false)
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleClickMe = () => {
+    setOpen(true)
+  }
+
   return (
     <StoryContainer>
-      <ImageCarousel imageUrls={imageUrls} />
+      <Button onClick={handleClickMe}>Click me</Button>
+      <Modal isOpen={isOpen} onClose={handleClose}>
+        <ImageCarousel imageUrls={imageUrls} />
+      </Modal>
     </StoryContainer>
   )
 }
