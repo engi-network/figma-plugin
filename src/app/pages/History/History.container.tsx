@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 
 import Input from '~/app/components/global/Input/Input'
 import Select from '~/app/components/global/Select/Select'
@@ -25,6 +25,8 @@ function Historycontainer() {
   const statesFromQuery = getFilterStateFromQuery(
     state as Record<string, string>,
   )
+  const [searchParams, setSearchParams] = useSearchParams()
+  console.log('search Params=====>', searchParams)
 
   const [filter, setFilter] = useState<FilterValues>({
     ...initialFilterState,

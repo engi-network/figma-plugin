@@ -1,9 +1,11 @@
+import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
 
 import { QueryState } from '~/app/@types/route'
-import Button from '~/app/components/global/Button/Button'
+import Header from '~/app/components/global/Header/Header'
+import IconButton from '~/app/components/global/IconButton/IconButton'
 import Loader from '~/app/components/modules/Loader/Loader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
@@ -32,8 +34,8 @@ function Loading() {
 
   const checkId = (state as Record<string, string>).checkId as unknown as string
 
-  const handleCreateNew = () => {
-    navigate(ROUTES_MAP[ROUTES.HOME])
+  const handleClickBack = () => {
+    navigate(-1)
   }
 
   const ws = SocketManager.getSocketById(checkId)
@@ -95,21 +97,26 @@ function Loading() {
 
   return (
     <>
-      <div className="flex ml-auto mr-auto mt-20">
-        <Loader step={step} />
+      <Header />
+      <div className="relative">
+        <IconButton
+          icon={<ChevronLeftIcon className="w-4 h-4" />}
+          onClick={handleClickBack}
+          className="text-text-secondary absolute z-20 top-7 left-8"
+        >
+          {ui('header.back')}
+        </IconButton>
+        <div className="flex justify-center">
+          <Loader step={step} />
+        </div>
+        <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
+          {STEP_MESSAGES[step]}
+        </h2>
+        <LoadingStepper
+          step={STEP_MAP_TO_STEPPER[step]}
+          className="absolute top-12 right-8"
+        />
       </div>
-      <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
-        {STEP_MESSAGES[step]}
-      </h2>
-      <div className="flex justify-center">
-        <Button onClick={handleCreateNew} className="w-2/12 capitalize">
-          {ui('result.createNew')}
-        </Button>
-      </div>
-      <LoadingStepper
-        step={STEP_MAP_TO_STEPPER[step]}
-        className="absolute top-12 right-8"
-      />
     </>
   )
 }

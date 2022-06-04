@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/solid'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import {
@@ -33,7 +33,9 @@ interface Props {
 const isDev = process.env.NODE_ENV === 'development'
 function Header({ numberOfProgress, setHistory }: Props) {
   const navigate = useNavigate()
+  const location = useLocation()
   const { userId, sessionId } = useUserContext()
+  console.log('location=======>', location)
 
   const handleViewHistory = () => {
     const queryParams: MeasurementData = {

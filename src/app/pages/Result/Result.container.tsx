@@ -15,7 +15,7 @@ import Modal from '~/app/components/global/Modal/Modal'
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
 import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/ImageCarousel'
 import { useAppContext } from '~/app/contexts/App.context'
-import { BUTTON_STYLE, ROUTES, ROUTES_MAP } from '~/app/lib/constants'
+import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { ReportResult, STATUS } from '~/app/models/Report'
@@ -89,10 +89,12 @@ function ResultContainer() {
       <div className="px-16 pt-10">
         <div className="flex justify-between mb-16 relative">
           <IconButton
-            icon={<ArrowLeftIcon className="w-4 h-4 text-primary-white z-20" />}
-            buttonStyle={BUTTON_STYLE.OUTLINED}
+            icon={<ArrowLeftIcon className="w-4 h-4" />}
             onClick={handleClickBack}
-          />
+            className="text-text-secondary z-20"
+          >
+            {ui('header.back')}
+          </IconButton>
           <div className="absolute flex justify-center top-0 left-0 right-0 z-10">
             <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold">
               {ui('result.wellDone')} <br />
