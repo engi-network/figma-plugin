@@ -38,7 +38,7 @@ function Modal({ isOpen, onClose, children, className }: Props) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
+              <div className="w-full max-w-[650px] transform overflow-hidden shadow-xl transition-all">
                 <button
                   onClick={onClose}
                   className="absolute top-5 right-5 z-20"

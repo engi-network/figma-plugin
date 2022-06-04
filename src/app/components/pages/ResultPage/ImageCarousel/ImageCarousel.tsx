@@ -1,11 +1,9 @@
-// Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-import React from 'react'
-import { EffectFade, Navigation, Pagination } from 'swiper'
+import { EffectFade, Navigation, Pagination, Zoom } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 interface Props {
@@ -16,17 +14,19 @@ function ImageCarousel({ imageUrls }: Props) {
   return (
     <Swiper
       spaceBetween={30}
-      effect={'fade'}
+      effect="fade"
       navigation
       pagination={{
         clickable: true,
       }}
-      modules={[EffectFade, Navigation, Pagination]}
-      className="mySwiper"
+      modules={[Zoom, EffectFade, Navigation, Pagination]}
+      zoom
     >
       {imageUrls.map((url, index) => (
-        <SwiperSlide key={index}>
-          <img src={url} alt="image" />
+        <SwiperSlide key={index} zoom>
+          <div className="">
+            <img src={url} alt="image" />
+          </div>
         </SwiperSlide>
       ))}
     </Swiper>
