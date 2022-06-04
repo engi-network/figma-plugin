@@ -1,7 +1,7 @@
 {
   "header": {
     "title": "Same story?",
-    "learnMore": "Learn more about Engi",
+    "whyEngi": "Why  {{eIcon}}ngi?",
     "companyName": "engi.com",
     "back": "Back",
     "inProgress": "In progress",

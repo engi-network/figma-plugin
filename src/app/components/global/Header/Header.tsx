@@ -2,7 +2,12 @@ import { TrashIcon } from '@heroicons/react/solid'
 import { useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
-import { ClockIcon, HistoryIcon, InfoIcon } from '~/app/components/global/Icons'
+import {
+  ClockIcon,
+  ECharIcon,
+  HistoryIcon,
+  InfoIcon,
+} from '~/app/components/global/Icons'
 import { useUserContext } from '~/app/contexts/User.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import GAService, {
@@ -11,6 +16,7 @@ import GAService, {
 } from '~/app/lib/services/ga'
 import { dispatchData } from '~/app/lib/utils/event'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { uiJSX } from '~/app/lib/utils/ui-dictionary-jsx'
 import { History } from '~/app/models/Report'
 import { SAME_STORY_CLEAR_HISTORY } from '~/plugin/constants'
 
@@ -60,6 +66,8 @@ function Header({ numberOfProgress, setHistory }: Props) {
     setHistory && setHistory([])
   }
 
+  const handleClickWhy = () => {}
+
   return (
     <header className="flex justify-between border-b border-text-secondary px-7 py-5">
       <div className="flex">
@@ -100,10 +108,15 @@ function Header({ numberOfProgress, setHistory }: Props) {
         )}
       </div>
       <IconButton
-        className="text-primary-green"
-        icon={<InfoIcon className="w-5 h-5 bg-opacity-40 text-primary-green" />}
+        className="text-primary-white"
+        icon={<InfoIcon className="w-5 h-5 bg-opacity-40 text-primary-white" />}
+        onClick={handleClickWhy}
       >
-        {ui('header.learnMore')}
+        {uiJSX('header.whyEngi', {
+          eIcon: (
+            <ECharIcon width={9} height={8} className="inline-flex mr-[1px]" />
+          ),
+        })}
       </IconButton>
     </header>
   )

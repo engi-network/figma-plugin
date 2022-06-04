@@ -1,3 +1,5 @@
+import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
+
 import Header from './Header'
 
 export default {
@@ -7,8 +9,8 @@ export default {
 
 export function HeaderDefault() {
   return (
-    <div>
+    <StoryContainer>
       <Header />
-    </div>
+    </StoryContainer>
   )
 }
