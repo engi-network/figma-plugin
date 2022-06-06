@@ -12,7 +12,7 @@ export type CallbackType = (
   mySocket?: CustomSocket,
 ) => Promise<void>
 
-export const SOCKET_HANGOUT_TIME = 1000 * 60
+export const SOCKET_HANGOUT_TIME = 5 * 1000 * 60 // 5 mins
 
 export class CustomSocket {
   websocket: WebSocket | undefined
