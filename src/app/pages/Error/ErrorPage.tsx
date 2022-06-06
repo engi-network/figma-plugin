@@ -17,8 +17,6 @@ function ErrorPage() {
     navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
-  console.log('errro', globalError)
-
   return (
     <>
       <div className="flex ml-auto mr-auto mt-20">
@@ -31,7 +29,7 @@ function ErrorPage() {
         </span>
       </div>
       <div className="flex justify-center w-full mt-9">
-        <Button onClick={handleCheckInput} className="w-2/12 uppercase">
+        <Button onClick={handleCheckInput} className="uppercase">
           {ui('error.checkInput')}
         </Button>
       </div>
