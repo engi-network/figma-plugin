@@ -107,6 +107,7 @@ export function useAppContextSetup(): AppContextProps {
         )
 
         setHistory(replacedArray)
+        setGlobalError('Something went wrong. Please double check the inputs.')
         dispatchData({
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
           data: detailedReport,

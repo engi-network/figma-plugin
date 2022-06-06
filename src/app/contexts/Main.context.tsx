@@ -171,7 +171,7 @@ export function useMainContextSetup(): MainContextProps {
 
       setHistory((prev) => [...prev, reportInProgress])
       const ws = SocketManager.createWs(checkId, {
-        onSuccess: () => {
+        onSuccess: async () => {
           let retry = 0
           const timerId = setInterval(() => {
             if (retry > 5) {
@@ -206,10 +206,10 @@ export function useMainContextSetup(): MainContextProps {
           }
           GAService.sendMeasurementData(queryParams)
         },
-        onError: () => {
+        onError: async () => {
           Sentry.sendReport({
-            error: 'Socket error!',
-            transactionName: SENTRY_TRANSACTION.FORM_SUBMIT,
+            error: 'Socket Error!',
+            transactionName: SENTRY_TRANSACTION.SOCKET,
             tagData: { checkId },
           })
 
@@ -225,7 +225,9 @@ export function useMainContextSetup(): MainContextProps {
           }
           GAService.sendMeasurementData(queryParams)
           setGlobalError('Something went wrong with Socket, please try again!')
-          setIsLoading(false)
+          // maybe memory leek if context is unmounted already
+          // setIsLoading(false)
+          navigate(ROUTES_MAP[ROUTES.ERROR])
         },
       })
     } catch (error) {

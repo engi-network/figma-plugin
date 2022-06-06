@@ -10,7 +10,9 @@ export enum READ_STATE {
 export type CallbackType = (
   event: MessageEvent | Event,
   mySocket?: CustomSocket,
-) => void
+) => Promise<void>
+
+export const SOCKET_HANGOUT_TIME = 1000 * 60
 
 export class CustomSocket {
   websocket: WebSocket | undefined
@@ -18,6 +20,7 @@ export class CustomSocket {
   private callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
   private subscribers: Array<CallbackType> = []
   lastData: SocketData | undefined
+  private timerId
 
   constructor(
     socketUrl: string,
@@ -93,19 +96,24 @@ export class CustomSocket {
   receiveMessage(event: MessageEvent) {
     this.publish(event)
     this.lastData = JSON.parse(event.data)
+    clearTimeout(this.timerId)
   }
 
   handleSocketOpen(event: Event) {
     console.info('socket has been open!', event)
-    if (this.callbacks.onSuccess) {
-      this.callbacks.onSuccess(event)
-    }
+    this.callbacks.onSuccess && this.callbacks.onSuccess(event)
+
+    this.timerId = setTimeout(() => {
+      this.handleError(new Error('Socket is not sending data!'))
+    }, SOCKET_HANGOUT_TIME)
   }
 
   handleError(error) {
     console.error('socket error!', error)
     if (this.callbacks.onError) {
       this.callbacks.onError(error)
+      this.terminate(1000, 'Socket server went wrong!')
+      this.timerId && clearTimeout(this.timerId)
     }
   }
 

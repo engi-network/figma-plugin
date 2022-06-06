@@ -7,6 +7,7 @@ import { AppContextProvider } from '~/app/contexts/App.context'
 import { UserContextProvider } from '~/app/contexts/User.context'
 import Routes from '~/app/pages/Routes'
 
+import { MainContextProvider } from './contexts/Main.context'
 import { ROUTES, ROUTES_MAP } from './lib/constants'
 
 function App() {
@@ -23,9 +24,11 @@ function App() {
     >
       <AppContextProvider>
         <UserContextProvider>
-          <Layout>
-            <Routes />
-          </Layout>
+          <MainContextProvider>
+            <Layout>
+              <Routes />
+            </Layout>
+          </MainContextProvider>
         </UserContextProvider>
       </AppContextProvider>
     </Router>
