@@ -252,6 +252,8 @@ export function useMainContextSetup(): MainContextProps {
       GAService.sendMeasurementData(queryParams)
       setIsLoading(false)
       setGlobalError('Something went wrong, please try again!')
+    } finally {
+      setIsLoading(false)
     }
   }, [values, selectionData, originCanvasRef])
 

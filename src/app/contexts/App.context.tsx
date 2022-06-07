@@ -1,7 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { QueryState } from '~/app/@types/route'
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWSService from '~/app/lib/services/aws'
@@ -37,10 +36,8 @@ export function useAppContextSetup(): AppContextProps {
   const { history, setHistory } = useHistoryEvent()
   const [globalError, setGlobalError] = useState('')
   const [numberOfInProgress, setNumberOfInProgress] = useState(0)
-  const location = useLocation()
-
-  const state = (location.state as QueryState) ?? {}
-  const checkId = (state as Record<string, string>).checkId as unknown as string
+  const [searchParams] = useSearchParams()
+  const checkId = searchParams.get('checkId') as string
   const navigate = useNavigate()
 
   // this ws callback for handling things in background in the case of not on loading state for other websockets
@@ -135,7 +132,7 @@ export function useAppContextSetup(): AppContextProps {
       })
       const message = (error as Error).message
       setGlobalError(message || 'Something went wrong with socket callback!')
-      navigate(ROUTES_MAP[ROUTES.ERROR])
+      navigate({ pathname: ROUTES_MAP[ROUTES.ERROR] })
     }
   }
 

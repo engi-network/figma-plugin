@@ -94,7 +94,7 @@ function Header({ numberOfProgress, setHistory }: Props) {
             {ui('header.inProgress')}
           </IconButton>
           {!!numberOfProgress && (
-            <span className="text-primary-green bg-black/40 backdrop-blur-[4px] rounded-full text-xs flex-inline justify-center items-center w-4 h-4 pl-[5px]">
+            <span className="text-primary-green font-bold bg-black/40 backdrop-blur-[4px] rounded-full text-xs flex-inline justify-center items-center w-4 h-4 pl-[5px]">
               {numberOfProgress}
             </span>
           )}
