@@ -226,8 +226,7 @@ export function useMainContextSetup(): MainContextProps {
           }
           GAService.sendMeasurementData(queryParams)
           setGlobalError('Something went wrong with Socket, please try again!')
-          // maybe memory leek if context is unmounted already
-          // setIsLoading(false)
+          setIsLoading(false)
           navigate(ROUTES_MAP[ROUTES.ERROR])
         },
       })

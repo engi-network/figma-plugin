@@ -25,7 +25,7 @@ function Main() {
 
   const { width = 0, height = 0 } = selectionData || {}
 
-  const isDisabled = !!isLoading || !!globalError
+  const isDisabled = isLoading || !!globalError
 
   return (
     <>

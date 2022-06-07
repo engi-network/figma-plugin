@@ -31,7 +31,7 @@ interface Props {
  */
 
 const isDev = process.env.NODE_ENV === 'development'
-function Header({ numberOfProgress, setHistory }: Props) {
+function Header({ numberOfProgress = 0, setHistory }: Props) {
   const navigate = useNavigate()
   const { userId, sessionId } = useUserContext()
 
@@ -54,6 +54,9 @@ function Header({ numberOfProgress, setHistory }: Props) {
   }
 
   const handleViewProgress = () => {
+    if (numberOfProgress <= 0) {
+      return
+    }
     const filterParams = JSON.stringify({ inProgress: true })
     navigate({
       pathname: ROUTES_MAP[ROUTES.HISTORY],
@@ -73,13 +76,15 @@ function Header({ numberOfProgress, setHistory }: Props) {
   return (
     <header className="flex justify-between border-b border-text-secondary px-7 py-5">
       <div className="flex">
-        <IconButton
-          className="text-text-secondary mr-6"
-          icon={<HistoryIcon className="text-text-secondary w-5 h-5" />}
-          onClick={handleViewHistory}
-        >
-          {ui('main.history')}
-        </IconButton>
+        {!numberOfProgress && (
+          <IconButton
+            className="text-text-secondary mr-6"
+            icon={<HistoryIcon className="text-text-secondary w-5 h-5" />}
+            onClick={handleViewHistory}
+          >
+            {ui('main.history')}
+          </IconButton>
+        )}
         <div
           className="flex justify-center items-center"
           onClick={handleViewProgress}

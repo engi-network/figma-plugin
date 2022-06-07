@@ -32,7 +32,7 @@ function Loading() {
   const checkId = searchParams.get('checkId') as string
 
   const handleClickBack = () => {
-    navigate(-1)
+    navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
   const ws = SocketManager.getSocketById(checkId)
