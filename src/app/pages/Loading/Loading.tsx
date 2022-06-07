@@ -1,6 +1,6 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router'
 import { useSearchParams } from 'react-router-dom'
 
 import Header from '~/app/components/global/Header/Header'
@@ -31,14 +31,19 @@ function Loading() {
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
 
+  if (!checkId) {
+    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
+  }
+
   const handleClickBack = () => {
-    navigate(ROUTES_MAP[ROUTES.HOME])
+    navigate(-1)
   }
 
   const ws = SocketManager.getSocketById(checkId)
 
   useEffect(() => {
     if (!ws) {
+      navigate(ROUTES_MAP[ROUTES.HOME])
       return
     }
 

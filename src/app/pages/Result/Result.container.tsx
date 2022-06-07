@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
@@ -27,8 +27,7 @@ function ResultContainer() {
   const [isOpen, setIsOpen] = useState(false)
 
   if (!report || report.status !== STATUS.SUCCESS) {
-    navigate(ROUTES_MAP[ROUTES.HOME])
-    return null
+    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
   }
 
   const { originalImageUrl, result } = report
@@ -48,7 +47,7 @@ function ResultContainer() {
   ]
 
   const handleClickBack = () => {
-    navigate(ROUTES_MAP[ROUTES.HOME])
+    navigate(-1)
   }
 
   const handleCreateNew = () => {

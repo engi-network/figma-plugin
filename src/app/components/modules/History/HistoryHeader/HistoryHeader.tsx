@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import { ECharIcon, InfoIcon } from '~/app/components/global/Icons'
-import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { uiJSX } from '~/app/lib/utils/ui-dictionary-jsx'
 
@@ -11,7 +10,7 @@ function HistoryHeader() {
   const navigate = useNavigate()
 
   const handleBack = () => {
-    navigate(ROUTES_MAP[ROUTES.HOME])
+    navigate(-1)
   }
 
   const handleClickWhy = () => {}
