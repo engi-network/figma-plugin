@@ -1,6 +1,7 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useSearchParams } from 'react-router-dom'
 
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
@@ -16,18 +17,48 @@ import Select, { SelectOption } from '~/app/components/global/Select/Select'
 import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/ImageCarousel'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
+import AWSService from '~/app/lib/services/aws'
 import { drawImage } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { ReportResult, STATUS } from '~/app/models/Report'
+import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
 
 function ResultContainer() {
   const navigate = useNavigate()
-  const { report } = useAppContext()
+  const { setGlobalError } = useAppContext()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [report, setReport] = useState<DetailedReport>()
   const [selectedImage, setSelectedImage] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [searchParams] = useSearchParams()
+  const checkId = searchParams.get('checkId')
 
-  if (!report || report.status !== STATUS.SUCCESS) {
+  const fetchReport = async (checkId: string) => {
+    setIsLoading(true)
+    const report = await AWSService.fetchReportById(checkId, STATUS.SUCCESS)
+    setReport(report)
+    setIsLoading(false)
+  }
+
+  if (!checkId) {
     navigate(ROUTES_MAP[ROUTES.HOME])
+  }
+
+  console.log('checkId', checkId)
+  useEffect(() => {
+    if (!checkId) {
+      return
+    }
+
+    try {
+      fetchReport(checkId)
+    } catch (error) {
+      setGlobalError("Something went wrong! The report can't be fetched.")
+      navigate(ROUTES_MAP[ROUTES.ERROR])
+    }
+  }, [])
+
+  if (!report || isLoading) {
+    //loading
     return null
   }
 

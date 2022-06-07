@@ -11,6 +11,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
 import { TableFilterItem } from '~/app/components/modules/History/Filter/Filter.data'
+import { DetailedReport, STATUS } from '~/app/models/Report'
 
 import { TB_ACCESSORS } from './Table.data'
 import { Cell, Column, ColumnGroup } from './Table.types'
@@ -22,6 +23,7 @@ interface Props {
   filterItems: Array<TableFilterItem>
   hiddenColumns?: Array<TB_ACCESSORS>
   hideHeader?: boolean
+  onClickRow: (report: DetailedReport) => void
   searchBy?: string
   sortBy?: string
 }
@@ -35,6 +37,7 @@ function Table({
   searchBy,
   filterItems,
   hiddenColumns,
+  onClickRow,
 }: Props) {
   const defaultColumn = useMemo(
     () => ({
@@ -79,16 +82,29 @@ function Table({
     setHiddenColumns(hiddenColumns)
   }, [hiddenColumns])
 
+  const handleClickRow = (values: DetailedReport) => () => {
+    onClickRow(values)
+  }
+
   const rowElements = useCallback(
     ({ index, style }) => {
       const row = rows[index]
       prepareRow(row)
+
+      const rowClasses = cn(
+        'tr justify-between border-b border-text-secondary border-opacity-30 py-4 px-7 cursor-pointer',
+        { 'cursor-pointer': row.values.status === STATUS.SUCCESS },
+        { 'cursor-progress': row.values.status === STATUS.IN_PROGRESS },
+        { 'cursor-not-allowed': row.values.status === STATUS.FAIL },
+      )
+
       return (
         <div
           {...row.getRowProps({
             style,
           })}
-          className="tr justify-between border-b border-text-secondary border-opacity-30 py-4 px-7"
+          className={rowClasses}
+          onClick={handleClickRow(row.values)}
         >
           {row.cells.map((cell, index) => {
             return (

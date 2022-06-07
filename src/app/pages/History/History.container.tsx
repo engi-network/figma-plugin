@@ -1,5 +1,10 @@
-import { useMemo, useState } from 'react'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  createSearchParams,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 
 import Input from '~/app/components/global/Input/Input'
 import Select from '~/app/components/global/Select/Select'
@@ -12,8 +17,10 @@ import {
 } from '~/app/components/modules/History/Filter/Filter.data'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
+import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { getFilterStateFromQuery } from '~/app/lib/utils/query'
 import { ui } from '~/app/lib/utils/ui-dictionary'
+import { DetailedReport } from '~/app/models/Report'
 import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
 
 import { useTableData } from './History.hooks'
@@ -25,8 +32,7 @@ function Historycontainer() {
   const statesFromQuery = getFilterStateFromQuery(
     state as Record<string, string>,
   )
-  const [searchParams, setSearchParams] = useSearchParams()
-  console.log('search Params=====>', searchParams)
+  const navigate = useNavigate()
 
   const [filter, setFilter] = useState<FilterValues>({
     ...initialFilterState,
@@ -49,6 +55,17 @@ function Historycontainer() {
 
   const handleFilterChange = (values: FilterValues) => {
     setFilter(values)
+  }
+
+  const handleClickRow = ({ checkId }: DetailedReport) => {
+    const searchParam = {
+      checkId,
+    }
+
+    navigate({
+      pathname: ROUTES_MAP[ROUTES.RESULT],
+      search: `?${createSearchParams(searchParam)}`,
+    })
   }
 
   console.info('history on history=====>', history, data)
@@ -91,6 +108,7 @@ function Historycontainer() {
         filterItems={filterItems}
         searchBy={searchBy}
         hiddenColumns={hiddenColumns}
+        onClickRow={handleClickRow}
       />
     </>
   )
