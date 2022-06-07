@@ -1,9 +1,8 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
-import { QueryState } from '~/app/@types/route'
 import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import Loader from '~/app/components/modules/Loader/Loader'
@@ -27,12 +26,10 @@ const initialStatus = {
 
 function Loading() {
   const navigate = useNavigate()
-  const location = useLocation()
-  const { setGlobalError } = useAppContext()
+  const { setGlobalError, numberOfInProgress } = useAppContext()
   const [status, setStatus] = useState<SocketData>(initialStatus)
-  const state = (location.state as QueryState) ?? {}
-
-  const checkId = (state as Record<string, string>).checkId as unknown as string
+  const [searchParams] = useSearchParams()
+  const checkId = searchParams.get('checkId') as string
 
   const handleClickBack = () => {
     navigate(-1)
@@ -97,7 +94,7 @@ function Loading() {
 
   return (
     <>
-      <Header />
+      <Header numberOfProgress={numberOfInProgress} />
       <div className="relative">
         <IconButton
           icon={<ChevronLeftIcon className="w-4 h-4" />}

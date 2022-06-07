@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -187,8 +187,9 @@ export function useMainContextSetup(): MainContextProps {
               ws.subscribe(wsCallback)
               clearInterval(timerId)
 
-              navigate(ROUTES_MAP[ROUTES.LOADING], {
-                state: { checkId },
+              navigate({
+                pathname: ROUTES_MAP[ROUTES.LOADING],
+                search: `?${createSearchParams({ checkId })}`,
               })
             }
             retry += 1

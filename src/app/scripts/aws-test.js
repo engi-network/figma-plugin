@@ -8,6 +8,7 @@ const {
   PutObjectCommand,
   GetObjectCommand,
 } = require('@aws-sdk/client-s3')
+require('dotenv').config()
 const config = require('~/app/lib/config')
 
 // Set the AWS Region

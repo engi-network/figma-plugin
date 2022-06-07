@@ -11,7 +11,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
 import { TableFilterItem } from '~/app/components/modules/History/Filter/Filter.data'
-import { DetailedReport, STATUS } from '~/app/models/Report'
+import { STATUS } from '~/app/models/Report'
 
 import { TB_ACCESSORS } from './Table.data'
 import { Cell, Column, ColumnGroup } from './Table.types'
@@ -23,7 +23,7 @@ interface Props {
   filterItems: Array<TableFilterItem>
   hiddenColumns?: Array<TB_ACCESSORS>
   hideHeader?: boolean
-  onClickRow: (report: DetailedReport) => void
+  onClickRow: (report: Record<string, string>) => void
   searchBy?: string
   sortBy?: string
 }
@@ -82,7 +82,11 @@ function Table({
     setHiddenColumns(hiddenColumns)
   }, [hiddenColumns])
 
-  const handleClickRow = (values: DetailedReport) => () => {
+  const handleClickRow = (values: Record<string, string>) => () => {
+    if (values.status === STATUS.FAIL) {
+      return
+    }
+
     onClickRow(values)
   }
 
@@ -95,7 +99,10 @@ function Table({
         'tr justify-between border-b border-text-secondary border-opacity-30 py-4 px-7 cursor-pointer',
         { 'cursor-pointer': row.values.status === STATUS.SUCCESS },
         { 'cursor-progress': row.values.status === STATUS.IN_PROGRESS },
-        { 'cursor-not-allowed': row.values.status === STATUS.FAIL },
+        {
+          'cursor-not-allowed pointer-event-none':
+            row.values.status === STATUS.FAIL,
+        },
       )
 
       return (

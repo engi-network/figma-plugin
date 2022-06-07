@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/solid'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import {
@@ -33,10 +33,7 @@ interface Props {
 const isDev = process.env.NODE_ENV === 'development'
 function Header({ numberOfProgress, setHistory }: Props) {
   const navigate = useNavigate()
-  const location = useLocation()
-  const [searchParams, setSearchParams] = useSearchParams()
   const { userId, sessionId } = useUserContext()
-  console.log('location=======>', location)
 
   const handleViewHistory = () => {
     const queryParams: MeasurementData = {
@@ -57,9 +54,10 @@ function Header({ numberOfProgress, setHistory }: Props) {
   }
 
   const handleViewProgress = () => {
-    setSearchParams({ inProgress: 'true' })
-    navigate(ROUTES_MAP[ROUTES.HISTORY], {
-      state: { filter: { inProgress: true } },
+    const filterParams = JSON.stringify({ inProgress: true })
+    navigate({
+      pathname: ROUTES_MAP[ROUTES.HISTORY],
+      search: `?${createSearchParams({ filter: filterParams })}`,
     })
   }
 

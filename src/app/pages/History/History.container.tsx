@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   createSearchParams,
-  useLocation,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom'
@@ -18,25 +17,24 @@ import {
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import { getFilterStateFromQuery } from '~/app/lib/utils/query'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { DetailedReport } from '~/app/models/Report'
+import { STATUS } from '~/app/models/Report'
 import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
 
 import { useTableData } from './History.hooks'
 import { extractBranchNames } from './History.utils'
 
 function Historycontainer() {
-  const { history } = useAppContext()
-  const { state } = useLocation()
-  const statesFromQuery = getFilterStateFromQuery(
-    state as Record<string, string>,
-  )
+  const { history, setReport } = useAppContext()
+  const [searchParams] = useSearchParams()
+  const stringFilterValues = searchParams.get('filter') as string
+  const filterFromQuery =
+    (JSON.parse(stringFilterValues) as Record<string, string> | null) || {}
   const navigate = useNavigate()
 
   const [filter, setFilter] = useState<FilterValues>({
     ...initialFilterState,
-    ...statesFromQuery,
+    ...filterFromQuery,
   })
   const [sortBy, setSortBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
@@ -57,11 +55,25 @@ function Historycontainer() {
     setFilter(values)
   }
 
-  const handleClickRow = ({ checkId }: DetailedReport) => {
+  const handleClickRow = ({ checkId, status }: Record<string, string>) => {
     const searchParam = {
       checkId,
     }
 
+    const detailedReport = history.find((item) => item.checkId === checkId)
+    if (!detailedReport) {
+      return
+    }
+
+    if (status === STATUS.IN_PROGRESS) {
+      navigate({
+        pathname: ROUTES_MAP[ROUTES.LOADING],
+        search: `?${createSearchParams(searchParam)}`,
+      })
+      return
+    }
+
+    setReport(detailedReport)
     navigate({
       pathname: ROUTES_MAP[ROUTES.RESULT],
       search: `?${createSearchParams(searchParam)}`,
