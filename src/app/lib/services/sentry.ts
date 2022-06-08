@@ -8,6 +8,7 @@ export enum SENTRY_TRANSACTION {
   GET_POLLING = 'GET /polling',
   GET_REPORT = 'GET /report',
   SOCKET = 'SOCKET',
+  UNKNOWN = 'GLOBAL UNKNOWN',
 }
 
 class SentryReport {

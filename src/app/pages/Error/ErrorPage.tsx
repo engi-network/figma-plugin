@@ -9,12 +9,22 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 
 import styles from './ErrorPage.styles'
 
-const errorPlaceholder = 'Something went wrong!'
-function ErrorPage() {
+interface Props {
+  ctaTitle?: string
+  message?: string
+  onClick?: () => void
+}
+
+function ErrorPage({
+  onClick,
+  message = ui('error.globalError'),
+  ctaTitle = ui('error.checkInput'),
+}: Props) {
   const { globalError } = useAppContext()
   const navigate = useNavigate()
 
   const handleCheckInput = () => {
+    onClick && onClick()
     navigate(ROUTES_MAP[ROUTES.HOME])
   }
 
@@ -30,12 +40,12 @@ function ErrorPage() {
           css={styles.alert}
         >
           <InformationCircleIcon className="w-5 h-5 text-[#FA7B7B] mr-2" />
-          {globalError || errorPlaceholder}
+          {message || globalError}
         </span>
       </div>
       <div className="flex justify-center w-full mt-9">
         <Button onClick={handleCheckInput} className="uppercase">
-          {ui('error.checkInput')}
+          {ctaTitle}
         </Button>
       </div>
     </div>

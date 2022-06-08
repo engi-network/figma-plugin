@@ -1,7 +1,9 @@
 import './styles/global.css'
 
+import { ErrorBoundary } from 'react-error-boundary'
 import { MemoryRouter as Router } from 'react-router-dom'
 
+import GlobalErrorFallback from '~/app/components/global/GlobalErrorFallback/GlobalErrorFallback'
 import Layout from '~/app/components/modules/App/Layout/Layout'
 import { AppContextProvider } from '~/app/contexts/App.context'
 import { UserContextProvider } from '~/app/contexts/User.context'
@@ -26,7 +28,9 @@ function App() {
         <UserContextProvider>
           <MainContextProvider>
             <Layout>
-              <Routes />
+              <ErrorBoundary FallbackComponent={GlobalErrorFallback}>
+                <Routes />
+              </ErrorBoundary>
             </Layout>
           </MainContextProvider>
         </UserContextProvider>

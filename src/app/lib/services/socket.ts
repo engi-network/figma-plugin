@@ -1,3 +1,4 @@
+import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { SocketData } from '~/app/models/Report'
 
 export enum READ_STATE {
@@ -104,7 +105,9 @@ export class CustomSocket {
     this.callbacks.onSuccess && this.callbacks.onSuccess(event)
 
     this.timerId = setTimeout(() => {
-      this.handleError(new Error('Socket is not sending data!'))
+      this.handleError(
+        new Error('Socket is not sending data for a period of time!'),
+      )
     }, SOCKET_HANGOUT_TIME)
   }
 
@@ -114,6 +117,11 @@ export class CustomSocket {
       this.callbacks.onError(error)
       this.terminate(1000, 'Socket server went wrong!')
       this.timerId && clearTimeout(this.timerId)
+
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.SOCKET,
+      })
     }
   }
 

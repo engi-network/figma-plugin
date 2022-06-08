@@ -1,4 +1,5 @@
 import config from '~/app/lib/config'
+import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 
 import { CallbackType, CustomSocket } from './socket'
 
@@ -40,7 +41,13 @@ export class SocketServiceManager {
       this.wsList = filteredList
       return true
     } catch (error) {
-      console.error('error in termination of socket', error)
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.SOCKET,
+        tagData: { socketId: id, code: code + '', reason },
+      })
+
+      console.error('Error in termination of socket', error)
       return false
     }
   }

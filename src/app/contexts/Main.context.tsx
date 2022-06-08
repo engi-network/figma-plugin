@@ -224,6 +224,7 @@ export function useMainContextSetup(): MainContextProps {
             sid: sessionId,
             user_id: userId,
           }
+
           GAService.sendMeasurementData(queryParams)
           setGlobalError('Something went wrong with Socket, please try again!')
           setIsLoading(false)

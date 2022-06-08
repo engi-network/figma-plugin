@@ -42,6 +42,8 @@
     "analyzing": "Analyzing"
   },
   "error": {
-    "checkInput": "Check inputs"
+    "checkInput": "Check inputs",
+    "globalError": "Something went wrong!",
+    "goBack": "Go back"
   }
 }
