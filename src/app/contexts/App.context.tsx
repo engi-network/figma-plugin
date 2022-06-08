@@ -84,7 +84,6 @@ export function useAppContextSetup(): AppContextProps {
 
       // error
       if (error) {
-        console.error('api error background socket callback', check_id, error)
         const baseReport = history.find((item) => item.checkId === check_id)
         const detailedReport: DetailedReport = {
           checkId: check_id,

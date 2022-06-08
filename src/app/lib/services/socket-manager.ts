@@ -47,7 +47,6 @@ export class SocketServiceManager {
         tagData: { socketId: id, code: code + '', reason },
       })
 
-      console.error('Error in termination of socket', error)
       return false
     }
   }

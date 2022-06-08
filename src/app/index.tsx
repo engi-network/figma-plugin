@@ -10,10 +10,6 @@ import { workerScript } from '~/app/scripts/worker'
 import App from './App'
 import { makeServer } from './mockServer/server'
 
-/**
- * @TODO handle error boundary for aws or sentry config fail
- */
-
 if (process.env.NODE_ENV === 'test') {
   makeServer({ environment: 'development' })
 }

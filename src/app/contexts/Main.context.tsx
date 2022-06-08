@@ -232,7 +232,6 @@ export function useMainContextSetup(): MainContextProps {
         },
       })
     } catch (error) {
-      console.error(error)
       Sentry.sendReport({
         error,
         transactionName: SENTRY_TRANSACTION.FORM_SUBMIT,

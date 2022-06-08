@@ -48,7 +48,7 @@ export const onSelection = async (selection: SceneNode): Promise<void> => {
         message: 'Oops, something went wrong with selection',
       },
     })
-    console.error('Error extracting selected frame!', error)
+    console.warn('Error extracting selected frame!', error)
   }
 }
 

@@ -112,17 +112,15 @@ export class CustomSocket {
   }
 
   handleError(error) {
-    console.error('socket error!', error)
     if (this.callbacks.onError) {
       this.callbacks.onError(error)
       this.terminate(1000, 'Socket server went wrong!')
       this.timerId && clearTimeout(this.timerId)
-
-      Sentry.sendReport({
-        error,
-        transactionName: SENTRY_TRANSACTION.SOCKET,
-      })
     }
+    Sentry.sendReport({
+      error,
+      transactionName: SENTRY_TRANSACTION.SOCKET,
+    })
   }
 
   handleClose() {
