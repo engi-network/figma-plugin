@@ -9,7 +9,7 @@ import Loader from '~/app/components/modules/Loader/Loader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import SocketManager from '~/app/lib/services/socket-manager'
-import { Queue } from '~/app/lib/utils/queue'
+import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { SocketData } from '~/app/models/Report'
 
@@ -17,8 +17,7 @@ import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '../Main/Main.types'
 import LoadingStepper from './LoadingStepper/LoadingStepper'
 
 const queue = new Queue<SocketData>()
-const ANIMATION_DURATION_MS = 3000
-const initialStatus = {
+export const loadingInitialStatus = {
   step: 0,
   step_count: 8,
   message: STEP_MESSAGES[0],
@@ -27,7 +26,7 @@ const initialStatus = {
 function Loading() {
   const navigate = useNavigate()
   const { setGlobalError, numberOfInProgress } = useAppContext()
-  const [status, setStatus] = useState<SocketData>(initialStatus)
+  const [status, setStatus] = useState<SocketData>(loadingInitialStatus)
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
 

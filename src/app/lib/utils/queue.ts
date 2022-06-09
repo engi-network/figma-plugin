@@ -4,6 +4,9 @@ interface IQueue<T> {
   size(): number
 }
 
+// time interval for dequeue
+export const ANIMATION_DURATION_MS = 3000
+
 export class Queue<T> implements IQueue<T> {
   private storage: T[] = []
 
