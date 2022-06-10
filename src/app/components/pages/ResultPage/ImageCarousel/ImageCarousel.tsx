@@ -31,6 +31,10 @@ function ImageCarousel({ imageUrls }: Props) {
       zoom
       css={styles.swiper}
       className="image-carousel-container"
+      keyboard={{
+        enabled: true,
+        onlyInViewport: false,
+      }}
     >
       <div className="swiper-button-next">
         <ChevronRightIcon className="w-8 h-8 text-primary-green" />
