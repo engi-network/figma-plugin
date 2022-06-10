@@ -15,6 +15,8 @@ function ImageCarousel({ imageUrls }: Props) {
     <Swiper
       spaceBetween={30}
       effect="fade"
+      slidesPerView={1}
+      centeredSlides
       navigation
       pagination={{
         clickable: true,
@@ -24,7 +26,7 @@ function ImageCarousel({ imageUrls }: Props) {
     >
       {imageUrls.map((url, index) => (
         <SwiperSlide key={index} zoom>
-          <div className="">
+          <div className="flex justify-center items-center">
             <img src={url} alt="image" />
           </div>
         </SwiperSlide>

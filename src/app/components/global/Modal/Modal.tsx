@@ -43,7 +43,7 @@ function Modal({ isOpen, onClose, children, className }: Props) {
                   onClick={onClose}
                   className="absolute top-5 right-5 z-20"
                 >
-                  <XIcon className="w-4 h-5" />
+                  <XIcon className="w-4 h-5 text-primary-white" />
                 </button>
                 {children}
               </div>

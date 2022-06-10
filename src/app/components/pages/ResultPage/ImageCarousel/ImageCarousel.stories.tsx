@@ -12,9 +12,9 @@ export default {
 }
 
 const imageUrls = [
-  'https://swiperjs.com/demos/images/nature-1.jpg',
-  'https://swiperjs.com/demos/images/nature-2.jpg',
-  'https://swiperjs.com/demos/images/nature-3.jpg',
+  'https://s3.us-west-2.amazonaws.com/same-story-api-staging/checks/4b8bc01a-e8ec-4cec-b343-803c08fb5323/report/__screenshots__/Global/Components/Button/Button%20With%20Knobs.png',
+  'https://s3.us-west-2.amazonaws.com/same-story-api-staging/checks/4b8bc01a-e8ec-4cec-b343-803c08fb5323/report/blue_difference.png',
+  'https://s3.us-west-2.amazonaws.com/same-story-api-staging/checks/4b8bc01a-e8ec-4cec-b343-803c08fb5323/report/gray_difference.png',
 ]
 
 export function ImageCarouselStory() {
