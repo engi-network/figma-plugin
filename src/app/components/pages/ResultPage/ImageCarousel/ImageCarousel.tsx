@@ -3,8 +3,11 @@ import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
 import { EffectFade, Navigation, Pagination, Zoom } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
+
+import styles from './ImageCarousel.styles'
 
 interface Props {
   imageUrls: Array<string>
@@ -17,13 +20,24 @@ function ImageCarousel({ imageUrls }: Props) {
       effect="fade"
       slidesPerView={1}
       centeredSlides
-      navigation
+      navigation={{
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }}
       pagination={{
         clickable: true,
       }}
       modules={[Zoom, EffectFade, Navigation, Pagination]}
       zoom
+      css={styles.swiper}
+      className="image-carousel-container"
     >
+      <div className="swiper-button-next">
+        <ChevronRightIcon className="w-8 h-8 text-primary-green" />
+      </div>
+      <div className="swiper-button-prev">
+        <ChevronLeftIcon className="w-8 h-8 text-primary-green" />
+      </div>
       {imageUrls.map((url, index) => (
         <SwiperSlide key={index} zoom>
           <div className="flex justify-center items-center">

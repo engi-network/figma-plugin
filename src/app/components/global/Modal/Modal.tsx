@@ -11,7 +11,7 @@ interface Props {
 }
 
 function Modal({ isOpen, onClose, children, className }: Props) {
-  const rootClasses = cn(className, 'relative z-10')
+  const rootClasses = cn(className, 'relative z-50')
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
