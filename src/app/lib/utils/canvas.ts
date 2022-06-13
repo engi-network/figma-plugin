@@ -21,6 +21,8 @@ export async function drawImage(
   context: CanvasRenderingContext2D,
   data: BlobPart | string,
 ): Promise<void> {
+  const dpr = window.devicePixelRatio || 1
+
   const url =
     typeof data === 'string' ? data : URL.createObjectURL(new Blob([data]))
 
@@ -31,16 +33,16 @@ export async function drawImage(
     img.src = url
   })
 
-  const horizontalRatio = canvas.width / image.width
-  const verticalRatio = canvas.height / image.height
+  const horizontalRatio = canvas.width / image.width / dpr
+  const verticalRatio = canvas.height / image.height / dpr
 
   const ratio = Math.min(
     horizontalRatio < 1 ? horizontalRatio : 1,
     verticalRatio < 1 ? verticalRatio : 1,
   )
 
-  const xCenterOffset = (canvas.width - image.width * ratio) / 2
-  const yCenterOffset = (canvas.height - image.height * ratio) / 2
+  const xCenterOffset = (canvas.width / dpr - image.width * ratio) / 2
+  const yCenterOffset = (canvas.height / dpr - image.height * ratio) / 2
 
   context.clearRect(0, 0, canvas.width, canvas.height)
 

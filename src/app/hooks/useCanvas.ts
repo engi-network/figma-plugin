@@ -6,6 +6,17 @@ export interface CanvasOption {
   predraw?: () => void
 }
 
+function setupCanvas(canvas: HTMLCanvasElement): RenderingContext | null {
+  const dpr = window.devicePixelRatio || 1
+  const rect = canvas.getBoundingClientRect()
+  canvas.width = rect.width * dpr
+  canvas.height = rect.height * dpr
+  const ctx = canvas.getContext('2d')
+
+  ctx?.scale(dpr, dpr)
+  return ctx
+}
+
 const useCanvas = (
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => void,
   options: CanvasOption,
@@ -20,7 +31,8 @@ const useCanvas = (
       return
     }
 
-    const context = canvas.getContext(contextId)
+    let context = canvas.getContext(contextId)
+    context = setupCanvas(canvas)
 
     if (!context) {
       return

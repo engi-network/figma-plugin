@@ -8,11 +8,11 @@ export interface CanvasProps {
   children?: ReactNode
   className?: string
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => void
-  height?: number
+  height?: number | string
   id?: string
   onClick?: () => void
   options: CanvasOption
-  width?: number
+  width?: number | string
 }
 
 export type CanvasRefType =
@@ -34,7 +34,7 @@ function Canvas(
   ref: CanvasRefType,
 ) {
   const canvasRef = useCanvas(draw, options)
-  const classes = cn(className)
+  const classes = cn(className, 'w-full h-full')
   const mergedRef = mergeRefs([canvasRef, ref])
 
   return (

@@ -24,8 +24,8 @@ function Preview({ draw, originalCanvasRef, height, width, label }: Props) {
       <>
         <CanvasContainer
           id="designs--frame-canvas"
-          width={width}
-          height={height}
+          width={'100%'}
+          height={'100%'}
           draw={draw}
           options={{ contextId: '2d' }}
         >
