@@ -104,11 +104,11 @@ function ResultContainer() {
             </h1>
           </div>
         </div>
-        <div className="flex mb-8">
+        <div className="flex mb-12">
           <div className="flex justify-start w-5/12 h-[220px]">
             <Canvas
               id="orignal-image"
-              className="mb-4 border border-wf-tertiery"
+              className="mb-2 border border-wf-tertiery"
               draw={drawCallback(originalImageUrl + '')}
               options={{ contextId: '2d' }}
               label={`${width} ✕ ${height}`}
