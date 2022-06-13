@@ -98,35 +98,33 @@ function ResultContainer() {
             <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold">
               {ui('result.wellDone')} <br />
               {ui('result.its')}
-              <span className="bg-primary-green mix-blend-screen text-[#000]">
+              <span className="bg-primary-green mix-blend-screen text-black">
                 {ui('result.same')}
               </span>
             </h1>
           </div>
         </div>
         <div className="flex mb-8">
-          <div className="flex justify-start">
+          <div className="flex justify-start w-5/12 h-[220px]">
             <Canvas
               id="orignal-image"
               className="mb-4 border border-wf-tertiery"
-              width={210}
-              height={210}
               draw={drawCallback(originalImageUrl + '')}
               options={{ contextId: '2d' }}
               label={`${width} ✕ ${height}`}
               icon={<FigmaIcon width={32} height={32} />}
+              width="100%"
+              height="100%"
             />
           </div>
           <div className="flex justify-center items-center flex-1 pb-11">
             <CheckIcon className="w-7 h-7" />
           </div>
-          <div className="flex flex-col items-end">
-            <div>
+          <div className="flex flex-col items-end w-5/12 h-[220px]">
+            <div className="h-full w-full">
               <Canvas
-                id="blue-scale"
+                id="result-images"
                 className="mb-2 border border-wf-tertiery"
-                width={210}
-                height={210}
                 draw={drawCallback(selectedImage)}
                 options={{ contextId: '2d' }}
                 icon={
@@ -135,6 +133,8 @@ function ResultContainer() {
                   ) : undefined
                 }
                 onClick={handleOpenModal}
+                width="100%"
+                height="100%"
               />
               <Select
                 options={imageSelectionOptions}
