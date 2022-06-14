@@ -62,6 +62,8 @@ export function useAppContextSetup(): AppContextProps {
           },
           status: STATUS.SUCCESS,
         }
+        console.log('set report=====>')
+        setReport(detailedReport)
 
         const replacedArray = replaceItemInArray(
           history,
@@ -75,8 +77,6 @@ export function useAppContextSetup(): AppContextProps {
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
           data: detailedReport,
         })
-
-        setReport(detailedReport)
 
         SocketManager.terminateById(check_id, 1000, 'Successfully closed')
         return

@@ -21,13 +21,14 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import { ReportResult, STATUS } from '~/app/models/Report'
 
 function ResultContainer() {
+  console.log('hit the result container=======>')
   const navigate = useNavigate()
   const { report } = useAppContext()
   const [selectedImage, setSelectedImage] = useState('')
   const [isOpen, setIsOpen] = useState(false)
 
   if (!report || report.status !== STATUS.SUCCESS) {
-    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
+    return null
   }
 
   const { originalImageUrl, result } = report
@@ -117,7 +118,7 @@ function ResultContainer() {
               height="100%"
             />
           </div>
-          <div className="flex justify-center items-center flex-1 pb-11">
+          <div className="flex justify-center items-center flex-1">
             <CheckIcon className="w-7 h-7" />
           </div>
           <div className="flex flex-col items-end w-5/12 h-[220px]">

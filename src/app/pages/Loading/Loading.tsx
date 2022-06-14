@@ -1,7 +1,7 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router'
-import { useSearchParams } from 'react-router-dom'
+import { createSearchParams, useSearchParams } from 'react-router-dom'
 
 import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
@@ -42,7 +42,6 @@ function Loading() {
 
   useEffect(() => {
     if (!ws) {
-      navigate(ROUTES_MAP[ROUTES.HOME])
       return
     }
 
@@ -74,7 +73,10 @@ function Loading() {
 
       if (status.step === status.step_count - 1) {
         timeoutId = setTimeout(() => {
-          navigate(ROUTES_MAP[ROUTES.RESULT])
+          navigate({
+            pathname: ROUTES_MAP[ROUTES.RESULT],
+            search: `?${createSearchParams({ checkId })}`,
+          })
         }, ANIMATION_DURATION_MS)
         return
       }
