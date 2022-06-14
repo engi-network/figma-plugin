@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
@@ -21,7 +21,6 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import { ReportResult, STATUS } from '~/app/models/Report'
 
 function ResultContainer() {
-  console.log('hit the result container=======>')
   const navigate = useNavigate()
   const { report } = useAppContext()
   const [selectedImage, setSelectedImage] = useState('')

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export interface CanvasOption {
   contextId: '2d' | '3d'
@@ -6,15 +6,20 @@ export interface CanvasOption {
   predraw?: () => void
 }
 
-function setupCanvas(canvas: HTMLCanvasElement): RenderingContext | null {
+function _predraw(
+  canvas: HTMLCanvasElement,
+  context: CanvasRenderingContext2D | null,
+) {
+  context?.save()
   const dpr = window.devicePixelRatio || 1
   const rect = canvas.getBoundingClientRect()
   canvas.width = rect.width * dpr
   canvas.height = rect.height * dpr
-  const ctx = canvas.getContext('2d')
+  context?.scale(dpr, dpr)
+}
 
-  ctx?.scale(dpr, dpr)
-  return ctx
+const _postdraw = (context) => {
+  context?.restore()
 }
 
 const useCanvas = (
@@ -23,6 +28,24 @@ const useCanvas = (
 ) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { contextId = '2d', postdraw, predraw } = options
+  const [count, setCount] = useState(0)
+
+  const resizeObserver = new ResizeObserver(() => {
+    setCount((prev) => (prev += 1))
+  })
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) {
+      return
+    }
+
+    resizeObserver.observe(canvas)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -31,17 +54,16 @@ const useCanvas = (
       return
     }
 
-    let context = canvas.getContext(contextId)
-    context = setupCanvas(canvas)
+    const context = canvas.getContext(contextId) as CanvasRenderingContext2D
 
-    if (!context) {
-      return
-    }
-
+    _predraw(canvas, context)
     predraw && predraw()
+
     draw(canvas, context)
+
     postdraw && postdraw(canvas, context)
-  }, [draw])
+    _postdraw(context)
+  }, [draw, count])
 
   return canvasRef
 }

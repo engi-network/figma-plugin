@@ -8,8 +8,6 @@ import { useAppContext } from '~/app/contexts/App.context'
 import { useMainContext } from '~/app/contexts/Main.context'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
-import { DEMENSIONS } from './Main.container.data'
-
 function Main() {
   const {
     handleSubmit,
@@ -39,7 +37,6 @@ function Main() {
             draw={draw}
             originalCanvasRef={originCanvasRef}
             label={isDisabled ? undefined : `${width} ✕ ${height}`}
-            {...DEMENSIONS.SMALL}
           />
         </section>
         <section className="w-1/2">

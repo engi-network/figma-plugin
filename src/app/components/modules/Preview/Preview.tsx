@@ -6,13 +6,11 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 
 interface Props {
   draw: (canvas: HTMLCanvasElement, context: RenderingContext) => Promise<void>
-  height: number
   label?: string
   originalCanvasRef?: CanvasRefType
-  width: number
 }
 
-function Preview({ draw, originalCanvasRef, height, width, label }: Props) {
+function Preview({ draw, originalCanvasRef, label }: Props) {
   return (
     <ContainerWithTitle
       width={304}

@@ -1,10 +1,9 @@
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
 import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
-import { EffectCoverflow, Navigation, Pagination, Zoom } from 'swiper'
+import { EffectCoverflow, Navigation, Zoom } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import styles from './ImageCarousel.styles'
@@ -21,14 +20,11 @@ function ImageCarousel({ imageUrls }: Props) {
       slidesPerView={3}
       centeredSlides
       grabCursor
+      modules={[Zoom, EffectCoverflow, Navigation]}
       navigation={{
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       }}
-      pagination={{
-        clickable: true,
-      }}
-      modules={[Zoom, EffectCoverflow, Navigation, Pagination]}
       zoom
       css={styles.swiper}
       className="image-carousel-container"
