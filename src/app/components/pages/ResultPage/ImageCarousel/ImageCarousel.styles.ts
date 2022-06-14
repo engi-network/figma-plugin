@@ -15,6 +15,16 @@ const styles: StylesMap = {
         background: COLORS.PRIMARY.GREEN,
       },
     },
+    // '.swiper-slide': {
+    //   backgroundPosition: 'center',
+    //   backgroundSize: 'cover',
+    //   width: 300,
+    //   height: 300,
+    // },
+    // '.swiperSlide img': {
+    //   display: 'block',
+    //   width: '100%',
+    // },
   },
 }
 

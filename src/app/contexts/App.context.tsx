@@ -62,7 +62,7 @@ export function useAppContextSetup(): AppContextProps {
           },
           status: STATUS.SUCCESS,
         }
-        console.log('set report=====>')
+
         setReport(detailedReport)
 
         const replacedArray = replaceItemInArray(
