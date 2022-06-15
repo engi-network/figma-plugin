@@ -23,10 +23,9 @@ function Modal({
   backButton,
 }: Props) {
   const rootClasses = cn(className, 'relative z-50')
-  const contentWrapperClasses = cn(
-    'w-full transform overflow-hidden transition-all',
-    { 'max-w-[650px]': !isFullScreen },
-  )
+  const contentWrapperClasses = cn('w-full transform transition-all', {
+    'max-w-[650px]': !isFullScreen,
+  })
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -52,7 +51,7 @@ function Modal({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex min-h-full items-center justify-center p-4 text-center overflow-hidden">
               {backButton && backButton}
               <div className={contentWrapperClasses}>
                 {hasCloseButton && (
