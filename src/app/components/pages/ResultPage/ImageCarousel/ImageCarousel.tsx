@@ -45,7 +45,7 @@ function PrevButton() {
 function ImageCarousel({ imageUrls }: Props) {
   return (
     <Swiper
-      effect={'coverflow'}
+      effect="coverflow"
       spaceBetween={30}
       slidesPerView={3}
       centeredSlides

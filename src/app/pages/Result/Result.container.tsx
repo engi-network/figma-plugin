@@ -1,4 +1,4 @@
-import { ArrowLeftIcon } from '@heroicons/react/solid'
+import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,6 +19,11 @@ import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { ReportResult, STATUS } from '~/app/models/Report'
+
+/**
+ *
+ * @TODO need to add transition when isOpen toggling
+ */
 
 function ResultContainer() {
   const navigate = useNavigate()
@@ -82,20 +87,35 @@ function ResultContainer() {
 
   const isStorybook = selectedImage === imageSelectionOptions[0].value
 
-  const renderModal = () => (
-    <Modal isOpen={isOpen} onClose={handleCloseModal} isFullScreen>
-      <ImageCarousel
-        imageUrls={[url_screenshot, url_gray_difference, url_blue_difference]}
-      />
-    </Modal>
-  )
+  const renderModal = () => {
+    return (
+      <Modal
+        isOpen={isOpen}
+        onClose={handleCloseModal}
+        isFullScreen
+        backButton={
+          <IconButton
+            icon={<ChevronLeftIcon className="w-4 h-4" />}
+            onClick={handleCloseModal}
+            className="absolute top-24 left-10 text-text-secondary"
+          >
+            {ui('header.back')}
+          </IconButton>
+        }
+      >
+        <ImageCarousel
+          imageUrls={[url_screenshot, url_gray_difference, url_blue_difference]}
+        />
+      </Modal>
+    )
+  }
 
   const renderContent = () => {
     return (
       <>
         <div className="flex justify-between mb-16 relative">
           <IconButton
-            icon={<ArrowLeftIcon className="w-4 h-4" />}
+            icon={<ChevronLeftIcon className="w-4 h-4" />}
             onClick={handleClickBack}
             className="text-text-secondary z-20"
           >

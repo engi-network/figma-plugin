@@ -4,6 +4,7 @@ import cn from 'classnames'
 import { Fragment, ReactNode } from 'react'
 
 interface Props {
+  backButton?: ReactNode
   children: ReactNode
   className?: string
   hasCloseButton?: boolean
@@ -19,6 +20,7 @@ function Modal({
   className,
   isFullScreen = false,
   hasCloseButton = false,
+  backButton,
 }: Props) {
   const rootClasses = cn(className, 'relative z-50')
   const contentWrapperClasses = cn(
@@ -41,16 +43,17 @@ function Modal({
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              {backButton && backButton}
               <div className={contentWrapperClasses}>
                 {hasCloseButton && (
                   <button
@@ -62,8 +65,8 @@ function Modal({
                 )}
                 {children}
               </div>
-            </Transition.Child>
-          </div>
+            </div>
+          </Transition.Child>
         </div>
       </Dialog>
     </Transition>
