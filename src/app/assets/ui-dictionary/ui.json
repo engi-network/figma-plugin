@@ -24,8 +24,13 @@
     "createNew": "Create new",
     "viewHistory": "View history",
     "wellDone": "Well done!",
-    "its": "It's the ",
-    "same": "Same Story"
+    "theyare": "They’re Visually ",
+    "equal": "Equal",
+    "notEqual": "not Equal",
+    "description": {
+      "success": "On Chrome and at the same dimensions as your design layer, your rendered UI code is visually equal to your designs",
+      "fail": "It’s looks like your UI code doesn’t match your design yet"
+    }
   },
   "history": {
     "history": "History",

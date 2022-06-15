@@ -8,6 +8,7 @@ import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
 import {
   CheckIcon,
+  CrossFailIcon,
   FigmaIcon,
   FullScreenIcon,
   StorybookIcon,
@@ -26,6 +27,16 @@ import { ReportResult, STATUS } from '~/app/models/Report'
  * @TODO need to add transition when isOpen toggling
  * animation will be considered later on...
  */
+const THRESHHOLD = 50
+
+function ResultStatus({ status }: { status: STATUS }) {
+  return (
+    <div className="flex justify-center items-center flex-1">
+      {status === STATUS.SUCCESS && <CheckIcon className="w-7 h-7" />}
+      {status === STATUS.FAIL && <CrossFailIcon className="w-7 h-7" />}
+    </div>
+  )
+}
 
 function ResultContainer() {
   const navigate = useNavigate()
@@ -45,8 +56,11 @@ function ResultContainer() {
     url_screenshot,
     width,
     height,
+    MAE,
   } = result as ReportResult
 
+  const realMAE = MAE.split(' ')[0]
+  const isSuccess = +realMAE < THRESHHOLD
   const imageSelectionOptions: Array<SelectOption> = [
     { value: url_screenshot, name: 'Storycap captured' },
     { value: url_gray_difference, name: 'Gray-scale Difference' },
@@ -124,10 +138,16 @@ function ResultContainer() {
           <div className="absolute flex justify-center top-0 left-0 right-0 z-10">
             <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold">
               {ui('result.wellDone')} <br />
-              {ui('result.its')}
-              <span className="bg-primary-green mix-blend-screen text-black">
-                {ui('result.same')}
-              </span>
+              {ui('result.theyare')}
+              {isSuccess ? (
+                <span className="bg-primary-green mix-blend-screen text-black">
+                  {ui('result.equal')}
+                </span>
+              ) : (
+                <span className="bg-secondary-error mix-blend-screen text-black">
+                  {ui('result.notEqual')}
+                </span>
+              )}
             </h1>
           </div>
         </div>
@@ -144,9 +164,7 @@ function ResultContainer() {
               height="100%"
             />
           </div>
-          <div className="flex justify-center items-center flex-1">
-            <CheckIcon className="w-7 h-7" />
-          </div>
+          <ResultStatus status={isSuccess ? STATUS.SUCCESS : STATUS.FAIL} />
           <div className="flex flex-col items-end w-5/12 h-[220px]">
             <div className="h-full w-full relative">
               <Canvas
@@ -180,6 +198,11 @@ function ResultContainer() {
             </div>
           </div>
         </div>
+        <p className="text-sm text-primary-white/80 mb-10 text-center">
+          {isSuccess
+            ? ui('result.description.success')
+            : ui('result.description.fail')}
+        </p>
         <div className="flex justify-center">
           <Button onClick={handleCreateNew} className="w-5/12 capitalize">
             {ui('result.createNew')}
