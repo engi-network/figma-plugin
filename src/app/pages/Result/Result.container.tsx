@@ -103,9 +103,7 @@ function ResultContainer() {
           </IconButton>
         }
       >
-        <ImageCarousel
-          imageUrls={[url_screenshot, url_gray_difference, url_blue_difference]}
-        />
+        <ImageCarousel options={imageSelectionOptions} />
       </Modal>
     )
   }
