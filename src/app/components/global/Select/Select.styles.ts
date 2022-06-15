@@ -12,6 +12,7 @@ const styles: StylesMap = {
       borderBottom: `1px solid ${COLORS.TEXT.SECONDARY}`,
       bottom: 0,
       content: "' '",
+      left: '20%',
       opacity: 0.3,
       position: 'absolute',
       width: '100%',

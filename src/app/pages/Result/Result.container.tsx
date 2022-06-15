@@ -9,6 +9,7 @@ import IconButton from '~/app/components/global/IconButton/IconButton'
 import {
   CheckIcon,
   FigmaIcon,
+  FullScreenIcon,
   StorybookIcon,
 } from '~/app/components/global/Icons'
 import Modal from '~/app/components/global/Modal/Modal'
@@ -23,6 +24,7 @@ import { ReportResult, STATUS } from '~/app/models/Report'
 /**
  *
  * @TODO need to add transition when isOpen toggling
+ * animation will be considered later on...
  */
 
 function ResultContainer() {
@@ -146,7 +148,7 @@ function ResultContainer() {
             <CheckIcon className="w-7 h-7" />
           </div>
           <div className="flex flex-col items-end w-5/12 h-[220px]">
-            <div className="h-full w-full">
+            <div className="h-full w-full relative">
               <Canvas
                 id="result-images"
                 className="mb-2 border border-wf-tertiery"
@@ -157,7 +159,6 @@ function ResultContainer() {
                     <StorybookIcon width={32} height={32} />
                   ) : undefined
                 }
-                onClick={handleOpenModal}
                 width="100%"
                 height="100%"
               />
@@ -169,6 +170,13 @@ function ResultContainer() {
                 className="flex justify-center pl-2"
                 buttonClassName="text-text-secondary"
               />
+              <button
+                aria-label="Full-screen"
+                onClick={handleOpenModal}
+                className="absolute right-3 bottom-3"
+              >
+                <FullScreenIcon width={20} height={20} />
+              </button>
             </div>
           </div>
         </div>
@@ -185,7 +193,8 @@ function ResultContainer() {
     <>
       <Header />
       <div className="px-16 pt-10">
-        {isOpen ? renderModal() : renderContent()}
+        {!isOpen && renderContent()}
+        {renderModal()}
       </div>
     </>
   )
