@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import Button from '~/app/components/global/Button/Button'
+import Header from '~/app/components/global/Header/Header'
 import Modal from '~/app/components/global/Modal/Modal'
 import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
 
@@ -29,9 +30,10 @@ export function ImageCarouselStory() {
   }
 
   return (
-    <StoryContainer>
+    <StoryContainer className="flex-col justify-between items-start p-0">
+      <Header className="w-full" />
       <Button onClick={handleClickMe}>Click me</Button>
-      <Modal isOpen={isOpen} onClose={handleClose}>
+      <Modal isOpen={isOpen} onClose={handleClose} isFullScreen>
         <ImageCarousel imageUrls={imageUrls} />
       </Modal>
     </StoryContainer>

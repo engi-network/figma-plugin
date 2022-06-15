@@ -82,10 +82,17 @@ function ResultContainer() {
 
   const isStorybook = selectedImage === imageSelectionOptions[0].value
 
-  return (
-    <>
-      <Header />
-      <div className="px-16 pt-10">
+  const renderModal = () => (
+    <Modal isOpen={isOpen} onClose={handleCloseModal} isFullScreen>
+      <ImageCarousel
+        imageUrls={[url_screenshot, url_gray_difference, url_blue_difference]}
+      />
+    </Modal>
+  )
+
+  const renderContent = () => {
+    return (
+      <>
         <div className="flex justify-between mb-16 relative">
           <IconButton
             icon={<ArrowLeftIcon className="w-4 h-4" />}
@@ -152,12 +159,16 @@ function ResultContainer() {
             {ui('result.createNew')}
           </Button>
         </div>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Header />
+      <div className="px-16 pt-10">
+        {isOpen ? renderModal() : renderContent()}
       </div>
-      <Modal isOpen={isOpen} onClose={handleCloseModal}>
-        <ImageCarousel
-          imageUrls={[url_screenshot, url_gray_difference, url_blue_difference]}
-        />
-      </Modal>
     </>
   )
 }

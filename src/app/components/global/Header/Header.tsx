@@ -1,4 +1,5 @@
 import { TrashIcon } from '@heroicons/react/solid'
+import cn from 'classnames'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 
 import IconButton from '~/app/components/global/IconButton/IconButton'
@@ -21,17 +22,14 @@ import { History } from '~/app/models/Report'
 import { SAME_STORY_CLEAR_HISTORY } from '~/plugin/constants'
 
 interface Props {
+  className?: string
   numberOfProgress?: number
   setHistory?: (value: History) => void
 }
 
-/**
- *
- * @TODO sid and cid should be handled in the app
- */
-
 const isDev = process.env.NODE_ENV === 'development'
-function Header({ numberOfProgress = 0, setHistory }: Props) {
+
+function Header({ numberOfProgress = 0, setHistory, className }: Props) {
   const navigate = useNavigate()
   const { userId, sessionId } = useUserContext()
 
@@ -72,9 +70,13 @@ function Header({ numberOfProgress = 0, setHistory }: Props) {
   }
 
   const handleClickWhy = () => {}
+  const rootClasses = cn(
+    className,
+    'flex justify-between border-b border-text-secondary px-7 py-5',
+  )
 
   return (
-    <header className="flex justify-between border-b border-text-secondary px-7 py-5">
+    <header className={rootClasses}>
       <div className="flex">
         {numberOfProgress <= 0 ? (
           <IconButton

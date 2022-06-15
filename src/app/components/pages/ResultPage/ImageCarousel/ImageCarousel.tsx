@@ -36,7 +36,7 @@ function ImageCarousel({ imageUrls }: Props) {
         depth: 200,
         modifier: 1,
         rotate: 0,
-        scale: 0.9,
+        scale: 0.7,
         stretch: 0,
       }}
     >

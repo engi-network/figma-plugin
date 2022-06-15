@@ -6,12 +6,25 @@ import { Fragment, ReactNode } from 'react'
 interface Props {
   children: ReactNode
   className?: string
+  hasCloseButton?: boolean
+  isFullScreen?: boolean
   isOpen: boolean
   onClose: () => void
 }
 
-function Modal({ isOpen, onClose, children, className }: Props) {
+function Modal({
+  isOpen,
+  onClose,
+  children,
+  className,
+  isFullScreen = false,
+  hasCloseButton = false,
+}: Props) {
   const rootClasses = cn(className, 'relative z-50')
+  const contentWrapperClasses = cn(
+    'w-full transform overflow-hidden transition-all',
+    { 'max-w-[650px]': !isFullScreen },
+  )
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -38,13 +51,15 @@ function Modal({ isOpen, onClose, children, className }: Props) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="w-full max-w-[650px] transform overflow-hidden shadow-xl transition-all">
-                <button
-                  onClick={onClose}
-                  className="absolute top-5 right-5 z-20"
-                >
-                  <XIcon className="w-4 h-5 text-primary-white" />
-                </button>
+              <div className={contentWrapperClasses}>
+                {hasCloseButton && (
+                  <button
+                    onClick={onClose}
+                    className="absolute top-5 right-5 z-20"
+                  >
+                    <XIcon className="w-4 h-5 text-primary-white" />
+                  </button>
+                )}
                 {children}
               </div>
             </Transition.Child>
