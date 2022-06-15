@@ -2,11 +2,6 @@ import { COLORS, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
   swiper: {
-    '.swiper-button-next, .swiper-button-prev': {
-      '::after': {
-        display: 'none',
-      },
-    },
     '.swiper-pagination': {
       '.swiper-pagination-bullet': {
         background: COLORS.PRIMARY.GRAY,
@@ -15,16 +10,21 @@ const styles: StylesMap = {
         background: COLORS.PRIMARY.GREEN,
       },
     },
-    // '.swiper-slide': {
-    //   backgroundPosition: 'center',
-    //   backgroundSize: 'cover',
-    //   width: 300,
-    //   height: 300,
-    // },
-    // '.swiperSlide img': {
-    //   display: 'block',
-    //   width: '100%',
-    // },
+  },
+  navBtn: {
+    alignItems: 'center',
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: '50%',
+    zIndex: 10,
+  },
+  nextBtn: {
+    right: 10,
+  },
+  prevBtn: {
+    left: 10,
   },
 }
 
