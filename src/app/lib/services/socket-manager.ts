@@ -12,7 +12,9 @@ export class SocketServiceManager {
   wsList: Array<WebSocketItem> | undefined
   isInitialized = false
 
-  constructor() {}
+  constructor() {
+    console.info('in constructor')
+  }
 
   initialize() {
     this.wsList = []

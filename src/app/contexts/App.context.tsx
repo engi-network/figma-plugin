@@ -42,12 +42,19 @@ export function useAppContextSetup(): AppContextProps {
 
   // this ws callback for handling things in background in the case of not on loading state for other websockets
   const wsCallback = async (event: MessageEvent) => {
+    /*
     const { check_id, step, step_count, error } = JSON.parse(
       event.data,
     ) as SocketData
+    */
+    const { check_id, step, step_count, error } = event
+
+    console.info(`${step + 1} of ${step_count}`)
 
     try {
+      // if we're done
       if (step === step_count - 1) {
+        console.info("and we're done!")
         const report = await AWSService.fetchReportById(
           check_id,
           STATUS.SUCCESS,

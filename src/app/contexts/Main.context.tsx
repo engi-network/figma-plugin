@@ -25,7 +25,7 @@ import GAService, {
   MeasurementData,
 } from '~/app/lib/services/ga'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
-import { READ_STATE } from '~/app/lib/services/socket'
+import { connect, READ_STATE } from '~/app/lib/services/socket'
 import SocketManager from '~/app/lib/services/socket-manager'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
@@ -139,6 +139,7 @@ export function useMainContextSetup(): MainContextProps {
         story,
         width: width + '',
       }
+      connect(checkId, wsCallback)
 
       const context = originCanvasRef.current.getContext(
         '2d',
@@ -170,6 +171,11 @@ export function useMainContextSetup(): MainContextProps {
       } as DetailedReport
 
       setHistory((prev) => [...prev, reportInProgress])
+      navigate({
+        pathname: ROUTES_MAP[ROUTES.LOADING],
+        search: `?${createSearchParams({ checkId })}`,
+      })
+      /*
       const ws = SocketManager.createWs(checkId, {
         onSuccess: async () => {
           let retry = 0
@@ -230,7 +236,7 @@ export function useMainContextSetup(): MainContextProps {
           setIsLoading(false)
           navigate(ROUTES_MAP[ROUTES.ERROR])
         },
-      })
+      })*/
     } catch (error) {
       Sentry.sendReport({
         error,

@@ -1,3 +1,4 @@
+import config from '~/app/lib/config'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { SocketData } from '~/app/models/Report'
 
@@ -27,6 +28,7 @@ export class CustomSocket {
     socketUrl: string,
     callbacks: Record<string | 'onError' | 'onSuccess', CallbackType>,
   ) {
+    console.info(`new WebSocket('${socketUrl}')`)
     this.websocket = new WebSocket(socketUrl)
     this.callbacks = callbacks
     this.initialize()
@@ -138,5 +140,37 @@ export class CustomSocket {
     }
 
     return this.websocket.readyState
+  }
+}
+
+let retries = 5
+
+export const connect = (checkId: string, callback: (data) => void) => {
+  if (--retries == 0) {
+    console.info(`giving up on ${config.SOCKET_URL}`)
+    return false
+  }
+  console.info(`connecting to ${config.SOCKET_URL}`)
+  const ws = new WebSocket(config.SOCKET_URL)
+
+  ws.onopen = () => {
+    console.info(`subscribing to ${checkId}`)
+    ws.send(
+      JSON.stringify({
+        message: 'subscribe',
+        check_id: checkId,
+      }),
+    )
+  }
+
+  ws.onclose = () => {
+    console.info('disconnected')
+    connect(checkId, callback)
+  }
+
+  ws.onmessage = (data) => {
+    const message = JSON.parse(data.data)
+    console.info('received:', message)
+    callback(message)
   }
 }

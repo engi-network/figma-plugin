@@ -1,7 +1,7 @@
 import { PluginSelection } from '~/app/models/PluginSelection'
 
 export const ShowUIOptions = {
-  title: 'Same story?',
+  title: 'Same Story?',
   width: 728,
   height: 670,
 }
