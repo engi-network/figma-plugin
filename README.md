@@ -1,5 +1,17 @@
 # Same Story React Figma Plugin
 
+## Environment
+
+Create a `.env` file:
+
+AWS_DEFAULT_REGION=
+SAME_STORY_BUCKET_NAME=
+TOPIC_ARN=
+IDENTITY_POOL_ID=
+SENTRY_DNS=
+GA_MEASUREMENT_ID=
+SOCKET_URL=
+
 ## Quickstart
 
 - Run `yarn` to install dependencies.
