@@ -1,3 +1,4 @@
+import config from '~/app/lib/config'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { SocketData } from '~/app/models/Report'
 
@@ -19,22 +20,17 @@ export class CustomSocket {
   websocket: WebSocket | undefined
   isInitialized = false
   private callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
-  private subscribers: Array<CallbackType> = []
+  private subscriptions = new Map()
   lastData: SocketData | undefined
   private timerId
 
-  constructor(
-    socketUrl: string,
-    callbacks: Record<string | 'onError' | 'onSuccess', CallbackType>,
-  ) {
-    this.websocket = new WebSocket(socketUrl)
-    this.callbacks = callbacks
-    this.initialize()
+  private connect() {
+    this.websocket = new WebSocket(config.SOCKET_URL)
   }
 
-  private initialize() {
+  initialize() {
+    this.connect()
     if (!this.websocket) {
-      this.isInitialized = false
       return
     }
 
@@ -65,29 +61,46 @@ export class CustomSocket {
     this.isInitialized = true
   }
 
-  subscribe(callback): CustomSocket | undefined {
-    this.subscribers.push(callback)
-    return this
+  subscribe(eventName, callback) {
+    if (!this.subscriptions.has(eventName)) {
+      this.sendMessage({
+        message: 'subscribe',
+        check_id: eventName,
+      })
+      this.subscriptions.set(eventName, new Set())
+    }
+
+    const newSub = { callback }
+    this.subscriptions.get(eventName).add(newSub)
+
+    return () => this.unsubscribe(eventName, newSub)
+  }
+
+  unsubscribe(eventName: string, newSub) {
+    const evSub = this.subscriptions.get(eventName)
+    evSub.delete(newSub)
+    if (evSub.size === 0) {
+      this.subscriptions.delete(eventName)
+    }
   }
 
   publish(event: MessageEvent) {
-    this.subscribers.forEach((callback) => callback(event))
+    const data = JSON.parse(event.data)
+
+    this.subscriptions.forEach((_, key, map) => {
+      const callbacks = map.get(key)
+      if (callbacks) {
+        for (const c of callbacks) {
+          c.callback(data)
+        }
+      }
+    })
   }
 
-  unsubscribe(callback) {
-    const filteredCallbacks = this.subscribers.filter(
-      (func) => func.name !== callback.name,
-    )
-
-    this.subscribers = filteredCallbacks
-  }
-
-  updateSubscribe(name, callback) {
-    const foundIndex = this.subscribers.findIndex((fn) => fn.name === name)
-
-    if (foundIndex >= 0) {
-      this.subscribers[foundIndex] = callback
-    }
+  updateSubscription(eventName: string, callback) {
+    const evSub = this.subscriptions.get(eventName)
+    evSub.delete(callback)
+    evSub.add(callback)
   }
 
   sendMessage(data: Record<string, string>) {
@@ -124,11 +137,21 @@ export class CustomSocket {
   }
 
   handleClose() {
-    this.terminate(1000, 'Socket has been closed successfully!')
+    let retry = 0
+
+    const timerId = setInterval(() => {
+      if (retry > 5) {
+        clearInterval(timerId)
+        this.handleError(new Error('Socket cannot open again!'))
+      }
+
+      retry += 1
+      this.connect()
+    }, 1000)
   }
 
   //code should be either 1000, or between 3000 and 4999
-  terminate(code: number, reason: string) {
+  private terminate(code: number, reason: string) {
     this.websocket?.close(code, reason)
   }
 
@@ -140,3 +163,5 @@ export class CustomSocket {
     return this.websocket.readyState
   }
 }
+
+export default new CustomSocket()

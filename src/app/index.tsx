@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import AWS from '~/app/lib/services/aws'
 import GAService from '~/app/lib/services/ga'
 import SentryReport from '~/app/lib/services/sentry'
-import SocketManager from '~/app/lib/services/socket-manager'
+import SocketService from '~/app/lib/services/socket'
 import MyWorker from '~/app/lib/services/worker'
 import { workerScript } from '~/app/scripts/worker'
 
@@ -23,7 +23,7 @@ MyWorker.initialize(workerScript)
 MyWorker.start()
 AWS.initialize()
 
-SocketManager.initialize()
+SocketService.initialize()
 
 if (module.hot) {
   module.hot.accept()

@@ -18,6 +18,7 @@ import {
 } from '~/app/components/modules/Code/Code.data'
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
+import useSocket from '~/app/hooks/useSocket'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWSService from '~/app/lib/services/aws'
 import GAService, {
@@ -25,8 +26,7 @@ import GAService, {
   MeasurementData,
 } from '~/app/lib/services/ga'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
-import { READ_STATE } from '~/app/lib/services/socket'
-import SocketManager from '~/app/lib/services/socket-manager'
+import SocketService, { READ_STATE } from '~/app/lib/services/socket'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
@@ -63,9 +63,9 @@ const MainContext = createContext<MainContextProps>()
 
 export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
-  const { wsCallback, setGlobalError, globalError, setHistory } =
-    useAppContext()
+  const { setGlobalError, globalError, setHistory } = useAppContext()
   const { userId, sessionId } = useUserContext()
+  const { socketCallback } = useSocket()
 
   const { selectionData, draw } = useSelectionData()
 
@@ -170,67 +170,37 @@ export function useMainContextSetup(): MainContextProps {
       } as DetailedReport
 
       setHistory((prev) => [...prev, reportInProgress])
-      const ws = SocketManager.createWs(checkId, {
-        onSuccess: async () => {
-          let retry = 0
-          const timerId = setInterval(() => {
-            if (retry > 5) {
-              clearInterval(timerId)
-            }
 
-            if (ws.isReady() === READ_STATE.OPEN) {
-              ws.sendMessage({
-                message: 'subscribe',
-                check_id: checkId,
-              })
+      const queryParams: MeasurementData = {
+        _ss: '0',
+        cid: userId,
+        dp: '/',
+        dt: 'Home',
+        en: GA_EVENT_NAMES.START_ANALYZE,
+        seg: '0',
+        sid: sessionId,
+        user_id: userId,
+      }
+      GAService.sendMeasurementData(queryParams)
 
-              ws.subscribe(wsCallback)
-              clearInterval(timerId)
+      let retry = 0
+      const timerId = setInterval(() => {
+        if (retry > 5) {
+          //fail to get ready
+          clearInterval(timerId)
+        }
 
-              navigate({
-                pathname: ROUTES_MAP[ROUTES.LOADING],
-                search: `?${createSearchParams({ checkId })}`,
-              })
-            }
-            retry += 1
-          }, 1000)
+        if (SocketService.isReady() === READ_STATE.OPEN) {
+          SocketService.subscribe(checkId, socketCallback)
+          clearInterval(timerId)
 
-          const queryParams: MeasurementData = {
-            _ss: '0',
-            cid: userId,
-            dp: '/',
-            dt: 'Home',
-            en: GA_EVENT_NAMES.START_ANALYZE,
-            seg: '0',
-            sid: sessionId,
-            user_id: userId,
-          }
-          GAService.sendMeasurementData(queryParams)
-        },
-        onError: async () => {
-          Sentry.sendReport({
-            error: 'Socket Error!',
-            transactionName: SENTRY_TRANSACTION.SOCKET,
-            tagData: { checkId },
+          navigate({
+            pathname: ROUTES_MAP[ROUTES.LOADING],
+            search: `?${createSearchParams({ checkId })}`,
           })
-
-          const queryParams: MeasurementData = {
-            _ss: '0',
-            cid: userId,
-            dp: '/',
-            dt: 'Home',
-            en: GA_EVENT_NAMES.ERROR,
-            seg: '0',
-            sid: sessionId,
-            user_id: userId,
-          }
-
-          GAService.sendMeasurementData(queryParams)
-          setGlobalError('Something went wrong with Socket, please try again!')
-          setIsLoading(false)
-          navigate(ROUTES_MAP[ROUTES.ERROR])
-        },
-      })
+        }
+        retry += 1
+      }, 1000)
     } catch (error) {
       Sentry.sendReport({
         error,

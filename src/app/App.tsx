@@ -1,6 +1,5 @@
 import './styles/global.css'
 
-import { useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { MemoryRouter as Router } from 'react-router-dom'
 
@@ -11,16 +10,9 @@ import { UserContextProvider } from '~/app/contexts/User.context'
 import Routes from '~/app/pages/Routes'
 
 import { MainContextProvider } from './contexts/Main.context'
-import { useWindowSize } from './hooks/useWindowSize'
 import { ROUTES, ROUTES_MAP } from './lib/constants'
 
 function App() {
-  const { width, height } = useWindowSize()
-
-  useEffect(() => {
-    console.log(width, height)
-  }, [width, height])
-
   return (
     <Router
       initialEntries={[
