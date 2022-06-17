@@ -34,7 +34,7 @@ function Loading() {
 
   const [status, setStatus] = useState<SocketData>(initStep)
 
-  if (!checkId || initStep.step === initStep.step_count - 1) {
+  if (!checkId) {
     return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
   }
 

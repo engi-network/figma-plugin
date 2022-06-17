@@ -24,7 +24,7 @@ export class SocketService extends PubSub {
   lastMessages = new Map<string, SocketData>()
   private timerId
 
-  private connect() {
+  connect() {
     this.websocket = new WebSocket(config.SOCKET_URL)
     this.isConnected = true
   }
@@ -94,7 +94,11 @@ export class SocketService extends PubSub {
   }
 
   sendMessage(data: Record<string, string>) {
-    this.websocket?.send(JSON.stringify(data))
+    if (this.isReady() === READ_STATE.OPEN) {
+      this.websocket?.send(JSON.stringify(data))
+    } else {
+      console.info('Connection is not open to send message!')
+    }
   }
 
   receiveMessage(event: MessageEvent) {
@@ -105,6 +109,16 @@ export class SocketService extends PubSub {
     console.info('socket has been open!', event)
     this.isConnected = true
     this.callbacks.onSuccess && this.callbacks.onSuccess(event)
+
+    // https://github.com/walkor/Workerman/issues/592#issuecomment-764190351
+    const timerId = setInterval(() => {
+      if (this.isReady() !== READ_STATE.OPEN) {
+        clearInterval(timerId)
+        return
+      }
+
+      this.sendMessage({ type: 'ping' })
+    }, 55000)
   }
 
   handleError(error) {
@@ -129,6 +143,7 @@ export class SocketService extends PubSub {
         this.handleError(new Error('Socket cannot open again!'))
       }
 
+      console.info('Socket is trying to reconnect!')
       retry += 1
       this.connect()
     }, 1000)

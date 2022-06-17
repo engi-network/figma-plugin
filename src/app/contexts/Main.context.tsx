@@ -188,6 +188,7 @@ export function useMainContextSetup(): MainContextProps {
         if (retry > 5) {
           //fail to get ready
           clearInterval(timerId)
+          throw new Error('Socket is not ready to open!')
         }
 
         if (SocketService.isReady() === READ_STATE.OPEN) {
@@ -198,8 +199,10 @@ export function useMainContextSetup(): MainContextProps {
             pathname: ROUTES_MAP[ROUTES.LOADING],
             search: `?${createSearchParams({ checkId })}`,
           })
+          return
         }
         retry += 1
+        SocketService.connect()
       }, 1000)
     } catch (error) {
       Sentry.sendReport({
