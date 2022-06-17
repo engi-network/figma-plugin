@@ -23,8 +23,8 @@ function useSocket() {
   const checkId = searchParams.get('checkId') as string
   const navigate = useNavigate()
   // this ws callback for handling things in background in the case of not on loading state for other websockets
-  const socketCallback = async (data: SocketData) => {
-    const { check_id, step, step_count, error } = data
+  const socketCallback = async (data) => {
+    const { check_id, step, step_count, error } = data as SocketData
 
     try {
       if (step === step_count - 1) {
@@ -58,7 +58,7 @@ function useSocket() {
           data: detailedReport,
         })
 
-        // SocketService.unsubscribe(checkId, socketCallback)
+        SocketService.unsubscribe(checkId, socketCallback)
         return
       }
 
@@ -95,6 +95,7 @@ function useSocket() {
           tagData: { check_id },
         })
 
+        SocketService.unsubscribe(checkId, socketCallback)
         navigate(ROUTES_MAP[ROUTES.ERROR])
         return
       }
@@ -105,14 +106,16 @@ function useSocket() {
         tagData: { check_id },
       })
       const message = (error as Error).message
+      SocketService.unsubscribe(checkId, socketCallback)
       setGlobalError(message || 'Something went wrong with socket callback!')
       navigate({ pathname: ROUTES_MAP[ROUTES.ERROR] })
     }
   }
 
-  // update subscribe when history and check id change
+  // update subscribe when history and check id change because callback uses old history
+
   useEffect(() => {
-    SocketService.updateSubscription(checkId, socketCallback)
+    SocketService.updateSubscriptionFromWs(checkId, socketCallback)
   }, [checkId, history])
 
   return {

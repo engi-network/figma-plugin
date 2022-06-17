@@ -1,5 +1,6 @@
 import config from '~/app/lib/config'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
+import PubSub from '~/app/lib/utils/pub-sub'
 import { SocketData } from '~/app/models/Report'
 
 export enum READ_STATE {
@@ -10,18 +11,17 @@ export enum READ_STATE {
 }
 
 export type CallbackType = (
-  event: MessageEvent | Event,
-  mySocket?: CustomSocket,
-) => Promise<void>
+  event: SocketData | Event,
+  mySocket?: SocketService,
+) => Promise<void> | void
 
 export const SOCKET_HANGOUT_TIME = 5 * 1000 * 60 // 5 mins
 
-export class CustomSocket {
+export class SocketService extends PubSub {
   websocket: WebSocket | undefined
   isInitialized = false
   private callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
-  private subscriptions = new Map()
-  lastData: SocketData | undefined
+  lastMessages = new Map<string, SocketData>()
   private timerId
 
   private connect() {
@@ -61,46 +61,32 @@ export class CustomSocket {
     this.isInitialized = true
   }
 
-  subscribe(eventName, callback) {
-    if (!this.subscriptions.has(eventName)) {
-      this.sendMessage({
-        message: 'subscribe',
-        check_id: eventName,
-      })
-      this.subscriptions.set(eventName, new Set())
-    }
-
-    const newSub = { callback }
-    this.subscriptions.get(eventName).add(newSub)
-
-    return () => this.unsubscribe(eventName, newSub)
-  }
-
-  unsubscribe(eventName: string, newSub) {
-    const evSub = this.subscriptions.get(eventName)
-    evSub.delete(newSub)
-    if (evSub.size === 0) {
-      this.subscriptions.delete(eventName)
-    }
-  }
-
-  publish(event: MessageEvent) {
-    const data = JSON.parse(event.data)
-
-    this.subscriptions.forEach((_, key, map) => {
-      const callbacks = map.get(key)
-      if (callbacks) {
-        for (const c of callbacks) {
-          c.callback(data)
-        }
-      }
+  subscribeToWs(topic, callback: CallbackType): () => void {
+    this.sendMessage({
+      message: 'subscribe',
+      check_id: topic,
     })
+
+    return this.subscribe(topic, callback)
   }
 
-  updateSubscription(eventName: string, callback) {
-    const evSub = this.subscriptions.get(eventName)
-    evSub.delete(callback)
-    evSub.add(callback)
+  unsubscribeFromWs(topic: string, callback: CallbackType) {
+    this.unsubscribe(topic, callback)
+  }
+
+  publishFromWs(event: MessageEvent) {
+    const data = JSON.parse(event.data) as SocketData
+
+    const message = this.lastMessages.get(data.check_id)
+    if (message) {
+      this.lastMessages.set(data.check_id, data)
+    }
+
+    this.publish(data.check_id, data)
+  }
+
+  updateSubscriptionFromWs(topic: string, callback: CallbackType) {
+    this.updateSubscription(topic, callback)
   }
 
   sendMessage(data: Record<string, string>) {
@@ -108,8 +94,7 @@ export class CustomSocket {
   }
 
   receiveMessage(event: MessageEvent) {
-    this.publish(event)
-    this.lastData = JSON.parse(event.data)
+    this.publishFromWs(event)
     clearTimeout(this.timerId)
   }
 
@@ -164,4 +149,4 @@ export class CustomSocket {
   }
 }
 
-export default new CustomSocket()
+export default new SocketService()

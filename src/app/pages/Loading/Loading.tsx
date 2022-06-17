@@ -8,7 +8,7 @@ import IconButton from '~/app/components/global/IconButton/IconButton'
 import Loader from '~/app/components/modules/Loader/Loader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import SocketManager from '~/app/lib/services/socket-manager'
+import SocketService from '~/app/lib/services/socket'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { SocketData } from '~/app/models/Report'
@@ -38,27 +38,18 @@ function Loading() {
     navigate(-1)
   }
 
-  const ws = SocketManager.getSocketById(checkId)
-
   useEffect(() => {
-    if (!ws) {
-      return
-    }
-
-    const { wsHandler } = ws
-
     // this ws callback for handling things in foreground in loading state
-    const callbackInLoading = (event: MessageEvent) => {
-      const data = JSON.parse(event.data) as SocketData
+    const callbackInLoading = (data) => {
       queue.enqueue(data)
     }
 
-    wsHandler.subscribe(callbackInLoading)
+    const unsubscribe = SocketService.subscribe(checkId, callbackInLoading)
 
     return () => {
-      ws.wsHandler.unsubscribe(callbackInLoading)
+      unsubscribe()
     }
-  }, [ws])
+  }, [checkId])
 
   useEffect(() => {
     let timeoutId
