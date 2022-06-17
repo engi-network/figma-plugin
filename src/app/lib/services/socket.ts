@@ -116,6 +116,7 @@ export class SocketService extends PubSub {
   private heartbeat() {
     const timerId = setInterval(() => {
       if (this.isReady() !== READ_STATE.OPEN) {
+        this.connect()
         clearInterval(timerId)
         return
       }
@@ -127,6 +128,7 @@ export class SocketService extends PubSub {
   handleSocketOpen(event: Event) {
     this.isConnected = true
     this.callbacks.onSuccess && this.callbacks.onSuccess(event)
+    this.heartbeat()
   }
 
   handleError(error: Event) {

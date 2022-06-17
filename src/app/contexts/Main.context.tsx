@@ -185,11 +185,8 @@ export function useMainContextSetup(): MainContextProps {
 
       SocketService.callbacks = {
         onError: (error) => {
-          console.error('ws why closed error==>', error)
+          console.error('ws why you closed error==>', error)
           throw new Error('Websocket connection closed with error!')
-        },
-        onSuccess: (event) => {
-          console.info('socket has been open!', event)
         },
       }
 

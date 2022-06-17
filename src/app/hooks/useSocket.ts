@@ -73,16 +73,18 @@ function useSocket() {
       }
 
       try {
-        const timerId = setTimeout(async () => {
+        const timerId = setTimeout(() => {
+          // assume this is success
           updateState(STATUS.SUCCESS)
             .then(() => {
               return
             })
             .catch(() => {
-              throw new Error('Cannot get result.json after TIMEOUT')
+              throw new Error('Cannot get result.json even after TIMEOUT')
             })
             .finally(() => clearTimeout(timerId))
         }, TIMEOUT)
+        console.info('callback has been added')
 
         if (step === step_count - 1) {
           updateState(STATUS.SUCCESS)
