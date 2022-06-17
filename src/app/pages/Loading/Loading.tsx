@@ -26,9 +26,13 @@ export const loadingInitialStatus = {
 function Loading() {
   const navigate = useNavigate()
   const { setGlobalError, numberOfInProgress } = useAppContext()
-  const [status, setStatus] = useState<SocketData>(loadingInitialStatus)
+
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
+  const lastMessage = SocketService.lastMessages.get(checkId)
+  const initStep = lastMessage ? lastMessage : loadingInitialStatus
+
+  const [status, setStatus] = useState<SocketData>(initStep)
 
   if (!checkId) {
     return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
@@ -44,7 +48,7 @@ function Loading() {
       queue.enqueue(data)
     }
 
-    const unsubscribe = SocketService.subscribe(checkId, callbackInLoading)
+    const unsubscribe = SocketService.subscribeToWs(checkId, callbackInLoading)
 
     return () => {
       unsubscribe()

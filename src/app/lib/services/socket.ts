@@ -19,13 +19,14 @@ export const SOCKET_HANGOUT_TIME = 5 * 1000 * 60 // 5 mins
 
 export class SocketService extends PubSub {
   websocket: WebSocket | undefined
-  isInitialized = false
+  isConnected = false
   private callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
   lastMessages = new Map<string, SocketData>()
   private timerId
 
   private connect() {
     this.websocket = new WebSocket(config.SOCKET_URL)
+    this.isConnected = true
   }
 
   initialize() {
@@ -57,31 +58,34 @@ export class SocketService extends PubSub {
       this.receiveMessage.bind(this),
       undefined,
     )
-
-    this.isInitialized = true
   }
 
   subscribeToWs(topic, callback: CallbackType): () => void {
-    this.sendMessage({
-      message: 'subscribe',
-      check_id: topic,
-    })
+    const topics = this.getTopics()
+    if (!topics.includes(topic)) {
+      this.sendMessage({
+        message: 'subscribe',
+        check_id: topic,
+      })
+    }
 
     return this.subscribe(topic, callback)
   }
 
   unsubscribeFromWs(topic: string, callback: CallbackType) {
+    const item = this.lastMessages.get(topic)
+
+    if (item) {
+      this.lastMessages.delete(topic)
+    }
+
     this.unsubscribe(topic, callback)
   }
 
   publishFromWs(event: MessageEvent) {
     const data = JSON.parse(event.data) as SocketData
 
-    const message = this.lastMessages.get(data.check_id)
-    if (message) {
-      this.lastMessages.set(data.check_id, data)
-    }
-
+    this.lastMessages.set(data.check_id, data)
     this.publish(data.check_id, data)
   }
 
@@ -95,18 +99,12 @@ export class SocketService extends PubSub {
 
   receiveMessage(event: MessageEvent) {
     this.publishFromWs(event)
-    clearTimeout(this.timerId)
   }
 
   handleSocketOpen(event: Event) {
     console.info('socket has been open!', event)
+    this.isConnected = true
     this.callbacks.onSuccess && this.callbacks.onSuccess(event)
-
-    this.timerId = setTimeout(() => {
-      this.handleError(
-        new Error('Socket is not sending data for a period of time!'),
-      )
-    }, SOCKET_HANGOUT_TIME)
   }
 
   handleError(error) {
@@ -123,6 +121,7 @@ export class SocketService extends PubSub {
 
   handleClose() {
     let retry = 0
+    this.isConnected = false
 
     const timerId = setInterval(() => {
       if (retry > 5) {

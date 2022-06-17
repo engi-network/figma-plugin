@@ -24,17 +24,29 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
   const [loadingStatus, setLoadingStatus] = useState<SocketData>(initStep)
 
   useEffect(() => {
+    if (status !== STATUS.IN_PROGRESS) {
+      return
+    }
+
     const callbackInCodeBlock = (data) => {
       queue.enqueue(data)
     }
-    const unsubscribe = SocketService.subscribe(checkId, callbackInCodeBlock)
+
+    const unsubscribe = SocketService.subscribeToWs(
+      checkId,
+      callbackInCodeBlock,
+    )
 
     return () => {
       unsubscribe()
     }
-  }, [])
+  }, [checkId, status])
 
   useEffect(() => {
+    if (status !== STATUS.IN_PROGRESS) {
+      return
+    }
+
     const timerId = setInterval(() => {
       if (queue.size() <= 0) {
         return
@@ -47,7 +59,7 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
     return () => {
       clearInterval(timerId)
     }
-  }, [])
+  }, [status])
 
   const { step } = loadingStatus
 

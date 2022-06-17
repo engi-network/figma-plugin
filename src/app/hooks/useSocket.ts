@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useAppContext } from '~/app/contexts/App.context'
@@ -23,97 +23,101 @@ function useSocket() {
   const checkId = searchParams.get('checkId') as string
   const navigate = useNavigate()
   // this ws callback for handling things in background in the case of not on loading state for other websockets
-  const socketCallback = async (data) => {
-    const { check_id, step, step_count, error } = data as SocketData
+  const socketCallback = useCallback(
+    async (data) => {
+      const { check_id, step, step_count, error } = data as SocketData
 
-    try {
-      if (step === step_count - 1) {
-        const report = await AWSService.fetchReportById(
-          check_id,
-          STATUS.SUCCESS,
-        )
-        const baseReport = history.find((item) => item.checkId === check_id)
-        const detailedReport: DetailedReport = {
-          checkId: check_id,
-          originalImageUrl: baseReport?.originalImageUrl,
-          result: {
-            ...baseReport?.result,
-            ...report.result,
-          },
-          status: STATUS.SUCCESS,
+      try {
+        if (step === step_count - 1) {
+          const report = await AWSService.fetchReportById(
+            check_id,
+            STATUS.SUCCESS,
+          )
+          const baseReport = history.find((item) => item.checkId === check_id)
+          const detailedReport: DetailedReport = {
+            checkId: check_id,
+            originalImageUrl: baseReport?.originalImageUrl,
+            result: {
+              ...baseReport?.result,
+              ...report.result,
+            },
+            status: STATUS.SUCCESS,
+          }
+
+          setReport(detailedReport)
+
+          const replacedArray = replaceItemInArray(
+            history,
+            'checkId',
+            check_id,
+            detailedReport,
+          )
+          setHistory(replacedArray)
+
+          dispatchData({
+            type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+            data: detailedReport,
+          })
+
+          SocketService.unsubscribe(checkId, socketCallback)
+          return
         }
 
-        setReport(detailedReport)
+        // error
+        if (error) {
+          const baseReport = history.find((item) => item.checkId === check_id)
+          const detailedReport: DetailedReport = {
+            checkId: check_id,
+            originalImageUrl: baseReport?.originalImageUrl,
+            result: {
+              ...baseReport?.result,
+              error,
+            } as ErrorResult,
+            status: STATUS.FAIL,
+          }
 
-        const replacedArray = replaceItemInArray(
-          history,
-          'checkId',
-          check_id,
-          detailedReport,
-        )
-        setHistory(replacedArray)
+          const replacedArray = replaceItemInArray(
+            history,
+            'checkId',
+            check_id,
+            detailedReport,
+          )
 
-        dispatchData({
-          type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-          data: detailedReport,
-        })
+          setHistory(replacedArray)
+          setGlobalError(
+            'Something went wrong. Please double check the inputs.',
+          )
+          dispatchData({
+            type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+            data: detailedReport,
+          })
 
-        SocketService.unsubscribe(checkId, socketCallback)
-        return
-      }
-
-      // error
-      if (error) {
-        const baseReport = history.find((item) => item.checkId === check_id)
-        const detailedReport: DetailedReport = {
-          checkId: check_id,
-          originalImageUrl: baseReport?.originalImageUrl,
-          result: {
-            ...baseReport?.result,
+          Sentry.sendReport({
             error,
-          } as ErrorResult,
-          status: STATUS.FAIL,
+            transactionName: SENTRY_TRANSACTION.GET_REPORT,
+            tagData: { check_id },
+          })
+
+          SocketService.unsubscribe(checkId, socketCallback)
+          navigate(ROUTES_MAP[ROUTES.ERROR])
+          return
         }
-
-        const replacedArray = replaceItemInArray(
-          history,
-          'checkId',
-          check_id,
-          detailedReport,
-        )
-
-        setHistory(replacedArray)
-        setGlobalError('Something went wrong. Please double check the inputs.')
-        dispatchData({
-          type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-          data: detailedReport,
-        })
-
+      } catch (error) {
         Sentry.sendReport({
           error,
           transactionName: SENTRY_TRANSACTION.GET_REPORT,
           tagData: { check_id },
         })
-
+        const message = (error as Error).message
         SocketService.unsubscribe(checkId, socketCallback)
-        navigate(ROUTES_MAP[ROUTES.ERROR])
-        return
+        setGlobalError(message || 'Something went wrong with socket callback!')
+        navigate({ pathname: ROUTES_MAP[ROUTES.ERROR] })
       }
-    } catch (error) {
-      Sentry.sendReport({
-        error,
-        transactionName: SENTRY_TRANSACTION.GET_REPORT,
-        tagData: { check_id },
-      })
-      const message = (error as Error).message
-      SocketService.unsubscribe(checkId, socketCallback)
-      setGlobalError(message || 'Something went wrong with socket callback!')
-      navigate({ pathname: ROUTES_MAP[ROUTES.ERROR] })
-    }
-  }
+    },
+    [checkId, history],
+  )
 
   // update subscribe when history and check id change because callback uses old history
-
   useEffect(() => {
     SocketService.updateSubscriptionFromWs(checkId, socketCallback)
   }, [checkId, history])

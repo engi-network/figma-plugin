@@ -33,13 +33,12 @@ class PubSub {
 
   updateSubscription(topic: string, callback: CallbackType) {
     const evSub = this.subscriptions.get(topic)
-    evSub?.add(callback)
     evSub?.forEach((fn) => {
       if (fn.name === callback.name) {
         evSub.delete(fn)
-        evSub.add(callback)
       }
     })
+    evSub?.add(callback)
   }
 
   getTopics(): Array<string> {

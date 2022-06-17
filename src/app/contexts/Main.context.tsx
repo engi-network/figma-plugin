@@ -191,7 +191,7 @@ export function useMainContextSetup(): MainContextProps {
         }
 
         if (SocketService.isReady() === READ_STATE.OPEN) {
-          SocketService.subscribe(checkId, socketCallback)
+          SocketService.subscribeToWs(checkId, socketCallback)
           clearInterval(timerId)
 
           navigate({
