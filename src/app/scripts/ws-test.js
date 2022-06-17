@@ -1,10 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
+require('dotenv').config()
 const websocket = require('ws')
 
 const WS_URL = process.env['SOCKET_URL']
-const CHECK_ID = '8e92553f-6cf9-406a-8805-6a31db487559'
 
 let retries = 5
+const myArgs = process.argv.slice(2)
+const checkId = myArgs[0]
 
 function connect() {
   let ws
@@ -16,11 +18,11 @@ function connect() {
   ws = new websocket.WebSocket(WS_URL)
 
   ws.on('open', function open() {
-    console.info(`subscribing to ${CHECK_ID}`)
+    console.info(`subscribing to ${checkId}`)
     ws.send(
       JSON.stringify({
         message: 'subscribe',
-        check_id: CHECK_ID,
+        check_id: checkId,
       }),
     )
     // ws.close();
