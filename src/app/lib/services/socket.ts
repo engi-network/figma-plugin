@@ -20,9 +20,8 @@ export const SOCKET_HANGOUT_TIME = 5 * 1000 * 60 // 5 mins
 export class SocketService extends PubSub {
   websocket: WebSocket | undefined
   isConnected = false
-  private callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
+  callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
   lastMessages = new Map<string, SocketData>()
-  private timerId
 
   connect() {
     this.websocket = new WebSocket(config.SOCKET_URL)
@@ -84,6 +83,14 @@ export class SocketService extends PubSub {
 
   publishFromWs(event: MessageEvent) {
     const data = JSON.parse(event.data) as SocketData
+    const lastMessage = this.lastMessages.get(data.check_id)
+
+    // ignore delayed ones
+    if (lastMessage) {
+      if (data.step <= lastMessage.step) {
+        return
+      }
+    }
 
     this.lastMessages.set(data.check_id, data)
     this.publish(data.check_id, data)
@@ -105,12 +112,8 @@ export class SocketService extends PubSub {
     this.publishFromWs(event)
   }
 
-  handleSocketOpen(event: Event) {
-    console.info('socket has been open!', event)
-    this.isConnected = true
-    this.callbacks.onSuccess && this.callbacks.onSuccess(event)
-
-    // https://github.com/walkor/Workerman/issues/592#issuecomment-764190351
+  // https://github.com/walkor/Workerman/issues/592#issuecomment-764190351
+  private heartbeat() {
     const timerId = setInterval(() => {
       if (this.isReady() !== READ_STATE.OPEN) {
         clearInterval(timerId)
@@ -121,26 +124,32 @@ export class SocketService extends PubSub {
     }, 55000)
   }
 
-  handleError(error) {
+  handleSocketOpen(event: Event) {
+    this.isConnected = true
+    this.callbacks.onSuccess && this.callbacks.onSuccess(event)
+  }
+
+  handleError(error: Event) {
     if (this.callbacks.onError) {
       this.callbacks.onError(error)
-      this.terminate(1000, 'Socket server went wrong!')
-      this.timerId && clearTimeout(this.timerId)
     }
+
+    this.terminate(1000, 'Socket server went wrong!')
     Sentry.sendReport({
       error,
       transactionName: SENTRY_TRANSACTION.SOCKET,
     })
   }
 
-  handleClose() {
+  handleClose(event: Event) {
     let retry = 0
     this.isConnected = false
 
     const timerId = setInterval(() => {
       if (retry > 5) {
         clearInterval(timerId)
-        this.handleError(new Error('Socket cannot open again!'))
+        this.unsubscribeAll()
+        this.handleError(event)
       }
 
       console.info('Socket is trying to reconnect!')

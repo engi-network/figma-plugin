@@ -31,6 +31,10 @@ class PubSub {
     }
   }
 
+  unsubscribeAll() {
+    this.subscriptions = new Map<string, Set<CallbackType>>()
+  }
+
   updateSubscription(topic: string, callback: CallbackType) {
     const evSub = this.subscriptions.get(topic)
     evSub?.forEach((fn) => {

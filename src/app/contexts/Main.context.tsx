@@ -183,6 +183,16 @@ export function useMainContextSetup(): MainContextProps {
       }
       GAService.sendMeasurementData(queryParams)
 
+      SocketService.callbacks = {
+        onError: (error) => {
+          console.error('ws why closed error==>', error)
+          throw new Error('Websocket connection closed with error!')
+        },
+        onSuccess: (event) => {
+          console.info('socket has been open!', event)
+        },
+      }
+
       let retry = 0
       const timerId = setInterval(() => {
         if (retry > 5) {
