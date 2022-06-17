@@ -19,9 +19,9 @@ GAService.initialize()
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
+AWS.initialize()
 MyWorker.initialize(workerScript)
 MyWorker.start()
-AWS.initialize()
 
 SocketService.initialize()
 

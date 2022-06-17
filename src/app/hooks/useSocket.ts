@@ -11,11 +11,13 @@ import { replaceItemInArray } from '~/app/lib/utils/object'
 import {
   DetailedReport,
   ErrorResult,
+  ReportResult,
   SocketData,
   STATUS,
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
+const TIMEOUT = 2 * 60 * 1000 // 2min
 function useSocket() {
   const { setGlobalError, history, setHistory, setReport } = useAppContext()
 
@@ -27,70 +29,72 @@ function useSocket() {
     async (data) => {
       const { check_id, step, step_count, error } = data as SocketData
 
+      const updateState = async (status: STATUS) => {
+        const report =
+          status === STATUS.SUCCESS
+            ? await AWSService.fetchReportById(check_id, status)
+            : undefined
+
+        const baseReport = history.find((item) => item.checkId === check_id)
+        const result =
+          status === STATUS.FAIL
+            ? ({
+                ...baseReport?.result,
+                error,
+              } as ErrorResult)
+            : ({
+                ...baseReport?.result,
+                ...report?.result,
+              } as ReportResult)
+
+        const detailedReport: DetailedReport = {
+          checkId: check_id,
+          originalImageUrl: baseReport?.originalImageUrl,
+          result,
+          status,
+        }
+
+        setReport(detailedReport)
+
+        const replacedArray = replaceItemInArray(
+          history,
+          'checkId',
+          check_id,
+          detailedReport,
+        )
+        setHistory(replacedArray)
+
+        dispatchData({
+          type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+          data: detailedReport,
+        })
+
+        SocketService.unsubscribe(checkId, socketCallback)
+      }
+
       try {
+        const timerId = setTimeout(async () => {
+          updateState(STATUS.SUCCESS)
+            .then(() => {
+              return
+            })
+            .catch(() => {
+              throw new Error('Cannot get result.json after TIMEOUT')
+            })
+            .finally(() => clearTimeout(timerId))
+        }, TIMEOUT)
+
         if (step === step_count - 1) {
-          const report = await AWSService.fetchReportById(
-            check_id,
-            STATUS.SUCCESS,
-          )
-          const baseReport = history.find((item) => item.checkId === check_id)
-          const detailedReport: DetailedReport = {
-            checkId: check_id,
-            originalImageUrl: baseReport?.originalImageUrl,
-            result: {
-              ...baseReport?.result,
-              ...report.result,
-            },
-            status: STATUS.SUCCESS,
-          }
-
-          setReport(detailedReport)
-
-          const replacedArray = replaceItemInArray(
-            history,
-            'checkId',
-            check_id,
-            detailedReport,
-          )
-          setHistory(replacedArray)
-
-          dispatchData({
-            type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-            data: detailedReport,
-          })
-
-          SocketService.unsubscribe(checkId, socketCallback)
+          updateState(STATUS.SUCCESS)
           return
         }
 
         // error
         if (error) {
-          const baseReport = history.find((item) => item.checkId === check_id)
-          const detailedReport: DetailedReport = {
-            checkId: check_id,
-            originalImageUrl: baseReport?.originalImageUrl,
-            result: {
-              ...baseReport?.result,
-              error,
-            } as ErrorResult,
-            status: STATUS.FAIL,
-          }
-
-          const replacedArray = replaceItemInArray(
-            history,
-            'checkId',
-            check_id,
-            detailedReport,
-          )
-
-          setHistory(replacedArray)
+          updateState(STATUS.FAIL)
           setGlobalError(
             'Something went wrong. Please double check the inputs.',
           )
-          dispatchData({
-            type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-            data: detailedReport,
-          })
 
           Sentry.sendReport({
             error,
@@ -98,10 +102,10 @@ function useSocket() {
             tagData: { check_id },
           })
 
-          SocketService.unsubscribe(checkId, socketCallback)
           navigate(ROUTES_MAP[ROUTES.ERROR])
           return
         }
+        //progress
       } catch (error) {
         Sentry.sendReport({
           error,
