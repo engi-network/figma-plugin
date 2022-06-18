@@ -121,7 +121,7 @@ export class SocketService extends PubSub {
         return
       }
 
-      this.sendMessage({ type: 'ping' })
+      this.sendMessage({ message: 'ping' })
     }, 55000)
   }
 
