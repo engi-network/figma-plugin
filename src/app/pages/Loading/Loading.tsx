@@ -46,9 +46,6 @@ function Loading() {
   }
 
   useEffect(() => {
-    if (!hasCurrentTopic) {
-      return
-    }
     // this ws callback for handling things in foreground in loading state
     const callbackInLoading = (data) => {
       queue.enqueue(data)
@@ -59,13 +56,9 @@ function Loading() {
     return () => {
       unsubscribe()
     }
-  }, [checkId, hasCurrentTopic])
+  }, [checkId])
 
   useEffect(() => {
-    if (!hasCurrentTopic) {
-      return
-    }
-
     let timeoutId
     const timerId = setInterval(() => {
       if (queue.size() <= 0) {
@@ -99,10 +92,9 @@ function Loading() {
       clearInterval(timerId)
       clearTimeout(timeoutId)
     }
-  }, [hasCurrentTopic])
+  }, [])
 
   // if landed from back history that has been done, then redirect to Home
-
   if (!hasCurrentTopic) {
     return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
   }

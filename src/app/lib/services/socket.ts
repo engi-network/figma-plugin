@@ -71,14 +71,14 @@ export class SocketService extends PubSub {
     return this.subscribe(topic, callback)
   }
 
-  unsubscribeFromWs(topic: string, callback: CallbackType) {
+  removeTopicFromWs(topic: string, _: CallbackType) {
     const item = this.lastMessages.get(topic)
 
     if (item) {
       this.lastMessages.delete(topic)
     }
 
-    this.unsubscribeByCallbackName(topic, callback)
+    this.removeTopic(topic)
   }
 
   publishFromWs(event: MessageEvent) {
