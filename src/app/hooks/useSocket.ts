@@ -66,7 +66,7 @@ function useSocket() {
           data: detailedReport,
         })
 
-        SocketService.unsubscribe(checkId, socketCallback)
+        SocketService.unsubscribeFromWs(checkId, socketCallback)
       }
 
       try {
@@ -100,7 +100,7 @@ function useSocket() {
           tagData: { check_id },
         })
         const message = (error as Error).message
-        SocketService.unsubscribe(checkId, socketCallback)
+        SocketService.unsubscribeFromWs(checkId, socketCallback)
         setGlobalError(message || 'Something went wrong with socket callback!')
         navigate({ pathname: ROUTES_MAP[ROUTES.ERROR] })
       }

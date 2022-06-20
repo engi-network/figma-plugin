@@ -1,10 +1,11 @@
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
+import { STATUS } from '~/app/models/Report'
 
 export const DURATION_RANGE = [0, 1000]
 
 export interface TableFilterItem {
   id: TB_ACCESSORS
-  value: string | number | Array<number | string> | boolean
+  value: string | number | Array<number | string> | boolean | Array<STATUS>
 }
 
 export enum FILTER_FIELDS {
@@ -13,7 +14,7 @@ export enum FILTER_FIELDS {
   CREATED_BEFORE = 'createdBefore',
   DURATION = 'duration',
   FAIL = 'fail',
-  IN_PROGRESS = 'in_progress',
+  IN_PROGRESS = 'inProgress',
   SUCCESS = 'success',
 }
 

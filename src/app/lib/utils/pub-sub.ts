@@ -21,6 +21,19 @@ class PubSub {
     }
   }
 
+  unsubscribeByCallbackName(topic: string, callback: CallbackType) {
+    const evSub = this.subscriptions.get(topic)
+    evSub?.forEach((fn) => {
+      if (fn.name === callback.name) {
+        evSub.delete(fn)
+      }
+    })
+
+    if (evSub?.size === 0) {
+      this.subscriptions.delete(topic)
+    }
+  }
+
   publish(topic: string, data) {
     const evSub = this.subscriptions.get(topic)
 

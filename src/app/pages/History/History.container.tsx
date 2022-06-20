@@ -60,11 +60,6 @@ function Historycontainer() {
       checkId,
     }
 
-    const detailedReport = history.find((item) => item.checkId === checkId)
-    if (!detailedReport) {
-      return
-    }
-
     if (status === STATUS.IN_PROGRESS) {
       navigate({
         pathname: ROUTES_MAP[ROUTES.LOADING],
@@ -79,7 +74,7 @@ function Historycontainer() {
     })
   }
 
-  console.info('history on history=====>', history, data)
+  console.info('history on history=====>', history)
 
   return (
     <>

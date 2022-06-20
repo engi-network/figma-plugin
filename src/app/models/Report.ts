@@ -43,6 +43,7 @@ export enum STATUS {
   IN_PROGRESS = 'inProgress',
   SUCCESS = 'success',
 }
+
 export interface Report {
   checkId: string
   result: ReportResult | ErrorResult | InProgressResult

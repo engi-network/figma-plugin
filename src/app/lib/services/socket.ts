@@ -78,7 +78,7 @@ export class SocketService extends PubSub {
       this.lastMessages.delete(topic)
     }
 
-    this.unsubscribe(topic, callback)
+    this.unsubscribeByCallbackName(topic, callback)
   }
 
   publishFromWs(event: MessageEvent) {

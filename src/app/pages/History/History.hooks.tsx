@@ -70,7 +70,7 @@ export function useTableData(filter: FilterValues) {
         accessor: TB_ACCESSORS.STATUS,
         Cell: CellStatus,
         disableGlobalFilter: true,
-        filter: 'equals',
+        filter: inclusionFilter,
         Header: '',
         width: 56,
       },

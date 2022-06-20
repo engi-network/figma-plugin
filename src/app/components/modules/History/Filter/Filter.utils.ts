@@ -3,6 +3,7 @@ import { convertDateToUnix } from '~/app/lib/utils/time'
 import { STATUS } from '~/app/models/Report'
 
 import {
+  FILTER_FIELDS,
   FilterValues,
   mapFilterToAccessor,
   TableFilterItem,
@@ -36,14 +37,11 @@ export const mapFilterFormToTableFilter = (
       convertDateToUnix(filter.createdAfter),
     ],
     duration: filter.duration,
-    // @TODO has to change this logic for inprogress
-    status: filter.success
-      ? filter.fail
-        ? ''
-        : STATUS.SUCCESS
-      : filter.fail
-      ? STATUS.FAIL
-      : '',
+    status: [
+      filter[FILTER_FIELDS.SUCCESS] && STATUS.SUCCESS,
+      filter[FILTER_FIELDS.FAIL] && STATUS.FAIL,
+      filter[FILTER_FIELDS.IN_PROGRESS] && STATUS.IN_PROGRESS,
+    ].filter(Boolean) as Array<string>,
     branch: !!branchNames.length && branchNames,
   }
 

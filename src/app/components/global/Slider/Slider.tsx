@@ -31,7 +31,7 @@ export default function Slider({
     )
     return (
       <div {...props} className={thumbClasses}>
-        <span className="-mt-10 text-xs text-primary-green">
+        <span className="-mt-10 text-xs text-primary-green whitespace-nowrap">
           {`${state.valueNow} min`}
         </span>
       </div>

@@ -52,9 +52,6 @@ function Header({ numberOfProgress = 0, setHistory, className }: Props) {
   }
 
   const handleViewProgress = () => {
-    if (numberOfProgress <= 0) {
-      return
-    }
     const filterParams = JSON.stringify({ inProgress: true })
     navigate({
       pathname: ROUTES_MAP[ROUTES.HISTORY],

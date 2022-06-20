@@ -39,6 +39,7 @@ function Loading() {
   const [status, setStatus] = useState<SocketData>(initStep)
   const topics = SocketService.getTopics()
   const hasCurrentTopic = topics.includes(checkId)
+  console.log('topics in loading====>', topics)
 
   const handleClickBack = () => {
     navigate(-1)

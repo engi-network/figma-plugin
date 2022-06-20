@@ -5,7 +5,7 @@ import { DetailedReport, STATUS } from '~/app/models/Report'
 
 export const SORT_BY_OPTIONS: Array<SelectOption> = [
   { value: 'completedAt', name: 'Last updated' },
-  { value: 'createdAt', name: 'Newest' },
+  { value: 'createdAt', name: 'Created at' },
   { value: 'path', name: 'Alphabetical' },
 ]
 
