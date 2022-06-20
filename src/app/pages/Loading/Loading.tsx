@@ -1,7 +1,11 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router'
-import { createSearchParams, useSearchParams } from 'react-router-dom'
+import {
+  createSearchParams,
+  Navigate,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 
 import Header from '~/app/components/global/Header/Header'
 import IconButton from '~/app/components/global/IconButton/IconButton'
@@ -33,16 +37,17 @@ function Loading() {
   const initStep = lastMessage ? lastMessage : loadingInitialStatus
 
   const [status, setStatus] = useState<SocketData>(initStep)
-
-  if (!checkId) {
-    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
-  }
+  const topics = SocketService.getTopics()
+  const hasCurrentTopic = topics.includes(checkId)
 
   const handleClickBack = () => {
     navigate(-1)
   }
 
   useEffect(() => {
+    if (!hasCurrentTopic) {
+      return
+    }
     // this ws callback for handling things in foreground in loading state
     const callbackInLoading = (data) => {
       queue.enqueue(data)
@@ -53,9 +58,13 @@ function Loading() {
     return () => {
       unsubscribe()
     }
-  }, [checkId])
+  }, [checkId, hasCurrentTopic])
 
   useEffect(() => {
+    if (!hasCurrentTopic) {
+      return
+    }
+
     let timeoutId
     const timerId = setInterval(() => {
       if (queue.size() <= 0) {
@@ -89,7 +98,13 @@ function Loading() {
       clearInterval(timerId)
       clearTimeout(timeoutId)
     }
-  }, [])
+  }, [hasCurrentTopic])
+
+  // if landed from back history that has been done, then redirect to Home
+
+  if (!hasCurrentTopic) {
+    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
+  }
 
   const { step } = status
 

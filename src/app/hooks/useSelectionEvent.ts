@@ -20,7 +20,6 @@ function useSelectionEvent() {
         break
       }
       case PLUGIN_CONSTATNS.SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI: {
-        console.error('Error | from controller', event.data.pluginMessage.error)
         setSelectionError(event.data.pluginMessage.error)
         break
       }

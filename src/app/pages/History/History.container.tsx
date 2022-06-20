@@ -25,7 +25,7 @@ import { useTableData } from './History.hooks'
 import { extractBranchNames } from './History.utils'
 
 function Historycontainer() {
-  const { history, setReport } = useAppContext()
+  const { history } = useAppContext()
   const [searchParams] = useSearchParams()
   const stringFilterValues = searchParams.get('filter') as string
   const filterFromQuery =
@@ -73,7 +73,6 @@ function Historycontainer() {
       return
     }
 
-    setReport(detailedReport)
     navigate({
       pathname: ROUTES_MAP[ROUTES.RESULT],
       search: `?${createSearchParams(searchParam)}`,

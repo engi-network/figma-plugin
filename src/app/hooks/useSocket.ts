@@ -17,9 +17,8 @@ import {
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
-const TIMEOUT = 2 * 60 * 1000 // 2min
 function useSocket() {
-  const { setGlobalError, history, setHistory, setReport } = useAppContext()
+  const { setGlobalError, history, setHistory } = useAppContext()
 
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
@@ -54,16 +53,14 @@ function useSocket() {
           status,
         }
 
-        setReport(detailedReport)
-
         const replacedArray = replaceItemInArray(
           history,
           'checkId',
           check_id,
           detailedReport,
         )
-        setHistory(replacedArray)
 
+        setHistory(replacedArray)
         dispatchData({
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
           data: detailedReport,
@@ -73,19 +70,7 @@ function useSocket() {
       }
 
       try {
-        const timerId = setTimeout(() => {
-          // assume this is success
-          updateState(STATUS.SUCCESS)
-            .then(() => {
-              return
-            })
-            .catch(() => {
-              throw new Error('Cannot get result.json even after TIMEOUT')
-            })
-            .finally(() => clearTimeout(timerId))
-        }, TIMEOUT)
-        console.info('callback has been added')
-
+        // for the last step, successful case
         if (step === step_count - 1) {
           updateState(STATUS.SUCCESS)
           return
@@ -104,10 +89,10 @@ function useSocket() {
             tagData: { check_id },
           })
 
-          navigate(ROUTES_MAP[ROUTES.ERROR])
+          navigate({ pathname: ROUTES_MAP[ROUTES.ERROR] })
           return
         }
-        //progress
+        //in progress
       } catch (error) {
         Sentry.sendReport({
           error,

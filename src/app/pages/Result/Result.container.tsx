@@ -1,6 +1,6 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import Button from '~/app/components/global/Button/Button'
 import Canvas from '~/app/components/global/Canvas/CanvasContainer'
@@ -20,7 +20,7 @@ import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { ReportResult, STATUS } from '~/app/models/Report'
+import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
 
 /**
  *
@@ -40,13 +40,15 @@ function ResultStatus({ status }: { status: STATUS }) {
 
 function ResultContainer() {
   const navigate = useNavigate()
-  const { report } = useAppContext()
-  const [selectedImage, setSelectedImage] = useState('')
+  const { history } = useAppContext()
+  const [searchParams] = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
+  const [selectedImage, setSelectedImage] = useState('')
 
-  if (!report || report.status !== STATUS.SUCCESS) {
-    return null
-  }
+  const checkId = searchParams.get('checkId') as string
+  const report = history.find(
+    (item) => item.checkId === checkId,
+  ) as DetailedReport
 
   const { originalImageUrl, result } = report
 
@@ -66,6 +68,10 @@ function ResultContainer() {
     { value: url_gray_difference, name: 'Gray-scale Difference' },
     { value: url_blue_difference, name: 'Blue-scale Difference' },
   ]
+
+  useEffect(() => {
+    setSelectedImage(imageSelectionOptions[0].value)
+  }, [])
 
   const handleClickBack = () => {
     navigate(-1)
@@ -96,10 +102,6 @@ function ResultContainer() {
 
       await drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
     }
-
-  useEffect(() => {
-    setSelectedImage(imageSelectionOptions[0].value)
-  }, [])
 
   const isStorybook = selectedImage === imageSelectionOptions[0].value
 

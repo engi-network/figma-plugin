@@ -2,22 +2,19 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
 import { createContext } from '~/app/lib/utils/context'
-import { DetailedReport, History, STATUS } from '~/app/models/Report'
+import { History, STATUS } from '~/app/models/Report'
 
 export interface AppContextProps {
   globalError: string
   history: History
   numberOfInProgress: number
-  report?: DetailedReport
   setGlobalError: Dispatch<SetStateAction<string>>
   setHistory: Dispatch<SetStateAction<History>>
-  setReport: (value: DetailedReport) => void
 }
 
 const AppContext = createContext<AppContextProps>()
 
 export function useAppContextSetup(): AppContextProps {
-  const [report, setReport] = useState<DetailedReport>()
   const { history, setHistory } = useHistoryEvent()
   const [globalError, setGlobalError] = useState('')
   const [numberOfInProgress, setNumberOfInProgress] = useState(0)
@@ -38,10 +35,8 @@ export function useAppContextSetup(): AppContextProps {
     globalError,
     history,
     numberOfInProgress,
-    report,
     setGlobalError,
     setHistory,
-    setReport,
   }
 }
 
