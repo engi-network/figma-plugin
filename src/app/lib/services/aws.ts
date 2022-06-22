@@ -37,6 +37,7 @@ class AWSService {
   isInitialized = false
   private snsClient: SNSClient | undefined
   private s3Client: S3Client | undefined
+  private sqsClient: AWS.SQS | undefined
 
   constructor() {}
 
@@ -45,6 +46,7 @@ class AWSService {
       AWS.config.update(awsConfig)
       this.snsClient = new SNSClient(awsConfig)
       this.s3Client = new S3Client(awsConfig)
+      this.sqsClient = new AWS.SQS(awsConfig)
       this.isInitialized = true
     } catch (error) {
       this.isInitialized = false
@@ -194,6 +196,40 @@ class AWSService {
       throw {
         message: 'AWS has not been configured',
       } as AWSError
+    }
+  }
+
+  async receiveMessageFromSQS(): Promise<
+    AWS.Request<AWS.SQS.ReceiveMessageResult, AWSError>
+  > {
+    if (!this.sqsClient) {
+      return Promise.reject({
+        message: 'AWS has not been configured',
+      } as AWSError)
+    }
+
+    const params = {
+      MaxNumberOfMessages: 10,
+      QueueUrl: config.SQS_URL,
+      // VisibilityTimeout: 10,
+      WaitTimeSeconds: 1,
+    }
+
+    try {
+      const result = await this.sqsClient.receiveMessage(params)
+
+      const deleteParams = {
+        QueueUrl: config.SQS_URL,
+        ReceiptHandle: result?.Messages[0].ReceiptHandle,
+      }
+
+      await this.sqsClient.deleteMessage(deleteParams)
+
+      console.info('received from SQS::::====>', result)
+      return result
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(error as AWSError)
     }
   }
 }

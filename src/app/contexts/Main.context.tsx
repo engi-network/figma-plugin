@@ -18,15 +18,14 @@ import {
 } from '~/app/components/modules/Code/Code.data'
 import { useAppContext } from '~/app/contexts/App.context'
 import useSelectionData from '~/app/hooks/useSelectionData'
-import useSocket from '~/app/hooks/useSocket'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWSService from '~/app/lib/services/aws'
+import DataSource from '~/app/lib/services/data-source'
 import GAService, {
   GA_EVENT_NAMES,
   MeasurementData,
 } from '~/app/lib/services/ga'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
-import SocketService, { READ_STATE } from '~/app/lib/services/socket'
 import { decodeOriginal, encode } from '~/app/lib/utils/canvas'
 import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
@@ -65,7 +64,6 @@ export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
   const { setGlobalError, globalError, setHistory } = useAppContext()
   const { userId, sessionId } = useUserContext()
-  const { socketCallback } = useSocket()
 
   const { selectionData, draw } = useSelectionData()
 
@@ -182,35 +180,7 @@ export function useMainContextSetup(): MainContextProps {
         user_id: userId,
       }
       GAService.sendMeasurementData(queryParams)
-
-      SocketService.callbacks = {
-        onError: (error) => {
-          console.error('ws why you closed error==>', error)
-          throw new Error('Websocket connection closed with error!')
-        },
-      }
-
-      let retry = 0
-      const timerId = setInterval(() => {
-        if (retry > 5) {
-          //fail to get ready
-          clearInterval(timerId)
-          throw new Error('Socket is not ready to open!')
-        }
-
-        if (SocketService.isReady() === READ_STATE.OPEN) {
-          SocketService.subscribeToWs(checkId, socketCallback)
-          clearInterval(timerId)
-
-          navigate({
-            pathname: ROUTES_MAP[ROUTES.LOADING],
-            search: `?${createSearchParams({ checkId })}`,
-          })
-          return
-        }
-        retry += 1
-        SocketService.connect()
-      }, 1000)
+      DataSource.start()
     } catch (error) {
       Sentry.sendReport({
         error,
