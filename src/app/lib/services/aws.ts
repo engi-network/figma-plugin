@@ -6,6 +6,7 @@ import {
 } from '@aws-sdk/client-sns'
 import {
   DeleteMessageCommand,
+  Message,
   ReceiveMessageCommand,
   SQSClient,
 } from '@aws-sdk/client-sqs'
@@ -42,7 +43,7 @@ class AWSService {
   isInitialized = false
   private snsClient: SNSClient | undefined
   private s3Client: S3Client | undefined
-  private sqsClient: SQSClient | undefined
+  sqsClient: SQSClient | undefined
 
   constructor() {}
 
@@ -204,22 +205,22 @@ class AWSService {
     }
   }
 
+  processMsg = async (msg: Message) => {
+    const _msg = JSON.parse(msg.Body + '')
+    console.info(`message: ${_msg.Message}`)
+
+    const data = await this.sqsClient?.send(
+      new DeleteMessageCommand({
+        QueueUrl: config.SQS_URL,
+        ReceiptHandle: msg.ReceiptHandle,
+      }),
+    )
+    console.info(`message deleted: ${JSON.stringify(data)}`)
+
+    return _msg
+  }
+
   async receiveMessageFromSQS() {
-    const processMsg = async (msg) => {
-      const _msg = JSON.parse(msg.Body)
-
-      const data = await this.sqsClient?.send(
-        new DeleteMessageCommand({
-          QueueUrl: config.SQS_URL,
-          ReceiptHandle: msg.ReceiptHandle,
-        }),
-      )
-      console.info(`message deleted: ${JSON.stringify(data)}`)
-
-      console.info(`message: ${_msg.Message}`)
-      return _msg
-    }
-
     if (!this.sqsClient) {
       return Promise.reject({
         message: 'AWS has not been configured',
@@ -235,12 +236,7 @@ class AWSService {
       }),
     )
 
-    if (!data.Messages) {
-      return
-    }
-    const result = await Promise.all(data.Messages.map(processMsg))
-
-    return result
+    return data.Messages
   }
 }
 

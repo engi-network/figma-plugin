@@ -1,3 +1,5 @@
+import { Message } from '@aws-sdk/client-sqs'
+
 import AWSService from '~/app/lib/services/aws'
 import PubSub from '~/app/lib/utils/pub-sub'
 
@@ -21,12 +23,32 @@ class DataSource extends PubSub {
 
   start() {
     this.timerId = setInterval(async () => {
-      const data = await AWSService.receiveMessageFromSQS()
+      try {
+        const messages = await AWSService.receiveMessageFromSQS()
+        if (!Array.isArray(messages)) {
+          return
+        }
+
+        this.publishFromDS(messages)
+      } catch (error) {
+        console.error('error in sqs=>', error)
+      }
     }, POLLING_INTERVAL)
   }
 
   stop() {
     clearInterval(this.timerId)
+  }
+
+  subscribeToDS(topic: string, callback: () => void) {}
+
+  unsubscribeFromDS() {}
+
+  publishFromDS(data) {
+    data.map(async (message: Message) => {
+      const parsedMessage = await AWSService.processMsg(message)
+      this.publish(parsedMessage.check_id, parsedMessage)
+    })
   }
 }
 
