@@ -4,6 +4,11 @@ import {
   PublishCommandOutput,
   SNSClient,
 } from '@aws-sdk/client-sns'
+import {
+  DeleteMessageCommand,
+  ReceiveMessageCommand,
+  SQSClient,
+} from '@aws-sdk/client-sqs'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import AWS from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
@@ -37,7 +42,7 @@ class AWSService {
   isInitialized = false
   private snsClient: SNSClient | undefined
   private s3Client: S3Client | undefined
-  private sqsClient: AWS.SQS | undefined
+  private sqsClient: SQSClient | undefined
 
   constructor() {}
 
@@ -46,7 +51,7 @@ class AWSService {
       AWS.config.update(awsConfig)
       this.snsClient = new SNSClient(awsConfig)
       this.s3Client = new S3Client(awsConfig)
-      this.sqsClient = new AWS.SQS(awsConfig)
+      this.sqsClient = new SQSClient(awsConfig)
       this.isInitialized = true
     } catch (error) {
       this.isInitialized = false
@@ -199,38 +204,43 @@ class AWSService {
     }
   }
 
-  async receiveMessageFromSQS(): Promise<
-    AWS.Request<AWS.SQS.ReceiveMessageResult, AWSError>
-  > {
+  async receiveMessageFromSQS() {
+    const processMsg = async (msg) => {
+      const _msg = JSON.parse(msg.Body)
+
+      const data = await this.sqsClient?.send(
+        new DeleteMessageCommand({
+          QueueUrl: config.SQS_URL,
+          ReceiptHandle: msg.ReceiptHandle,
+        }),
+      )
+      console.info(`message deleted: ${JSON.stringify(data)}`)
+
+      console.info(`message: ${_msg.Message}`)
+      return _msg
+    }
+
     if (!this.sqsClient) {
       return Promise.reject({
         message: 'AWS has not been configured',
       } as AWSError)
     }
 
-    const params = {
-      MaxNumberOfMessages: 10,
-      QueueUrl: config.SQS_URL,
-      // VisibilityTimeout: 10,
-      WaitTimeSeconds: 1,
-    }
-
-    try {
-      const result = await this.sqsClient.receiveMessage(params)
-
-      const deleteParams = {
+    const data = await this.sqsClient.send(
+      new ReceiveMessageCommand({
         QueueUrl: config.SQS_URL,
-        ReceiptHandle: result?.Messages[0].ReceiptHandle,
-      }
+        WaitTimeSeconds: 1,
+        MaxNumberOfMessages: 10,
+        VisibilityTimeout: 30,
+      }),
+    )
 
-      await this.sqsClient.deleteMessage(deleteParams)
-
-      console.info('received from SQS::::====>', result)
-      return result
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(error as AWSError)
+    if (!data.Messages) {
+      return
     }
+    const result = await Promise.all(data.Messages.map(processMsg))
+
+    return result
   }
 }
 
