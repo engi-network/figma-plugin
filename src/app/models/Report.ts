@@ -10,7 +10,7 @@ interface ErrorData {
   install?: string
   storycap?: string
 }
-export interface SocketData {
+export interface MessageData {
   check_id: string
   error?: ErrorData
   message: string

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import CodeBlock from '~/app/components/global/CodeBlock/CodeBlock'
 import StatusStepper from '~/app/components/pages/ResultPage/StatusStepper/StatusStepper'
-import SocketService from '~/app/lib/services/socket'
+import dataSource from '~/app/lib/services/data-source'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
-import { SocketData, STATUS } from '~/app/models/Report'
+import { MessageData, STATUS } from '~/app/models/Report'
 import { loadingInitialStatus } from '~/app/pages/Loading/Loading'
 import { STEP_MAP_TO_STEPPER } from '~/app/pages/Main/Main.types'
 
@@ -16,12 +16,12 @@ interface Props {
   }
 }
 
-const queue = new Queue<SocketData>()
+const queue = new Queue<MessageData>()
 function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
-  const lastMessage = SocketService.lastMessages.get(checkId)
+  const lastMessage = dataSource.lastMessages.get(checkId)
   const initStep = lastMessage ? lastMessage : loadingInitialStatus
 
-  const [loadingStatus, setLoadingStatus] = useState<SocketData>(initStep)
+  const [loadingStatus, setLoadingStatus] = useState<MessageData>(initStep)
 
   useEffect(() => {
     if (status !== STATUS.IN_PROGRESS) {
@@ -32,10 +32,7 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
       queue.enqueue(data)
     }
 
-    const unsubscribe = SocketService.subscribeToWs(
-      checkId,
-      callbackInCodeBlock,
-    )
+    const unsubscribe = dataSource.subscribeToDS(checkId, callbackInCodeBlock)
 
     return () => {
       unsubscribe()
@@ -52,7 +49,7 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
         return
       }
 
-      const status = queue.dequeue() as SocketData
+      const status = queue.dequeue() as MessageData
       setLoadingStatus(status)
     }, ANIMATION_DURATION_MS)
 

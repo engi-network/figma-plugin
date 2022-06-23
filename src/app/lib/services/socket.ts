@@ -1,7 +1,7 @@
 import config from '~/app/lib/config'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import PubSub from '~/app/lib/utils/pub-sub'
-import { SocketData } from '~/app/models/Report'
+import { MessageData } from '~/app/models/Report'
 
 export enum READ_STATE {
   CLOSING = 2,
@@ -11,7 +11,7 @@ export enum READ_STATE {
 }
 
 export type CallbackType = (
-  event: SocketData | Event,
+  event: MessageData | Event,
   mySocket?: SocketService,
 ) => Promise<void> | void
 
@@ -21,7 +21,7 @@ export class SocketService extends PubSub {
   websocket: WebSocket | undefined
   isConnected = false
   callbacks: Record<string | 'onError' | 'onSuccess', CallbackType> = {}
-  lastMessages = new Map<string, SocketData>()
+  lastMessages = new Map<string, MessageData>()
 
   connect() {
     this.websocket = new WebSocket(config.SOCKET_URL)
@@ -82,7 +82,7 @@ export class SocketService extends PubSub {
   }
 
   publishFromWs(event: MessageEvent) {
-    const data = JSON.parse(event.data) as SocketData
+    const data = JSON.parse(event.data) as MessageData
     const lastMessage = this.lastMessages.get(data.check_id)
 
     // ignore delayed ones

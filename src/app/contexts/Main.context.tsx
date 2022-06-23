@@ -38,6 +38,7 @@ import {
   SAME_STORY_FORM_UPDATE,
 } from '~/plugin/constants'
 
+import useDataSource from '../hooks/useDataSource'
 import { useUserContext } from './User.context'
 
 export interface MainContextProps {
@@ -64,6 +65,7 @@ export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
   const { setGlobalError, globalError, setHistory } = useAppContext()
   const { userId, sessionId } = useUserContext()
+  const { dsCallback } = useDataSource()
 
   const { selectionData, draw } = useSelectionData()
 
@@ -180,7 +182,17 @@ export function useMainContextSetup(): MainContextProps {
         user_id: userId,
       }
       GAService.sendMeasurementData(queryParams)
-      DataSource.start()
+
+      if (!DataSource.getTopics.length) {
+        DataSource.start()
+      }
+
+      DataSource.subscribe(checkId, dsCallback)
+
+      navigate({
+        pathname: ROUTES_MAP[ROUTES.LOADING],
+        search: `?${createSearchParams({ checkId })}`,
+      })
     } catch (error) {
       Sentry.sendReport({
         error,

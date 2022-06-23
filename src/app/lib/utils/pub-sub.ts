@@ -1,4 +1,4 @@
-import { CallbackType } from '~/app/lib/services/socket'
+type CallbackType = (data) => void
 
 class PubSub {
   private subscriptions = new Map<string, Set<CallbackType>>()

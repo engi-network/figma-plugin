@@ -205,7 +205,7 @@ class AWSService {
     }
   }
 
-  processMsg = async (msg: Message) => {
+  async processMsg(msg: Message) {
     const _msg = JSON.parse(msg.Body + '')
     console.info(`message: ${_msg.Message}`)
 

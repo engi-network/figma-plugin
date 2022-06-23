@@ -12,20 +12,21 @@ import IconButton from '~/app/components/global/IconButton/IconButton'
 import Loader from '~/app/components/modules/Loader/Loader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import SocketService from '~/app/lib/services/socket'
+import dataSource from '~/app/lib/services/data-source'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { SocketData } from '~/app/models/Report'
+import { MessageData } from '~/app/models/Report'
 
 import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '../Main/Main.types'
 import LoadingStepper from './LoadingStepper/LoadingStepper'
 
-const queue = new Queue<SocketData>()
+const queue = new Queue<MessageData>()
+
 export const loadingInitialStatus = {
   step: 0,
   step_count: 8,
   message: STEP_MESSAGES[0],
-} as SocketData
+} as MessageData
 
 function Loading() {
   const navigate = useNavigate()
@@ -33,11 +34,11 @@ function Loading() {
 
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
-  const lastMessage = SocketService.lastMessages.get(checkId)
+  const lastMessage = dataSource.lastMessages.get(checkId)
   const initStep = lastMessage ? lastMessage : loadingInitialStatus
 
-  const [status, setStatus] = useState<SocketData>(initStep)
-  const topics = SocketService.getTopics()
+  const [status, setStatus] = useState<MessageData>(initStep)
+  const topics = dataSource.getTopics()
   const hasCurrentTopic = topics.includes(checkId)
 
   const handleClickBack = () => {
@@ -50,7 +51,7 @@ function Loading() {
       queue.enqueue(data)
     }
 
-    const unsubscribe = SocketService.subscribeToWs(checkId, callbackInLoading)
+    const unsubscribe = dataSource.subscribeToDS(checkId, callbackInLoading)
 
     return () => {
       unsubscribe()
@@ -64,7 +65,7 @@ function Loading() {
         return
       }
 
-      const status = queue.dequeue() as SocketData
+      const status = queue.dequeue() as MessageData
 
       setStatus(status)
 

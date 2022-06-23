@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { CognitoIdentityClient } = require('@aws-sdk/client-cognito-identity')
+
 const {
   fromCognitoIdentityPool,
 } = require('@aws-sdk/credential-provider-cognito-identity')

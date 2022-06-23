@@ -2,9 +2,10 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
 import useHistoryEvent from '~/app/hooks/useHistoryEvent'
 import { createContext } from '~/app/lib/utils/context'
-import { History, STATUS } from '~/app/models/Report'
+import { DetailedReport, History, STATUS } from '~/app/models/Report'
 
 export interface AppContextProps {
+  findReportById: (id: string) => DetailedReport | undefined
   globalError: string
   history: History
   numberOfInProgress: number
@@ -31,7 +32,12 @@ export function useAppContextSetup(): AppContextProps {
     console.info('history changed==>', history)
   }, [history.length])
 
+  const findReportById = (checkId: string): DetailedReport | undefined => {
+    return history.find((item) => item.checkId === checkId)
+  }
+
   return {
+    findReportById,
     globalError,
     history,
     numberOfInProgress,

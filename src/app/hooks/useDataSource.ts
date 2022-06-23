@@ -5,7 +5,6 @@ import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import AWSService from '~/app/lib/services/aws'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
-import SocketService from '~/app/lib/services/socket'
 import { dispatchData } from '~/app/lib/utils/event'
 import { replaceItemInArray } from '~/app/lib/utils/object'
 import {
@@ -17,14 +16,14 @@ import {
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
-function useSocket() {
+function useDataSource() {
   const { setGlobalError, history, setHistory } = useAppContext()
 
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
   const navigate = useNavigate()
   // this ws callback for handling things in background in the case of not on loading state for other websockets
-  const socketCallback = useCallback(
+  const dsCallback = useCallback(
     async (data) => {
       const { check_id, step, step_count, error } = data as MessageData
 
@@ -65,8 +64,6 @@ function useSocket() {
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
           data: detailedReport,
         })
-
-        SocketService.removeTopicFromWs(checkId, socketCallback)
       }
 
       try {
@@ -100,7 +97,7 @@ function useSocket() {
           tagData: { check_id },
         })
         const message = (error as Error).message
-        SocketService.removeTopicFromWs(checkId, socketCallback)
+        // SocketService.removeTopicFromWs(checkId, dsCallback)
         setGlobalError(message || 'Something went wrong with socket callback!')
         navigate({ pathname: ROUTES_MAP[ROUTES.ERROR] })
       }
@@ -110,12 +107,12 @@ function useSocket() {
 
   // update subscribe when history and check id change because callback uses old history
   useEffect(() => {
-    SocketService.updateSubscriptionFromWs(checkId, socketCallback)
+    // SocketService.updateSubscriptionFromWs(checkId, dsCallback)
   }, [checkId, history])
 
   return {
-    socketCallback,
+    dsCallback,
   }
 }
 
-export default useSocket
+export default useDataSource
