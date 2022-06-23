@@ -4,7 +4,14 @@ import AWSService from '~/app/lib/services/aws'
 import PubSub from '~/app/lib/utils/pub-sub'
 import { MessageData } from '~/app/models/Report'
 
+import { createStore } from '../utils/store'
+
 const POLLING_INTERVAL = 10 * 1000
+
+export const messageStore = createStore({
+  history: [],
+  lastMessages: [],
+})
 
 class DataSource extends PubSub {
   isInitialized = false
@@ -24,15 +31,24 @@ class DataSource extends PubSub {
     this.start()
   }
 
+  updateStore(messages: Array<Message>) {
+    messages.forEach((message) => {})
+  }
+
   start() {
     this.timerId = setInterval(async () => {
       try {
         const messages = await AWSService.receiveMessageFromSQS()
+        messageStore.setState((prev) => ({
+          ...prev,
+          lastMessages: [...prev.lastMessages, Math.random()],
+        }))
         console.log('raw messages frm sqs=====>', messages)
         if (!Array.isArray(messages)) {
           return
         }
 
+        // publish messages for each topic for loading and history screen
         this.publishFromDS(messages)
       } catch (error) {
         console.error('error in sqs=>', error)
@@ -54,6 +70,9 @@ class DataSource extends PubSub {
     messages.forEach(async (message: Message) => {
       const parsedMessage = await AWSService.processMsg(message)
       this.lastMessages.set(parsedMessage.check_id, parsedMessage)
+
+      messageStore.setState({ lastMessages: this.lastMessages })
+
       this.publish(parsedMessage.check_id, parsedMessage)
     })
   }

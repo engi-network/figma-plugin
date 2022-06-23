@@ -20,6 +20,7 @@ import { readDataFromStream } from '~/app/lib/utils/buffer'
 import {
   DIFF_TYPE,
   ErrorResult,
+  MessageData,
   Report,
   ReportResult,
   STATUS,
@@ -205,7 +206,7 @@ class AWSService {
     }
   }
 
-  async processMsg(msg: Message) {
+  async processMsg(msg: Message): Promise<MessageData> {
     const _msg = JSON.parse(msg.Body + '')
     console.info(`message: ${_msg.Message}`)
 
@@ -217,7 +218,7 @@ class AWSService {
     )
     console.info(`message deleted: ${JSON.stringify(data)}`)
 
-    return _msg
+    return _msg.Message as MessageData
   }
 
   async receiveMessageFromSQS() {

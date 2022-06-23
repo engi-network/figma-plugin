@@ -16,12 +16,21 @@ import {
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
+import { messageStore } from '../lib/services/data-source'
+import { useStore } from '../lib/utils/store'
+
 function useDataSource() {
   const { setGlobalError, history, setHistory } = useAppContext()
 
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
   const navigate = useNavigate()
+
+  const lastMessages = useStore(
+    messageStore,
+    useCallback((state) => state.lastMessages, []),
+  )
+
   // this ws callback for handling things in background in the case of not on loading state for other websockets
   const dsCallback = useCallback(
     async (data) => {
@@ -109,6 +118,10 @@ function useDataSource() {
   useEffect(() => {
     // SocketService.updateSubscriptionFromWs(checkId, dsCallback)
   }, [checkId, history])
+
+  useEffect(() => {
+    console.log('last messages changing====>', lastMessages)
+  }, [lastMessages])
 
   return {
     dsCallback,
