@@ -41,24 +41,20 @@ const awsConfig = {
 }
 
 class AWSService {
-  isInitialized = false
-  private snsClient: SNSClient | undefined
-  private s3Client: S3Client | undefined
-  sqsClient: SQSClient | undefined
+  isInitialized: boolean
+  private snsClient: SNSClient
+  private s3Client: S3Client
+  sqsClient: SQSClient
 
-  constructor() {}
-
-  initialize() {
-    try {
-      AWS.config.update(awsConfig)
-      this.snsClient = new SNSClient(awsConfig)
-      this.s3Client = new S3Client(awsConfig)
-      this.sqsClient = new SQSClient(awsConfig)
-      this.isInitialized = true
-    } catch (error) {
-      this.isInitialized = false
-    }
+  constructor() {
+    AWS.config.update(awsConfig)
+    this.snsClient = new SNSClient(awsConfig)
+    this.s3Client = new S3Client(awsConfig)
+    this.sqsClient = new SQSClient(awsConfig)
+    this.isInitialized = true
   }
+
+  initialize() {}
 
   async publishCommandToSns(
     message: Specification,

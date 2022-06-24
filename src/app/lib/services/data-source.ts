@@ -39,10 +39,10 @@ class DataSource extends PubSub {
     this.timerId = setInterval(async () => {
       try {
         const messages = await AWSService.receiveMessageFromSQS()
-        messageStore.setState((prev) => ({
-          ...prev,
-          lastMessages: [...prev.lastMessages, Math.random()],
-        }))
+        // messageStore.setState((prev) => ({
+        //   ...prev,
+        //   lastMessages: [...prev.lastMessages, Math.random()],
+        // }))
         console.log('raw messages frm sqs=====>', messages)
         if (!Array.isArray(messages)) {
           return
