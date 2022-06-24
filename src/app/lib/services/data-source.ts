@@ -1,12 +1,12 @@
 import { Message } from '@aws-sdk/client-sqs'
 
+import config from '~/app/lib/config'
 import AWSService from '~/app/lib/services/aws'
+import SQSConsumer from '~/app/lib/services/sqs-consumer'
 import PubSub from '~/app/lib/utils/pub-sub'
 import { MessageData } from '~/app/models/Report'
 
 import { createStore } from '../utils/store'
-
-const POLLING_INTERVAL = 10 * 1000
 
 export const messageStore = createStore({
   history: [],
@@ -32,33 +32,35 @@ class DataSource extends PubSub {
   }
 
   updateStore(messages: Array<Message>) {
-    messages.forEach((message) => {})
+    messages.forEach(() => {})
   }
 
-  start() {
-    this.timerId = setInterval(async () => {
-      try {
-        const messages = await AWSService.receiveMessageFromSQS()
-        // messageStore.setState((prev) => ({
-        //   ...prev,
-        //   lastMessages: [...prev.lastMessages, Math.random()],
-        // }))
-        console.log('raw messages frm sqs=====>', messages)
-        if (!Array.isArray(messages)) {
-          return
-        }
+  async start() {
+    try {
+      // messageStore.setState((prev) => ({
+      //   ...prev,
+      //   lastMessages: [...prev.lastMessages, Math.random()],
+      // }))
+      const sqsConsumer = SQSConsumer.create({
+        handleMessage: async (message) => {
+          const parsedMessage = JSON.parse(message.Body || '')
+          console.log('received message===>', parsedMessage.Message)
+        },
+        pollingWaitTimeMs: 10 * 10000,
+        queueUrl: config.SQS_URL,
+        sqs: AWSService.sqsClient,
+        waitTimeSeconds: 4,
+      })
+      sqsConsumer.start()
 
-        // publish messages for each topic for loading and history screen
-        this.publishFromDS(messages)
-      } catch (error) {
-        console.error('error in sqs=>', error)
-      }
-    }, POLLING_INTERVAL)
+      // publish messages for each topic for loading and history screen
+      // this.publishFromDS(messages)
+    } catch (error) {
+      console.error('error in sqs=>', error)
+    }
   }
 
-  stop() {
-    clearInterval(this.timerId)
-  }
+  stop() {}
 
   subscribeToDS(topic: string, callback): () => void {
     return this.subscribe(topic, callback)

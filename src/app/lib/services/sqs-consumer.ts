@@ -9,6 +9,7 @@ import {
 } from '@aws-sdk/client-sqs'
 
 import { AWSError } from '~/app/@types/aws-error'
+import { autoBind } from '~/app/lib/utils/auto-bind'
 
 function isConnectionError(error: AWSError): boolean {
   if ('code' in error && 'statusCode' in error) {
@@ -79,6 +80,12 @@ class SQSConsumer {
     this.pollingWaitTimeMs = options.pollingWaitTimeMs ?? 0
     this.shouldDeleteMessages = options.shouldDeleteMessages ?? true
     this.sqs = options.sqs
+
+    autoBind(this)
+  }
+
+  public static create(options: ConsumerOptions): SQSConsumer {
+    return new SQSConsumer(options)
   }
 
   public start(): void {
@@ -100,7 +107,7 @@ class SQSConsumer {
     try {
       return await this.sqs.send(new ReceiveMessageCommand(params))
     } catch (error) {
-      console.error(error)
+      console.info(error)
       throw new Error('Error in Recevieing message')
     }
   }
@@ -227,11 +234,7 @@ class SQSConsumer {
   private async handleSqsResponse(
     response: ReceiveMessageResult,
   ): Promise<void> {
-    console.info('Received SQS response')
-    console.info(response)
-
     if (!response || !response.Messages || !response.Messages.length) {
-      console.info('no message to deal with')
       return
     }
 
