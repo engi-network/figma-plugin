@@ -10,14 +10,15 @@ import {
 
 import { AWSError } from '~/app/@types/aws-error'
 
-function isConnectionError(err: Error): boolean {
-  if (err instanceof AWSError) {
+function isConnectionError(error: AWSError): boolean {
+  if ('code' in error && 'statusCode' in error) {
     return (
-      err.statusCode === 403 ||
-      err.code === 'CredentialsError' ||
-      err.code === 'UnknownEndpoint'
+      error.statusCode === 403 ||
+      error.code === 'CredentialsError' ||
+      error.code === 'UnknownEndpoint'
     )
   }
+
   return false
 }
 
@@ -32,7 +33,6 @@ export interface ConsumerOptions {
   messageAttributeNames?: string[]
   pollingWaitTimeMs?: number
   queueUrl: string
-  region?: string
   shouldDeleteMessages?: boolean
   sqs: SQSClient
   stopped?: boolean
@@ -41,13 +41,13 @@ export interface ConsumerOptions {
   waitTimeSeconds?: number
 }
 
+/**
+ * @Warning heartbeatInterval must be less than visibilityTimeout.
+ */
+
 class SQSConsumer {
   private queueUrl: string
   private handleMessage: (message: Message) => Promise<void>
-  private handleMessageBatch:
-    | ((message: Message[]) => Promise<void>)
-    | undefined
-  private handleMessageTimeout: number | undefined
   private attributeNames: string[]
   private messageAttributeNames: string[]
   private stopped: boolean
@@ -65,8 +65,6 @@ class SQSConsumer {
     this.queueUrl = options.queueUrl
     this.queueUrl = options.queueUrl
     this.handleMessage = options.handleMessage
-    this.handleMessageBatch = options.handleMessageBatch
-    this.handleMessageTimeout = options.handleMessageTimeout
     this.attributeNames = options.attributeNames || []
     this.messageAttributeNames = options.messageAttributeNames || []
     this.stopped = true
@@ -80,6 +78,7 @@ class SQSConsumer {
       options.authenticationErrorTimeout ?? 10000
     this.pollingWaitTimeMs = options.pollingWaitTimeMs ?? 0
     this.shouldDeleteMessages = options.shouldDeleteMessages ?? true
+    this.sqs = options.sqs
   }
 
   public start(): void {
@@ -101,7 +100,8 @@ class SQSConsumer {
     try {
       return await this.sqs.send(new ReceiveMessageCommand(params))
     } catch (error) {
-      throw new Error(error)
+      console.error(error)
+      throw new Error('Error in Recevieing message')
     }
   }
 
@@ -122,7 +122,8 @@ class SQSConsumer {
     try {
       await this.sqs.send(new DeleteMessageCommand(deleteParams))
     } catch (error) {
-      throw new Error(error)
+      console.error(error)
+      throw new Error('Error in deleting message')
     }
   }
 
@@ -172,15 +173,17 @@ class SQSConsumer {
       const command = new ChangeMessageVisibilityCommand(params)
       await this.sqs.send(command)
     } catch (error) {
-      throw new Error(error)
+      console.error(error)
+      throw new Error('Error in change visibility timeout')
     }
   }
 
   private async executeHandler(message: Message): Promise<void> {
     try {
       await this.handleMessage(message)
-    } catch (err) {
-      throw new Error(err)
+    } catch (error) {
+      console.error(error)
+      throw new Error('Error in handle message')
     }
   }
 
