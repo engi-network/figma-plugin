@@ -39,4 +39,8 @@ module.exports = {
 
     return config;
   },
+  env: (config) => ({
+    ...config,
+    AWS_DEFAULT_REGION: "us-west-2"
+  }),
 }

@@ -16,7 +16,7 @@ import {
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
-import { messageStore } from '../lib/services/data-source'
+import { store } from '../lib/services/data-source'
 import { useStore } from '../lib/utils/store'
 
 function useDataSource() {
@@ -26,9 +26,9 @@ function useDataSource() {
   const checkId = searchParams.get('checkId') as string
   const navigate = useNavigate()
 
-  const lastMessages = useStore(
-    messageStore,
-    useCallback((state) => state.lastMessages, []),
+  const localHistory = useStore(
+    store,
+    useCallback((state) => state.history, []),
   )
 
   // this ws callback for handling things in background in the case of not on loading state for other websockets
@@ -120,8 +120,8 @@ function useDataSource() {
   }, [checkId, history])
 
   useEffect(() => {
-    console.log('last messages changing====>', lastMessages)
-  }, [lastMessages])
+    console.log('local history chaning====>', localHistory)
+  }, [localHistory])
 
   return {
     dsCallback,

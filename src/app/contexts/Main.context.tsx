@@ -187,6 +187,8 @@ export function useMainContextSetup(): MainContextProps {
         DataSource.start()
       }
 
+      DataSource.createConsumer(checkId)
+
       DataSource.subscribe(checkId, dsCallback)
 
       navigate({
