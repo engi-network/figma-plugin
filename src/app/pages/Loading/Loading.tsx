@@ -38,8 +38,6 @@ function Loading() {
   const initStep = lastMessage ? lastMessage : loadingInitialStatus
 
   const [status, setStatus] = useState<MessageData>(initStep)
-  const topics = dataSource.getTopics()
-  const hasCurrentTopic = topics.includes(checkId)
 
   const handleClickBack = () => {
     navigate(-1)
@@ -48,6 +46,7 @@ function Loading() {
   useEffect(() => {
     // this ws callback for handling things in foreground in loading state
     const callbackInLoading = (data) => {
+      console.log('data in loading', data)
       queue.enqueue(data)
     }
 
@@ -95,9 +94,9 @@ function Loading() {
   }, [])
 
   // if landed from back history that has been done, then redirect to Home
-  if (!hasCurrentTopic) {
-    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
-  }
+  // if (!hasCurrentTopic) {
+  //   return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
+  // }
 
   const { step } = status
 

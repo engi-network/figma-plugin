@@ -65,7 +65,7 @@ export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
   const { setGlobalError, globalError, setHistory } = useAppContext()
   const { userId, sessionId } = useUserContext()
-  const { dsCallback } = useDataSource()
+  useDataSource()
 
   const { selectionData, draw } = useSelectionData()
 
@@ -184,7 +184,7 @@ export function useMainContextSetup(): MainContextProps {
 
       GAService.sendMeasurementData(queryParams)
 
-      DataSource.createConsumer(checkId, reportInProgress)
+      await DataSource.createConsumer(checkId, reportInProgress)
 
       navigate({
         pathname: ROUTES_MAP[ROUTES.LOADING],

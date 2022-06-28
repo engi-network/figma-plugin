@@ -22,14 +22,13 @@ import { createStore } from '../utils/store'
 
 export const store = createStore({
   history: [],
-  lastMessages: [],
+  lastMessages: {},
 })
 
 const env = config.isDev ? 'dev' : 'staging'
 
 class DataSource extends PubSub {
   isInitialized = false
-  timerId
   lastMessages: Map<string, MessageData>
   consumerMap: Map<string, SQSConsumer>
 
@@ -45,10 +44,6 @@ class DataSource extends PubSub {
     }
 
     this.isInitialized = true
-  }
-
-  updateStore(messages: Array<Message>) {
-    messages.forEach(() => {})
   }
 
   async getSQSUrl(checkId: string, _: string, retry: number): Promise<string> {
@@ -76,16 +71,26 @@ class DataSource extends PubSub {
   }
 
   async sqsCallback(data: MessageData) {
-    const history = store.getState().history
+    const { history, lastMessages } = store.getState()
     const { check_id, step, step_count, error } = data as MessageData
+
+    // duplicated message check if message is not removed in the queue by error
+    console.log('store==>', store.getState())
+    // if (check_id in lastMessages) {
+    //   if (lastMessages[check_id].step >= step) {
+    //     return
+    //   }
+    // }
+
+    this.publishFromDS(data)
 
     const updateState = async (status: STATUS) => {
       const report =
         status === STATUS.SUCCESS
           ? await AWSService.fetchReportById(check_id, status)
           : undefined
-
       const baseReport = history.find((item) => item.checkId === check_id)
+
       const result =
         status === STATUS.FAIL
           ? ({
@@ -154,7 +159,6 @@ class DataSource extends PubSub {
   async createConsumer(checkId: string, baseReport: DetailedReport) {
     try {
       const queueUrl = await this.getSQSUrl(checkId, env, 0)
-      console.info('queueUrl====>', queueUrl)
 
       if (!queueUrl) {
         return
@@ -199,15 +203,17 @@ class DataSource extends PubSub {
 
   unsubscribeFromDS() {}
 
-  publishFromDS(messages) {
-    messages.forEach(async (message: Message) => {
-      const parsedMessage = await AWSService.processMsg(message)
-      this.lastMessages.set(parsedMessage.check_id, parsedMessage)
-
-      store.setState({ lastMessages: this.lastMessages })
-
-      this.publish(parsedMessage.check_id, parsedMessage)
-    })
+  publishFromDS(message: MessageData) {
+    const { check_id } = message
+    store.setState((prev) => ({
+      ...prev,
+      lastMessages: {
+        ...prev.lastMessages,
+        [check_id]: { ...message },
+      },
+    }))
+    console.log('publishing data', message)
+    this.publish(check_id, message)
   }
 
   removeTopicFromDS(topic: string) {
