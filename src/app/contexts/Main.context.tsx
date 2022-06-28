@@ -181,15 +181,10 @@ export function useMainContextSetup(): MainContextProps {
         sid: sessionId,
         user_id: userId,
       }
+
       GAService.sendMeasurementData(queryParams)
 
-      if (!DataSource.getTopics.length) {
-        DataSource.start()
-      }
-
-      DataSource.createConsumer(checkId)
-
-      DataSource.subscribe(checkId, dsCallback)
+      DataSource.createConsumer(checkId, reportInProgress)
 
       navigate({
         pathname: ROUTES_MAP[ROUTES.LOADING],

@@ -1,7 +1,9 @@
 import { GetQueueUrlCommand, Message } from '@aws-sdk/client-sqs'
+import { AWSError } from 'aws-sdk'
 
 import config from '~/app/lib/config'
 import AWSService from '~/app/lib/services/aws'
+import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import SQSConsumer from '~/app/lib/services/sqs-consumer'
 import PubSub from '~/app/lib/utils/pub-sub'
 import {
@@ -11,7 +13,10 @@ import {
   ReportResult,
   STATUS,
 } from '~/app/models/Report'
+import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
+import delay from '../utils/delay'
+import { dispatchData } from '../utils/event'
 import { replaceItemInArray } from '../utils/object'
 import { createStore } from '../utils/store'
 
@@ -46,14 +51,28 @@ class DataSource extends PubSub {
     messages.forEach(() => {})
   }
 
-  async getSQSUrl(checkId: string, env: string): Promise<string> {
-    const name = `same-story-api-staging-${checkId}-status.fifo`
-    console.info(`getting SQS queue: ${name}`)
-    const data = await AWSService.sqsClient.send(
-      new GetQueueUrlCommand({ QueueName: name }),
-    )
+  async getSQSUrl(checkId: string, _: string, retry: number): Promise<string> {
+    const connect = async (): Promise<string> => {
+      const name = `same-story-api-staging-${checkId}-status.fifo`
+      console.info(`getting SQS queue: ${name}`)
+      const data = await AWSService.sqsClient.send(
+        new GetQueueUrlCommand({ QueueName: name }),
+      )
 
-    return data['QueueUrl'] || ''
+      return data['QueueUrl'] || ''
+    }
+
+    return connect()
+      .then((url) => url)
+      .catch(async () => {
+        if (retry > 1000) {
+          return ''
+        }
+
+        retry++
+        await delay(10)
+        return this.getSQSUrl(checkId, _, retry)
+      })
   }
 
   async sqsCallback(data: MessageData) {
@@ -92,10 +111,13 @@ class DataSource extends PubSub {
         detailedReport,
       )
 
-      // dispatchData({
-      //   type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-      //   data: detailedReport,
-      // })
+      this.stopConsumer(check_id)
+
+      dispatchData({
+        type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
+        data: detailedReport,
+      })
+
       store.setState((prev) => ({
         ...prev,
         history: replacedArray,
@@ -103,68 +125,73 @@ class DataSource extends PubSub {
     }
 
     try {
-      // for the last step, successful case
       if (step === step_count - 1) {
         updateState(STATUS.SUCCESS)
         return
       }
-      // error
       if (error) {
         updateState(STATUS.FAIL)
 
-        // Sentry.sendReport({
-        //   error,
-        //   transactionName: SENTRY_TRANSACTION.GET_REPORT,
-        //   tagData: { check_id },
-        // })
+        Sentry.sendReport({
+          error,
+          transactionName: SENTRY_TRANSACTION.GET_REPORT,
+          tagData: { check_id },
+        })
 
         return
       }
       //in progress
     } catch (error) {
-      // Sentry.sendReport({
-      //   error,
-      //   transactionName: SENTRY_TRANSACTION.GET_REPORT,
-      //   tagData: { check_id },
-      // })
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.GET_REPORT,
+        tagData: { check_id },
+      })
       console.error(error)
     }
   }
 
-  async createConsumer(checkId: string) {
-    // const sqsUrl = await this.getSQSUrl(checkId, env)
-    // console.log('======>sqs url', sqsUrl)
-
-    const sqsConsumer = SQSConsumer.create({
-      handleMessage: async (message) => {
-        const parsedMessage = JSON.parse(message.Body || '')
-        console.info('received message===>', parsedMessage.Message)
-        this.sqsCallback(parsedMessage.Message)
-      },
-      pollingWaitTimeMs: 10 * 10000,
-      queueUrl: config.SQS_URL,
-      sqs: AWSService.sqsClient,
-      waitTimeSeconds: 5,
-    })
-
-    sqsConsumer.start()
-    this.consumerMap.set(checkId, sqsConsumer)
-  }
-
-  async start() {
+  async createConsumer(checkId: string, baseReport: DetailedReport) {
     try {
-      // messageStore.setState((prev) => ({
-      //   ...prev,
-      //   lastMessages: [...prev.lastMessages, Math.random()],
-      // }))
-      // publish messages for each topic for loading and history screen
-      // this.publishFromDS(messages)
+      const queueUrl = await this.getSQSUrl(checkId, env, 0)
+      console.info('queueUrl====>', queueUrl)
+
+      if (!queueUrl) {
+        return
+      }
+
+      const sqsConsumer = SQSConsumer.create({
+        batchSize: 10,
+        handleMessage: async (message) => {
+          const parsedMessage = JSON.parse(message.Body || '')
+          console.info(
+            'recieved message for:::',
+            JSON.parse(parsedMessage.Message),
+          )
+          this.sqsCallback(JSON.parse(parsedMessage.Message))
+        },
+        pollingWaitTimeMs: 10 * 1000,
+        queueUrl,
+        sqs: AWSService.sqsClient,
+        waitTimeSeconds: 4,
+      })
+
+      store.setState((prev) => ({ history: [...prev.history, baseReport] }))
+      sqsConsumer.start()
+      this.consumerMap.set(checkId, sqsConsumer)
     } catch (error) {
-      console.error('error in sqs=>', error)
+      console.error('create consumser error', error as AWSError)
     }
   }
 
-  stop() {}
+  async stopConsumer(checkId: string) {
+    const consumer = this.consumerMap.get(checkId)
+
+    if (consumer) {
+      consumer.stop()
+      this.consumerMap.delete(checkId)
+    }
+  }
 
   subscribeToDS(topic: string, callback): () => void {
     return this.subscribe(topic, callback)

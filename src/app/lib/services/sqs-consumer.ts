@@ -104,12 +104,7 @@ class SQSConsumer {
   private async receiveMessage(
     params: ReceiveMessageRequest,
   ): Promise<ReceiveMessageResult> {
-    try {
-      return await this.sqs.send(new ReceiveMessageCommand(params))
-    } catch (error) {
-      console.info(error)
-      throw new Error('Error in Recevieing message')
-    }
+    return await this.sqs.send(new ReceiveMessageCommand(params))
   }
 
   private async deleteMessage(message: Message): Promise<void> {
@@ -129,8 +124,7 @@ class SQSConsumer {
     try {
       await this.sqs.send(new DeleteMessageCommand(deleteParams))
     } catch (error) {
-      console.error(error)
-      throw new Error('Error in deleting message')
+      throw error as AWSError
     }
   }
 
@@ -181,7 +175,7 @@ class SQSConsumer {
       await this.sqs.send(command)
     } catch (error) {
       console.error(error)
-      throw new Error('Error in change visibility timeout')
+      throw error as AWSError
     }
   }
 
@@ -214,7 +208,6 @@ class SQSConsumer {
     this.receiveMessage(receiveParams)
       .then(this.handleSqsResponse)
       .catch((error) => {
-        console.error(error)
         if (isConnectionError(error)) {
           console.info(
             'There was an authentication error. Pausing before retrying.',
