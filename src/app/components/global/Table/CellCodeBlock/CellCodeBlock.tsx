@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import CodeBlock from '~/app/components/global/CodeBlock/CodeBlock'
 import StatusStepper from '~/app/components/pages/ResultPage/StatusStepper/StatusStepper'
-import dataSource from '~/app/lib/services/data-source'
+import dataSource, { store } from '~/app/lib/services/data-source'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
+import { useStore } from '~/app/lib/utils/store'
 import { MessageData, STATUS } from '~/app/models/Report'
 import { loadingInitialStatus } from '~/app/pages/Loading/Loading'
 import { STEP_MAP_TO_STEPPER } from '~/app/pages/Main/Main.types'
@@ -18,9 +19,14 @@ interface Props {
 
 const queue = new Queue<MessageData>()
 function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
-  const lastMessage = dataSource.lastMessages.get(checkId)
-  const initStep = lastMessage ? lastMessage : loadingInitialStatus
-
+  const lastMessages = useStore(
+    store,
+    useCallback((state) => state.lastMessages, []),
+  )
+  const initStep =
+    lastMessages && lastMessages[checkId]
+      ? lastMessages[checkId]
+      : loadingInitialStatus
   const [loadingStatus, setLoadingStatus] = useState<MessageData>(initStep)
 
   useEffect(() => {
