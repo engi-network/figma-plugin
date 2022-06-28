@@ -13,7 +13,6 @@ function useDataSource() {
   )
 
   useEffect(() => {
-    console.info('local history chaning====>', localHistory)
     setHistory(localHistory)
   }, [localHistory])
 

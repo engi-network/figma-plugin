@@ -5,7 +5,11 @@ import config from '~/app/lib/config'
 import AWSService from '~/app/lib/services/aws'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import SQSConsumer from '~/app/lib/services/sqs-consumer'
+import delay from '~/app/lib/utils/delay'
+import { dispatchData } from '~/app/lib/utils/event'
+import { replaceItemInArray } from '~/app/lib/utils/object'
 import PubSub from '~/app/lib/utils/pub-sub'
+import { createStore } from '~/app/lib/utils/store'
 import {
   DetailedReport,
   ErrorResult,
@@ -14,11 +18,6 @@ import {
   STATUS,
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
-
-import delay from '../utils/delay'
-import { dispatchData } from '../utils/event'
-import { replaceItemInArray } from '../utils/object'
-import { createStore } from '../utils/store'
 
 export const store = createStore({
   history: [],
@@ -75,6 +74,7 @@ class DataSource extends PubSub {
     const { history } = store.getState()
 
     this.publishFromDS(data)
+    console.info('recieved message for:::', data)
 
     const updateState = async (status: STATUS) => {
       const report =
@@ -160,10 +160,6 @@ class DataSource extends PubSub {
         batchSize: 10,
         handleMessage: async (message) => {
           const parsedMessage = JSON.parse(message.Body || '')
-          console.info(
-            'recieved message for:::',
-            JSON.parse(parsedMessage.Message),
-          )
           this.sqsCallback(JSON.parse(parsedMessage.Message))
         },
         pollingWaitTimeMs: 7 * 1000,
@@ -202,8 +198,6 @@ class DataSource extends PubSub {
     return this.subscribe(topic, callback)
   }
 
-  unsubscribeFromDS() {}
-
   publishFromDS(message: MessageData) {
     const { check_id } = message
     store.setState((prev) => ({
@@ -214,16 +208,6 @@ class DataSource extends PubSub {
       },
     }))
     this.publish(check_id, message)
-  }
-
-  removeTopicFromDS(topic: string) {
-    const item = this.lastMessages.get(topic)
-
-    if (item) {
-      this.lastMessages.delete(topic)
-    }
-
-    this.removeTopic(topic)
   }
 }
 
