@@ -1,5 +1,5 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   createSearchParams,
   Navigate,
@@ -12,10 +12,11 @@ import IconButton from '~/app/components/global/IconButton/IconButton'
 import Loader from '~/app/components/modules/Loader/Loader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
-import dataSource from '~/app/lib/services/data-source'
+import dataSource, { store } from '~/app/lib/services/data-source'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
+import { useStore } from '~/app/lib/utils/store'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { MessageData } from '~/app/models/Report'
+import { MessageData, STATUS } from '~/app/models/Report'
 
 import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '../Main/Main.types'
 import LoadingStepper from './LoadingStepper/LoadingStepper'
@@ -30,11 +31,17 @@ export const loadingInitialStatus = {
 
 function Loading() {
   const navigate = useNavigate()
-  const { setGlobalError, numberOfInProgress } = useAppContext()
+  const { setGlobalError, numberOfInProgress, findReportById } = useAppContext()
+  const lastMessages = useStore(
+    store,
+    useCallback((state) => state.lastMessages, []),
+  )
 
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
-  const lastMessage = dataSource.lastMessages.get(checkId)
+  const report = findReportById(checkId)
+  const lastMessage = lastMessages[checkId]
+  console.info('last message::', lastMessage)
   const initStep = lastMessage ? lastMessage : loadingInitialStatus
 
   const [status, setStatus] = useState<MessageData>(initStep)
@@ -46,7 +53,7 @@ function Loading() {
   useEffect(() => {
     // this ws callback for handling things in foreground in loading state
     const callbackInLoading = (data) => {
-      console.log('data in loading', data)
+      console.info('data recevied in loading')
       queue.enqueue(data)
     }
 
@@ -93,10 +100,9 @@ function Loading() {
     }
   }, [])
 
-  // if landed from back history that has been done, then redirect to Home
-  // if (!hasCurrentTopic) {
-  //   return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
-  // }
+  if (report && report.status !== STATUS.IN_PROGRESS) {
+    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
+  }
 
   const { step } = status
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import * as PLUGIN_CONSTATNS from '~/plugin/constants'
 
+import { store } from '../lib/services/data-source'
 import { History } from '../models/Report'
 
 function useHistoryEvent() {
@@ -16,7 +17,7 @@ function useHistoryEvent() {
     switch (event.data.pluginMessage.type) {
       case PLUGIN_CONSTATNS.SAME_STORY_HISTORY_LIST_PLUGIN_TO_UI: {
         const { data } = event.data.pluginMessage
-        setHistory(data)
+        store.setState((prev) => ({ ...prev, history: data }))
         break
       }
 

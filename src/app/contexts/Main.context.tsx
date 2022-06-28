@@ -63,7 +63,7 @@ const MainContext = createContext<MainContextProps>()
 
 export function useMainContextSetup(): MainContextProps {
   const navigate = useNavigate()
-  const { setGlobalError, globalError, setHistory } = useAppContext()
+  const { setGlobalError, globalError } = useAppContext()
   const { userId, sessionId } = useUserContext()
   useDataSource()
 
@@ -169,7 +169,7 @@ export function useMainContextSetup(): MainContextProps {
         },
       } as DetailedReport
 
-      setHistory((prev) => [...prev, reportInProgress])
+      // setHistory((prev) => [...prev, reportInProgress])
 
       const queryParams: MeasurementData = {
         _ss: '0',
@@ -184,7 +184,7 @@ export function useMainContextSetup(): MainContextProps {
 
       GAService.sendMeasurementData(queryParams)
 
-      await DataSource.createConsumer(checkId, reportInProgress)
+      DataSource.createConsumer(checkId, reportInProgress)
 
       navigate({
         pathname: ROUTES_MAP[ROUTES.LOADING],

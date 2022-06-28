@@ -1,4 +1,4 @@
-import { GetQueueUrlCommand, Message } from '@aws-sdk/client-sqs'
+import { GetQueueUrlCommand } from '@aws-sdk/client-sqs'
 import { AWSError } from 'aws-sdk'
 
 import config from '~/app/lib/config'
@@ -71,16 +71,8 @@ class DataSource extends PubSub {
   }
 
   async sqsCallback(data: MessageData) {
-    const { history, lastMessages } = store.getState()
     const { check_id, step, step_count, error } = data as MessageData
-
-    // duplicated message check if message is not removed in the queue by error
-    console.log('store==>', store.getState())
-    // if (check_id in lastMessages) {
-    //   if (lastMessages[check_id].step >= step) {
-    //     return
-    //   }
-    // }
+    const { history } = store.getState()
 
     this.publishFromDS(data)
 
@@ -174,13 +166,22 @@ class DataSource extends PubSub {
           )
           this.sqsCallback(JSON.parse(parsedMessage.Message))
         },
-        pollingWaitTimeMs: 10 * 1000,
+        pollingWaitTimeMs: 7 * 1000,
         queueUrl,
         sqs: AWSService.sqsClient,
         waitTimeSeconds: 4,
       })
 
-      store.setState((prev) => ({ history: [...prev.history, baseReport] }))
+      store.setState((prev) => ({
+        ...prev,
+        history: [...prev.history, baseReport],
+      }))
+      console.info(
+        'job started for checkId::',
+        checkId,
+        baseReport,
+        store.getState(),
+      )
       sqsConsumer.start()
       this.consumerMap.set(checkId, sqsConsumer)
     } catch (error) {
@@ -212,7 +213,6 @@ class DataSource extends PubSub {
         [check_id]: { ...message },
       },
     }))
-    console.log('publishing data', message)
     this.publish(check_id, message)
   }
 
