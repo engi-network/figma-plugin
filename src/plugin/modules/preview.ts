@@ -15,19 +15,18 @@ import {
  */
 
 export const onSelection = async (selection: SceneNode): Promise<void> => {
-  const { name, width, height } = selection
+  const { width, height } = selection
   try {
     const prevForm = await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.FORM)
 
-    const [component, story = ''] = name.split('-')
     const newForm = {
       ...prevForm,
-      component,
+      component: '',
       height,
       repository: prevForm.repository
         ? prevForm.repository
         : initialSelection.repository, // need to be considered
-      story,
+      story: '',
       width,
     }
 

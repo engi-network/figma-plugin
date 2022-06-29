@@ -4,7 +4,6 @@ import { StorybookIcon } from '~/app/components/global/Icons'
 import Input from '~/app/components/global/Input/Input'
 import ContainerWithTitle from '~/app/components/global/Layout/ContainerWithTitle/ContainerWithTitle'
 import LinkButton from '~/app/components/global/LinkButton/LinkButton'
-import TextWithLabel from '~/app/components/global/TextWithLabel/TextWithLabel'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
 import { AnalyzeFormValues, FORM_FIELD, initialFormValue } from './Code.data'
@@ -49,19 +48,26 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
       <form className="mb-0">
         <div className="flex mb-5">
           <div className="w-6/12 flex flex-col">
-            <TextWithLabel
-              label="Component"
+            <Input
               id="component"
-              text={values[FORM_FIELD.COMPONENT]}
-              placeholder="Component"
+              label="Component"
+              placeholder="Comonent"
+              value={values[FORM_FIELD.COMPONENT]}
+              onChange={handleInputChange(FORM_FIELD.COMPONENT)}
+              error={errors && errors[FORM_FIELD.COMPONENT]}
+              disabled={isDisabled}
+              required
             />
           </div>
           <div className="w-6/12 ml-7 flex flex-col">
-            <TextWithLabel
-              label="Story"
+            <Input
               id="story"
-              text={values[FORM_FIELD.STORY]}
+              label="Story"
               placeholder="Story"
+              value={values[FORM_FIELD.STORY]}
+              onChange={handleInputChange(FORM_FIELD.STORY)}
+              disabled={isDisabled}
+              required
             />
           </div>
         </div>

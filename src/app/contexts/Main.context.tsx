@@ -84,18 +84,26 @@ export function useMainContextSetup(): MainContextProps {
       return false
     }
 
-    if (!values.repository) {
+    if (!values[FORM_FIELD.REPOSITORY]) {
       setFormErrors((prev) => ({
         ...prev,
-        repository: 'This field is required!',
+        [FORM_FIELD.REPOSITORY]: 'This field is required!',
       }))
       return false
     }
 
-    if (!values.path) {
+    if (!values[FORM_FIELD.PATH]) {
       setFormErrors((prev) => ({
         ...prev,
-        path: 'This field is required!',
+        [FORM_FIELD.PATH]: 'This field is required!',
+      }))
+      return false
+    }
+
+    if (!values[FORM_FIELD.COMPONENT]) {
+      setFormErrors((prev) => ({
+        ...prev,
+        [FORM_FIELD.COMPONENT]: 'This field is required!',
       }))
       return false
     }
@@ -169,8 +177,6 @@ export function useMainContextSetup(): MainContextProps {
         },
       } as DetailedReport
 
-      // setHistory((prev) => [...prev, reportInProgress])
-
       const queryParams: MeasurementData = {
         _ss: '0',
         cid: userId,
@@ -227,6 +233,7 @@ export function useMainContextSetup(): MainContextProps {
         [FORM_FIELD.COMMIT]: values[FORM_FIELD.COMMIT],
         [FORM_FIELD.BRANCH]: values[FORM_FIELD.BRANCH],
         [FORM_FIELD.PATH]: values[FORM_FIELD.PATH],
+        [FORM_FIELD.GH_TOKEN]: values[FORM_FIELD.GH_TOKEN],
         [FORM_FIELD.GH_TOKEN]: values[FORM_FIELD.GH_TOKEN],
       },
     })
