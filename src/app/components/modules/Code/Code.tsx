@@ -51,7 +51,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
             <Input
               id="component"
               label="Component"
-              placeholder="Comonent"
+              placeholder="Component"
               value={values[FORM_FIELD.COMPONENT]}
               onChange={handleInputChange(FORM_FIELD.COMPONENT)}
               error={errors && errors[FORM_FIELD.COMPONENT]}
