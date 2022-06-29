@@ -234,7 +234,8 @@ export function useMainContextSetup(): MainContextProps {
         [FORM_FIELD.BRANCH]: values[FORM_FIELD.BRANCH],
         [FORM_FIELD.PATH]: values[FORM_FIELD.PATH],
         [FORM_FIELD.GH_TOKEN]: values[FORM_FIELD.GH_TOKEN],
-        [FORM_FIELD.GH_TOKEN]: values[FORM_FIELD.GH_TOKEN],
+        [FORM_FIELD.COMPONENT]: values[FORM_FIELD.COMPONENT],
+        [FORM_FIELD.STORY]: values[FORM_FIELD.STORY],
       },
     })
   }

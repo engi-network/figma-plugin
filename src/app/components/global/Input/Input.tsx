@@ -80,7 +80,7 @@ function Input({
       />
       {error && (
         <span
-          className="text-red-600 text-xs absolute bottom-[-20px]"
+          className="text-red-600 text-xs absolute bottom-[-20px] whitespace-nowrap"
           role="alert"
         >
           {error}
