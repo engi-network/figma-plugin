@@ -1,6 +1,4 @@
-import { select, text } from '@storybook/addon-knobs'
-
-import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
+import { select } from '@storybook/addon-knobs'
 
 import Tooltip from './Tooltip'
 
@@ -11,17 +9,17 @@ export default {
 
 export function TooltipStory() {
   return (
-    <StoryContainer>
+    <div>
       <Tooltip
-        label={text('Label', 'Tooltip content')}
+        content={<span>I am a tooltip I am a long content to display</span>}
         placement={select(
           'Placement',
           ['right', 'left', 'top', 'bottom'],
           'right',
         )}
       >
-        <div>Click to open tooltip</div>
+        <span>Click to open tooltip</span>
       </Tooltip>
-    </StoryContainer>
+    </div>
   )
 }

@@ -6,7 +6,7 @@ import {
   shift,
   useFloating,
 } from '@floating-ui/react-dom'
-import { ReactElement, useEffect, useRef, useState } from 'react'
+import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import React from 'react'
 
 import { CSSStylesProp } from '~/app/lib/constants'
@@ -15,9 +15,9 @@ import styles from './Tooltip.styles'
 
 interface Props {
   children: ReactElement
+  content: ReactNode
   customArrowStyles?: CSSStylesProp
   customPopperStyles?: CSSStylesProp
-  label: string
   placement?: Placement
   tooltipOffset?: number
 }
@@ -25,7 +25,7 @@ interface Props {
 export default function Tooltip({
   placement = 'right',
   tooltipOffset = 6,
-  label,
+  content,
   children,
   customArrowStyles,
   customPopperStyles,
@@ -43,8 +43,13 @@ export default function Tooltip({
     middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
   } = useFloating({
     placement,
-    middleware: [offset(tooltipOffset), shift(), arrow({ element: arrowRef })],
+    middleware: [
+      offset(tooltipOffset),
+      shift({ padding: 10 }),
+      arrow({ element: arrowRef }),
+    ],
   })
+
   const staticSide =
     {
       top: 'bottom',
@@ -65,9 +70,10 @@ export default function Tooltip({
     return autoUpdate(refs.reference.current, refs.floating.current, update)
   }, [refs.reference, refs.floating, update])
 
+  console.log('staticSide', staticSide)
   return (
     <>
-      <div ref={reference} onClick={toggleTooltip}>
+      <div ref={reference} onClick={toggleTooltip} className="inline-flex">
         {children}
       </div>
       {isOpen && (
@@ -80,7 +86,7 @@ export default function Tooltip({
             left: x ?? '',
           }}
         >
-          {label}
+          {content}
           <div
             ref={arrowRef}
             css={[
@@ -95,11 +101,9 @@ export default function Tooltip({
                 right: '',
                 top: arrowY ?? '',
               },
-              ...{ [staticSide]: '-4px' },
+              ...{ [staticSide]: '-8px' },
             }}
-          >
-            a
-          </div>
+          />
         </div>
       )}
     </>
