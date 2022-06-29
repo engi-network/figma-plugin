@@ -59,7 +59,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
               required
             />
           </div>
-          <div className="w-6/12 ml-7 flex flex-col">
+          <div className="w-6/12 ml-3 flex flex-col">
             <Input
               id="story"
               label="Story"
