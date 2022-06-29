@@ -52,8 +52,8 @@ function Loading() {
 
   useEffect(() => {
     // this ws callback for handling things in foreground in loading state
-    const callbackInLoading = (data) => {
-      console.info('data recevied in loading')
+    const callbackInLoading = (data: MessageData) => {
+      console.info('Loading screen data:::', data)
       queue.enqueue(data)
     }
 
