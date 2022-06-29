@@ -13,6 +13,7 @@ import Loader from '~/app/components/modules/Loader/Loader'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import dataSource, { store } from '~/app/lib/services/data-source'
+import logger from '~/app/lib/utils/logger'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
 import { useStore } from '~/app/lib/utils/store'
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -53,7 +54,7 @@ function Loading() {
   useEffect(() => {
     // this ws callback for handling things in foreground in loading state
     const callbackInLoading = (data: MessageData) => {
-      console.info('Loading screen data:::', data)
+      logger.info('Loading screen data:::', data)
       queue.enqueue(data)
     }
 

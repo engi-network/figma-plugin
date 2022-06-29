@@ -7,6 +7,7 @@ import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import SQSConsumer from '~/app/lib/services/sqs-consumer'
 import delay from '~/app/lib/utils/delay'
 import { dispatchData } from '~/app/lib/utils/event'
+import logger from '~/app/lib/utils/logger'
 import { replaceItemInArray } from '~/app/lib/utils/object'
 import PubSub from '~/app/lib/utils/pub-sub'
 import { createStore } from '~/app/lib/utils/store'
@@ -74,7 +75,8 @@ class DataSource extends PubSub {
     const { history } = store.getState()
 
     this.publishFromDS(data)
-    console.info('recieved message for:::', data)
+
+    logger.info('recieved message for:::', data)
 
     const updateState = async (status: STATUS) => {
       const report =

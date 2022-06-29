@@ -40,15 +40,15 @@ class Logger {
   }
 
   info(...args) {
-    console.info(logStyles.bg.cyan, ...args)
+    console.info(`${logStyles.bg.cyan}%s${logStyles.reset}`, ...args)
   }
 
   warn(...args) {
-    console.warn(logStyles.bg.yellow, ...args)
+    console.warn(`${logStyles.bg.yellow}%s${logStyles.reset}`, ...args)
   }
 
   success(...args) {
-    console.log(logStyles.bg.green, ...args)
+    console.log(`${logStyles.bg.green}%s${logStyles.reset}`, ...args)
   }
 }
 
