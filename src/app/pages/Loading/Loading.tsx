@@ -2,7 +2,6 @@ import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   createSearchParams,
-  Navigate,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom'
@@ -41,7 +40,6 @@ function Loading() {
   const checkId = searchParams.get('checkId') as string
   const report = findReportById(checkId)
   const lastMessage = lastMessages[checkId]
-  console.info('last message::', lastMessage)
   const initStep = lastMessage ? lastMessage : loadingInitialStatus
 
   const [status, setStatus] = useState<MessageData>(initStep)
@@ -51,7 +49,6 @@ function Loading() {
   }
 
   useEffect(() => {
-    // this ws callback for handling things in foreground in loading state
     const queue = queueRef.current
     const callbackInLoading = (data: MessageData) => {
       logger.info('Loading screen data:::', data)
@@ -103,9 +100,11 @@ function Loading() {
     }
   }, [])
 
-  if (report && report.status !== STATUS.IN_PROGRESS) {
-    return <Navigate to={ROUTES_MAP[ROUTES.HOME]} replace />
-  }
+  useEffect(() => {
+    if (report && report.status !== STATUS.IN_PROGRESS) {
+      navigate({ pathname: ROUTES_MAP[ROUTES.HOME] })
+    }
+  }, [])
 
   const { step } = status
 

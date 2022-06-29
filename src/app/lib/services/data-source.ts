@@ -49,7 +49,6 @@ class DataSource extends PubSub {
   async getSQSUrl(checkId: string, _: string, retry: number): Promise<string> {
     const connect = async (): Promise<string> => {
       const name = `same-story-api-staging-${checkId}-status.fifo`
-      console.info(`getting SQS queue: ${name}`)
       const data = await AWSService.sqsClient.send(
         new GetQueueUrlCommand({ QueueName: name }),
       )
@@ -76,7 +75,7 @@ class DataSource extends PubSub {
 
     this.publishFromDS(data)
 
-    logger.info('recieved message for:::', data)
+    logger.info('Recieved message for', data)
 
     const updateState = async (status: STATUS) => {
       const report =
@@ -174,16 +173,11 @@ class DataSource extends PubSub {
         ...prev,
         history: [...prev.history, baseReport],
       }))
-      console.info(
-        'job started for checkId::',
-        checkId,
-        baseReport,
-        store.getState(),
-      )
+
       sqsConsumer.start()
       this.consumerMap.set(checkId, sqsConsumer)
     } catch (error) {
-      console.error('create consumser error', error as AWSError)
+      logger.error('create consumser error', error as AWSError)
     }
   }
 

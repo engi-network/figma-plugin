@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable sort-keys */
+/**
+ * @TODO might need to connect to sentry later
+ */
 
 const logStyles = {
   reset: '\x1b[0m',
@@ -49,6 +52,10 @@ class Logger {
 
   success(...args) {
     console.log(`${logStyles.bg.green}%s${logStyles.reset}`, ...args)
+  }
+
+  error(...args) {
+    console.error(`${logStyles.bg.red}%s${logStyles.dim}`, ...args)
   }
 }
 

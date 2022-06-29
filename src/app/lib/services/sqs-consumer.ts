@@ -10,6 +10,7 @@ import {
 
 import { AWSError } from '~/app/@types/aws-error'
 import { autoBind } from '~/app/lib/utils/auto-bind'
+import logger from '~/app/lib/utils/logger'
 
 function isConnectionError(error: AWSError): boolean {
   if ('code' in error && 'statusCode' in error) {
@@ -90,14 +91,14 @@ class SQSConsumer {
 
   public start(): void {
     if (this.stopped) {
-      console.info('Starting consumer')
+      logger.info('Starting consumer')
       this.stopped = false
       this.poll()
     }
   }
 
   public stop(): void {
-    console.info('Stopping consumer')
+    logger.info('Stopping consumer')
     this.stopped = true
   }
 
@@ -109,12 +110,12 @@ class SQSConsumer {
 
   private async deleteMessage(message: Message): Promise<void> {
     if (!this.shouldDeleteMessages) {
-      console.info(
+      logger.info(
         'Skipping message delete since shouldDeleteMessages is set to false',
       )
       return
     }
-    console.info('Deleting message %s', message.MessageId)
+    logger.info('Deleting message %s', message.MessageId)
 
     const deleteParams = {
       QueueUrl: this.queueUrl,
@@ -174,7 +175,7 @@ class SQSConsumer {
       const command = new ChangeMessageVisibilityCommand(params)
       await this.sqs.send(command)
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       throw error as AWSError
     }
   }
@@ -183,7 +184,7 @@ class SQSConsumer {
     try {
       await this.handleMessage(message)
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       throw new Error('Error in handle message')
     }
   }
@@ -193,7 +194,7 @@ class SQSConsumer {
       return
     }
 
-    console.info('Polling for messages')
+    logger.info('Polling for messages')
     const receiveParams = {
       AttributeNames: this.attributeNames,
       MaxNumberOfMessages: this.batchSize,
@@ -209,7 +210,7 @@ class SQSConsumer {
       .then(this.handleSqsResponse)
       .catch((error) => {
         if (isConnectionError(error)) {
-          console.info(
+          logger.info(
             'There was an authentication error. Pausing before retrying.',
           )
           currentPollingTimeout = this.authenticationErrorTimeout
@@ -220,7 +221,7 @@ class SQSConsumer {
         setTimeout(this.poll, currentPollingTimeout)
       })
       .catch((error) => {
-        console.error(error)
+        logger.error(error)
       })
   }
 
@@ -232,7 +233,7 @@ class SQSConsumer {
     }
 
     await Promise.all(response.Messages.map(this.processMessage))
-    console.info('response_processed')
+    logger.info('response_processed')
   }
 }
 
