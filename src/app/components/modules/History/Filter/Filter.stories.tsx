@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import logger from '~/app/lib/utils/logger'
+
 import Filter from './Filter'
 import { FilterValues, initialFilterState } from './Filter.data'
 import { mapFilterFormToTableFilter } from './Filter.utils'
@@ -17,7 +19,7 @@ export function FilterWithKnobs() {
   }
 
   const filterItems = mapFilterFormToTableFilter(values)
-  console.info('filter:', filterItems)
+  logger.info('filter:', filterItems)
 
   return (
     <div className="h-screen bg-slate-700">

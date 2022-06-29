@@ -1,5 +1,5 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   createSearchParams,
   Navigate,
@@ -22,8 +22,6 @@ import { MessageData, STATUS } from '~/app/models/Report'
 import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '../Main/Main.types'
 import LoadingStepper from './LoadingStepper/LoadingStepper'
 
-const queue = new Queue<MessageData>()
-
 export const loadingInitialStatus = {
   step: 0,
   step_count: 8,
@@ -37,6 +35,7 @@ function Loading() {
     store,
     useCallback((state) => state.lastMessages, []),
   )
+  const queueRef = useRef<Queue<MessageData>>(new Queue<MessageData>())
 
   const [searchParams] = useSearchParams()
   const checkId = searchParams.get('checkId') as string
@@ -53,6 +52,7 @@ function Loading() {
 
   useEffect(() => {
     // this ws callback for handling things in foreground in loading state
+    const queue = queueRef.current
     const callbackInLoading = (data: MessageData) => {
       logger.info('Loading screen data:::', data)
       queue.enqueue(data)
@@ -66,6 +66,8 @@ function Loading() {
   }, [checkId])
 
   useEffect(() => {
+    const queue = queueRef.current
+
     let timeoutId
     const timerId = setInterval(() => {
       if (queue.size() <= 0) {
