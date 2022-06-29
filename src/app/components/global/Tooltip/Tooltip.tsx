@@ -8,7 +8,7 @@ import {
 } from '@floating-ui/react-dom'
 import { ReactElement, useEffect, useRef, useState } from 'react'
 
-import { CSSStylesProp } from '~/lib/constants'
+import { CSSStylesProp } from '~/app/lib/constants'
 
 import styles from './Tooltip.styles'
 
