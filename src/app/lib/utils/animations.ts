@@ -1,7 +1,7 @@
 import CamToFigma from '~/app/assets/animations/camera-to-figma.json'
 // import Sb from '~/app/assets/animations/sb.json'
 // import Clone from '~/app/assets/animations/clone.json'
-// import Camara from '~/app/assets/animations/camera.json'
+// import Camera from '~/app/assets/animations/camera.json'
 import Figma from '~/app/assets/animations/figma.json'
 import FileToTool from '~/app/assets/animations/file-to-tool.json'
 import File from '~/app/assets/animations/file.json'

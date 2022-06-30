@@ -47,7 +47,7 @@ class Logger {
   }
 
   warn(...args) {
-    console.warn(`${logStyles.bg.magenta}%s${logStyles.reset}`, ...args)
+    console.warn(`${logStyles.bg.yellow}%s${logStyles.reset}`, ...args)
   }
 
   success(...args) {
