@@ -1,5 +1,5 @@
 import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid'
+import { ChevronDownIcon } from '@heroicons/react/solid'
 import cn from 'classnames'
 import { Fragment, useEffect, useState } from 'react'
 
@@ -74,26 +74,25 @@ function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options
-              className="absolute z-10 mt-1 overflow-auto bg-[#23232333] backdrop-blur-[200px] max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none"
+              className="absolute z-10 mt-1 overflow-auto bg-[#23232333] backdrop-blur-[200px] max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none min-w-[250px]"
               css={styles.optionPanel}
             >
               {options.map((option) => (
                 <Listbox.Option key={option.value} value={option} as={Fragment}>
                   {({ active, selected }) => (
                     <li
-                      className={`cursor-pointer select-none relative text-sm ${
+                      className={`cursor-pointer select-none relative text-base ${
                         active
-                          ? 'text-text-secondary cursor-pointer'
-                          : 'text-text-primary'
+                          ? 'text-primary-white cursor-pointer'
+                          : 'text-text-secondary'
+                      }
+                      ${
+                        selected &&
+                        'text-primary-white bg-[#23232366] font-bold'
                       }`}
                       css={styles.option}
                     >
                       <span className="block truncate">{option.name}</span>
-                      {selected && (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-1 text-primary-gray">
-                          <CheckIcon className="w-4 h-4" aria-hidden="true" />
-                        </span>
-                      )}
                     </li>
                   )}
                 </Listbox.Option>
