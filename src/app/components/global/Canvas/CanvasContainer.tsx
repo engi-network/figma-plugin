@@ -6,7 +6,7 @@ import Canvas, { CanvasProps } from './Canvas'
 
 interface Props extends CanvasProps {
   icon?: ReactNode
-  label?: string
+  label?: ReactNode
 }
 
 function CanvasContainer({
@@ -43,7 +43,10 @@ function CanvasContainer({
         {children}
       </Canvas>
       {label && (
-        <label className="text-sm text-text-secondary" htmlFor={inputId}>
+        <label
+          className="text-sm text-text-secondary flex justify-center items-center"
+          htmlFor={inputId}
+        >
           {label}
         </label>
       )}

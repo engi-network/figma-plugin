@@ -17,7 +17,7 @@ export function TooltipStory() {
           ['right', 'left', 'top', 'bottom'],
           'right',
         )}
-        tooltipOffset={8}
+        tooltipOffset={10}
       >
         <span>Click to open tooltip</span>
       </Tooltip>

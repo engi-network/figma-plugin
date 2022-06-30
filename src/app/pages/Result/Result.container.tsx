@@ -1,4 +1,4 @@
-import { ChevronLeftIcon } from '@heroicons/react/solid'
+import { ChevronLeftIcon, InformationCircleIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
@@ -15,6 +15,7 @@ import {
 } from '~/app/components/global/Icons'
 import Modal from '~/app/components/global/Modal/Modal'
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
+import Tooltip from '~/app/components/global/Tooltip/Tooltip'
 import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/ImageCarousel'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
@@ -163,7 +164,24 @@ function ResultContainer() {
               className="mb-2 border border-wf-tertiery"
               draw={drawCallback(originalImageUrl + '')}
               options={{ contextId: '2d' }}
-              label={`${width} ✕ ${height}`}
+              label={
+                <>
+                  <span className="block truncate mr-1">{name}</span>
+                  <Tooltip
+                    content={
+                      <div className="flex justify-center items-center">
+                        <span className="mr-24">{ui('result.demensions')}</span>
+                        <span className="whitespace-nowrap">{`${width} ✕ ${height}`}</span>
+                      </div>
+                    }
+                    tooltipOffset={12}
+                    placement="bottom"
+                    customPopperStyles={{ padding: '22px 30px' }}
+                  >
+                    <InformationCircleIcon className="w-4 h-4 text-white/30" />
+                  </Tooltip>
+                </>
+              }
               icon={<FigmaIcon width={32} height={32} />}
               width="100%"
               height="100%"
