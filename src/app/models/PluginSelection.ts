@@ -5,6 +5,7 @@ export interface PluginSelection {
   frame: BlobPart
   github_token?: string
   height: number
+  name: string
   path?: string
   repository: string
   story: string

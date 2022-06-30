@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions'
 import { useMemo, useState } from 'react'
 
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
@@ -63,6 +64,7 @@ export function TableWithKnobs() {
         sortBy={sortBy}
         hiddenColumns={hiddenColumns}
         filterItems={filterItems}
+        onClickRow={action('click row')}
       />
     </div>
   )

@@ -19,6 +19,7 @@ import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/Image
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
+import logger from '~/app/lib/utils/logger'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
 
@@ -59,6 +60,7 @@ function ResultContainer() {
     width,
     height,
     MAE,
+    name,
   } = result as ReportResult
 
   const realMAE = MAE.split(' ')[0]
@@ -69,6 +71,7 @@ function ResultContainer() {
     { value: url_blue_difference, name: 'Blue-scale Difference' },
   ]
 
+  logger.info('name of layer', name)
   useEffect(() => {
     setSelectedImage(imageSelectionOptions[0].value)
   }, [])

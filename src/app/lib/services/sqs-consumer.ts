@@ -115,7 +115,7 @@ class SQSConsumer {
       )
       return
     }
-    logger.info('Deleting message %s', message.MessageId)
+    logger.warn('Deleting message:::', message.MessageId)
 
     const deleteParams = {
       QueueUrl: this.queueUrl,

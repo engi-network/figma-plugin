@@ -17,7 +17,7 @@ interface Props {
 
 function ErrorPage({
   onClick,
-  message = ui('error.globalError'),
+  message,
   ctaTitle = ui('error.checkInput'),
 }: Props) {
   const { globalError } = useAppContext()
@@ -40,7 +40,7 @@ function ErrorPage({
           css={styles.alert}
         >
           <InformationCircleIcon className="w-5 h-5 text-[#FA7B7B] mr-2" />
-          {message || globalError}
+          {message || globalError || ui('error.globalError')}
         </span>
       </div>
       <div className="flex justify-center w-full mt-9">

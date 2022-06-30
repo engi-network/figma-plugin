@@ -77,7 +77,13 @@ export function useMainContextSetup(): MainContextProps {
   const [step, setStep] = useState(0)
   const [currentTimerId, setTimerId] = useState(-1)
 
-  const { height = 0, width = 0, commit, branch } = selectionData || {}
+  const {
+    height = 0,
+    width = 0,
+    commit,
+    branch,
+    name = '',
+  } = selectionData || {}
 
   const formValidate = (values?: AnalyzeFormValues): boolean => {
     if (!values) {
@@ -142,6 +148,7 @@ export function useMainContextSetup(): MainContextProps {
         component,
         github_token: githubToken,
         height: height + '',
+        name,
         path,
         repository,
         story,

@@ -15,7 +15,7 @@ import {
  */
 
 export const onSelection = async (selection: SceneNode): Promise<void> => {
-  const { width, height } = selection
+  const { width, height, name } = selection
   try {
     const prevForm = await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.FORM)
 
@@ -23,6 +23,7 @@ export const onSelection = async (selection: SceneNode): Promise<void> => {
       ...prevForm,
       component: '',
       height,
+      name,
       repository: prevForm.repository
         ? prevForm.repository
         : initialSelection.repository, // need to be considered
