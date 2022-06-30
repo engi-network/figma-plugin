@@ -2,6 +2,7 @@ import { Placement } from '@floating-ui/core'
 import {
   arrow,
   autoUpdate,
+  flip,
   offset,
   shift,
   useFloating,
@@ -45,6 +46,7 @@ export default function Tooltip({
     placement,
     middleware: [
       offset(tooltipOffset),
+      flip(),
       shift({ padding: 10 }),
       arrow({ element: arrowRef }),
     ],
