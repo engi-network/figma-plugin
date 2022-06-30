@@ -70,7 +70,6 @@ export default function Tooltip({
     return autoUpdate(refs.reference.current, refs.floating.current, update)
   }, [refs.reference, refs.floating, update])
 
-  console.log('staticSide', staticSide)
   return (
     <>
       <div ref={reference} onClick={toggleTooltip} className="inline-flex">
