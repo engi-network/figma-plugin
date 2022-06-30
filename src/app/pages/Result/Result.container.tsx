@@ -143,7 +143,7 @@ function ResultContainer() {
           </IconButton>
           <div className="absolute flex justify-center top-0 left-0 right-0 z-10">
             <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold">
-              {ui('result.wellDone')} <br />
+              {isSuccess ? ui('result.wellDone') : ui('result.sorry')} <br />
               {ui('result.theyare')}
               {isSuccess ? (
                 <span className="bg-primary-green mix-blend-screen text-black">
@@ -160,8 +160,8 @@ function ResultContainer() {
         <div className="flex mb-12">
           <div className="flex justify-start w-5/12 h-[220px]">
             <Canvas
-              id="orignal-image"
-              className="mb-2 border border-wf-tertiery"
+              id="original-image"
+              className="mb-2 border border-wf-tertiary"
               draw={drawCallback(originalImageUrl + '')}
               options={{ contextId: '2d' }}
               label={
@@ -170,7 +170,7 @@ function ResultContainer() {
                   <Tooltip
                     content={
                       <div className="flex justify-center items-center">
-                        <span className="mr-24">{ui('result.demensions')}</span>
+                        <span className="mr-24">{ui('result.dimensions')}</span>
                         <span className="whitespace-nowrap">{`${width} ✕ ${height}`}</span>
                       </div>
                     }
@@ -192,7 +192,7 @@ function ResultContainer() {
             <div className="h-full w-full relative">
               <Canvas
                 id="result-images"
-                className="mb-2 border border-wf-tertiery"
+                className="mb-2 border border-wf-tertiary"
                 draw={drawCallback(selectedImage)}
                 options={{ contextId: '2d' }}
                 icon={
