@@ -8,7 +8,7 @@ export default {
   title: 'Global/Components/Button',
 }
 
-export function ButtonWithKnobs() {
+export function ButtonStory() {
   const isDisabled = boolean('Disabled?', false)
   const mode = select('Primary', [true, false], false)
 

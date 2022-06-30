@@ -8,7 +8,6 @@ import {
   useFloating,
 } from '@floating-ui/react-dom'
 import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
-import React from 'react'
 
 import { CSSStylesProp } from '~/app/lib/constants'
 
