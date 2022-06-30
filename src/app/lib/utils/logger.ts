@@ -43,11 +43,11 @@ class Logger {
   }
 
   info(...args) {
-    console.info(`${logStyles.bg.cyan}%s${logStyles.reset}`, ...args)
+    console.info(`${logStyles.bg.blue}%s${logStyles.bright}`, ...args)
   }
 
   warn(...args) {
-    console.warn(`${logStyles.bg.yellow}%s${logStyles.reset}`, ...args)
+    console.warn(`${logStyles.bg.magenta}%s${logStyles.reset}`, ...args)
   }
 
   success(...args) {
