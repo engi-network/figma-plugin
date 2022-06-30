@@ -14,6 +14,13 @@ import { CSSStylesProp } from '~/app/lib/constants'
 
 import styles from './Tooltip.styles'
 
+const flipMap = {
+  top: 'bottom',
+  right: 'left',
+  left: 'right',
+  bottom: 'top',
+}
+
 interface Props {
   children: ReactElement
   content: ReactNode
@@ -41,12 +48,17 @@ export default function Tooltip({
     strategy,
     update,
     refs,
-    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
+    middlewareData: {
+      arrow: { x: arrowX, y: arrowY } = {},
+      flip: { overflows = [] } = {},
+    },
   } = useFloating({
     placement,
     middleware: [
       offset(tooltipOffset),
-      flip(),
+      flip({
+        fallbackStrategy: 'bestFit',
+      }),
       shift({ padding: 10 }),
       arrow({ element: arrowRef }),
     ],
@@ -59,6 +71,8 @@ export default function Tooltip({
       bottom: 'top',
       left: 'right',
     }[placement.split('-')[0]] ?? 'right'
+
+  const flipped = overflows.length > 0
 
   const toggleTooltip = () => {
     setIsOpen(!isOpen)
@@ -92,7 +106,9 @@ export default function Tooltip({
             ref={arrowRef}
             css={[
               styles.arrow,
-              styles[`arrow_${staticSide}`],
+              styles[
+                flipped ? `arrow_${flipMap[staticSide]}` : `arrow_${staticSide}`
+              ],
               customArrowStyles,
             ]}
             style={{
@@ -102,7 +118,7 @@ export default function Tooltip({
                 right: '',
                 top: arrowY ?? '',
               },
-              ...{ [staticSide]: '-8px' },
+              ...{ [flipped ? flipMap[staticSide] : staticSide]: '-8px' },
             }}
           />
         </div>
