@@ -32,7 +32,8 @@
       "fail": "It’s looks like your UI code doesn’t match your design yet"
     },
     "sorry": "Sorry!",
-    "dimensions": "Dimensions"
+    "dimensions": "Dimensions",
+    "createAJob": "Create a Job"
   },
   "history": {
     "history": "History",

@@ -38,12 +38,22 @@ const logStyles = {
 }
 
 class Logger {
+  isDark: boolean
+
+  constructor() {
+    this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  }
+
   log(...args) {
     console.log(...args)
   }
 
   info(...args) {
-    console.info(`${logStyles.bg.blue}%s${logStyles.bright}`, ...args)
+    if (this.isDark) {
+      console.info(`${logStyles.bg.blue}%s${logStyles.bright}`, ...args)
+    } else {
+      console.info(`${logStyles.bg.cyan}%s${logStyles.reset}`, ...args)
+    }
   }
 
   warn(...args) {

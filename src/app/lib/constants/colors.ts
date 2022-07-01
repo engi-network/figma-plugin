@@ -23,7 +23,7 @@ export const COLORS = {
     TERTIARY: '#AEB5C7',
   },
   TEXT: {
-    PRIAMRY: '#FFFFFF',
+    PRIMARY: '#FFFFFF',
     SECONDARY: '#D7D7D7',
   },
 }

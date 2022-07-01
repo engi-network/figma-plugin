@@ -5,9 +5,8 @@ const styles: StylesMap = {
   button: [
     typography.tertiaryHeadline,
     {
-      border: 0,
       cursor: 'pointer',
-      display: 'inlines-block',
+      display: 'inline-block',
     },
   ],
   disabled: {

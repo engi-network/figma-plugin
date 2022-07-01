@@ -19,6 +19,7 @@ export function ButtonStory() {
         primary={mode}
         onClick={action('button click')}
         disabled={isDisabled}
+        className="border border-primary-white"
       >
         {text('Label', 'Button Label')}
       </Button>

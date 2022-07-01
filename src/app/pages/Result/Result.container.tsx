@@ -29,7 +29,7 @@ import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
  * @TODO need to add transition when isOpen toggling
  * animation will be considered later on...
  */
-const THRESHHOLD = 50
+const THRESHOLD = 50
 
 function ResultStatus({ status }: { status: STATUS }) {
   return (
@@ -65,7 +65,7 @@ function ResultContainer() {
   } = result as ReportResult
 
   const realMAE = MAE.split(' ')[0]
-  const isSuccess = +realMAE < THRESHHOLD
+  const isSuccess = +realMAE < THRESHOLD
   const imageSelectionOptions: Array<SelectOption> = [
     { value: url_screenshot, name: 'Storycap captured' },
     { value: url_gray_difference, name: 'Gray-scale Difference' },
@@ -106,6 +106,10 @@ function ResultContainer() {
 
       await drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
     }
+
+  const handleCreateJob = () => {
+    logger.info('open a link')
+  }
 
   const isStorybook = selectedImage === imageSelectionOptions[0].value
 
@@ -178,7 +182,7 @@ function ResultContainer() {
                     placement="bottom"
                     customPopperStyles={{ padding: '22px 30px' }}
                   >
-                    <InformationCircleIcon className="w-4 h-4 text-white/30" />
+                    <InformationCircleIcon className="w-4 h-4 text-white/30 cursor-pointer" />
                   </Tooltip>
                 </>
               }
@@ -221,7 +225,7 @@ function ResultContainer() {
             </div>
           </div>
         </div>
-        <p className="text-sm text-primary-white/80 mb-10 text-center">
+        <p className="text-sm text-primary-white/80 mb-6 text-center">
           {isSuccess
             ? ui('result.description.success')
             : ui('result.description.fail')}
@@ -231,6 +235,18 @@ function ResultContainer() {
             {ui('result.createNew')}
           </Button>
         </div>
+        {!isSuccess && (
+          <div className="flex justify-center mt-5">
+            <Button
+              backgroundColor="#00000036"
+              onClick={handleCreateJob}
+              className="w-5/12 capitalize border border-solid border-primary-white"
+              primary
+            >
+              {ui('result.createAJob')}
+            </Button>
+          </div>
+        )}
       </>
     )
   }
