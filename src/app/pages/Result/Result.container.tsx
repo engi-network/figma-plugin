@@ -107,10 +107,6 @@ function ResultContainer() {
       await drawImage(canvas, context as CanvasRenderingContext2D, imageUrl)
     }
 
-  const handleCreateJob = () => {
-    logger.info('open a link')
-  }
-
   const isStorybook = selectedImage === imageSelectionOptions[0].value
 
   const renderModal = () => {
@@ -238,10 +234,12 @@ function ResultContainer() {
         {!isSuccess && (
           <div className="flex justify-center mt-5">
             <Button
+              as="a"
               backgroundColor="#00000036"
-              onClick={handleCreateJob}
               className="w-5/12 capitalize border border-solid border-primary-white"
               primary
+              href="https://engi.network/jobs/create"
+              target="_blank"
             >
               {ui('result.createAJob')}
             </Button>

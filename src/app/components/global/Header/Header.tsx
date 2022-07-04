@@ -66,7 +66,6 @@ function Header({ numberOfProgress = 0, setHistory, className }: Props) {
     setHistory && setHistory([])
   }
 
-  const handleClickWhy = () => {}
   const rootClasses = cn(
     className,
     'flex justify-between border-b border-text-secondary px-7 py-5',
@@ -115,7 +114,8 @@ function Header({ numberOfProgress = 0, setHistory, className }: Props) {
       <IconButton
         className="text-primary-white"
         icon={<InfoIcon className="w-5 h-5 bg-opacity-40 text-primary-white" />}
-        onClick={handleClickWhy}
+        href="https://engi.network/jobs/create"
+        target="_blank"
       >
         {uiJSX('header.whyEngi', {
           eIcon: (
