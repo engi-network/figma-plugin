@@ -1,4 +1,5 @@
 import CamToFigma from '~/app/assets/animations/camera-to-figma.json'
+import FigmaUpload from '~/app/assets/animations/figma-upload.json'
 // import Sb from '~/app/assets/animations/sb.json'
 // import Clone from '~/app/assets/animations/clone.json'
 // import Camera from '~/app/assets/animations/camera.json'
@@ -11,7 +12,8 @@ import ToolToSb from '~/app/assets/animations/tool-to-sb.json'
 import { STEPS } from '~/app/pages/Main/Main.types'
 
 export const mapStepToAnimation = {
-  [STEPS.INIT]: File,
+  [STEPS.INIT]: FigmaUpload,
+  [STEPS.FILE]: File,
   [STEPS.DOWNLOAD_FIGMA_CHECK_FRAME]: File,
   [STEPS.CHECKED_OUT_CODE]: FileToTool,
   [STEPS.INSTALLED_PACKAGES]: ToolToSb,

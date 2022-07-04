@@ -36,6 +36,7 @@ export const mockSuccessReport: DetailedReport = {
     code_path: 'src/app/components/global/Button/Button.stories.tsx',
     code_snippet:
       "import { action } from '@storybook/addon-actions'\nimport { boolean, select, text } from '@storybook/addon-knobs'\n\nimport Button from './Button'\n\n",
+    name: 'layer name',
   },
   status: STATUS.SUCCESS,
 }
@@ -59,6 +60,7 @@ export const mockErrorReport: DetailedReport = {
     repository: 'repo1',
     story: 'story1',
     width: '100',
+    name: 'layer name',
   },
   status: STATUS.FAIL,
 }
@@ -76,6 +78,7 @@ export const mockInProgressReport: DetailedReport = {
     repository: 'repo1',
     story: 'story1',
     width: '100',
+    name: 'layer name',
   },
   status: STATUS.IN_PROGRESS,
 }

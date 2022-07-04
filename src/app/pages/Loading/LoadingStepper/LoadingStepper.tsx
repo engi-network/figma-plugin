@@ -11,7 +11,7 @@ function LoadingStepper({ step, className }: Props) {
   return (
     <div className={className}>
       <Stepper activeStep={step} orientation="vertical">
-        {Array(5)
+        {Array(6)
           .fill(0)
           .map((_, index) => (
             <Step className="p-2" key={index}>

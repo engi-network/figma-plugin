@@ -201,7 +201,7 @@ function ResultContainer() {
                 options={{ contextId: '2d' }}
                 icon={
                   isStorybook ? (
-                    <StorybookIcon width={32} height={32} />
+                    <StorybookIcon width={11} height={16} />
                   ) : undefined
                 }
                 width="100%"

@@ -6,6 +6,7 @@ import {
   CompareIcon,
   FolderIcon,
   StorybookIcon,
+  UploadDesignIcon,
   WrenchIcon,
 } from '~/app/components/global/Icons'
 import Step from '~/app/components/global/Stepper/Step/Step'
@@ -20,11 +21,12 @@ export const mapStepToIcon = (
   width: number,
   height: number,
 ): Record<string, ReactNode> => ({
-  0: <FolderIcon width={width} height={height} />,
-  1: <WrenchIcon width={width} height={height} />,
-  2: <StorybookIcon width={width} height={height} />,
-  3: <CameraIcon width={width} height={height} />,
-  4: <CompareIcon width={width} height={height} />,
+  0: <UploadDesignIcon width={width} height={height} />,
+  1: <FolderIcon width={width} height={height} />,
+  2: <WrenchIcon width={width} height={height} />,
+  3: <StorybookIcon width={width} height={height} />,
+  4: <CameraIcon width={width} height={height} />,
+  5: <CompareIcon width={width} height={height} />,
 })
 
 function StatusStepper({ activeStep, className }: Props) {
@@ -52,7 +54,7 @@ function StatusStepper({ activeStep, className }: Props) {
         orientation="horizontal"
         connector={<div className="w-3" />}
       >
-        {Array(5)
+        {Array(6)
           .fill(0)
           .map((_, index) => (
             <Step key={index}>{stepElement(index, activeStep)}</Step>

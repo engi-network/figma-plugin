@@ -22,7 +22,7 @@ export function StepperWithKnobs() {
   return (
     <div className="bg-slate-800 h-full p-10">
       <Stepper activeStep={step} orientation={orientation}>
-        {Array(5)
+        {Array(6)
           .fill(0)
           .map((_, index) => (
             <Step className="p-2" key={index}>
