@@ -1,6 +1,8 @@
 import { action } from '@storybook/addon-actions'
 import { boolean, select, text } from '@storybook/addon-knobs'
 
+import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
+
 import Button from './Button'
 
 export default {
@@ -13,7 +15,7 @@ export function ButtonStory() {
   const mode = select('Primary', [true, false], false)
 
   return (
-    <div className="bg-slate-800 h-64 pl-10 pt-10">
+    <StoryContainer>
       <Button
         label="Click me"
         primary={mode}
@@ -23,6 +25,26 @@ export function ButtonStory() {
       >
         {text('Label', 'Button Label')}
       </Button>
-    </div>
+    </StoryContainer>
+  )
+}
+
+export function LinkButtonStory() {
+  const mode = select('Primary', [true, false], false)
+
+  return (
+    <StoryContainer>
+      <Button
+        label="Click me"
+        primary={mode}
+        onClick={action('button click')}
+        className="border border-primary-white"
+        as="a"
+        href="https://google.com"
+        target="_blank"
+      >
+        {text('Label', 'Button Label')}
+      </Button>
+    </StoryContainer>
   )
 }
