@@ -5,7 +5,7 @@ const styles: StylesMap = {
     background: 'transparent',
     fontSize: 10,
     fontWeight: 500,
-    height: '100%',
+    height: 'fit-content',
     lineHeight: '15px',
     overflow: 'hidden',
     padding: 0,

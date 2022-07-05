@@ -7,7 +7,8 @@ interface Props {
   className?: string
   defaultIndex?: number
   onChange?: (index: number) => void
-  tabLabels: Array<string>
+  tabLabels: Array<ReactNode>
+  tabListClassname?: string
 }
 
 function CustomTab({
@@ -16,6 +17,7 @@ function CustomTab({
   onChange,
   defaultIndex = 0,
   className,
+  tabListClassname,
 }: Props) {
   const [selectedTab, setSelectTab] = useState<number>(-1)
   const handleTabChange = (index: number) => {
@@ -24,6 +26,10 @@ function CustomTab({
   }
 
   const rootClasses = cn(className, 'w-full')
+  const tabListClasses = cn(
+    tabListClassname,
+    'flex p-1 space-x-1 bg-primary-white/[0.14]',
+  )
 
   return (
     <div className={rootClasses}>
@@ -32,20 +38,20 @@ function CustomTab({
         selectedIndex={selectedTab}
         defaultIndex={defaultIndex}
       >
-        <Tab.List className="flex p-1 space-x-1 bg-primary-white/[0.14]">
-          {tabLabels.map((label) => (
+        <Tab.List className={tabListClasses}>
+          {tabLabels.map((element, index) => (
             <Tab
-              key={label}
+              key={index}
               className={({ selected }) =>
                 cn(
-                  'w-full py-2.5 text-sm leading-5 font-medium focus:outline-none',
+                  'py-2.5 text-sm leading-5 font-medium focus:outline-none',
                   selected
                     ? 'bg-primary-green text-secondary-bg'
                     : 'text-primary-white hover:bg-white/[0.12] hover:text-blue-100',
                 )
               }
             >
-              {label}
+              {element}
             </Tab>
           ))}
         </Tab.List>
