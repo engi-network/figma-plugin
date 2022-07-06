@@ -27,6 +27,7 @@ interface Props {
   customPopperStyles?: CSSStylesProp
   placement?: Placement
   tooltipOffset?: number
+  trigger?: 'click' | 'hover'
 }
 
 export default function Tooltip({
@@ -36,6 +37,7 @@ export default function Tooltip({
   children,
   customArrowStyles,
   customPopperStyles,
+  trigger = 'click',
 }: Props) {
   const arrowRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -77,6 +79,24 @@ export default function Tooltip({
     setIsOpen(!isOpen)
   }
 
+  const closeTooltip = () => {
+    setIsOpen(false)
+  }
+
+  const openTooltip = () => {
+    setIsOpen(true)
+  }
+
+  const handlers =
+    trigger === 'click'
+      ? {
+          onClick: toggleTooltip,
+        }
+      : {
+          onMouseEnter: openTooltip,
+          onMouseLeave: closeTooltip,
+        }
+
   // Update on scroll and resize for all relevant nodes
   useEffect(() => {
     if (!refs.reference.current || !refs.floating.current) {
@@ -87,7 +107,7 @@ export default function Tooltip({
 
   return (
     <>
-      <div ref={reference} onClick={toggleTooltip} className="inline-flex">
+      <div ref={reference} className="inline-flex" {...handlers}>
         {children}
       </div>
       {isOpen && (
