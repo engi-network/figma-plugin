@@ -17,7 +17,7 @@ function Preview({ draw, originalCanvasRef, label }: Props) {
       title={ui('main.preview.design')}
       description={label}
       contentClassName={'flex justify-end items-center border'}
-      icon={<FigmaIcon width={32} height={32} />}
+      icon={<FigmaIcon width={16} height={16} />}
     >
       <>
         <CanvasContainer

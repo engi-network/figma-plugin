@@ -38,6 +38,7 @@ export default function Tooltip({
   customArrowStyles,
   customPopperStyles,
   trigger = 'click',
+  ...rest
 }: Props) {
   const arrowRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -107,7 +108,7 @@ export default function Tooltip({
 
   return (
     <>
-      <div ref={reference} className="inline-flex" {...handlers}>
+      <div ref={reference} className="inline-flex" {...rest} {...handlers}>
         {children}
       </div>
       {isOpen && (

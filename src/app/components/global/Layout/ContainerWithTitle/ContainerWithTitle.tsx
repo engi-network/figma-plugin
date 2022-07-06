@@ -35,7 +35,11 @@ function ContainerWithTitle({
         <h2 className="text-2xl text-text-primary font-bold text-center">
           {title}
         </h2>
-        {icon && <div className="ml-3">{icon}</div>}
+        {icon && (
+          <div className="ml-3 bg-black/40 backdrop-blur-[4px] rounded-full flex justify-center items-center min-h-[32px] min-w-[32px]">
+            {icon}
+          </div>
+        )}
       </div>
       <div className={contentClasses}>
         {children}

@@ -39,7 +39,10 @@
     "history": "History",
     "search": "Search",
     "searchPlaceholder": "Search...",
-    "learnMore": "Learn more"
+    "learnMore": "Learn more",
+    "tooltip": {
+      "fail": "This didn't finish correctly. Try running another comparison!"
+    }
   },
   "components": {
     "select": {

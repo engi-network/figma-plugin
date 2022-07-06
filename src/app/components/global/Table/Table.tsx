@@ -10,7 +10,9 @@ import {
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
+import Tooltip from '~/app/components/global/Tooltip/Tooltip'
 import { TableFilterItem } from '~/app/components/modules/History/Filter/Filter.data'
+import { ui } from '~/app/lib/utils/ui-dictionary'
 import { STATUS } from '~/app/models/Report'
 
 import { TB_ACCESSORS } from './Table.data'
@@ -97,13 +99,54 @@ function Table({
 
       const rowClasses = cn(
         'tr justify-between border-b border-text-secondary border-opacity-30 py-4 px-7 cursor-pointer',
-        { 'cursor-pointer': row.values.status === STATUS.SUCCESS },
-        { 'cursor-progress': row.values.status === STATUS.IN_PROGRESS },
-        {
-          'cursor-not-allowed pointer-event-none':
-            row.values.status === STATUS.FAIL,
-        },
+        'cursor-pointer',
       )
+
+      const renderCells = row.cells.map((cell, index) => {
+        return (
+          <div
+            {...cell.getCellProps([
+              {
+                style: {
+                  alignItems: 'center',
+                  display: 'flex',
+                  justifyContent: 'center',
+                },
+              },
+            ])}
+            className="td"
+            key={index}
+          >
+            {cell.render('Cell')}
+          </div>
+        )
+      })
+
+      if (row.values.status === STATUS.FAIL) {
+        return (
+          <Tooltip
+            placement="top"
+            content={
+              <span className="text-text-secondary">
+                {ui('history.tooltip.fail')}
+              </span>
+            }
+            customPopperStyles={{
+              padding: '10px 12px',
+              background: 'rgba(35, 35, 35, 0.9)',
+            }}
+            customArrowStyles={{
+              background: 'rgba(35, 35, 35, 0.9)',
+            }}
+            {...row.getRowProps({
+              style,
+            })}
+            className={rowClasses}
+          >
+            {renderCells}
+          </Tooltip>
+        )
+      }
 
       return (
         <div
@@ -113,25 +156,7 @@ function Table({
           className={rowClasses}
           onClick={handleClickRow(row.values)}
         >
-          {row.cells.map((cell, index) => {
-            return (
-              <div
-                {...cell.getCellProps([
-                  {
-                    style: {
-                      alignItems: 'center',
-                      display: 'flex',
-                      justifyContent: 'center',
-                    },
-                  },
-                ])}
-                className="td"
-                key={index}
-              >
-                {cell.render('Cell')}
-              </div>
-            )
-          })}
+          {renderCells}
         </div>
       )
     },
