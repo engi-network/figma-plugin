@@ -182,7 +182,7 @@ function ResultContainer() {
                   </Tooltip>
                 </>
               }
-              icon={<FigmaIcon width={32} height={32} />}
+              icon={<FigmaIcon width={11} height={16} />}
               width="100%"
               height="100%"
             />
