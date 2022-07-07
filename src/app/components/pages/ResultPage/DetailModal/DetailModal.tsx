@@ -27,7 +27,7 @@ function Row({ label, value }: RowProps) {
 
 function DetailModal({ title, isOpen, onClose, data }: Props) {
   const { result } = data
-  const { created_at, completed_at } = result as ReportResult
+  const { created_at, completed_at, repository } = result as ReportResult
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -44,7 +44,7 @@ function DetailModal({ title, isOpen, onClose, data }: Props) {
           <h5 className="font-bold text-xl text-primary-white mb-4 text-left">
             Size of codebase
           </h5>
-          <Row label="Codebase name" value="3826gb" />
+          <Row label={repository} value="3826gb" />
         </div>
         <div className="mt-12">
           <h5 className="font-bold text-xl text-primary-white mb-4 text-left">
