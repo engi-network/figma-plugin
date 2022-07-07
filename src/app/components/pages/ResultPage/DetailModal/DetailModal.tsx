@@ -8,6 +8,7 @@ interface Props {
   data: DetailedReport
   isOpen: boolean
   onClose: () => void
+  title: string
 }
 
 interface RowProps {
@@ -24,16 +25,16 @@ function Row({ label, value }: RowProps) {
   )
 }
 
-function DetailModal({ isOpen, onClose, data }: Props) {
+function DetailModal({ title, isOpen, onClose, data }: Props) {
   const { result } = data
   const { created_at, completed_at } = result as ReportResult
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="p-9 bg-[#00000036]  backdrop-blur-[200x]">
+      <div className="p-9 bg-secondary-bg/80">
         <div className="flex justify-between">
           <h2 className="text-4xl text-primary-green font-bold text-left">
-            Detail
+            {title}
           </h2>
           <button onClick={onClose} className="">
             <XIcon className="w-5 h-5 text-primary-white" />

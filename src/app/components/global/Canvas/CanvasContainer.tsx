@@ -51,7 +51,7 @@ function CanvasContainer({
         </label>
       )}
       {icon && (
-        <div className="absolute top-2 left-2 border border-text-secondary rounded-full backdrop-blur-[4x] min-h-[32px] min-w-[32px]">
+        <div className="absolute top-2 left-2 border border-text-secondary rounded-full backdrop-blur-[4x] min-h-[32px] min-w-[32px] flex justify-center items-center">
           {icon}
         </div>
       )}

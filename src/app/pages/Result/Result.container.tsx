@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, InformationCircleIcon } from '@heroicons/react/solid'
+import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
@@ -13,22 +14,18 @@ import {
   FullScreenIcon,
   StorybookIcon,
 } from '~/app/components/global/Icons'
+import LinkButton from '~/app/components/global/LinkButton/LinkButton'
 import Modal from '~/app/components/global/Modal/Modal'
 import Select, { SelectOption } from '~/app/components/global/Select/Select'
 import Tooltip from '~/app/components/global/Tooltip/Tooltip'
+import DetailModal from '~/app/components/pages/ResultPage/DetailModal/DetailModal'
 import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/ImageCarousel'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
-import logger from '~/app/lib/utils/logger'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
 
-/**
- *
- * @TODO need to add transition when isOpen toggling
- * animation will be considered later on...
- */
 const THRESHOLD = 50
 
 function ResultStatus({ status }: { status: STATUS }) {
@@ -45,6 +42,7 @@ function ResultContainer() {
   const { history } = useAppContext()
   const [searchParams] = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
   const [selectedImage, setSelectedImage] = useState('')
 
   const checkId = searchParams.get('checkId') as string
@@ -62,6 +60,7 @@ function ResultContainer() {
     height,
     MAE,
     name,
+    created_at,
   } = result as ReportResult
 
   const realMAE = MAE.split(' ')[0]
@@ -72,7 +71,6 @@ function ResultContainer() {
     { value: url_blue_difference, name: 'Blue-scale Difference' },
   ]
 
-  logger.info('name of layer', name)
   useEffect(() => {
     setSelectedImage(imageSelectionOptions[0].value)
   }, [])
@@ -95,6 +93,14 @@ function ResultContainer() {
 
   const handleCloseModal = () => {
     setIsOpen(false)
+  }
+
+  const handleCloseDetailModal = () => {
+    setIsDetailModalOpen(false)
+  }
+
+  const handleOpenDetailModal = () => {
+    setIsDetailModalOpen(true)
   }
 
   const drawCallback =
@@ -133,30 +139,43 @@ function ResultContainer() {
   const renderContent = () => {
     return (
       <>
-        <div className="flex justify-between mb-16 relative">
-          <IconButton
-            icon={<ChevronLeftIcon className="w-4 h-4" />}
-            onClick={handleClickBack}
-            className="text-text-secondary z-20"
-          >
-            {ui('header.back')}
-          </IconButton>
-          <div className="absolute flex justify-center top-0 left-0 right-0 z-10">
-            <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold">
-              {isSuccess ? ui('result.wellDone') : ui('result.sorry')} <br />
-              {ui('result.theyare')}
-              {isSuccess ? (
-                <span className="bg-primary-green mix-blend-screen text-black">
-                  {ui('result.equal')}
-                </span>
-              ) : (
-                <span className="bg-secondary-error mix-blend-screen text-black">
-                  {ui('result.notEqual')}
-                </span>
-              )}
-            </h1>
+        <div className="mb-3 flex justify-between">
+          <div className="flex justify-start">
+            <IconButton
+              icon={<ChevronLeftIcon className="w-4 h-4" />}
+              onClick={handleClickBack}
+              className="text-text-secondary z-20"
+            >
+              {ui('header.back')}
+            </IconButton>
+          </div>
+          <div className="flex">
+            <div className="flex flex-col justify-end">
+              <p className="text-text-secondary text-right text-sm">
+                {ui('result.updatedOn', { date: format(created_at, 'LLLL d') })}
+              </p>
+              <LinkButton
+                onClick={handleOpenDetailModal}
+                className="justify-end text-sm"
+              >
+                {ui('result.seeDetails')}
+              </LinkButton>
+            </div>
           </div>
         </div>
+        <h1 className="text-2xl text-primary-white w-6/12 text-center font-bold m-auto mb-5">
+          {isSuccess ? ui('result.wellDone') : ui('result.sorry')} <br />
+          {ui('result.theyare')}
+          {isSuccess ? (
+            <span className="bg-primary-green mix-blend-screen text-black">
+              {ui('result.equal')}
+            </span>
+          ) : (
+            <span className="bg-secondary-error mix-blend-screen text-black">
+              {ui('result.notEqual')}
+            </span>
+          )}
+        </h1>
         <div className="flex mb-12">
           <div className="flex justify-start w-5/12 h-[220px]">
             <Canvas
@@ -182,7 +201,7 @@ function ResultContainer() {
                   </Tooltip>
                 </>
               }
-              icon={<FigmaIcon width={11} height={16} />}
+              icon={<FigmaIcon width={12} height={17} />}
               width="100%"
               height="100%"
             />
@@ -197,7 +216,7 @@ function ResultContainer() {
                 options={{ contextId: '2d' }}
                 icon={
                   isStorybook ? (
-                    <StorybookIcon width={11} height={16} />
+                    <StorybookIcon width={12} height={17} />
                   ) : undefined
                 }
                 width="100%"
@@ -236,7 +255,7 @@ function ResultContainer() {
             <Button
               as="a"
               backgroundColor="#00000036"
-              className="w-5/12 capitalize border border-solid border-primary-white"
+              className="w-5/12 capitalize border border-solid border-primary-white text-center"
               primary
               href="https://engi.network/jobs/create"
               target="_blank"
@@ -252,10 +271,16 @@ function ResultContainer() {
   return (
     <>
       <Header />
-      <div className="px-16 pt-10">
+      <div className="px-12 pt-5 pb-10">
         {!isOpen && renderContent()}
         {renderModal()}
       </div>
+      <DetailModal
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseDetailModal}
+        title="Details"
+        data={report}
+      />
     </>
   )
 }

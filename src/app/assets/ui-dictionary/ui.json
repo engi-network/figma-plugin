@@ -33,7 +33,9 @@
     },
     "sorry": "Sorry!",
     "dimensions": "Dimensions",
-    "createAJob": "Create a Job"
+    "createAJob": "Create a Job",
+    "updatedOn": "Updated on {{date}}",
+    "seeDetails": "See more details"
   },
   "history": {
     "history": "History",
