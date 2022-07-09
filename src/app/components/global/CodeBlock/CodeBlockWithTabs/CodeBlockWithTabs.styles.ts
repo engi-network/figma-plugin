@@ -1,13 +1,20 @@
-import { StylesMap } from '~/app/lib/constants'
+import { COLORS, StylesMap } from '~/app/lib/constants'
 
 const styles: StylesMap = {
-  container: {},
+  container: {
+    background: 'rgb(35, 35, 35)',
+    fontSize: 12,
+    padding: '12px 12px 12px 0px',
+  },
   lineNumberContainer: {
     paddingRight: 100,
   },
   lineNumber: {
-    background: 'rgba(235, 235, 235, 0.14)',
     backdropFilter: 'blur(4px)',
+    background: 'rgb(62, 62, 62)',
+    color: COLORS.PRIMARY.WHITE,
+    marginRight: 12,
+    paddingLeft: 12,
   },
 }
 

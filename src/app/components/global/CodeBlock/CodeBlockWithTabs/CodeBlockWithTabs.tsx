@@ -26,12 +26,14 @@ function CodeBlockWithTabs({ codeString, showLineNumbers, className }: Props) {
           <Tab
             className={({ selected }) =>
               cn(
-                selected ? 'bg-[#253520]' : 'bg-[#404040]',
+                selected ? 'bg-[#232323]' : 'bg-[#3e3e3e]',
                 'backdrop-blur-[4px]',
               )
             }
           >
-            <span>StoryBook.tsx</span>
+            <span className="text-xs font-medium py-1 px-3 text-text-primary">
+              StoryBook.tsx
+            </span>
           </Tab>
         </Tab.List>
         <Tab.Panels>

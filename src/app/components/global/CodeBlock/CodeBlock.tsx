@@ -4,7 +4,7 @@ import {
   SyntaxHighlighterProps,
 } from 'react-syntax-highlighter'
 import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript'
-import docco from 'react-syntax-highlighter/dist/esm/styles/hljs/docco'
+import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
 import styles from './CodeBlock.styles'
 
@@ -32,7 +32,7 @@ function CodeBlock({
     <div className={rootClasses}>
       <SyntaxHighlighter
         language="javascript"
-        style={docco}
+        style={atomOneDark}
         wrapLines
         wrapLongLines
         showLineNumbers={showLineNumbers}
