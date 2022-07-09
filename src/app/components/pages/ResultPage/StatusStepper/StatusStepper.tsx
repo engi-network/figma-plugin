@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import { ReactNode } from 'react'
 
 import {
@@ -15,6 +16,7 @@ import Stepper from '~/app/components/global/Stepper/Stepper'
 interface Props {
   activeStep: number
   className?: string
+  stepMessage?: string
 }
 
 export const mapStepToIcon = (
@@ -29,7 +31,7 @@ export const mapStepToIcon = (
   5: <CompareIcon width={width} height={height} />,
 })
 
-function StatusStepper({ activeStep, className }: Props) {
+function StatusStepper({ activeStep, className, stepMessage }: Props) {
   const stepElement = (index: number, activeStep: number) => {
     const completed = index < activeStep
     const current = index === activeStep
@@ -47,8 +49,13 @@ function StatusStepper({ activeStep, className }: Props) {
       </div>
     )
   }
+
+  const rootClasses = cn(
+    className,
+    'flex flex-col items-center justify-center gap-2',
+  )
   return (
-    <div className={className}>
+    <div className={rootClasses}>
       <Stepper
         activeStep={activeStep}
         orientation="horizontal"
@@ -60,6 +67,9 @@ function StatusStepper({ activeStep, className }: Props) {
             <Step key={index}>{stepElement(index, activeStep)}</Step>
           ))}
       </Stepper>
+      {stepMessage && (
+        <span className="text-xs text-text-primary">{stepMessage}</span>
+      )}
     </div>
   )
 }

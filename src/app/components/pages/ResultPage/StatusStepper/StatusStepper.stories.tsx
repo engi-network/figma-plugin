@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
+import { STEP_MESSAGES } from '~/app/pages/Main/Main.types'
 
 import StatusStepper from './StatusStepper'
 
@@ -14,7 +15,7 @@ export function StatusStepperWithKnobs() {
 
   return (
     <StoryContainer>
-      <StatusStepper activeStep={step} />
+      <StatusStepper activeStep={step} stepMessage={STEP_MESSAGES[step]} />
     </StoryContainer>
   )
 }
