@@ -13,13 +13,19 @@ const codeString = `const TestCompenent = () => {
 `
 export function CodeBlockWithTabsStory() {
   const showLineNumbers = boolean('Show lineNumber?', true)
+
+  const data = [
+    { codeString, tabLabel: 'storybook.tsx' },
+    { codeString, tabLabel: 'storybook.story.tsx' },
+  ]
+
   return (
     <div className="bg-slate-700 h-full p-10">
       <CodeBlockWithTabs
         id="code-block-with-tabs"
-        codeString={codeString}
         className={'w-full h-20 p-0 border-none'}
         showLineNumbers={showLineNumbers}
+        data={data}
       />
     </div>
   )

@@ -5,11 +5,12 @@ import { useState } from 'react'
 import CodeBlock, { CodeBlockProps } from '../CodeBlock'
 import styles from './CodeBlockWithTabs.styles'
 
-interface Props extends CodeBlockProps {
+interface Props extends Omit<CodeBlockProps, 'codeString'> {
+  data: Array<{ codeString: string; tabLabel: string }>
   id: string
 }
 
-function CodeBlockWithTabs({ codeString, showLineNumbers, className }: Props) {
+function CodeBlockWithTabs({ showLineNumbers, className, data }: Props) {
   const [selectedTab, setSelectTab] = useState<number>(-1)
   const handleTabChange = (index: number) => {
     setSelectTab(index)
@@ -23,29 +24,44 @@ function CodeBlockWithTabs({ codeString, showLineNumbers, className }: Props) {
         defaultIndex={1}
       >
         <Tab.List>
-          <Tab
-            className={({ selected }) =>
-              cn(
-                selected ? 'bg-[#232323]' : 'bg-[#3e3e3e]',
-                'backdrop-blur-[4px]',
-              )
-            }
-          >
-            <span className="text-xs font-medium py-1 px-3 text-text-primary">
-              StoryBook.tsx
-            </span>
-          </Tab>
+          {data.map(({ tabLabel }, index) => (
+            <Tab
+              key={`${tabLabel}_${index}`}
+              className={({ selected }) =>
+                cn(
+                  selected ? 'bg-[#232323]' : 'bg-[#3e3e3e]',
+                  'backdrop-blur-[4px]',
+                )
+              }
+            >
+              {({ selected }) => (
+                <span
+                  className={cn(
+                    'text-xs font-medium py-1 px-3',
+                    selected ? 'text-text-primary' : 'text-text-secondary',
+                  )}
+                >
+                  {tabLabel}
+                </span>
+              )}
+            </Tab>
+          ))}
         </Tab.List>
         <Tab.Panels>
-          <Tab.Panel className={cn('focus:outline-none')}>
-            <CodeBlock
-              codeString={codeString}
-              showLineNumbers={showLineNumbers}
-              className={className}
-              lineNumberStyle={styles.lineNumber}
-              customStyle={styles.container}
-            />
-          </Tab.Panel>
+          {data.map(({ codeString, tabLabel }, index) => (
+            <Tab.Panel
+              className={cn('focus:outline-none')}
+              key={`${tabLabel}_${index}`}
+            >
+              <CodeBlock
+                codeString={codeString}
+                showLineNumbers={showLineNumbers}
+                className={className}
+                lineNumberStyle={styles.lineNumber}
+                customStyle={styles.container}
+              />
+            </Tab.Panel>
+          ))}
         </Tab.Panels>
       </Tab.Group>
     </div>
