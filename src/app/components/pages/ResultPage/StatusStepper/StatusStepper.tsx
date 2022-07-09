@@ -12,6 +12,7 @@ import {
 } from '~/app/components/global/Icons'
 import Step from '~/app/components/global/Stepper/Step/Step'
 import Stepper from '~/app/components/global/Stepper/Stepper'
+import Tooltip from '~/app/components/global/Tooltip/Tooltip'
 
 interface Props {
   activeStep: number
@@ -38,15 +39,17 @@ function StatusStepper({ activeStep, className, stepMessage }: Props) {
     const disabled = index > activeStep
 
     return (
-      <div>
-        {completed && <CheckIcon width={14} height={14} />}
-        {current && (
-          <div className="w-5 h-5 flex justify-center items-center bg-white rounded-full">
-            {mapStepToIcon(14, 14)[index]}
-          </div>
-        )}
-        {disabled && <div className="w-3 h-3 rounded-full bg-[#ffffff4d]" />}
-      </div>
+      <Tooltip content="Tooltip" tooltipOffset={12} placement="top">
+        <div>
+          {completed && <CheckIcon width={14} height={14} />}
+          {current && (
+            <div className="w-5 h-5 flex justify-center items-center bg-white rounded-full">
+              {mapStepToIcon(14, 14)[index]}
+            </div>
+          )}
+          {disabled && <div className="w-3 h-3 rounded-full bg-[#ffffff4d]" />}
+        </div>
+      </Tooltip>
     )
   }
 

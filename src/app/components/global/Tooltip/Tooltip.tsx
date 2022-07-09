@@ -7,7 +7,13 @@ import {
   shift,
   useFloating,
 } from '@floating-ui/react-dom'
-import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
+import React, {
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { CSSStylesProp } from '~/app/lib/constants'
 
@@ -22,6 +28,7 @@ const flipMap = {
 
 interface Props {
   children: ReactElement
+  className?: string
   content: ReactNode
   customArrowStyles?: CSSStylesProp
   customPopperStyles?: CSSStylesProp
@@ -38,6 +45,7 @@ export default function Tooltip({
   customArrowStyles,
   customPopperStyles,
   trigger = 'click',
+  className,
   ...rest
 }: Props) {
   const arrowRef = useRef(null)
@@ -108,7 +116,7 @@ export default function Tooltip({
 
   return (
     <>
-      <div ref={reference} className="inline-flex" {...rest} {...handlers}>
+      <div ref={reference} className={className} {...rest} {...handlers}>
         {children}
       </div>
       {isOpen && (
