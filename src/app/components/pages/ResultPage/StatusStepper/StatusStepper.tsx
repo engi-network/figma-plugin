@@ -32,6 +32,17 @@ export const mapStepToIcon = (
   5: <CompareIcon width={width} height={height} />,
 })
 
+const mapStepToTooltip = (
+  stepMessage: string | undefined,
+): Record<string, ReactNode> => ({
+  0: stepMessage,
+  1: stepMessage,
+  2: stepMessage,
+  3: stepMessage,
+  4: stepMessage,
+  5: stepMessage,
+})
+
 function StatusStepper({ activeStep, className, stepMessage }: Props) {
   const stepElement = (index: number, activeStep: number) => {
     const completed = index < activeStep
@@ -39,7 +50,11 @@ function StatusStepper({ activeStep, className, stepMessage }: Props) {
     const disabled = index > activeStep
 
     return (
-      <Tooltip content="Tooltip" tooltipOffset={12} placement="top">
+      <Tooltip
+        content={mapStepToTooltip(stepMessage)[activeStep]}
+        tooltipOffset={12}
+        placement="top"
+      >
         <div>
           {completed && <CheckIcon width={14} height={14} />}
           {current && (
