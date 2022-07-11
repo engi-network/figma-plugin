@@ -35,7 +35,11 @@
     "dimensions": "Dimensions",
     "createAJob": "Create a Job",
     "updatedOn": "Updated on {{date}}",
-    "seeDetails": "See more details"
+    "seeDetails": "See more details",
+    "detailModal": {
+      "size": "Size of codebase",
+      "history": "History"
+    }
   },
   "history": {
     "history": "History",

@@ -3,6 +3,7 @@ import { XIcon } from '@heroicons/react/solid'
 import Modal from '~/app/components/global/Modal/Modal'
 import { formatFileSize } from '~/app/lib/utils/string'
 import { convertUnixToDate } from '~/app/lib/utils/time'
+import { ui } from '~/app/lib/utils/ui-dictionary'
 import { DetailedReport, ReportResult } from '~/app/models/Report'
 
 interface Props {
@@ -48,13 +49,13 @@ function DetailModal({ title, isOpen, onClose, data }: Props) {
         </div>
         <div className="mt-6">
           <h5 className="font-bold text-xl text-primary-white mb-4 text-left">
-            Size of codebase
+            {ui('result.detailModal.size')}
           </h5>
           <Row label={repository} value={formatFileSize(code_size)} />
         </div>
         <div className="mt-12">
           <h5 className="font-bold text-xl text-primary-white mb-4 text-left">
-            History
+            {ui('result.detailModal.history')}
           </h5>
           <div>
             <Row label="Started" value={convertUnixToDate(created_at)} />
