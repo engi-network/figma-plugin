@@ -14,6 +14,17 @@ export interface MessageData {
   check_id: string
   error?: ErrorData
   message: string
+  results?: {
+    MAE?: string
+    code_path?: string
+    code_size?: number
+    code_snippet?: string
+    completed_at?: number
+    created_at?: number
+    url_blue_difference?: string
+    url_gray_difference?: string
+    url_screenshot?: string
+  }
   step: number
   step_count: number
 }
@@ -28,6 +39,7 @@ export interface ErrorResult extends Specification {
 export interface ReportResult extends Specification {
   MAE: string
   code_path: string
+  code_size: number
   code_snippet: string
   completed_at: number
   created_at: number
