@@ -115,7 +115,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
               <Input
                 id="commit"
                 label="Commit hash"
-                placeholder="Commit has"
+                placeholder="Commit hash"
                 containerClass="mt-5"
                 value={values[FORM_FIELD.COMMIT]}
                 onChange={handleInputChange(FORM_FIELD.COMMIT)}
