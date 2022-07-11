@@ -1,5 +1,4 @@
 import { ChevronLeftIcon, InformationCircleIcon } from '@heroicons/react/solid'
-import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
@@ -23,6 +22,7 @@ import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/Image
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
+import { convertUnixToDate } from '~/app/lib/utils/time'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
 
@@ -152,7 +152,9 @@ function ResultContainer() {
           <div className="flex">
             <div className="flex flex-col justify-end">
               <p className="text-text-secondary text-right text-sm">
-                {ui('result.updatedOn', { date: format(created_at, 'LLLL d') })}
+                {ui('result.updatedOn', {
+                  date: convertUnixToDate(created_at, 'LLLL d'),
+                })}
               </p>
               <LinkButton
                 onClick={handleOpenDetailModal}

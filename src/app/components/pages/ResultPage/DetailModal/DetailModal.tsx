@@ -1,7 +1,8 @@
 import { XIcon } from '@heroicons/react/solid'
-import { format } from 'date-fns'
 
 import Modal from '~/app/components/global/Modal/Modal'
+import { formatFileSize } from '~/app/lib/utils/string'
+import { convertUnixToDate } from '~/app/lib/utils/time'
 import { DetailedReport, ReportResult } from '~/app/models/Report'
 
 interface Props {
@@ -27,7 +28,12 @@ function Row({ label, value }: RowProps) {
 
 function DetailModal({ title, isOpen, onClose, data }: Props) {
   const { result } = data
-  const { created_at, completed_at, repository } = result as ReportResult
+  const {
+    created_at,
+    completed_at,
+    repository,
+    code_size = 0,
+  } = result as ReportResult
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -44,18 +50,18 @@ function DetailModal({ title, isOpen, onClose, data }: Props) {
           <h5 className="font-bold text-xl text-primary-white mb-4 text-left">
             Size of codebase
           </h5>
-          <Row label={repository} value="3826gb" />
+          <Row label={repository} value={formatFileSize(code_size)} />
         </div>
         <div className="mt-12">
           <h5 className="font-bold text-xl text-primary-white mb-4 text-left">
             History
           </h5>
           <div>
-            <Row label="Started" value={format(created_at, 'MM.dd.yyyy')} />
-            <Row label="Completed" value={format(completed_at, 'MM.dd.yyyy')} />
+            <Row label="Started" value={convertUnixToDate(created_at)} />
+            <Row label="Completed" value={convertUnixToDate(completed_at)} />
             <Row
               label="Capturing screenshots"
-              value={format(completed_at, 'MM.dd.yyyy')}
+              value={convertUnixToDate(completed_at)}
             />
           </div>
         </div>
