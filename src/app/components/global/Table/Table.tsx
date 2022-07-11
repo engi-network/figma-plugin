@@ -85,7 +85,7 @@ function Table({
   }, [hiddenColumns])
 
   const handleClickRow = (values: Record<string, string>) => () => {
-    if (values.status === STATUS.FAIL) {
+    if (!!values.MAE && values.status === STATUS.FAIL) {
       return
     }
 
@@ -122,7 +122,7 @@ function Table({
         )
       })
 
-      if (row.values.status === STATUS.FAIL) {
+      if (!!row.values.MAE && row.values.status === STATUS.FAIL) {
         return (
           <Tooltip
             placement="top"
@@ -134,6 +134,7 @@ function Table({
             customPopperStyles={{
               padding: '10px 12px',
               background: 'rgba(35, 35, 35, 0.9)',
+              zIndex: 10,
             }}
             customArrowStyles={{
               background: 'rgba(35, 35, 35, 0.9)',

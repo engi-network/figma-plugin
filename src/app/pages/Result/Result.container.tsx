@@ -22,11 +22,10 @@ import ImageCarousel from '~/app/components/pages/ResultPage/ImageCarousel/Image
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { drawImage } from '~/app/lib/utils/canvas'
+import { isSameStory } from '~/app/lib/utils/mae'
 import { convertUnixToDate } from '~/app/lib/utils/time'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
-
-const THRESHOLD = 50
 
 function ResultStatus({ status }: { status: STATUS }) {
   return (
@@ -63,8 +62,7 @@ function ResultContainer() {
     created_at,
   } = result as ReportResult
 
-  const realMAE = MAE.split(' ')[0]
-  const isSuccess = +realMAE < THRESHOLD
+  const isSuccess = isSameStory(MAE)
   const imageSelectionOptions: Array<SelectOption> = [
     { value: url_screenshot, name: 'Storycap captured' },
     { value: url_gray_difference, name: 'Gray-scale Difference' },

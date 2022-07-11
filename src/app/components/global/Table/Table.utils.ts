@@ -1,3 +1,4 @@
+import { isSameStory } from '~/app/lib/utils/mae'
 import { History, ReportResult, STATUS } from '~/app/models/Report'
 
 import { Cell } from './Table.types'
@@ -36,13 +37,13 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
 
     switch (status) {
       case STATUS.SUCCESS: {
-        const { created_at, completed_at, code_snippet } =
+        const { created_at, completed_at, code_snippet, MAE } =
           result as ReportResult
 
         return {
           ...baseObj,
           code: {
-            status: STATUS.SUCCESS,
+            status: isSameStory(MAE) ? STATUS.SUCCESS : STATUS.FAIL,
             codeSnippet: code_snippet,
             checkId: check_id,
           },
@@ -50,7 +51,8 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
           createdAt: created_at,
           //scaling because react-slider can't deal with a large number
           duration: (completed_at - created_at) / 60,
-          status: STATUS.SUCCESS,
+          MAE,
+          status: isSameStory(MAE) ? STATUS.SUCCESS : STATUS.FAIL,
         }
       }
       case STATUS.IN_PROGRESS: {
