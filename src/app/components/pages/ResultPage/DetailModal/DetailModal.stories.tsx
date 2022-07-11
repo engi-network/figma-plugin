@@ -29,6 +29,7 @@ export function DetailModalStory() {
         isOpen={isOpen}
         onClose={handleClose}
         data={mockSuccessReport}
+        title="Details"
       />
     </StoryContainer>
   )

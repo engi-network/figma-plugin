@@ -53,7 +53,7 @@ function Modal({
           >
             <div className="flex min-h-full items-center justify-center p-4 text-center overflow-hidden">
               {backButton && backButton}
-              <div className={contentWrapperClasses}>
+              <Dialog.Panel className={contentWrapperClasses}>
                 {hasCloseButton && (
                   <button
                     onClick={onClose}
@@ -63,7 +63,7 @@ function Modal({
                   </button>
                 )}
                 {children}
-              </div>
+              </Dialog.Panel>
             </div>
           </Transition.Child>
         </div>
