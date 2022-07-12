@@ -69,13 +69,14 @@ class DataSource extends PubSub {
       })
   }
 
-  async sqsCallback(data: MessageData) {
+  private async sqsCallback(data: MessageData) {
     const { check_id, step, step_count, error } = data as MessageData
     const { history } = store.getState()
+    await delay(3)
 
     this.publishFromDS(data)
 
-    logger.info('Recieved message for', data)
+    logger.info('Received message for', data)
 
     const updateState = async (status: STATUS) => {
       const report =
@@ -124,11 +125,11 @@ class DataSource extends PubSub {
 
     try {
       if (step === step_count - 1) {
-        updateState(STATUS.SUCCESS)
+        await updateState(STATUS.SUCCESS)
         return
       }
       if (error) {
-        updateState(STATUS.FAIL)
+        await updateState(STATUS.FAIL)
 
         Sentry.sendReport({
           error,
@@ -161,7 +162,7 @@ class DataSource extends PubSub {
         batchSize: 10,
         handleMessage: async (message) => {
           const parsedMessage = JSON.parse(message.Body || '')
-          this.sqsCallback(JSON.parse(parsedMessage.Message))
+          await this.sqsCallback(JSON.parse(parsedMessage.Message))
         },
         pollingWaitTimeMs: 7 * 1000,
         queueUrl,

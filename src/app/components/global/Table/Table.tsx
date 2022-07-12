@@ -89,7 +89,7 @@ function Table({
       return
     }
 
-    // onClickRow(values)
+    onClickRow(values)
   }
 
   const rowElements = useCallback(

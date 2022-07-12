@@ -63,9 +63,9 @@ function CellCodeBlock({
     }
   }, [status])
 
-  const { step, results = {}, error, step_count } = stepStatus
+  const { step, results = {} } = stepStatus
 
-  if (status === STATUS.IN_PROGRESS || (step < step_count - 1 && !error)) {
+  if (status === STATUS.IN_PROGRESS) {
     return (
       <StatusStepper
         activeStep={STEP_MAP_TO_STEPPER[step]}

@@ -9,6 +9,7 @@ import {
 } from '@aws-sdk/client-sqs'
 
 import { AWSError } from '~/app/@types/aws-error'
+import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { autoBind } from '~/app/lib/utils/auto-bind'
 import logger from '~/app/lib/utils/logger'
 
@@ -125,6 +126,11 @@ class SQSConsumer {
     try {
       await this.sqs.send(new DeleteMessageCommand(deleteParams))
     } catch (error) {
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.SQS_ERROR,
+        tagData: { queueUrl: this.queueUrl },
+      })
       throw error as AWSError
     }
   }
@@ -176,6 +182,11 @@ class SQSConsumer {
       await this.sqs.send(command)
     } catch (error) {
       logger.error(error)
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.SQS_ERROR,
+        tagData: { queueUrl: this.queueUrl },
+      })
       throw error as AWSError
     }
   }
@@ -185,6 +196,11 @@ class SQSConsumer {
       await this.handleMessage(message)
     } catch (error) {
       logger.error(error)
+      Sentry.sendReport({
+        error,
+        transactionName: SENTRY_TRANSACTION.SQS_ERROR,
+        tagData: { queueUrl: this.queueUrl },
+      })
       throw new Error('Error in handle message')
     }
   }
@@ -221,6 +237,12 @@ class SQSConsumer {
         setTimeout(this.poll, currentPollingTimeout)
       })
       .catch((error) => {
+        Sentry.sendReport({
+          error,
+          transactionName: SENTRY_TRANSACTION.SQS_ERROR,
+          tagData: { queueUrl: this.queueUrl },
+        })
+
         logger.error(error)
       })
   }

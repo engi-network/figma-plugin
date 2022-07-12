@@ -138,8 +138,8 @@ function StatusStepper({
       <Tooltip
         tooltipOffset={12}
         placement="top"
-        // trigger="hover"
-        // disabled={disabled}
+        trigger="hover"
+        disabled={disabled}
         customPopperStyles={{
           background: 'rgb(35, 35, 35)',
           zIndex: 20,
