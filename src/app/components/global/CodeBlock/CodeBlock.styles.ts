@@ -7,7 +7,7 @@ const styles: StylesMap = {
     fontWeight: 500,
     height: 'fit-content',
     lineHeight: '15px',
-    overflow: 'hidden',
+    overflowX: 'scroll',
     padding: 0,
   },
 }

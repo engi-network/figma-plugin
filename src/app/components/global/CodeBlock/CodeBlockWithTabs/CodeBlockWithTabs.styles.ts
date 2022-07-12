@@ -4,6 +4,7 @@ const styles: StylesMap = {
   container: {
     background: 'rgb(35, 35, 35)',
     fontSize: 12,
+    overflowX: 'scroll',
     padding: '12px 12px 12px 0px',
     width: 300,
   },

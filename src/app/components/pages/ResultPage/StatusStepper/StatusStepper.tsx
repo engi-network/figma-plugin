@@ -39,6 +39,11 @@ export const mapStepToIcon = (
   5: <CompareIcon width={width} height={height} />,
 })
 
+function getLastPath(path: string): string {
+  const temp = path.split('/')
+  return temp[temp.length - 1]
+}
+
 function StatusStepper({
   activeStep,
   className,
@@ -51,7 +56,7 @@ function StatusStepper({
 
   const codeBlockData = code_paths.map((_, index) => ({
     codeString: code_snippets[index],
-    tabLabel: code_paths[index],
+    tabLabel: getLastPath(code_paths[index]),
   }))
 
   const mapStepToTooltipProps: Record<
@@ -99,7 +104,7 @@ function StatusStepper({
           <CodeBlockWithTabs
             data={codeBlockData}
             showLineNumbers
-            className="p-0 border-none"
+            className="p-0 border-none h-20 w-full"
           />
         ),
         customPopperStyles: { padding: 0, background: 'none' },
@@ -137,6 +142,7 @@ function StatusStepper({
         // disabled={disabled}
         customPopperStyles={{
           background: 'rgb(35, 35, 35)',
+          zIndex: 20,
         }}
         customArrowStyles={{
           background: 'rgb(35, 35, 35)',

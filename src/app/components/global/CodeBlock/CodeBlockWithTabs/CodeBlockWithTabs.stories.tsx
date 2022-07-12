@@ -7,10 +7,9 @@ export default {
   title: 'Global/Components/CodeBlockWithTabs',
 }
 
-const codeString = `const TestCompenent = () => {
-    return <div>Test</div>
-  }
-`
+const codeString = `import { action } from '@storybook/addon-actions'\nimport { boolean, select, text } from '@storybook/addon-knobs'\n\nimport Button from './Button'\n\n",
+name: 'layer name`
+
 export function CodeBlockWithTabsStory() {
   const showLineNumbers = boolean('Show lineNumber?', true)
 

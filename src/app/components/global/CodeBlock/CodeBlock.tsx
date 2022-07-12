@@ -34,7 +34,7 @@ function CodeBlock({
         language="javascript"
         style={atomOneDark}
         wrapLines
-        wrapLongLines
+        // wrapLongLines
         showLineNumbers={showLineNumbers}
         customStyle={{ ...styles.highlighter, ...customStyle }}
         lineProps={(lineNumber) => {
