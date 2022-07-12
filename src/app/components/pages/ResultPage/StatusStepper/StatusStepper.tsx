@@ -73,7 +73,7 @@ function StatusStepper({
         content: (
           <div className="flex flex-col justify-center items-center gap-3 w-[120px]">
             <div className="w-full h-[71px] overflow-hidden flex justify-center items-center min-h-[71px] max-h-[71px]">
-              <img src={originalImageUrl} alt="no snippet" />
+              <img src={originalImageUrl} alt="no image" />
             </div>
             <p className="text-xs text-text-secondary">{layerName}</p>
           </div>
@@ -90,7 +90,7 @@ function StatusStepper({
       2: {
         content: (
           <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[2]}
+            {STEP_MESSAGES[3]}
           </span>
         ),
         disabled: true,
@@ -98,7 +98,7 @@ function StatusStepper({
       3: {
         content: !codeBlockData.length ? (
           <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[3]}
+            {STEP_MESSAGES[4]}
           </span>
         ) : (
           <CodeBlockWithTabs
@@ -112,7 +112,7 @@ function StatusStepper({
       4: {
         content: (
           <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[4]}
+            {STEP_MESSAGES[5]}
           </span>
         ),
         disabled: true,
@@ -120,7 +120,7 @@ function StatusStepper({
       5: {
         content: (
           <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[5]}
+            {STEP_MESSAGES[7]}
           </span>
         ),
         disabled: true,

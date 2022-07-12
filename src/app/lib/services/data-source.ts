@@ -178,7 +178,7 @@ class DataSource extends PubSub {
       sqsConsumer.start()
       this.consumerMap.set(checkId, sqsConsumer)
     } catch (error) {
-      logger.error('create consumser error', error as AWSError)
+      logger.error('create consumer error', error as AWSError)
     }
   }
 
