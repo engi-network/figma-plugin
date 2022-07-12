@@ -12,6 +12,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
       repository,
       branch = '',
       commit = '',
+      name,
     } = result
     const baseObj = {
       branch,
@@ -46,6 +47,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
             status: isSameStory(MAE) ? STATUS.SUCCESS : STATUS.FAIL,
             codeSnippet: code_snippets[0],
             checkId: check_id,
+            name,
           },
           completedAt: completed_at,
           createdAt: created_at,
@@ -60,10 +62,11 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         return {
           ...baseObj,
           code: {
-            status: STATUS.IN_PROGRESS,
-            codeSnippet: code_snippets[0] || '',
             checkId: check_id,
+            codeSnippet: code_snippets[0] || '',
+            name,
             originalImageUrl,
+            status: STATUS.IN_PROGRESS,
           },
           duration: 0,
           status: STATUS.IN_PROGRESS,

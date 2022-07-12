@@ -13,13 +13,14 @@ interface Props {
   value: {
     checkId: string
     codeSnippet: string
+    name: string
     originalImageUrl: string
     status: STATUS
   }
 }
 
 function CellCodeBlock({
-  value: { codeSnippet, checkId, status, originalImageUrl },
+  value: { codeSnippet, checkId, status, originalImageUrl, name: layerName },
 }: Props) {
   const queueRef = useRef<Queue<MessageData>>(new Queue<MessageData>())
   const lastMessages = useStore(
@@ -81,6 +82,7 @@ function CellCodeBlock({
         data={results}
         originalImageUrl={originalImageUrl}
         stepMessage={STEP_MESSAGES[step]}
+        layerName={layerName}
       />
     )
   }

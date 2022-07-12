@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import { ReactNode } from 'react'
+import { ReactNode, useMemo } from 'react'
 
 import CodeBlockWithTabs from '~/app/components/global/CodeBlock/CodeBlockWithTabs/CodeBlockWithTabs'
 import {
@@ -14,12 +14,15 @@ import {
 import Step from '~/app/components/global/Stepper/Step/Step'
 import Stepper from '~/app/components/global/Stepper/Stepper'
 import Tooltip from '~/app/components/global/Tooltip/Tooltip'
+import { CSSStylesProp } from '~/app/lib/constants'
 import { MessageResult } from '~/app/models/Report'
+import { STEP_MESSAGES } from '~/app/pages/Main/Main.types'
 
 interface Props {
   activeStep: number
   className?: string
   data: MessageResult
+  layerName: string
   originalImageUrl: string
   stepMessage?: string
 }
@@ -42,6 +45,7 @@ function StatusStepper({
   stepMessage,
   data,
   originalImageUrl,
+  layerName,
 }: Props) {
   const { code_paths = [], code_snippets = [] } = data
 
@@ -50,26 +54,75 @@ function StatusStepper({
     tabLabel: code_paths[index],
   }))
 
-  const mapStepToTooltip: Record<string, ReactNode> = {
-    0: (
-      <div>
-        <img src={originalImageUrl} height={20} width={120} alt=" no snippet" />
-      </div>
-    ),
-    1: <span>{stepMessage}</span>,
-    2: <span>{stepMessage}</span>,
-    3: !codeBlockData.length ? (
-      <span>{stepMessage}</span>
-    ) : (
-      <CodeBlockWithTabs
-        data={codeBlockData}
-        showLineNumbers
-        className="p-0 border-none"
-      />
-    ),
-    4: <span>{stepMessage}</span>,
-    5: <span>{stepMessage}</span>,
-  }
+  const mapStepToTooltipProps: Record<
+    string,
+    {
+      content: ReactNode
+      customArrowStyles?: CSSStylesProp
+      customPopperStyles?: CSSStylesProp
+    }
+  > = useMemo(
+    () => ({
+      0: {
+        content: (
+          <div className="flex flex-col justify-center items-center gap-3">
+            <div className="w-[120px] h-[40px]">
+              <img
+                src={originalImageUrl}
+                height={40}
+                width={120}
+                alt="no snippet"
+              />
+            </div>
+            <p className="text-xs text-text-secondary">{layerName}</p>
+          </div>
+        ),
+      },
+      1: {
+        content: (
+          <span className="whitespace-nowrap text-xs text-text-secondary">
+            {STEP_MESSAGES[1]}
+          </span>
+        ),
+      },
+      2: {
+        content: (
+          <span className="whitespace-nowrap text-xs text-text-secondary">
+            {STEP_MESSAGES[2]}
+          </span>
+        ),
+      },
+      3: {
+        content: !codeBlockData.length ? (
+          <span className="whitespace-nowrap text-xs text-text-secondary">
+            {STEP_MESSAGES[3]}
+          </span>
+        ) : (
+          <CodeBlockWithTabs
+            data={codeBlockData}
+            showLineNumbers
+            className="p-0 border-none"
+          />
+        ),
+        customPopperStyles: { padding: 0, background: 'none' },
+      },
+      4: {
+        content: (
+          <span className="whitespace-nowrap text-xs text-text-secondary">
+            {STEP_MESSAGES[4]}
+          </span>
+        ),
+      },
+      5: {
+        content: (
+          <span className="whitespace-nowrap text-xs text-text-secondary">
+            {STEP_MESSAGES[5]}
+          </span>
+        ),
+      },
+    }),
+    [activeStep],
+  )
 
   const stepElement = (index: number, activeStep: number) => {
     const completed = index < activeStep
@@ -78,12 +131,17 @@ function StatusStepper({
 
     return (
       <Tooltip
-        content={mapStepToTooltip[activeStep]}
         tooltipOffset={12}
         placement="top"
-        // trigger="hover"
+        trigger="hover"
         disabled={disabled}
-        customPopperStyles={{ padding: 0, background: 'none' }}
+        customPopperStyles={{
+          background: 'rgb(35, 35, 35)',
+        }}
+        customArrowStyles={{
+          background: 'rgb(35, 35, 35)',
+        }}
+        {...mapStepToTooltipProps[index]}
       >
         <div>
           {completed && <CheckIcon width={14} height={14} />}

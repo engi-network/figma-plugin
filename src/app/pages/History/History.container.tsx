@@ -24,7 +24,7 @@ import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
 import { useTableData } from './History.hooks'
 import { extractBranchNames } from './History.utils'
 
-function Historycontainer() {
+function HistoryContainer() {
   const { history } = useAppContext()
   const [searchParams] = useSearchParams()
   const stringFilterValues = searchParams.get('filter') as string
@@ -120,4 +120,4 @@ function Historycontainer() {
   )
 }
 
-export default Historycontainer
+export default HistoryContainer
