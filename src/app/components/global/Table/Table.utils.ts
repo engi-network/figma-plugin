@@ -37,14 +37,14 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
 
     switch (status) {
       case STATUS.SUCCESS: {
-        const { created_at, completed_at, code_snippet, MAE } =
+        const { created_at, completed_at, code_snippets, MAE } =
           result as ReportResult
 
         return {
           ...baseObj,
           code: {
             status: isSameStory(MAE) ? STATUS.SUCCESS : STATUS.FAIL,
-            codeSnippet: code_snippet,
+            codeSnippet: code_snippets[0],
             checkId: check_id,
           },
           completedAt: completed_at,
@@ -56,13 +56,14 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         }
       }
       case STATUS.IN_PROGRESS: {
-        const { code_snippet } = result as ReportResult
+        const { code_snippets = [] } = result as ReportResult
         return {
           ...baseObj,
           code: {
             status: STATUS.IN_PROGRESS,
-            codeSnippet: code_snippet,
+            codeSnippet: code_snippets[0] || '',
             checkId: check_id,
+            originalImageUrl,
           },
           duration: 0,
           status: STATUS.IN_PROGRESS,

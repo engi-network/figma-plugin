@@ -32,6 +32,7 @@ interface Props {
   content: ReactNode
   customArrowStyles?: CSSStylesProp
   customPopperStyles?: CSSStylesProp
+  disabled?: boolean
   placement?: Placement
   tooltipOffset?: number
   trigger?: 'click' | 'hover'
@@ -46,6 +47,7 @@ export default function Tooltip({
   customPopperStyles,
   trigger = 'click',
   className,
+  disabled = false,
   ...rest
 }: Props) {
   const arrowRef = useRef(null)
@@ -96,15 +98,16 @@ export default function Tooltip({
     setIsOpen(true)
   }
 
-  const handlers =
-    trigger === 'click'
-      ? {
-          onClick: toggleTooltip,
-        }
-      : {
-          onMouseEnter: openTooltip,
-          onMouseLeave: closeTooltip,
-        }
+  const handlers = disabled
+    ? {}
+    : trigger === 'click'
+    ? {
+        onClick: toggleTooltip,
+      }
+    : {
+        onMouseEnter: openTooltip,
+        onMouseLeave: closeTooltip,
+      }
 
   // Update on scroll and resize for all relevant nodes
   useEffect(() => {

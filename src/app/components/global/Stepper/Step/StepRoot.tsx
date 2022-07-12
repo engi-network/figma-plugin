@@ -39,8 +39,6 @@ function StepRoot({
     { 'flex-col': !isHorizontal },
     { 'max-w-20': !last && isHorizontal },
     { 'max-h-20': !last && !isHorizontal },
-    { 'w-0': last && isHorizontal },
-    { 'h-0': last && !isHorizontal },
   )
 
   const connectorClasses = cn(

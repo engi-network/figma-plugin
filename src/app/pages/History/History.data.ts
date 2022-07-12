@@ -17,6 +17,8 @@ export const mockSuccessReport: DetailedReport = {
     branch: 'main',
     check_id: '634cd4fc-bd1f-4dbd-b26d-c8d53d5e51f3',
     commit: 'b606897faec4ae0983930c2707845e5792a38255',
+    code_size: 123123,
+    name: 'name',
     component: 'Button',
     github_token: '',
     height: '600',
@@ -33,10 +35,16 @@ export const mockSuccessReport: DetailedReport = {
     MAE: '21304.1 (0.32508)',
     created_at: 1653673585.5174792,
     completed_at: 1653673634.1104794,
-    code_path: 'src/app/components/global/Button/Button.stories.tsx',
-    code_snippet:
-      "import { action } from '@storybook/addon-actions'\nimport { boolean, select, text } from '@storybook/addon-knobs'\n\nimport Button from './Button'\n\n",
-    name: 'layer name',
+    code_paths: [
+      'src/app/components/global/Button/Button.stories.tsx',
+      'src/app/components/global/Button/Button.tsx',
+    ],
+    code_snippets: [
+      `import { action } from '@storybook/addon-actions'\nimport { boolean, select, text } from '@storybook/addon-knobs'\n\nimport Button from './Button'\n\n",
+    name: 'layer name`,
+      `import { action } from '@storybook/addon-actions'\nimport { boolean, select, text } from '@storybook/addon-knobs'\n\nimport Button from './Button'\n\n",
+    name: 'layer name`,
+    ],
   },
   status: STATUS.SUCCESS,
 }

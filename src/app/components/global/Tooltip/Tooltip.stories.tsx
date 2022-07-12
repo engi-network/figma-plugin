@@ -18,6 +18,8 @@ export function TooltipStory() {
           'right',
         )}
         tooltipOffset={10}
+        trigger={select('Trigger', ['click', 'hover'], 'click')}
+        className="inline-flex"
       >
         <span>Click to open tooltip</span>
       </Tooltip>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import CodeBlock from '~/app/components/global/CodeBlock/CodeBlock'
 import StatusStepper from '~/app/components/pages/ResultPage/StatusStepper/StatusStepper'
@@ -7,18 +7,21 @@ import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
 import { useStore } from '~/app/lib/utils/store'
 import { MessageData, STATUS } from '~/app/models/Report'
 import { loadingInitialStatus } from '~/app/pages/Loading/Loading'
-import { STEP_MAP_TO_STEPPER } from '~/app/pages/Main/Main.types'
+import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '~/app/pages/Main/Main.types'
 
 interface Props {
   value: {
     checkId: string
     codeSnippet: string
+    originalImageUrl: string
     status: STATUS
   }
 }
 
-const queue = new Queue<MessageData>()
-function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
+function CellCodeBlock({
+  value: { codeSnippet, checkId, status, originalImageUrl },
+}: Props) {
+  const queueRef = useRef<Queue<MessageData>>(new Queue<MessageData>())
   const lastMessages = useStore(
     store,
     useCallback((state) => state.lastMessages, []),
@@ -27,9 +30,11 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
     lastMessages && lastMessages[checkId]
       ? lastMessages[checkId]
       : loadingInitialStatus
-  const [loadingStatus, setLoadingStatus] = useState<MessageData>(initStep)
+  const [stepStatus, setStepStatus] = useState<MessageData>(initStep)
 
   useEffect(() => {
+    const queue = queueRef.current
+
     if (status !== STATUS.IN_PROGRESS) {
       return
     }
@@ -46,6 +51,8 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
   }, [checkId, status])
 
   useEffect(() => {
+    const queue = queueRef.current
+
     if (status !== STATUS.IN_PROGRESS) {
       return
     }
@@ -56,7 +63,7 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
       }
 
       const status = queue.dequeue() as MessageData
-      setLoadingStatus(status)
+      setStepStatus(status)
     }, ANIMATION_DURATION_MS)
 
     return () => {
@@ -64,13 +71,16 @@ function CellCodeBlock({ value: { codeSnippet, checkId, status } }: Props) {
     }
   }, [status])
 
-  const { step } = loadingStatus
+  const { step, results = {} } = stepStatus
 
   if (!codeSnippet && status === STATUS.IN_PROGRESS) {
     return (
       <StatusStepper
         activeStep={STEP_MAP_TO_STEPPER[step]}
         className="w-full"
+        data={results}
+        originalImageUrl={originalImageUrl}
+        stepMessage={STEP_MESSAGES[step]}
       />
     )
   }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
+import { getPlaceholderImageUrl } from '~/app/lib/utils/string'
 import { STEP_MESSAGES } from '~/app/pages/Main/Main.types'
 
 import StatusStepper from './StatusStepper'
@@ -12,10 +13,18 @@ export default {
 
 export function StatusStepperWithKnobs() {
   const [step, _] = useState(3)
-
+  const imageUrl = getPlaceholderImageUrl([120, 40])
   return (
     <StoryContainer>
-      <StatusStepper activeStep={step} stepMessage={STEP_MESSAGES[step]} />
+      <StatusStepper
+        activeStep={step}
+        stepMessage={STEP_MESSAGES[step]}
+        originalImageUrl={imageUrl}
+        data={{
+          code_paths: ['button.tsx', 'button.stories.tsx'],
+          code_snippets: ['const a = b;', 'const b = c;'],
+        }}
+      />
     </StoryContainer>
   )
 }

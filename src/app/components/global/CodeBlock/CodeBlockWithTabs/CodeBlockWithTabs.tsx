@@ -7,7 +7,7 @@ import styles from './CodeBlockWithTabs.styles'
 
 interface Props extends Omit<CodeBlockProps, 'codeString'> {
   data: Array<{ codeString: string; tabLabel: string }>
-  id: string
+  id?: string
 }
 
 function CodeBlockWithTabs({ showLineNumbers, className, data }: Props) {
@@ -23,7 +23,7 @@ function CodeBlockWithTabs({ showLineNumbers, className, data }: Props) {
         selectedIndex={selectedTab}
         defaultIndex={1}
       >
-        <Tab.List>
+        <Tab.List className="flex">
           {data.map(({ tabLabel }, index) => (
             <Tab
               key={`${tabLabel}_${index}`}
