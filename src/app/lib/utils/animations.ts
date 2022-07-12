@@ -13,7 +13,6 @@ import { STEPS } from '~/app/pages/Main/Main.types'
 
 export const mapStepToAnimation = {
   [STEPS.INIT]: FigmaUpload,
-  [STEPS.FILE]: File,
   [STEPS.DOWNLOAD_FIGMA_CHECK_FRAME]: File,
   [STEPS.CHECKED_OUT_CODE]: Tool,
   [STEPS.INSTALLED_PACKAGES]: Tool,
