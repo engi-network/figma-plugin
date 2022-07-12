@@ -60,19 +60,15 @@ function StatusStepper({
       content: ReactNode
       customArrowStyles?: CSSStylesProp
       customPopperStyles?: CSSStylesProp
+      disabled?: boolean
     }
   > = useMemo(
     () => ({
       0: {
         content: (
-          <div className="flex flex-col justify-center items-center gap-3">
-            <div className="w-[120px] h-[40px]">
-              <img
-                src={originalImageUrl}
-                height={40}
-                width={120}
-                alt="no snippet"
-              />
+          <div className="flex flex-col justify-center items-center gap-3 w-[120px]">
+            <div className="w-full h-[71px] overflow-hidden flex justify-center items-center min-h-[71px] max-h-[71px]">
+              <img src={originalImageUrl} alt="no snippet" />
             </div>
             <p className="text-xs text-text-secondary">{layerName}</p>
           </div>
@@ -84,6 +80,7 @@ function StatusStepper({
             {STEP_MESSAGES[1]}
           </span>
         ),
+        disabled: true,
       },
       2: {
         content: (
@@ -91,6 +88,7 @@ function StatusStepper({
             {STEP_MESSAGES[2]}
           </span>
         ),
+        disabled: true,
       },
       3: {
         content: !codeBlockData.length ? (
@@ -112,6 +110,7 @@ function StatusStepper({
             {STEP_MESSAGES[4]}
           </span>
         ),
+        disabled: true,
       },
       5: {
         content: (
@@ -119,6 +118,7 @@ function StatusStepper({
             {STEP_MESSAGES[5]}
           </span>
         ),
+        disabled: true,
       },
     }),
     [activeStep],
@@ -133,8 +133,8 @@ function StatusStepper({
       <Tooltip
         tooltipOffset={12}
         placement="top"
-        trigger="hover"
-        disabled={disabled}
+        // trigger="hover"
+        // disabled={disabled}
         customPopperStyles={{
           background: 'rgb(35, 35, 35)',
         }}

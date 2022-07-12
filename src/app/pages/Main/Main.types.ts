@@ -14,8 +14,8 @@ export enum STEPS {
 export const STEP_MESSAGES: Record<STEPS, string> = {
   [STEPS.INIT]: 'Uploading Designs',
   [STEPS.FILE]: 'Cloning Repository',
-  [STEPS.DOWNLOAD_FIGMA_CHECK_FRAME]: 'Download Figma Check Frame',
-  [STEPS.CHECKED_OUT_CODE]: 'Check out the Code',
+  [STEPS.DOWNLOAD_FIGMA_CHECK_FRAME]: 'Cloning Repository',
+  [STEPS.CHECKED_OUT_CODE]: 'Installing dependencies and building the project',
   [STEPS.INSTALLED_PACKAGES]:
     'Installing dependencies and building the project',
   [STEPS.CAPTURED_SCREENSHOTS]: 'Rendering Storybook',

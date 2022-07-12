@@ -35,11 +35,6 @@ function CellCodeBlock({
 
   useEffect(() => {
     const queue = queueRef.current
-
-    if (status !== STATUS.IN_PROGRESS) {
-      return
-    }
-
     const callbackInCodeBlock = (data) => {
       queue.enqueue(data)
     }
@@ -53,10 +48,6 @@ function CellCodeBlock({
 
   useEffect(() => {
     const queue = queueRef.current
-
-    if (status !== STATUS.IN_PROGRESS) {
-      return
-    }
 
     const timerId = setInterval(() => {
       if (queue.size() <= 0) {
@@ -72,9 +63,9 @@ function CellCodeBlock({
     }
   }, [status])
 
-  const { step, results = {} } = stepStatus
+  const { step, results = {}, error, step_count } = stepStatus
 
-  if (!codeSnippet && status === STATUS.IN_PROGRESS) {
+  if (status === STATUS.IN_PROGRESS || (step < step_count - 1 && !error)) {
     return (
       <StatusStepper
         activeStep={STEP_MAP_TO_STEPPER[step]}

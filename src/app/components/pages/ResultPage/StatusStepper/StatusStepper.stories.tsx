@@ -13,7 +13,7 @@ export default {
 
 export function StatusStepperWithKnobs() {
   const [step, _] = useState(5)
-  const imageUrl = getPlaceholderImageUrl([120, 40])
+  const imageUrl = getPlaceholderImageUrl([120, 120])
 
   return (
     <StoryContainer>

@@ -44,10 +44,11 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         return {
           ...baseObj,
           code: {
-            status: isSameStory(MAE) ? STATUS.SUCCESS : STATUS.FAIL,
-            codeSnippet: code_snippets[0],
             checkId: check_id,
+            codeSnippet: code_snippets[0],
             name,
+            originalImageUrl,
+            status: isSameStory(MAE) ? STATUS.SUCCESS : STATUS.FAIL,
           },
           completedAt: completed_at,
           createdAt: created_at,

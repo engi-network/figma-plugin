@@ -12,6 +12,7 @@ export function LoaderWithAnimationWithKnobs() {
     'Step',
     [
       STEPS.INIT,
+      STEPS.FILE,
       STEPS.DOWNLOAD_FIGMA_CHECK_FRAME,
       STEPS.CAPTURED_SCREENSHOTS,
       STEPS.CHECKED_OUT_CODE,
