@@ -20,9 +20,9 @@ function LinkButton({ href, onClick, children, className }: Props) {
   const btnClasses = cn(className, 'inline-flex')
 
   return (
-    <button onClick={handleClick} className={btnClasses}>
+    <a onClick={handleClick} className={btnClasses}>
       <span className={textClasses}>{children}</span>
-    </button>
+    </a>
   )
 }
 

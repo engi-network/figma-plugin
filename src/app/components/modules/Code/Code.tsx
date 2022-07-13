@@ -12,10 +12,17 @@ interface Props {
   errors?: AnalyzeFormValues
   isDisabled?: boolean
   onChange: (values: AnalyzeFormValues) => void
+  onSubmit?: () => void
   values?: AnalyzeFormValues
 }
 
-function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
+function Code({
+  values: parentValues,
+  onChange,
+  errors,
+  isDisabled,
+  onSubmit,
+}: Props) {
   const [values, setValues] = useState<AnalyzeFormValues>(initialFormValue)
   const [showMore, setShowMore] = useState<boolean>(true)
 
@@ -135,6 +142,7 @@ function Code({ values: parentValues, onChange, errors, isDisabled }: Props) {
             </>
           )}
         </div>
+        <button onClick={onSubmit} className="invisible" />
       </form>
     </ContainerWithTitle>
   )

@@ -45,6 +45,7 @@ function Main() {
             values={formValues}
             errors={formErrors}
             isDisabled={isLoading}
+            onSubmit={handleSubmit}
           />
         </section>
       </div>
@@ -57,7 +58,12 @@ function Main() {
         </div>
       )}
       <footer className="flex justify-end px-6 my-8">
-        <Button onClick={handleSubmit} className="w-3/12" disabled={isLoading}>
+        <Button
+          onClick={handleSubmit}
+          className="w-3/12"
+          disabled={isLoading}
+          type="submit"
+        >
           {ui('main.analyze')}
         </Button>
       </footer>
