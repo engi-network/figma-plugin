@@ -160,6 +160,11 @@ export function useMainContextSetup(): MainContextProps {
       ) as CanvasRenderingContext2D
       const copyRef = originCanvasRef.current
 
+      navigate({
+        pathname: ROUTES_MAP[ROUTES.LOADING],
+        search: `?${createSearchParams({ checkId })}`,
+      })
+
       const imageData = await decodeOriginal(
         originCanvasRef.current,
         context,
@@ -198,11 +203,6 @@ export function useMainContextSetup(): MainContextProps {
       GAService.sendMeasurementData(queryParams)
 
       DataSource.createConsumer(checkId, reportInProgress)
-
-      navigate({
-        pathname: ROUTES_MAP[ROUTES.LOADING],
-        search: `?${createSearchParams({ checkId })}`,
-      })
     } catch (error) {
       Sentry.sendReport({
         error,
