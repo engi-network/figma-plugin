@@ -1,5 +1,4 @@
 import { select } from '@storybook/addon-knobs'
-import { useState } from 'react'
 
 import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
 import { getPlaceholderImageUrl } from '~/app/lib/utils/string'
@@ -27,6 +26,7 @@ export function StatusStepperWithKnobs() {
           code_snippets: ['const a = b;', 'const b = c;'],
         }}
         layerName="layer-2"
+        className="w-[140px]"
       />
     </StoryContainer>
   )
