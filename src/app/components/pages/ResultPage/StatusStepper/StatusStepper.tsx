@@ -85,7 +85,6 @@ function StatusStepper({
             {STEP_MESSAGES[1]}
           </span>
         ),
-        disabled: true,
       },
       2: {
         content: (
@@ -93,7 +92,6 @@ function StatusStepper({
             {STEP_MESSAGES[3]}
           </span>
         ),
-        disabled: true,
       },
       3: {
         content: !codeBlockData.length ? (
@@ -104,7 +102,7 @@ function StatusStepper({
           <CodeBlockWithTabs
             data={codeBlockData}
             showLineNumbers
-            className="p-0 border-none h-20 w-full"
+            className="p-0 border-none max-h-20 w-full"
           />
         ),
         customPopperStyles: { padding: 0, background: 'none' },
@@ -115,7 +113,6 @@ function StatusStepper({
             {STEP_MESSAGES[5]}
           </span>
         ),
-        disabled: true,
       },
       5: {
         content: (
@@ -123,7 +120,6 @@ function StatusStepper({
             {STEP_MESSAGES[7]}
           </span>
         ),
-        disabled: true,
       },
     }),
     [activeStep],
@@ -180,7 +176,9 @@ function StatusStepper({
           ))}
       </Stepper>
       {stepMessage && (
-        <span className="text-xs text-text-primary">{stepMessage}</span>
+        <span className="text-xs text-text-primary block truncate w-full px-2 text-center">
+          {stepMessage}
+        </span>
       )}
     </div>
   )

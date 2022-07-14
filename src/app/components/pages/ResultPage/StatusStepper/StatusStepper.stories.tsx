@@ -1,3 +1,4 @@
+import { select } from '@storybook/addon-knobs'
 import { useState } from 'react'
 
 import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
@@ -12,8 +13,8 @@ export default {
 }
 
 export function StatusStepperWithKnobs() {
-  const [step, _] = useState(5)
   const imageUrl = getPlaceholderImageUrl([120, 120])
+  const step = select('Step', [0, 1, 2, 3, 4, 5, 6, 7], 0)
 
   return (
     <StoryContainer>
