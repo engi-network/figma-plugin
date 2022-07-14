@@ -6,17 +6,9 @@ function CellStatus({ value }: { value: STATUS }) {
     return <CheckIcon className="text-primary-green" width={20} height={20} />
   }
 
-  if (value === STATUS.FAIL) {
-    return (
-      <FailIcon
-        className="w-6 h-6 text-secondary-error"
-        width={20}
-        height={20}
-      />
-    )
-  }
-
-  return null
+  return (
+    <FailIcon className="w-6 h-6 text-secondary-error" width={20} height={20} />
+  )
 }
 
 export default CellStatus

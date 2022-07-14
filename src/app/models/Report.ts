@@ -52,7 +52,13 @@ export interface ReportResult extends Specification {
 
 export type InProgressResult = Specification
 
+export enum FETCH_STATUS {
+  FAIL = 'fail',
+  SUCCESS = 'success',
+}
+
 export enum STATUS {
+  ERROR = 'error',
   FAIL = 'fail',
   IN_PROGRESS = 'inProgress',
   SUCCESS = 'success',

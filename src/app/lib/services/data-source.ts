@@ -14,6 +14,7 @@ import { createStore } from '~/app/lib/utils/store'
 import {
   DetailedReport,
   ErrorResult,
+  FETCH_STATUS,
   MessageData,
   ReportResult,
   STATUS,
@@ -76,17 +77,17 @@ class DataSource extends PubSub {
 
     this.publishFromDS(data)
 
-    logger.info('Received message for', data)
+    logger.info('Received message for::', data)
 
-    const updateState = async (status: STATUS) => {
+    const updateState = async (status: FETCH_STATUS) => {
       const report =
-        status === STATUS.SUCCESS
+        status === FETCH_STATUS.SUCCESS
           ? await AWSService.fetchReportById(check_id, status)
           : undefined
       const baseReport = history.find((item) => item.checkId === check_id)
 
       const result =
-        status === STATUS.FAIL
+        status === FETCH_STATUS.FAIL
           ? ({
               ...baseReport?.result,
               error,
@@ -100,7 +101,7 @@ class DataSource extends PubSub {
         checkId: check_id,
         originalImageUrl: baseReport?.originalImageUrl,
         result,
-        status,
+        status: report?.status as STATUS,
       }
 
       const replacedArray = replaceItemInArray(
@@ -125,11 +126,11 @@ class DataSource extends PubSub {
 
     try {
       if (step === step_count - 1) {
-        await updateState(STATUS.SUCCESS)
+        await updateState(FETCH_STATUS.SUCCESS)
         return
       }
       if (error) {
-        await updateState(STATUS.FAIL)
+        await updateState(FETCH_STATUS.FAIL)
 
         Sentry.sendReport({
           error,

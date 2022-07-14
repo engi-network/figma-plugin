@@ -30,8 +30,11 @@ import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
 function ResultStatus({ status }: { status: STATUS }) {
   return (
     <div className="flex justify-center items-center flex-1">
-      {status === STATUS.SUCCESS && <CheckIcon className="w-7 h-7" />}
-      {status === STATUS.FAIL && <CrossFailIcon className="w-7 h-7" />}
+      {status === STATUS.SUCCESS ? (
+        <CheckIcon className="w-7 h-7" />
+      ) : (
+        <CrossFailIcon className="w-7 h-7" />
+      )}
     </div>
   )
 }

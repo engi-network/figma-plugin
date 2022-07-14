@@ -70,7 +70,7 @@ export const mockErrorReport: DetailedReport = {
     width: '100',
     name: 'layer name',
   },
-  status: STATUS.FAIL,
+  status: STATUS.ERROR,
 }
 
 export const mockInProgressReport: DetailedReport = {

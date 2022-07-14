@@ -122,6 +122,7 @@ function Table({
         )
       })
 
+      // this is fallback for very rare case to happen because most result will be success or error
       if (!!row.values.MAE && row.values.status === STATUS.FAIL) {
         return (
           <Tooltip

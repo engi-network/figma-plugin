@@ -20,12 +20,15 @@ import { readDataFromStream } from '~/app/lib/utils/buffer'
 import {
   DIFF_TYPE,
   ErrorResult,
+  FETCH_STATUS,
   MessageData,
   Report,
   ReportResult,
   STATUS,
 } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
+
+import { isSameStory } from '../utils/mae'
 
 export interface CallbackStatus {
   currentTimerId: number
@@ -135,7 +138,10 @@ class AWSService {
     return url
   }
 
-  async fetchReportById(checkId: string, status: STATUS): Promise<Report> {
+  async fetchReportById(
+    checkId: string,
+    status: FETCH_STATUS,
+  ): Promise<Report> {
     if (!this.s3Client) {
       throw {
         message: 'AWS has not been configured',
@@ -145,7 +151,7 @@ class AWSService {
     const downloadParams = {
       Bucket: config.SAME_STORY_BUCKET_NAME,
       Key: `checks/${checkId}/report/${
-        status === STATUS.SUCCESS ? 'results' : 'errors'
+        status === FETCH_STATUS.SUCCESS ? 'results' : 'errors'
       }.json`,
     }
 
@@ -159,10 +165,17 @@ class AWSService {
 
         const result = await new Response(streamData).json()
 
-        if (status === STATUS.SUCCESS) {
-          return { result: result as ReportResult, checkId, status }
+        if (status === FETCH_STATUS.SUCCESS) {
+          const successResult = result as ReportResult
+          return {
+            result: successResult,
+            checkId,
+            status: isSameStory(successResult.MAE)
+              ? STATUS.SUCCESS
+              : STATUS.ERROR,
+          }
         } else {
-          return { result: result as ErrorResult, checkId, status }
+          return { result: result as ErrorResult, checkId, status: STATUS.FAIL }
         }
       } else {
         throw {

@@ -39,7 +39,7 @@ export const mapFilterFormToTableFilter = (
     duration: filter.duration,
     status: [
       filter[FILTER_FIELDS.SUCCESS] && STATUS.SUCCESS,
-      filter[FILTER_FIELDS.FAIL] && STATUS.FAIL,
+      filter[FILTER_FIELDS.ERROR] && STATUS.ERROR,
       filter[FILTER_FIELDS.IN_PROGRESS] && STATUS.IN_PROGRESS,
     ].filter(Boolean) as Array<string>,
     branch: !!branchNames.length && branchNames,

@@ -13,14 +13,14 @@ export enum FILTER_FIELDS {
   CREATED_AFTER = 'createdAfter',
   CREATED_BEFORE = 'createdBefore',
   DURATION = 'duration',
-  FAIL = 'fail',
+  ERROR = 'error',
   IN_PROGRESS = 'inProgress',
   SUCCESS = 'success',
 }
 
 export interface FilterValues {
   [FILTER_FIELDS.SUCCESS]: boolean
-  [FILTER_FIELDS.FAIL]: boolean
+  [FILTER_FIELDS.ERROR]: boolean
   [FILTER_FIELDS.IN_PROGRESS]: boolean
   [FILTER_FIELDS.CREATED_AFTER]: string
   [FILTER_FIELDS.CREATED_BEFORE]: string
@@ -30,7 +30,7 @@ export interface FilterValues {
 
 export const initialFilterState: FilterValues = {
   [FILTER_FIELDS.SUCCESS]: false,
-  [FILTER_FIELDS.FAIL]: false,
+  [FILTER_FIELDS.ERROR]: false,
   [FILTER_FIELDS.IN_PROGRESS]: false,
   [FILTER_FIELDS.CREATED_AFTER]: '',
   [FILTER_FIELDS.CREATED_BEFORE]: '',
