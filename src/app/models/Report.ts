@@ -32,6 +32,7 @@ export interface MessageData {
 }
 
 export interface ErrorResult extends Specification {
+  created_at: number
   error: ErrorData
 }
 
@@ -50,7 +51,9 @@ export interface ReportResult extends Specification {
   url_screenshot: string
 }
 
-export type InProgressResult = Specification
+export interface InProgressResult extends Specification {
+  created_at: number
+}
 
 export enum FETCH_STATUS {
   FAIL = 'fetch_fail',

@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 
 import Input from '~/app/components/global/Input/Input'
+import LinkButton from '~/app/components/global/LinkButton/LinkButton'
 import Select from '~/app/components/global/Select/Select'
 import Table from '~/app/components/global/Table/Table'
 import { mapHistoryToTable } from '~/app/components/global/Table/Table.utils'
@@ -15,6 +16,7 @@ import {
   initialFilterState,
 } from '~/app/components/modules/History/Filter/Filter.data'
 import HistoryHeader from '~/app/components/modules/History/HistoryHeader/HistoryHeader'
+import ErrorListModal from '~/app/components/pages/HistoryPage/ErrorListModal/ErrorListModal'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
@@ -38,6 +40,7 @@ function HistoryContainer() {
   })
   const [sortBy, setSortBy] = useState('')
   const [searchBy, setSearchBy] = useState('')
+  const [isErrorListModalOpen, setIsErrorListModalOpen] = useState(false)
 
   const { columns, filterItems, hiddenColumns } = useTableData(filter)
   const data = useMemo(() => mapHistoryToTable(history), [history])
@@ -74,7 +77,13 @@ function HistoryContainer() {
     })
   }
 
-  console.info('history on history=====>', history)
+  const handleOpenErrorListModal = () => {
+    setIsErrorListModalOpen(true)
+  }
+
+  const handleCloseErrorListModal = () => {
+    setIsErrorListModalOpen(false)
+  }
 
   return (
     <>
@@ -87,25 +96,29 @@ function HistoryContainer() {
           <Input
             onChange={onSearchTermChange}
             placeholder={ui('history.searchPlaceholder')}
-            className=""
             value={searchBy}
           />
         </div>
       </div>
       <div className="flex px-8 mb-8 mt-4">
-        <Select
-          options={SORT_BY_OPTIONS}
-          onChange={handleSelectChange}
-          value={sortBy}
-          placeholder="Sort by"
-          className="w-24"
-        />
-        <Filter
-          title={'Filter by'}
-          onChange={handleFilterChange}
-          value={filter}
-          branchNames={branchNames}
-        />
+        <div>
+          <Select
+            options={SORT_BY_OPTIONS}
+            onChange={handleSelectChange}
+            value={sortBy}
+            placeholder="Sort by"
+            className="w-24"
+          />
+          <Filter
+            title="Filter by"
+            onChange={handleFilterChange}
+            value={filter}
+            branchNames={branchNames}
+          />
+        </div>
+        <LinkButton onClick={handleOpenErrorListModal} className="">
+          {ui('history.viewErrors')}
+        </LinkButton>
       </div>
       <Table
         columns={columns}
@@ -115,6 +128,11 @@ function HistoryContainer() {
         searchBy={searchBy}
         hiddenColumns={hiddenColumns}
         onClickRow={handleClickRow}
+      />
+      <ErrorListModal
+        data={[]}
+        isOpen={isErrorListModalOpen}
+        onClose={handleCloseErrorListModal}
       />
     </>
   )

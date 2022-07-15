@@ -48,7 +48,8 @@
     "learnMore": "Learn more",
     "tooltip": {
       "fail": "This didn't finish correctly. Try running another comparison!"
-    }
+    },
+    "viewErrors": "View Errors"
   },
   "components": {
     "select": {

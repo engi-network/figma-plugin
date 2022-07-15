@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys */
 import { SelectOption } from '~/app/components/global/Select/Select'
 import { randomString } from '~/app/lib/utils/string'
-import { DetailedReport, REPORT_STATUS } from '~/app/models/Report'
+import { DetailedReport, History, REPORT_STATUS } from '~/app/models/Report'
 
 export const SORT_BY_OPTIONS: Array<SelectOption> = [
   { value: 'completedAt', name: 'Last updated' },
@@ -87,11 +87,32 @@ export const mockInProgressReport: DetailedReport = {
     story: 'story1',
     width: '100',
     name: 'layer name',
+    created_at: 1653673585.5174792,
   },
   status: REPORT_STATUS.IN_PROGRESS,
 }
 
-export const mockHistoryData: Array<DetailedReport> = [
+export const mockFailReport: DetailedReport = {
+  checkId: '293bdbd6-dee7-4e17-b3db-82765db6308a',
+  result: {
+    branch: 'staging',
+    check_id: '293bdbd6-dee7-4e17-b3db-82765db6308a',
+    commit: randomString(5),
+    component: 'component' + randomString(2),
+    height: '100',
+    MAE: '24587.6 (0.375183)',
+    path: 'Global/Component',
+    repository: 'repo1',
+    story: 'story1',
+    width: '100',
+    name: 'layer name',
+    created_at: 1653673585.5174792,
+  },
+  status: REPORT_STATUS.FAIL,
+}
+
+export const mockHistoryData: History = [
   mockSuccessReport,
   mockErrorReport,
+  mockFailReport,
 ]

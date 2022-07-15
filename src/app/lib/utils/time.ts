@@ -7,6 +7,10 @@ export function convertDateToUnix(input: string): number {
 export function convertUnixToDate(
   input: number,
   formatString = 'MM.dd.yyyy',
-): string {
-  return format(input * 1000, formatString)
+): string | null {
+  try {
+    return format(input * 1000, formatString)
+  } catch (error) {
+    return null
+  }
 }

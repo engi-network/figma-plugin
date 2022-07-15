@@ -13,12 +13,12 @@ interface Props {
   title: string
 }
 
-interface RowProps {
+export interface DetailModalRowProps {
   label: string
-  value: string
+  value: string | null
 }
 
-function Row({ label, value }: RowProps) {
+function Row({ label, value }: DetailModalRowProps) {
   return (
     <div className="flex justify-between mb-4 last:mb-0">
       <p className="text-base text-primary-white">{label}</p>

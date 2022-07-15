@@ -4,6 +4,8 @@ import useHistoryEvent from '~/app/hooks/useHistoryEvent'
 import { createContext } from '~/app/lib/utils/context'
 import { DetailedReport, History, REPORT_STATUS } from '~/app/models/Report'
 
+import logger from '../lib/utils/logger'
+
 export interface AppContextProps {
   findReportById: (id: string) => DetailedReport | undefined
   globalError: string
@@ -29,7 +31,7 @@ export function useAppContextSetup(): AppContextProps {
   }, [history])
 
   useEffect(() => {
-    console.info('history changed==>', history)
+    logger.info('history changed:::', history)
   }, [history.length])
 
   const findReportById = (checkId: string): DetailedReport | undefined => {
