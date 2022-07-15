@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { PluginSelection } from '~/app/models/PluginSelection'
-import * as PLUGIN_CONSTATNS from '~/plugin/constants'
+import * as PLUGIN_CONSTANTS from '~/plugin/constants'
 
 function useSelectionEvent() {
   const [selectionData, setSelectionData] = useState<PluginSelection>()
@@ -14,16 +14,16 @@ function useSelectionEvent() {
     }
 
     switch (event.data.pluginMessage.type) {
-      case PLUGIN_CONSTATNS.SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
+      case PLUGIN_CONSTANTS.SAME_STORY_SEND_SELECTION_FROM_PLUGIN_TO_UI: {
         const { data } = event.data.pluginMessage
         setSelectionData(data)
         break
       }
-      case PLUGIN_CONSTATNS.SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI: {
+      case PLUGIN_CONSTANTS.SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI: {
         setSelectionError(event.data.pluginMessage.error)
         break
       }
-      case PLUGIN_CONSTATNS.SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI: {
+      case PLUGIN_CONSTANTS.SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI: {
         setLoading(true)
         break
       }

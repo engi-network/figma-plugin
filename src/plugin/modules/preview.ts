@@ -1,6 +1,5 @@
 import { PluginSelection } from '~/app/models/PluginSelection'
 import {
-  initialSelection,
   LOCAL_STORAGE_KEY,
   SAME_STORY_SEND_CLEAR_ERROR_FROM_PLUGIN_TO_UI,
   SAME_STORY_SEND_ERROR_FROM_PLUGIN_TO_UI,
@@ -21,13 +20,8 @@ export const onSelection = async (selection: SceneNode): Promise<void> => {
 
     const newForm = {
       ...prevForm,
-      component: '',
       height,
       name,
-      repository: prevForm.repository
-        ? prevForm.repository
-        : initialSelection.repository, // need to be considered
-      story: '',
       width,
     }
 

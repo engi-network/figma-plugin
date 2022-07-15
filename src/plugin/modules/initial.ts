@@ -20,12 +20,12 @@ const handleInitialization = async () => {
   figma.clientStorage.setAsync(LOCAL_STORAGE_KEY.FORM, initialForm)
 
   //initialize history
-  const intialHistory =
+  const initialHistory =
     (await figma.clientStorage.getAsync(LOCAL_STORAGE_KEY.HISTORY)) || []
 
   figma.ui.postMessage({
     type: SAME_STORY_HISTORY_LIST_PLUGIN_TO_UI,
-    data: intialHistory,
+    data: initialHistory,
   })
 }
 

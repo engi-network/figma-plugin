@@ -2,7 +2,7 @@ export enum FORM_FIELD {
   BRANCH = 'branch',
   COMMIT = 'commit',
   COMPONENT = 'component',
-  GH_TOKEN = 'githubToken',
+  GH_TOKEN = 'github_token',
   PATH = 'path',
   REPOSITORY = 'repository',
   STORY = 'story',
