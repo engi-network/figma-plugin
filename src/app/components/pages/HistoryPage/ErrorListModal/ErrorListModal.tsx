@@ -14,7 +14,7 @@ interface ErrorListModalProps {
 
 function ErrorRow({ label, value }: DetailModalRowProps) {
   return (
-    <div className="flex justify-between mb-4 last:mb-0 border-b border-white border-opacity-30 px-4 py-2">
+    <div className="flex justify-between mb-4 last:mb-0 border-b border-white border-opacity-30 px-4 py-3">
       <p className="text-base text-primary-white">{label}</p>
       <p className="text-base text-primary-white">{value}</p>
     </div>
@@ -33,7 +33,7 @@ function ErrorListModal({ data, isOpen, onClose, title }: ErrorListModalProps) {
             <XIcon className="w-5 h-5 text-primary-white" />
           </button>
         </div>
-        <div className="mt-6 max-h-48 overflow-y-scroll">
+        <div className="mt-6 max-h-[256px] overflow-y-scroll">
           {data.map(({ checkId, result }) => (
             <ErrorRow
               key={checkId}

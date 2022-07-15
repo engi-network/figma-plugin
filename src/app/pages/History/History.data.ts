@@ -69,6 +69,7 @@ export const mockErrorReport: DetailedReport = {
     story: 'story1',
     width: '100',
     name: 'layer name',
+    created_at: 1653673585.5174792,
   },
   status: REPORT_STATUS.ERROR,
 }
