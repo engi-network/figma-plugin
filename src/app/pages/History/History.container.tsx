@@ -18,7 +18,7 @@ import HistoryHeader from '~/app/components/modules/History/HistoryHeader/Histor
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { STATUS } from '~/app/models/Report'
+import { REPORT_STATUS } from '~/app/models/Report'
 import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
 
 import { useTableData } from './History.hooks'
@@ -60,7 +60,7 @@ function HistoryContainer() {
       checkId,
     }
 
-    if (status === STATUS.IN_PROGRESS) {
+    if (status === REPORT_STATUS.IN_PROGRESS) {
       navigate({
         pathname: ROUTES_MAP[ROUTES.LOADING],
         search: `?${createSearchParams(searchParam)}`,

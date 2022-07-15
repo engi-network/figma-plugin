@@ -5,7 +5,7 @@ import StatusStepper from '~/app/components/pages/ResultPage/StatusStepper/Statu
 import dataSource, { store } from '~/app/lib/services/data-source'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
 import { useStore } from '~/app/lib/utils/store'
-import { MessageData, STATUS } from '~/app/models/Report'
+import { MessageData, REPORT_STATUS } from '~/app/models/Report'
 import { loadingInitialStatus } from '~/app/pages/Loading/Loading'
 import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '~/app/pages/Main/Main.types'
 
@@ -15,7 +15,7 @@ interface Props {
     codeSnippet: string
     name: string
     originalImageUrl: string
-    status: STATUS
+    status: REPORT_STATUS
   }
 }
 
@@ -65,7 +65,7 @@ function CellCodeBlock({
 
   const { step, results = {} } = stepStatus
 
-  if (status === STATUS.IN_PROGRESS) {
+  if (status === REPORT_STATUS.IN_PROGRESS) {
     return (
       <StatusStepper
         activeStep={STEP_MAP_TO_STEPPER[step]}

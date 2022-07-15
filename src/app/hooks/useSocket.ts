@@ -11,9 +11,10 @@ import { replaceItemInArray } from '~/app/lib/utils/object'
 import {
   DetailedReport,
   ErrorResult,
+  FETCH_STATUS,
   MessageData,
+  REPORT_STATUS,
   ReportResult,
-  STATUS,
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
@@ -28,15 +29,15 @@ function useSocket() {
     async (data) => {
       const { check_id, step, step_count, error } = data as MessageData
 
-      const updateState = async (status: STATUS) => {
+      const updateState = async (status: FETCH_STATUS) => {
         const report =
-          status === STATUS.SUCCESS
+          status === FETCH_STATUS.SUCCESS
             ? await AWSService.fetchReportById(check_id, status)
             : undefined
 
         const baseReport = history.find((item) => item.checkId === check_id)
         const result =
-          status === STATUS.FAIL
+          status === FETCH_STATUS.FAIL
             ? ({
                 ...baseReport?.result,
                 error,
@@ -50,7 +51,7 @@ function useSocket() {
           checkId: check_id,
           originalImageUrl: baseReport?.originalImageUrl,
           result,
-          status,
+          status: report?.status as REPORT_STATUS,
         }
 
         const replacedArray = replaceItemInArray(
@@ -72,13 +73,13 @@ function useSocket() {
       try {
         // for the last step, successful case
         if (step === step_count - 1) {
-          updateState(STATUS.SUCCESS)
+          updateState(FETCH_STATUS.SUCCESS)
           return
         }
 
         // error
         if (error) {
-          updateState(STATUS.FAIL)
+          updateState(FETCH_STATUS.FAIL)
           setGlobalError(
             'Something went wrong. Please double check the inputs.',
           )

@@ -1,6 +1,6 @@
 import { TB_ACCESSORS } from '~/app/components/global/Table/Table.data'
 import { convertDateToUnix } from '~/app/lib/utils/time'
-import { STATUS } from '~/app/models/Report'
+import { REPORT_STATUS } from '~/app/models/Report'
 
 import {
   FILTER_FIELDS,
@@ -38,9 +38,9 @@ export const mapFilterFormToTableFilter = (
     ],
     duration: filter.duration,
     status: [
-      filter[FILTER_FIELDS.SUCCESS] && STATUS.SUCCESS,
-      filter[FILTER_FIELDS.ERROR] && STATUS.ERROR,
-      filter[FILTER_FIELDS.IN_PROGRESS] && STATUS.IN_PROGRESS,
+      filter[FILTER_FIELDS.SUCCESS] && REPORT_STATUS.SUCCESS,
+      filter[FILTER_FIELDS.ERROR] && REPORT_STATUS.ERROR,
+      filter[FILTER_FIELDS.IN_PROGRESS] && REPORT_STATUS.IN_PROGRESS,
     ].filter(Boolean) as Array<string>,
     branch: !!branchNames.length && branchNames,
   }

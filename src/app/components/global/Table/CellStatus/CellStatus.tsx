@@ -1,8 +1,8 @@
 import { CheckIcon, FailIcon } from '~/app/components/global/Icons'
-import { STATUS } from '~/app/models/Report'
+import { REPORT_STATUS } from '~/app/models/Report'
 
-function CellStatus({ value }: { value: STATUS }) {
-  if (value === STATUS.SUCCESS) {
+function CellStatus({ value }: { value: REPORT_STATUS }) {
+  if (value === REPORT_STATUS.SUCCESS) {
     return <CheckIcon className="text-primary-green" width={20} height={20} />
   }
 

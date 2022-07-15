@@ -25,12 +25,16 @@ import { drawImage } from '~/app/lib/utils/canvas'
 import { isSameStory } from '~/app/lib/utils/mae'
 import { convertUnixToDate } from '~/app/lib/utils/time'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { DetailedReport, ReportResult, STATUS } from '~/app/models/Report'
+import {
+  DetailedReport,
+  REPORT_STATUS,
+  ReportResult,
+} from '~/app/models/Report'
 
-function ResultStatus({ status }: { status: STATUS }) {
+function ResultStatus({ status }: { status: REPORT_STATUS }) {
   return (
     <div className="flex justify-center items-center flex-1">
-      {status === STATUS.SUCCESS ? (
+      {status === REPORT_STATUS.SUCCESS ? (
         <CheckIcon className="w-7 h-7" />
       ) : (
         <CrossFailIcon className="w-7 h-7" />
@@ -209,7 +213,9 @@ function ResultContainer() {
               height="100%"
             />
           </div>
-          <ResultStatus status={isSuccess ? STATUS.SUCCESS : STATUS.FAIL} />
+          <ResultStatus
+            status={isSuccess ? REPORT_STATUS.SUCCESS : REPORT_STATUS.FAIL}
+          />
           <div className="flex flex-col items-end w-5/12 h-[220px]">
             <div className="h-full w-full relative">
               <Canvas

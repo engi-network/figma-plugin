@@ -53,21 +53,21 @@ export interface ReportResult extends Specification {
 export type InProgressResult = Specification
 
 export enum FETCH_STATUS {
-  FAIL = 'fail',
-  SUCCESS = 'success',
+  FAIL = 'fetch_fail',
+  SUCCESS = 'fetch_success',
 }
 
-export enum STATUS {
-  ERROR = 'error',
-  FAIL = 'fail',
-  IN_PROGRESS = 'inProgress',
-  SUCCESS = 'success',
+export enum REPORT_STATUS {
+  ERROR = 'report_error',
+  FAIL = 'report_fail',
+  IN_PROGRESS = 'report_in_progress',
+  SUCCESS = 'report_success',
 }
 
 export interface Report {
   checkId: string
   result: ReportResult | ErrorResult | InProgressResult
-  status: STATUS
+  status: REPORT_STATUS
 }
 
 export type History = Array<DetailedReport>

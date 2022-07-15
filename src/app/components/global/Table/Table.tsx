@@ -13,7 +13,7 @@ import { FixedSizeList } from 'react-window'
 import Tooltip from '~/app/components/global/Tooltip/Tooltip'
 import { TableFilterItem } from '~/app/components/modules/History/Filter/Filter.data'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { STATUS } from '~/app/models/Report'
+import { REPORT_STATUS } from '~/app/models/Report'
 
 import { TB_ACCESSORS } from './Table.data'
 import { Cell, Column, ColumnGroup } from './Table.types'
@@ -85,7 +85,7 @@ function Table({
   }, [hiddenColumns])
 
   const handleClickRow = (values: Record<string, string>) => () => {
-    if (!!values.MAE && values.status === STATUS.FAIL) {
+    if (!!values.MAE && values.status === REPORT_STATUS.FAIL) {
       return
     }
 
@@ -123,7 +123,7 @@ function Table({
       })
 
       // this is fallback for very rare case to happen because most result will be success or error
-      if (!!row.values.MAE && row.values.status === STATUS.FAIL) {
+      if (!!row.values.MAE && row.values.status === REPORT_STATUS.FAIL) {
         return (
           <Tooltip
             placement="top"

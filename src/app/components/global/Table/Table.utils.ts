@@ -1,4 +1,4 @@
-import { History, ReportResult, STATUS } from '~/app/models/Report'
+import { History, REPORT_STATUS, ReportResult } from '~/app/models/Report'
 
 import { Cell } from './Table.types'
 
@@ -36,8 +36,8 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
     }
 
     switch (status) {
-      case STATUS.ERROR:
-      case STATUS.SUCCESS: {
+      case REPORT_STATUS.ERROR:
+      case REPORT_STATUS.SUCCESS: {
         const { created_at, completed_at, code_snippets, MAE } =
           result as ReportResult
 
@@ -58,7 +58,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
           status,
         }
       }
-      case STATUS.IN_PROGRESS: {
+      case REPORT_STATUS.IN_PROGRESS: {
         const { code_snippets = [] } = result as ReportResult
         return {
           ...baseObj,
@@ -67,10 +67,10 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
             codeSnippet: code_snippets[0] || '',
             name,
             originalImageUrl,
-            status: STATUS.IN_PROGRESS,
+            status: REPORT_STATUS.IN_PROGRESS,
           },
           duration: 0,
-          status: STATUS.IN_PROGRESS,
+          status: REPORT_STATUS.IN_PROGRESS,
         }
       }
 
@@ -78,7 +78,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         return {
           ...baseObj,
           duration: 0,
-          status: STATUS.FAIL,
+          status: REPORT_STATUS.FAIL,
         }
       }
     }

@@ -23,8 +23,8 @@ import {
   FETCH_STATUS,
   MessageData,
   Report,
+  REPORT_STATUS,
   ReportResult,
-  STATUS,
 } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 
@@ -171,11 +171,15 @@ class AWSService {
             result: successResult,
             checkId,
             status: isSameStory(successResult.MAE)
-              ? STATUS.SUCCESS
-              : STATUS.ERROR,
+              ? REPORT_STATUS.SUCCESS
+              : REPORT_STATUS.ERROR,
           }
         } else {
-          return { result: result as ErrorResult, checkId, status: STATUS.FAIL }
+          return {
+            result: result as ErrorResult,
+            checkId,
+            status: REPORT_STATUS.FAIL,
+          }
         }
       } else {
         throw {

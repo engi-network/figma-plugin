@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys */
 import { SelectOption } from '~/app/components/global/Select/Select'
 import { randomString } from '~/app/lib/utils/string'
-import { DetailedReport, STATUS } from '~/app/models/Report'
+import { DetailedReport, REPORT_STATUS } from '~/app/models/Report'
 
 export const SORT_BY_OPTIONS: Array<SelectOption> = [
   { value: 'completedAt', name: 'Last updated' },
@@ -46,7 +46,7 @@ export const mockSuccessReport: DetailedReport = {
     name: 'layer name`,
     ],
   },
-  status: STATUS.SUCCESS,
+  status: REPORT_STATUS.SUCCESS,
 }
 
 export const mockErrorReport: DetailedReport = {
@@ -70,7 +70,7 @@ export const mockErrorReport: DetailedReport = {
     width: '100',
     name: 'layer name',
   },
-  status: STATUS.ERROR,
+  status: REPORT_STATUS.ERROR,
 }
 
 export const mockInProgressReport: DetailedReport = {
@@ -88,7 +88,7 @@ export const mockInProgressReport: DetailedReport = {
     width: '100',
     name: 'layer name',
   },
-  status: STATUS.IN_PROGRESS,
+  status: REPORT_STATUS.IN_PROGRESS,
 }
 
 export const mockHistoryData: Array<DetailedReport> = [

@@ -31,7 +31,7 @@ import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
 import { makeCompact } from '~/app/lib/utils/object'
 import { PluginSelection } from '~/app/models/PluginSelection'
-import { DetailedReport, STATUS } from '~/app/models/Report'
+import { DetailedReport, REPORT_STATUS } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
@@ -181,7 +181,7 @@ export function useMainContextSetup(): MainContextProps {
       await AWSService.publishCommandToSns(makeCompact(message))
 
       const reportInProgress = {
-        status: STATUS.IN_PROGRESS,
+        status: REPORT_STATUS.IN_PROGRESS,
         checkId,
         originalImageUrl,
         result: {

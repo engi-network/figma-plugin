@@ -16,7 +16,7 @@ import logger from '~/app/lib/utils/logger'
 import { ANIMATION_DURATION_MS, Queue } from '~/app/lib/utils/queue'
 import { useStore } from '~/app/lib/utils/store'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { MessageData, STATUS } from '~/app/models/Report'
+import { MessageData, REPORT_STATUS } from '~/app/models/Report'
 
 import { STEP_MAP_TO_STEPPER, STEP_MESSAGES } from '../Main/Main.types'
 import LoadingStepper from './LoadingStepper/LoadingStepper'
@@ -101,7 +101,7 @@ function Loading() {
   }, [])
 
   useEffect(() => {
-    if (report && report.status !== STATUS.IN_PROGRESS) {
+    if (report && report.status !== REPORT_STATUS.IN_PROGRESS) {
       navigate({ pathname: ROUTES_MAP[ROUTES.HOME] })
     }
   }, [])
