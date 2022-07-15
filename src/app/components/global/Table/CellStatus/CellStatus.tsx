@@ -6,6 +6,10 @@ function CellStatus({ value }: { value: REPORT_STATUS }) {
     return <CheckIcon className="text-primary-green" width={20} height={20} />
   }
 
+  if (value === REPORT_STATUS.IN_PROGRESS) {
+    return null
+  }
+
   return (
     <FailIcon className="w-6 h-6 text-secondary-error" width={20} height={20} />
   )

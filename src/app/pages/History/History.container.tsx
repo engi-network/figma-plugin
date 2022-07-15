@@ -19,6 +19,7 @@ import HistoryHeader from '~/app/components/modules/History/HistoryHeader/Histor
 import ErrorListModal from '~/app/components/pages/HistoryPage/ErrorListModal/ErrorListModal'
 import { useAppContext } from '~/app/contexts/App.context'
 import { ROUTES, ROUTES_MAP } from '~/app/lib/constants'
+import logger from '~/app/lib/utils/logger'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 import { REPORT_STATUS } from '~/app/models/Report'
 import { SORT_BY_OPTIONS } from '~/app/pages/History/History.data'
@@ -85,6 +86,12 @@ function HistoryContainer() {
     setIsErrorListModalOpen(false)
   }
 
+  const failedHistory = history.filter(
+    (item) => item.status === REPORT_STATUS.FAIL,
+  )
+
+  logger.info('history on history page:::', history)
+
   return (
     <>
       <HistoryHeader />
@@ -100,8 +107,8 @@ function HistoryContainer() {
           />
         </div>
       </div>
-      <div className="flex px-8 mb-8 mt-4">
-        <div>
+      <div className="flex px-8 my-1 justify-between items-center">
+        <div className="flex">
           <Select
             options={SORT_BY_OPTIONS}
             onChange={handleSelectChange}
@@ -116,9 +123,14 @@ function HistoryContainer() {
             branchNames={branchNames}
           />
         </div>
-        <LinkButton onClick={handleOpenErrorListModal} className="">
-          {ui('history.viewErrors')}
-        </LinkButton>
+        {!!failedHistory.length && (
+          <LinkButton
+            onClick={handleOpenErrorListModal}
+            className="justify-end text-sm"
+          >
+            {ui('history.viewErrors')}
+          </LinkButton>
+        )}
       </div>
       <Table
         columns={columns}
@@ -130,9 +142,10 @@ function HistoryContainer() {
         onClickRow={handleClickRow}
       />
       <ErrorListModal
-        data={[]}
+        data={failedHistory}
         isOpen={isErrorListModalOpen}
         onClose={handleCloseErrorListModal}
+        title="Errors"
       />
     </>
   )

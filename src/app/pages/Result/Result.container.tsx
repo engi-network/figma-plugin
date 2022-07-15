@@ -158,7 +158,7 @@ function ResultContainer() {
             <div className="flex flex-col justify-end">
               <p className="text-text-secondary text-right text-sm">
                 {ui('result.updatedOn', {
-                  date: convertUnixToDate(created_at, 'LLLL d'),
+                  date: convertUnixToDate(created_at, 'LLLL d') || '',
                 })}
               </p>
               <LinkButton

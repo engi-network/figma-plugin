@@ -16,8 +16,8 @@ import {
   ErrorResult,
   FETCH_STATUS,
   MessageData,
+  REPORT_STATUS,
   ReportResult,
-  STATUS,
 } from '~/app/models/Report'
 import { SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN } from '~/plugin/constants'
 
@@ -101,7 +101,7 @@ class DataSource extends PubSub {
         checkId: check_id,
         originalImageUrl: baseReport?.originalImageUrl,
         result,
-        status: report?.status as STATUS,
+        status: report ? report.status : REPORT_STATUS.FAIL,
       }
 
       const replacedArray = replaceItemInArray(
@@ -131,14 +131,7 @@ class DataSource extends PubSub {
       }
       if (error) {
         await updateState(FETCH_STATUS.FAIL)
-
-        Sentry.sendReport({
-          error,
-          transactionName: SENTRY_TRANSACTION.GET_REPORT,
-          tagData: { check_id },
-        })
-
-        return
+        throw error
       }
       //in progress
     } catch (error) {
@@ -147,7 +140,8 @@ class DataSource extends PubSub {
         transactionName: SENTRY_TRANSACTION.GET_REPORT,
         tagData: { check_id },
       })
-      console.error(error)
+      this.stopConsumer(check_id)
+      logger.error(error)
     }
   }
 
