@@ -92,7 +92,8 @@ class DataSource extends PubSub {
           ? ({
               ...baseReport?.result,
               error,
-              results: { ...messageResult },
+              ...messageResult,
+              ...report?.result,
             } as FailedResult)
           : ({
               ...baseReport?.result, // for originalImageUrl that needs to be added to backend later
@@ -136,7 +137,12 @@ class DataSource extends PubSub {
       if (error) {
         const report = await AWSService.fetchReportById(check_id)
         await updateState(REPORT_STATUS.FAIL, report)
-        throw error
+        Sentry.sendReport({
+          error,
+          transactionName: SENTRY_TRANSACTION.GET_REPORT,
+          tagData: { check_id },
+        })
+        return
       }
       //in progress
     } catch (error) {

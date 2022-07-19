@@ -44,8 +44,20 @@ function HistoryContainer() {
   const [isErrorListModalOpen, setIsErrorListModalOpen] = useState(false)
 
   const { columns, filterItems, hiddenColumns } = useTableData(filter)
-  const data = useMemo(() => mapHistoryToTable(history), [history])
-  const branchNames = useMemo(() => extractBranchNames(history), [history])
+  const historyWithoutFail = history.filter(
+    (item) => item.status !== REPORT_STATUS.FAIL,
+  )
+  const failedHistory = history.filter(
+    (item) => item.status === REPORT_STATUS.FAIL,
+  )
+  const data = useMemo(
+    () => mapHistoryToTable(historyWithoutFail),
+    [historyWithoutFail],
+  )
+  const branchNames = useMemo(
+    () => extractBranchNames(historyWithoutFail),
+    [historyWithoutFail],
+  )
 
   const onSearchTermChange = (value: string) => {
     setSearchBy(value)
@@ -85,10 +97,6 @@ function HistoryContainer() {
   const handleCloseErrorListModal = () => {
     setIsErrorListModalOpen(false)
   }
-
-  const failedHistory = history.filter(
-    (item) => item.status === REPORT_STATUS.FAIL,
-  )
 
   logger.info('history on history page:::', history)
 

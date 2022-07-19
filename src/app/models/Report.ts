@@ -36,7 +36,7 @@ export interface MessageResult {
   completed_at?: number
   created_at?: number
   url_blue_difference?: string
-  url_check_frame?: string
+  url_check_frame: string
   url_gray_difference?: string
   url_screenshot?: string
 }
@@ -49,10 +49,9 @@ export interface MessageData {
   step_count: number
 }
 
-export interface FailedResult extends Specification {
+export interface FailedResult extends Specification, MessageResult {
   created_at: number
   error: ErrorData
-  results?: MessageResult
 }
 
 /**
