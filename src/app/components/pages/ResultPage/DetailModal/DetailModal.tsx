@@ -4,10 +4,10 @@ import Modal from '~/app/components/global/Modal/Modal'
 import { formatFileSize } from '~/app/lib/utils/string'
 import { convertUnixToDate } from '~/app/lib/utils/time'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import { DetailedReport, ReportResult } from '~/app/models/Report'
+import { Report, ReportResult } from '~/app/models/Report'
 
 interface Props {
-  data: DetailedReport
+  data: Report
   isOpen: boolean
   onClose: () => void
   title: string

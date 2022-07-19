@@ -12,10 +12,9 @@ import { replaceItemInArray } from '~/app/lib/utils/object'
 import PubSub from '~/app/lib/utils/pub-sub'
 import { createStore } from '~/app/lib/utils/store'
 import {
-  DetailedReport,
-  ErrorResult,
-  FETCH_STATUS,
+  FailedResult,
   MessageData,
+  Report,
   REPORT_STATUS,
   ReportResult,
 } from '~/app/models/Report'
@@ -71,7 +70,13 @@ class DataSource extends PubSub {
   }
 
   private async sqsCallback(data: MessageData) {
-    const { check_id, step, step_count, error } = data as MessageData
+    const {
+      check_id,
+      step,
+      step_count,
+      error,
+      results: messageResult,
+    } = data as MessageData
     const { history } = store.getState()
     await delay(3)
 
@@ -79,27 +84,25 @@ class DataSource extends PubSub {
 
     logger.info('Received message for::', data)
 
-    const updateState = async (status: FETCH_STATUS) => {
-      const report =
-        status === FETCH_STATUS.SUCCESS
-          ? await AWSService.fetchReportById(check_id, status)
-          : undefined
+    const updateState = async (status: REPORT_STATUS) => {
+      const report = await AWSService.fetchReportById(check_id)
       const baseReport = history.find((item) => item.checkId === check_id)
 
       const result =
-        status === FETCH_STATUS.FAIL
+        status === REPORT_STATUS.FAIL
           ? ({
               ...baseReport?.result,
               error,
-            } as ErrorResult)
+              results: { ...messageResult },
+            } as FailedResult)
           : ({
-              ...baseReport?.result,
+              ...baseReport?.result, // for originalImageUrl that needs to be added to backend later
+              ...messageResult,
               ...report?.result,
             } as ReportResult)
 
-      const detailedReport: DetailedReport = {
+      const detailedReport: Report = {
         checkId: check_id,
-        originalImageUrl: baseReport?.originalImageUrl,
         result,
         status: report ? report.status : REPORT_STATUS.FAIL,
       }
@@ -126,11 +129,12 @@ class DataSource extends PubSub {
 
     try {
       if (step === step_count - 1) {
-        await updateState(FETCH_STATUS.SUCCESS)
+        await updateState(REPORT_STATUS.SUCCESS)
         return
       }
+
       if (error) {
-        await updateState(FETCH_STATUS.FAIL)
+        await updateState(REPORT_STATUS.FAIL)
         throw error
       }
       //in progress
@@ -141,11 +145,11 @@ class DataSource extends PubSub {
         tagData: { check_id },
       })
       this.stopConsumer(check_id)
-      logger.error(error)
+      logger.error('error occurred and stop consumer', error)
     }
   }
 
-  async createConsumer(checkId: string, baseReport: DetailedReport) {
+  async createConsumer(checkId: string, baseReport: Report) {
     try {
       const queueUrl = await this.getSQSUrl(checkId, env, 0)
 

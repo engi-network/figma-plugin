@@ -65,7 +65,7 @@ class Logger {
   }
 
   error(...args) {
-    console.error(`${logStyles.bg.red}%s${logStyles.dim}`, ...args)
+    console.error(`${logStyles.bg.red}%s${logStyles.fg.white}`, ...args)
   }
 }
 

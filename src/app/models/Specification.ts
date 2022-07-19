@@ -9,5 +9,6 @@ export interface Specification {
   path: string
   repository: string
   story: string
+  url_check_frame: string
   width: string
 }

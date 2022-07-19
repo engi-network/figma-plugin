@@ -39,6 +39,7 @@ import {
 } from '~/plugin/constants'
 
 import useDataSource from '../hooks/useDataSource'
+import { convertDateToUnix } from '../lib/utils/time'
 import { useUserContext } from './User.context'
 
 export interface MainContextProps {
@@ -141,19 +142,6 @@ export function useMainContextSetup(): MainContextProps {
         path,
         github_token = '',
       } = values as AnalyzeFormValues
-      const message: Specification = {
-        branch,
-        check_id: checkId,
-        commit,
-        component,
-        github_token,
-        height: height + '',
-        name,
-        path,
-        repository,
-        story,
-        width: width + '',
-      }
 
       const context = originCanvasRef.current.getContext(
         '2d',
@@ -172,18 +160,32 @@ export function useMainContextSetup(): MainContextProps {
       )
       const frame = await encode(copyRef, context, imageData)
 
-      const originalImageUrl = await AWSService.uploadEncodedFrameToS3(
+      const url_check_frame = await AWSService.uploadEncodedFrameToS3(
         story || component,
         checkId,
         frame,
       )
+
+      const message: Specification = {
+        branch,
+        check_id: checkId,
+        commit,
+        component,
+        github_token,
+        height: height + '',
+        name,
+        path,
+        repository,
+        story,
+        url_check_frame,
+        width: width + '',
+      }
 
       await AWSService.publishCommandToSns(makeCompact(message))
 
       const reportInProgress = {
         status: REPORT_STATUS.IN_PROGRESS,
         checkId,
-        originalImageUrl,
         result: {
           ...message,
         },

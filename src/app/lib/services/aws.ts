@@ -140,7 +140,7 @@ class AWSService {
 
   async fetchReportById(
     checkId: string,
-    status: FETCH_STATUS,
+    status: FETCH_STATUS = FETCH_STATUS.SUCCESS,
   ): Promise<Report> {
     if (!this.s3Client) {
       throw {

@@ -9,10 +9,10 @@ import SocketService from '~/app/lib/services/socket'
 import { dispatchData } from '~/app/lib/utils/event'
 import { replaceItemInArray } from '~/app/lib/utils/object'
 import {
-  DetailedReport,
-  ErrorResult,
+  FailedResult,
   FETCH_STATUS,
   MessageData,
+  Report,
   REPORT_STATUS,
   ReportResult,
 } from '~/app/models/Report'
@@ -41,15 +41,14 @@ function useSocket() {
             ? ({
                 ...baseReport?.result,
                 error,
-              } as ErrorResult)
+              } as FailedResult)
             : ({
                 ...baseReport?.result,
                 ...report?.result,
               } as ReportResult)
 
-        const detailedReport: DetailedReport = {
+        const Report: Report = {
           checkId: check_id,
-          originalImageUrl: baseReport?.originalImageUrl,
           result,
           status: report?.status as REPORT_STATUS,
         }
@@ -58,13 +57,13 @@ function useSocket() {
           history,
           'checkId',
           check_id,
-          detailedReport,
+          Report,
         )
 
         setHistory(replacedArray)
         dispatchData({
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-          data: detailedReport,
+          data: Report,
         })
 
         SocketService.removeTopicFromWs(checkId, socketCallback)

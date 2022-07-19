@@ -1,5 +1,22 @@
 import { Specification } from './Specification'
 
+export enum DIFF_TYPE {
+  BLUE = 'blue',
+  GRAY = 'gray',
+}
+
+export enum FETCH_STATUS {
+  FAIL = 'fetch_fail',
+  SUCCESS = 'fetch_success',
+}
+
+export enum REPORT_STATUS {
+  ERROR = 'report_error',
+  FAIL = 'report_fail',
+  IN_PROGRESS = 'report_in_progress',
+  SUCCESS = 'report_success',
+}
+
 interface ErrorData {
   aws?: string
   branch?: string
@@ -19,6 +36,7 @@ export interface MessageResult {
   completed_at?: number
   created_at?: number
   url_blue_difference?: string
+  url_check_frame?: string
   url_gray_difference?: string
   url_screenshot?: string
 }
@@ -31,9 +49,10 @@ export interface MessageData {
   step_count: number
 }
 
-export interface ErrorResult extends Specification {
+export interface FailedResult extends Specification {
   created_at: number
   error: ErrorData
+  results?: MessageResult
 }
 
 /**
@@ -47,6 +66,7 @@ export interface ReportResult extends Specification {
   completed_at: number
   created_at: number
   url_blue_difference: string
+  url_check_frame: string
   url_gray_difference: string
   url_screenshot: string
 }
@@ -55,38 +75,16 @@ export interface InProgressResult extends Specification {
   created_at: number
 }
 
-export enum FETCH_STATUS {
-  FAIL = 'fetch_fail',
-  SUCCESS = 'fetch_success',
-}
-
-export enum REPORT_STATUS {
-  ERROR = 'report_error',
-  FAIL = 'report_fail',
-  IN_PROGRESS = 'report_in_progress',
-  SUCCESS = 'report_success',
-}
-
 export interface Report {
   checkId: string
-  result: ReportResult | ErrorResult | InProgressResult
+  result: ReportResult | FailedResult | InProgressResult
   status: REPORT_STATUS
 }
 
-export type History = Array<DetailedReport>
-
 export function isError(
-  result: ReportResult | ErrorResult,
-): result is ErrorResult {
-  return (result as ErrorResult).error !== undefined
+  result: ReportResult | FailedResult,
+): result is FailedResult {
+  return (result as FailedResult).error !== undefined
 }
 
-export enum DIFF_TYPE {
-  BLUE = 'blue',
-  GRAY = 'gray',
-}
-
-export interface DetailedReport extends Report {
-  duration?: number
-  originalImageUrl?: string
-}
+export type History = Array<Report>

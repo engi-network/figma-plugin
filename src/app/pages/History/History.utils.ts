@@ -1,8 +1,6 @@
-import { DetailedReport } from '~/app/models/Report'
+import { Report } from '~/app/models/Report'
 
-export const extractBranchNames = (
-  history: Array<DetailedReport>,
-): Array<string> => {
+export const extractBranchNames = (history: Array<Report>): Array<string> => {
   return history.reduce((prev, { result: { branch } }) => {
     if (!branch || prev.includes(branch)) {
       return prev

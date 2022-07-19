@@ -3,7 +3,7 @@ import { History, REPORT_STATUS, ReportResult } from '~/app/models/Report'
 import { Cell } from './Table.types'
 
 export const mapHistoryToTable = (history: History): Array<Cell> => {
-  return history.map(({ result, status, originalImageUrl = '' }) => {
+  return history.map(({ result, status }) => {
     const {
       check_id,
       path,
@@ -12,6 +12,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
       branch = '',
       commit = '',
       name,
+      url_check_frame,
     } = result
     const baseObj = {
       branch,
@@ -21,7 +22,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
         checkId: check_id,
       },
       commit,
-      imageUrl: originalImageUrl,
+      imageUrl: url_check_frame,
       name: {
         story,
         path,
@@ -47,7 +48,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
             checkId: check_id,
             codeSnippet: code_snippets[0],
             name,
-            originalImageUrl,
+            originalImageUrl: url_check_frame,
             status,
           },
           completedAt: completed_at,
@@ -66,7 +67,7 @@ export const mapHistoryToTable = (history: History): Array<Cell> => {
             checkId: check_id,
             codeSnippet: code_snippets[0] || '',
             name,
-            originalImageUrl,
+            originalImageUrl: url_check_frame,
             status: REPORT_STATUS.IN_PROGRESS,
           },
           duration: 0,

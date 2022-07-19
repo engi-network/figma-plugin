@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys */
 import { SelectOption } from '~/app/components/global/Select/Select'
 import { randomString } from '~/app/lib/utils/string'
-import { DetailedReport, History, REPORT_STATUS } from '~/app/models/Report'
+import { History, Report, REPORT_STATUS } from '~/app/models/Report'
 
 export const SORT_BY_OPTIONS: Array<SelectOption> = [
   { value: 'completedAt', name: 'Last updated' },
@@ -9,7 +9,7 @@ export const SORT_BY_OPTIONS: Array<SelectOption> = [
   { value: 'path', name: 'Alphabetical' },
 ]
 
-export const mockSuccessReport: DetailedReport = {
+export const mockSuccessReport: Report = {
   checkId: '634cd4fc-bd1f-4dbd-b26d-c8d53d5e51f3',
   originalImageUrl:
     'https://same-story-api-staging.s3.us-west-2.amazonaws.com/checks/634cd4fc-bd1f-4dbd-b26d-c8d53d5e51f3/frames/Button%20With%20Knobs.png',
@@ -49,7 +49,7 @@ export const mockSuccessReport: DetailedReport = {
   status: REPORT_STATUS.SUCCESS,
 }
 
-export const mockErrorReport: DetailedReport = {
+export const mockErrorReport: Report = {
   checkId: '293bdbd6-dee7-4e17-b3db-82765db6308a',
   originalImageUrl:
     'https://same-story-api-staging.s3.us-west-2.amazonaws.com/checks/634cd4fc-bd1f-4dbd-b26d-c8d53d5e51f3/frames/Button%20With%20Knobs.png',
@@ -74,7 +74,7 @@ export const mockErrorReport: DetailedReport = {
   status: REPORT_STATUS.ERROR,
 }
 
-export const mockInProgressReport: DetailedReport = {
+export const mockInProgressReport: Report = {
   checkId: '293bdbd6-dee7-4e17-b3db-82765db6308a',
   result: {
     branch: 'staging',
@@ -93,7 +93,7 @@ export const mockInProgressReport: DetailedReport = {
   status: REPORT_STATUS.IN_PROGRESS,
 }
 
-export const mockFailReport: DetailedReport = {
+export const mockFailReport: Report = {
   checkId: '293bdbd6-dee7-4e17-b3db-82765db6308a',
   result: {
     branch: 'staging',

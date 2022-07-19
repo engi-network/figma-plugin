@@ -25,11 +25,7 @@ import { drawImage } from '~/app/lib/utils/canvas'
 import { isSameStory } from '~/app/lib/utils/mae'
 import { convertUnixToDate } from '~/app/lib/utils/time'
 import { ui } from '~/app/lib/utils/ui-dictionary'
-import {
-  DetailedReport,
-  REPORT_STATUS,
-  ReportResult,
-} from '~/app/models/Report'
+import { Report, REPORT_STATUS, ReportResult } from '~/app/models/Report'
 
 function ResultStatus({ status }: { status: REPORT_STATUS }) {
   return (
@@ -52,9 +48,7 @@ function ResultContainer() {
   const [selectedImage, setSelectedImage] = useState('')
 
   const checkId = searchParams.get('checkId') as string
-  const report = history.find(
-    (item) => item.checkId === checkId,
-  ) as DetailedReport
+  const report = history.find((item) => item.checkId === checkId) as Report
 
   const { originalImageUrl, result } = report
 
