@@ -47,7 +47,7 @@ function useSocket() {
                 ...report?.result,
               } as ReportResult)
 
-        const Report: Report = {
+        const detailedReport: Report = {
           checkId: check_id,
           result,
           status: report?.status as REPORT_STATUS,
@@ -57,13 +57,13 @@ function useSocket() {
           history,
           'checkId',
           check_id,
-          Report,
+          detailedReport,
         )
 
         setHistory(replacedArray)
         dispatchData({
           type: SAME_STORY_HISTORY_CREATE_FROM_UI_TO_PLUGIN,
-          data: Report,
+          data: report,
         })
 
         SocketService.removeTopicFromWs(checkId, socketCallback)

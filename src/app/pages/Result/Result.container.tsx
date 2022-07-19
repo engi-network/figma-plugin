@@ -50,7 +50,7 @@ function ResultContainer() {
   const checkId = searchParams.get('checkId') as string
   const report = history.find((item) => item.checkId === checkId) as Report
 
-  const { originalImageUrl, result } = report
+  const { result } = report
 
   const {
     url_blue_difference,
@@ -61,6 +61,7 @@ function ResultContainer() {
     MAE,
     name,
     created_at,
+    url_check_frame,
   } = result as ReportResult
 
   const isSuccess = isSameStory(MAE)
@@ -182,7 +183,7 @@ function ResultContainer() {
             <Canvas
               id="original-image"
               className="mb-2 border border-wf-tertiary"
-              draw={drawCallback(originalImageUrl + '')}
+              draw={drawCallback(url_check_frame + '')}
               options={{ contextId: '2d' }}
               label={
                 <>

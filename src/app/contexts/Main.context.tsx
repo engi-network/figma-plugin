@@ -31,7 +31,7 @@ import { createContext } from '~/app/lib/utils/context'
 import { dispatchData } from '~/app/lib/utils/event'
 import { makeCompact } from '~/app/lib/utils/object'
 import { PluginSelection } from '~/app/models/PluginSelection'
-import { DetailedReport, REPORT_STATUS } from '~/app/models/Report'
+import { Report, REPORT_STATUS } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 import {
   SAME_STORY_CHECK_INITIAL_SELECTION,
@@ -39,7 +39,6 @@ import {
 } from '~/plugin/constants'
 
 import useDataSource from '../hooks/useDataSource'
-import { convertDateToUnix } from '../lib/utils/time'
 import { useUserContext } from './User.context'
 
 export interface MainContextProps {
@@ -189,7 +188,7 @@ export function useMainContextSetup(): MainContextProps {
         result: {
           ...message,
         },
-      } as DetailedReport
+      } as Report
 
       const queryParams: MeasurementData = {
         _ss: '0',
