@@ -81,10 +81,16 @@ export interface Report {
   status: REPORT_STATUS
 }
 
-export function isError(
+export function hasFailed(
   result: ReportResult | FailedResult,
 ): result is FailedResult {
   return (result as FailedResult).error !== undefined
+}
+
+export function isInProgress(
+  result: ReportResult | FailedResult | InProgressResult,
+): result is InProgressResult {
+  return (result as InProgressResult).created_at !== undefined
 }
 
 export type History = Array<Report>

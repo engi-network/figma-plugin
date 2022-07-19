@@ -19,12 +19,11 @@ import config from '~/app/lib/config'
 import { readDataFromStream } from '~/app/lib/utils/buffer'
 import {
   DIFF_TYPE,
-  ErrorResult,
   FETCH_STATUS,
+  hasFailed,
   MessageData,
   Report,
   REPORT_STATUS,
-  ReportResult,
 } from '~/app/models/Report'
 import { Specification } from '~/app/models/Specification'
 
@@ -160,35 +159,42 @@ class AWSService {
         new GetObjectCommand(downloadParams),
       )
 
-      if (Body) {
-        const streamData = await readDataFromStream(Body as ReadableStream)
+      if (!Body) {
+        throw {
+          message: 'There is no body to parse!',
+        } as AWSError
+      }
 
-        const result = await new Response(streamData).json()
+      const streamData = await readDataFromStream(Body as ReadableStream)
 
-        if (status === FETCH_STATUS.SUCCESS) {
-          const successResult = result as ReportResult
+      const result = await new Response(streamData).json()
+
+      if (status === FETCH_STATUS.SUCCESS) {
+        if (hasFailed(result)) {
           return {
-            result: successResult,
-            checkId,
-            status: isSameStory(successResult.MAE)
-              ? REPORT_STATUS.SUCCESS
-              : REPORT_STATUS.ERROR,
-          }
-        } else {
-          return {
-            result: result as ErrorResult,
+            result,
             checkId,
             status: REPORT_STATUS.FAIL,
           }
         }
+
+        return {
+          result,
+          checkId,
+          status: isSameStory(result.MAE)
+            ? REPORT_STATUS.SUCCESS
+            : REPORT_STATUS.ERROR,
+        }
       } else {
-        throw {
-          message: 'Error in fetching data.',
-        } as AWSError
+        return {
+          result,
+          checkId,
+          status: REPORT_STATUS.FAIL,
+        }
       }
     } catch (error) {
-      console.error('error in aws', error)
       throw {
+        statusCode: 400,
         message: 'Error in fetching data.',
       } as AWSError
     }
@@ -221,7 +227,6 @@ class AWSService {
 
   async processMsg(msg: Message): Promise<MessageData> {
     const _msg = JSON.parse(msg.Body + '')
-    console.info(`message: ${_msg.Message}`)
 
     const data = await this.sqsClient?.send(
       new DeleteMessageCommand({

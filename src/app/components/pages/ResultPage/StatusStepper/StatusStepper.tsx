@@ -44,6 +44,14 @@ function getLastPath(path: string): string {
   return temp[temp.length - 1]
 }
 
+function MessageTooltipContent({ message }: { message: string }) {
+  return (
+    <span className="whitespace-nowrap text-xs text-text-secondary">
+      {message}
+    </span>
+  )
+}
+
 function StatusStepper({
   activeStep,
   className,
@@ -80,24 +88,14 @@ function StatusStepper({
         ),
       },
       1: {
-        content: (
-          <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[1]}
-          </span>
-        ),
+        content: <MessageTooltipContent message={STEP_MESSAGES[1]} />,
       },
       2: {
-        content: (
-          <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[3]}
-          </span>
-        ),
+        content: <MessageTooltipContent message={STEP_MESSAGES[3]} />,
       },
       3: {
         content: !codeBlockData.length ? (
-          <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[4]}
-          </span>
+          <MessageTooltipContent message={STEP_MESSAGES[4]} />
         ) : (
           <CodeBlockWithTabs
             data={codeBlockData}
@@ -105,21 +103,15 @@ function StatusStepper({
             className="p-0 border-none max-h-20 w-full"
           />
         ),
-        customPopperStyles: { padding: 0, background: 'none' },
+        customPopperStyles: !codeBlockData.length
+          ? undefined
+          : { padding: 0, background: 'none' },
       },
       4: {
-        content: (
-          <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[5]}
-          </span>
-        ),
+        content: <MessageTooltipContent message={STEP_MESSAGES[5]} />,
       },
       5: {
-        content: (
-          <span className="whitespace-nowrap text-xs text-text-secondary">
-            {STEP_MESSAGES[7]}
-          </span>
-        ),
+        content: <MessageTooltipContent message={STEP_MESSAGES[7]} />,
       },
     }),
     [activeStep],
@@ -162,6 +154,7 @@ function StatusStepper({
     className,
     'flex flex-col items-center justify-center gap-2',
   )
+
   return (
     <div className={rootClasses}>
       <Stepper

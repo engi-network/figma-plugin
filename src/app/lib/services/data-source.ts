@@ -84,8 +84,7 @@ class DataSource extends PubSub {
 
     logger.info('Received message for::', data)
 
-    const updateState = async (status: REPORT_STATUS) => {
-      const report = await AWSService.fetchReportById(check_id)
+    const updateState = async (status: REPORT_STATUS, report?: Report) => {
       const baseReport = history.find((item) => item.checkId === check_id)
 
       const result =
@@ -129,12 +128,14 @@ class DataSource extends PubSub {
 
     try {
       if (step === step_count - 1) {
-        await updateState(REPORT_STATUS.SUCCESS)
+        const report = await AWSService.fetchReportById(check_id)
+        await updateState(REPORT_STATUS.SUCCESS, report)
         return
       }
 
       if (error) {
-        await updateState(REPORT_STATUS.FAIL)
+        const report = await AWSService.fetchReportById(check_id)
+        await updateState(REPORT_STATUS.FAIL, report)
         throw error
       }
       //in progress
@@ -144,8 +145,8 @@ class DataSource extends PubSub {
         transactionName: SENTRY_TRANSACTION.GET_REPORT,
         tagData: { check_id },
       })
-      this.stopConsumer(check_id)
       logger.error('error occurred and stop consumer', error)
+      await updateState(REPORT_STATUS.FAIL)
     }
   }
 
