@@ -1,4 +1,5 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   createSearchParams,
@@ -27,8 +28,13 @@ export const loadingInitialStatus = {
   message: STEP_MESSAGES[0],
 } as MessageData
 
+const transition = {
+  duration: 0.5,
+}
+
 function Loading() {
   const navigate = useNavigate()
+
   const { setGlobalError, numberOfInProgress, findReportById } = useAppContext()
   const lastMessages = useStore(
     store,
@@ -111,7 +117,7 @@ function Loading() {
   return (
     <>
       <Header numberOfProgress={numberOfInProgress} />
-      <div className="relative">
+      <div className="relative w-full h-full">
         <IconButton
           icon={<ChevronLeftIcon className="w-4 h-4" />}
           onClick={handleClickBack}
@@ -119,12 +125,30 @@ function Loading() {
         >
           {ui('header.back')}
         </IconButton>
-        <div className="flex justify-center">
-          <Loader step={step} />
-        </div>
-        <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
-          {STEP_MESSAGES[step]}
-        </h2>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={STEP_MAP_TO_STEPPER[step]}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={transition}
+            className="absolute flex justify-center w-full"
+          >
+            <Loader step={step} />
+          </motion.div>
+        </AnimatePresence>
+        <AnimatePresence initial={false}>
+          <motion.h2
+            key={STEP_MAP_TO_STEPPER[step]}
+            initial={{ bottom: 0, opacity: 0 }}
+            animate={{ bottom: 100, opacity: 1 }}
+            exit={{ bottom: 200, opacity: 0 }}
+            transition={transition}
+            className="text-2xl font-bold text-text-primary text-center mb-10 absolute w-full"
+          >
+            {STEP_MESSAGES[step]}
+          </motion.h2>
+        </AnimatePresence>
         <LoadingStepper
           step={STEP_MAP_TO_STEPPER[step]}
           className="absolute top-12 right-8"

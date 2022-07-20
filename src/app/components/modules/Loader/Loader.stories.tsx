@@ -1,13 +1,29 @@
 import { select } from '@storybook/addon-knobs'
+import { AnimatePresence, motion, useAnimation } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
-import { STEP_MESSAGES, STEPS } from '~/app/pages/Main/Main.types'
+import {
+  STEP_MAP_TO_STEPPER,
+  STEP_MESSAGES,
+  STEPS,
+} from '~/app/pages/Main/Main.types'
 
 import StoryContainer from '../Storybook/StoryContainer/StoryContainer'
 import Loader from './Loader'
 
+const transition = {
+  duration: 1,
+  type: 'spring',
+  stiffness: 50,
+  damping: 20,
+}
+
 export default { component: Loader, title: 'Modules/Loader' }
 
 export function LoaderWithAnimationWithKnobs() {
+  const control = useAnimation()
+  const [state, setState] = useState(false)
+
   const step = select(
     'Step',
     [
@@ -24,12 +40,41 @@ export function LoaderWithAnimationWithKnobs() {
     STEPS.INIT,
   )
 
+  useEffect(() => {
+    setState((prev) => !prev)
+    if (state) {
+      control.start('hidden')
+    } else {
+      control.start('visible')
+    }
+  }, [step])
+
   return (
-    <StoryContainer className="flex-col">
-      <Loader step={step} />
-      <h2 className="text-2xl font-bold text-text-primary text-center mb-10">
-        {STEP_MESSAGES[step]}
-      </h2>
+    <StoryContainer className="flex-col relative">
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={STEP_MAP_TO_STEPPER[step]}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={transition}
+          className="absolute top-10"
+        >
+          <Loader step={step} />
+        </motion.div>
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
+        <motion.h2
+          key={STEP_MAP_TO_STEPPER[step]}
+          initial={{ bottom: 0, opacity: 0 }}
+          animate={{ bottom: 100, opacity: 1 }}
+          exit={{ bottom: 200, opacity: 0 }}
+          transition={transition}
+          className="text-2xl font-bold text-text-primary text-center mb-10 absolute"
+        >
+          {STEP_MESSAGES[step]}
+        </motion.h2>
+      </AnimatePresence>
     </StoryContainer>
   )
 }

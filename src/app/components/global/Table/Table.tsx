@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import { useCallback, useEffect, useMemo } from 'react'
+// import { Scrollbars } from 'react-custom-scrollbars-2'
 import {
   useBlockLayout,
   useFilters,
@@ -227,6 +228,24 @@ function Table({
       <div {...getTableBodyProps()} css={{ height: 350 }}>
         <AutoSizer>
           {({ height, width }) => (
+            // <Scrollbars
+            //   onScroll={handleScroll}
+            //   style={{ height, width }}
+            //   renderThumbVertical={({ style, ...props }) => (
+            //     <div
+            //       {...props}
+            //       className="thumb-vertical border-2 border-primary-blue w-10"
+            //       style={{ ...style, background: 'red' }}
+            //     />
+            //   )}
+            //   renderTrackVertical={({ style, ...props }) => (
+            //     <div
+            //       {...props}
+            //       className="track-vertical bg-slate-900 w-5"
+            //       style={style}
+            //     ></div>
+            //   )}
+            // >
             <FixedSizeList
               height={height}
               itemCount={rows.length}
@@ -235,6 +254,7 @@ function Table({
             >
               {rowElements}
             </FixedSizeList>
+            // </Scrollbars>
           )}
         </AutoSizer>
       </div>
