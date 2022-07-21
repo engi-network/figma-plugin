@@ -13,17 +13,12 @@ import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
 import { autoBind } from '~/app/lib/utils/auto-bind'
 import logger from '~/app/lib/utils/logger'
 
-function isConnectionError(error: AWSError): boolean {
-  if ('code' in error && 'statusCode' in error) {
-    return (
-      error.statusCode === 403 ||
-      error.code === 'CredentialsError' ||
-      error.code === 'UnknownEndpoint'
-    )
-  }
-
-  return false
-}
+import {
+  createTimeout,
+  isConnectionError,
+  TimeoutError,
+  toSQSError,
+} from './sqs-error'
 
 export interface ConsumerOptions {
   attributeNames?: string[]
@@ -63,6 +58,7 @@ class SQSConsumer {
   private heartbeatInterval: number | undefined
   private sqs: SQSClient
   private shouldDeleteMessages: boolean
+  private handleMessageTimeout: number | undefined
 
   constructor(options: ConsumerOptions) {
     this.queueUrl = options.queueUrl
@@ -82,6 +78,7 @@ class SQSConsumer {
     this.pollingWaitTimeMs = options.pollingWaitTimeMs ?? 0
     this.shouldDeleteMessages = options.shouldDeleteMessages ?? true
     this.sqs = options.sqs
+    this.handleMessageTimeout = options.handleMessageTimeout
 
     autoBind(this)
   }
@@ -106,7 +103,14 @@ class SQSConsumer {
   private async receiveMessage(
     params: ReceiveMessageRequest,
   ): Promise<ReceiveMessageResult> {
-    return await this.sqs.send(new ReceiveMessageCommand(params))
+    try {
+      return await this.sqs.send(new ReceiveMessageCommand(params))
+    } catch (error) {
+      throw toSQSError(
+        error as AWSError,
+        `SQS receive message failed: ${(error as AWSError).message}`,
+      )
+    }
   }
 
   private async deleteMessage(message: Message): Promise<void> {
@@ -116,7 +120,6 @@ class SQSConsumer {
       )
       return
     }
-    logger.warn('Deleting message:::', message.MessageId)
 
     const deleteParams = {
       QueueUrl: this.queueUrl,
@@ -126,12 +129,10 @@ class SQSConsumer {
     try {
       await this.sqs.send(new DeleteMessageCommand(deleteParams))
     } catch (error) {
-      Sentry.sendReport({
-        error,
-        transactionName: SENTRY_TRANSACTION.SQS_ERROR,
-        tagData: { queueUrl: this.queueUrl },
-      })
-      throw error as AWSError
+      throw toSQSError(
+        error as AWSError,
+        `SQS delete message failed: ${(error as AWSError).message}`,
+      )
     }
   }
 
@@ -181,27 +182,41 @@ class SQSConsumer {
       const command = new ChangeMessageVisibilityCommand(params)
       await this.sqs.send(command)
     } catch (error) {
-      logger.error(error)
+      const sqsError = toSQSError(
+        error as AWSError,
+        `Error changing visibility timeout: ${(error as AWSError).message}`,
+      )
       Sentry.sendReport({
-        error,
+        error: sqsError,
         transactionName: SENTRY_TRANSACTION.SQS_ERROR,
         tagData: { queueUrl: this.queueUrl },
       })
-      throw error as AWSError
+      throw sqsError
     }
   }
 
   private async executeHandler(message: Message): Promise<void> {
+    let timeout
+    let pending
+
     try {
+      if (this.handleMessageTimeout) {
+        ;[timeout, pending] = createTimeout(this.handleMessageTimeout)
+
+        await Promise.race([this.handleMessage(message), pending])
+      } else {
+        await this.handleMessage(message)
+      }
       await this.handleMessage(message)
     } catch (error) {
-      logger.error(error)
-      Sentry.sendReport({
-        error,
-        transactionName: SENTRY_TRANSACTION.SQS_ERROR,
-        tagData: { queueUrl: this.queueUrl },
-      })
-      throw new Error('Error in handle message')
+      if (error instanceof TimeoutError) {
+        error.message = `Message handler timed out after ${this.handleMessageTimeout}ms: Operation timed out.`
+      } else if (error instanceof Error) {
+        error.message = `Unexpected message handler failure: ${error.message}`
+      }
+      throw error
+    } finally {
+      clearTimeout(timeout)
     }
   }
 

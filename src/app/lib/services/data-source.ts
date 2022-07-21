@@ -4,7 +4,7 @@ import { AWSError } from 'aws-sdk'
 import config from '~/app/lib/config'
 import AWSService from '~/app/lib/services/aws'
 import Sentry, { SENTRY_TRANSACTION } from '~/app/lib/services/sentry'
-import SQSConsumer from '~/app/lib/services/sqs-consumer'
+import SQSConsumer from '~/app/lib/services/sqs-consumer/sqs-consumer'
 import delay from '~/app/lib/utils/delay'
 import { dispatchData } from '~/app/lib/utils/event'
 import logger from '~/app/lib/utils/logger'
@@ -173,6 +173,7 @@ class DataSource extends PubSub {
         pollingWaitTimeMs: 7 * 1000,
         queueUrl,
         sqs: AWSService.sqsClient,
+        visibilityTimeout: 5,
         waitTimeSeconds: 4,
       })
 
