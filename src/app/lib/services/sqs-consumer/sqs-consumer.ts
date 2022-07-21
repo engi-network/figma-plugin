@@ -258,7 +258,7 @@ class SQSConsumer {
           tagData: { queueUrl: this.queueUrl },
         })
 
-        logger.error(error)
+        logger.error('Sqs error in polling', error)
       })
   }
 
