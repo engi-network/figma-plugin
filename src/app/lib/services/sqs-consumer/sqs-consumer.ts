@@ -128,11 +128,22 @@ class SQSConsumer {
 
     try {
       await this.sqs.send(new DeleteMessageCommand(deleteParams))
+      logger.warn('Message deleted:::', message.MessageId)
     } catch (error) {
-      throw toSQSError(
-        error as AWSError,
-        `SQS delete message failed: ${(error as AWSError).message}`,
+      const awsError = error as AWSError
+
+      const sqsError = toSQSError(
+        awsError,
+        `SQS delete message failed: ${awsError.message}`,
       )
+
+      // Sentry.sendReport({
+      //   error: sqsError,
+      //   transactionName: SENTRY_TRANSACTION.SQS_ERROR,
+      //   tagData: { queueUrl: this.queueUrl },
+      // })
+
+      throw sqsError
     }
   }
 
