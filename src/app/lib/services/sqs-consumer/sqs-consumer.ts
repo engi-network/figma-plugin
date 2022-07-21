@@ -207,7 +207,6 @@ class SQSConsumer {
       } else {
         await this.handleMessage(message)
       }
-      await this.handleMessage(message)
     } catch (error) {
       if (error instanceof TimeoutError) {
         error.message = `Message handler timed out after ${this.handleMessageTimeout}ms: Operation timed out.`
