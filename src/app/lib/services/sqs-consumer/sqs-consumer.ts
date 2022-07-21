@@ -137,13 +137,7 @@ class SQSConsumer {
         `SQS delete message failed: ${awsError.message}`,
       )
 
-      // Sentry.sendReport({
-      //   error: sqsError,
-      //   transactionName: SENTRY_TRANSACTION.SQS_ERROR,
-      //   tagData: { queueUrl: this.queueUrl },
-      // })
-
-      throw sqsError
+      logger.info('Error in deleting SQS message::', sqsError)
     }
   }
 
@@ -200,7 +194,10 @@ class SQSConsumer {
       Sentry.sendReport({
         error: sqsError,
         transactionName: SENTRY_TRANSACTION.SQS_ERROR,
-        tagData: { queueUrl: this.queueUrl },
+        tagData: {
+          queueUrl: this.queueUrl,
+          messageId: message.MessageId || '',
+        },
       })
       throw sqsError
     }
@@ -263,7 +260,10 @@ class SQSConsumer {
       })
       .catch((error) => {
         Sentry.sendReport({
-          error,
+          error: {
+            message: 'Error in polling messages',
+            ...error,
+          },
           transactionName: SENTRY_TRANSACTION.SQS_ERROR,
           tagData: { queueUrl: this.queueUrl },
         })

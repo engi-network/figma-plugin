@@ -173,7 +173,7 @@ class DataSource extends PubSub {
         pollingWaitTimeMs: 7 * 1000,
         queueUrl,
         sqs: AWSService.sqsClient,
-        // visibilityTimeout: 5,
+        visibilityTimeout: 10,
         waitTimeSeconds: 4,
       })
 
