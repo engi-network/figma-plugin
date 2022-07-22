@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
 
+import styles from './Layout.styles'
+
 interface Props {
   children: ReactNode
 }
@@ -12,7 +14,10 @@ interface Props {
 
 function Layout({ children }: Props) {
   return (
-    <main className="flex flex-1 flex-col bg-landing bg-cover relative overflow-x-hidden">
+    <main
+      css={styles.scrollbar}
+      className="flex flex-1 flex-col bg-landing bg-cover relative overflow-x-hidden"
+    >
       {children}
     </main>
   )

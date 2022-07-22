@@ -1,4 +1,7 @@
 export const COLORS = {
+  DIVIDER: {
+    SECONDARY: '#ffffff4d',
+  },
   PRIMARY: {
     BLUE: '#18A0FB',
     DARK: '#070706',
@@ -15,15 +18,15 @@ export const COLORS = {
     ORANGE: '#DA6F49',
     PURPLE: '#A349CF',
   },
+  TEXT: {
+    PRIMARY: '#FFFFFF',
+    SECONDARY: '#D7D7D7',
+  },
   WF: {
     BG: '#F3F5F9',
     LIGHT: '#EDEFF3',
     PRIMARY: '#40444E',
     SECONDARY: '#B3B3B3',
     TERTIARY: '#AEB5C7',
-  },
-  TEXT: {
-    PRIMARY: '#FFFFFF',
-    SECONDARY: '#D7D7D7',
   },
 }
