@@ -1,5 +1,4 @@
-import { action } from '@storybook/addon-actions'
-import { boolean, select, text } from '@storybook/addon-knobs'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import StoryContainer from '~/app/components/modules/Storybook/StoryContainer/StoryContainer'
 
@@ -8,43 +7,32 @@ import Button from './Button'
 export default {
   component: Button,
   title: 'Global/Components/Button',
+  argTypes: { onClick: { action: 'clicked' } },
+} as ComponentMeta<typeof Button>
+
+// eslint-disable-next-line react/function-component-definition
+const Template: ComponentStory<typeof Button> = (args) => (
+  <StoryContainer>
+    <Button {...args} />
+  </StoryContainer>
+)
+
+export const ButtonStory = Template.bind({})
+ButtonStory.args = {
+  children: 'Button label',
+  className: 'border border-primary-white',
+  disabled: false,
+  label: 'Button',
+  primary: true,
 }
 
-export function ButtonStory() {
-  const isDisabled = boolean('Disabled?', false)
-  const mode = select('Primary', [true, false], false)
-
-  return (
-    <StoryContainer>
-      <Button
-        label="Click me"
-        primary={mode}
-        onClick={action('button click')}
-        disabled={isDisabled}
-        className="border border-primary-white"
-      >
-        {text('Label', 'Button Label')}
-      </Button>
-    </StoryContainer>
-  )
-}
-
-export function LinkButtonStory() {
-  const mode = select('Primary', [true, false], false)
-
-  return (
-    <StoryContainer>
-      <Button
-        label="Click me"
-        primary={mode}
-        onClick={action('button click')}
-        className="border border-primary-white"
-        as="a"
-        href="https://google.com"
-        target="_blank"
-      >
-        {text('Label', 'Button Label')}
-      </Button>
-    </StoryContainer>
-  )
+export const LinkButtonStory = Template.bind({})
+LinkButtonStory.args = {
+  as: 'a',
+  children: 'Click me',
+  className: 'border border-primary-white',
+  href: 'https://google.com',
+  label: 'Click me',
+  primary: false,
+  target: '_blank',
 }
