@@ -16,6 +16,7 @@ import { ui } from '~/app/lib/utils/ui-dictionary'
 import { REPORT_STATUS } from '~/app/models/Report'
 
 import { TB_ACCESSORS } from './Table.data'
+import styles from './Table.styles'
 import { Cell, Column, ColumnGroup } from './Table.types'
 
 interface Props {
@@ -224,7 +225,7 @@ function Table({
         </div>
       )}
 
-      <div {...getTableBodyProps()} css={{ height: 350 }}>
+      <div {...getTableBodyProps()} css={styles.tbody}>
         <AutoSizer>
           {({ height, width }) => (
             <FixedSizeList
