@@ -17,7 +17,7 @@
     "build-storybook": "build-storybook",
     "lint": "eslint \"src/**/*.{ts,tsx,md}\" \"scripts/**/*.{ts,tsx,md}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,md}\" --fix",
-    "storycap": "storycap --serverCmd \"start-storybook -p 9001\" http://localhost:9001",
+    "storycap": "storycap --verbose --server-timeout 100000 --capture-max-retry-count 6 --server-cmd \"start-storybook -p 9001\" \"http://localhost:9001\"",
     "generate-icons": "npx @svgr/cli --typescript --icon  -d src/app/components/global/Icons src/app/assets/icons/common"
   },
   "dependencies": {
@@ -56,7 +56,7 @@
     "react-table": "^7.7.0",
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.6",
-    "storycap": "^3.1.5",
+    "storycap-engi": "^3.1.11",
     "swiper": "^8.2.2",
     "uuid": "^8.3.2"
   },
