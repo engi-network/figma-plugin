@@ -17,7 +17,8 @@
     "build-storybook": "build-storybook",
     "lint": "eslint \"src/**/*.{ts,tsx,md}\" \"scripts/**/*.{ts,tsx,md}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,md}\" --fix",
-    "storycap": "storycap --verbose --server-timeout 100000 --capture-max-retry-count 6 --server-cmd \"start-storybook -p 9001\" \"http://localhost:9001\"",
+    "storycap:all": "storycap --verbose --server-timeout 100000 --capture-max-retry-count 6 --server-cmd \"start-storybook -p 9001\" \"http://localhost:9001\"",
+    "storycap:button": "storycap --verbose --server-timeout 100000 --capture-max-retry-count 6 --server-cmd \"start-storybook -p 9001\" \"http://localhost:9001\" -q \"path=/story/global-components-button--button-story&args=disabled:true\" -i \"Global/Components/Button/Button Story\" --capture-timeout 10000",
     "generate-icons": "npx @svgr/cli --typescript --icon  -d src/app/components/global/Icons src/app/assets/icons/common"
   },
   "dependencies": {
