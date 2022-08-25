@@ -140,6 +140,7 @@ export function useMainContextSetup(): MainContextProps {
         story,
         path,
         github_token = '',
+        args,
       } = values as AnalyzeFormValues
 
       const context = originCanvasRef.current.getContext(
@@ -166,6 +167,7 @@ export function useMainContextSetup(): MainContextProps {
       )
 
       const message: Specification = {
+        args,
         branch,
         check_id: checkId,
         commit,
@@ -264,6 +266,7 @@ export function useMainContextSetup(): MainContextProps {
     } = selectionData
 
     setValues({
+      args: [],
       branch,
       commit,
       component,

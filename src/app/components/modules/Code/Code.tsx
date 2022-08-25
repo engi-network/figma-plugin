@@ -6,6 +6,7 @@ import ContainerWithTitle from '~/app/components/global/Layout/ContainerWithTitl
 import LinkButton from '~/app/components/global/LinkButton/LinkButton'
 import { ui } from '~/app/lib/utils/ui-dictionary'
 
+import DynamicForm, { DFormValues } from '../DynamicForm/DynamicForm'
 import { AnalyzeFormValues, FORM_FIELD, initialFormValue } from './Code.data'
 
 interface Props {
@@ -28,8 +29,15 @@ function Code({
 
   const handleInputChange = (field: FORM_FIELD) => (value: string) => {
     const newValues = { ...values, [field]: value }
-    setValues(newValues)
 
+    setValues(newValues)
+    onChange(newValues)
+  }
+
+  const handleDFormChange = (dFormValues: DFormValues) => {
+    const newValues = { ...values, [FORM_FIELD.ARGS]: dFormValues }
+
+    setValues(newValues)
     onChange(newValues)
   }
 
@@ -138,6 +146,11 @@ function Code({
                 onChange={handleInputChange(FORM_FIELD.GH_TOKEN)}
                 error={errors && errors[FORM_FIELD.GH_TOKEN]}
                 disabled={isDisabled}
+              />
+              <DynamicForm
+                onChange={handleDFormChange}
+                title="Custom arguments"
+                className="mt-5"
               />
             </>
           )}

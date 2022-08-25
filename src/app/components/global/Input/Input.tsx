@@ -10,6 +10,7 @@ interface Props {
   error?: string
   id?: string
   label?: string
+  name?: string
   onChange: (value: string) => void
   placeholder?: string
   required?: boolean

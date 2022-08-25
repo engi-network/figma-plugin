@@ -1,4 +1,7 @@
+import { DFormValues } from '../components/modules/DynamicForm/DynamicForm'
+
 export interface Specification {
+  args?: DFormValues
   branch?: string
   check_id: string
   commit?: string

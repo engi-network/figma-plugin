@@ -1,4 +1,7 @@
+import { DFormValues } from '../DynamicForm/DynamicForm'
+
 export enum FORM_FIELD {
+  ARGS = 'args',
   BRANCH = 'branch',
   COMMIT = 'commit',
   COMPONENT = 'component',
@@ -16,6 +19,7 @@ export interface AnalyzeFormValues {
   [FORM_FIELD.COMMIT]: string
   [FORM_FIELD.PATH]: string
   [FORM_FIELD.GH_TOKEN]: string
+  [FORM_FIELD.ARGS]: DFormValues
 }
 
 export const initialFormValue = {
@@ -26,4 +30,5 @@ export const initialFormValue = {
   [FORM_FIELD.COMMIT]: '',
   [FORM_FIELD.PATH]: '',
   [FORM_FIELD.GH_TOKEN]: '',
+  [FORM_FIELD.ARGS]: [],
 }
