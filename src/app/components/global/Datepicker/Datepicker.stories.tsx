@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
-import Datepicker from './Datepicker'
+import DatePicker from './Datepicker'
 
 export default {
-  component: Datepicker,
+  component: DatePicker,
   title: 'Global/Components/Datepicker',
 }
 
-export function DatepickerWithKnobs() {
+export function DatePickerWithKnobs() {
   const [value, setValue] = useState('')
   const onChange = (value: string) => {
     setValue(value)
@@ -15,7 +15,7 @@ export function DatepickerWithKnobs() {
 
   return (
     <div className="bg-slate-700 h-screen pt-10 pl-10">
-      <Datepicker value={value} onChange={onChange} />
+      <DatePicker value={value} onChange={onChange} />
     </div>
   )
 }
