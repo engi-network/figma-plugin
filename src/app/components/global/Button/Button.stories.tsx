@@ -10,7 +10,6 @@ export default {
   argTypes: { onClick: { action: 'clicked' } },
 } as ComponentMeta<typeof Button>
 
-// eslint-disable-next-line react/function-component-definition
 const Template: ComponentStory<typeof Button> = (args) => (
   <StoryContainer>
     <Button {...args} />

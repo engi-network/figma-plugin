@@ -44,9 +44,9 @@ module.exports = {
     'no-duplicate-imports': 'error',
     'object-shorthand': ['error', 'always'],
     'react/function-component-definition': [
-      'error',
+      2,
       {
-        namedComponents: 'function-declaration',
+        namedComponents: ['function-declaration', 'arrow-function'],
       },
     ],
     'react/jsx-no-bind': [
