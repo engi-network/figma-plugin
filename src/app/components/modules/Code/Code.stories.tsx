@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import Code, { AnalyzeFormValues } from './Code'
+import Code from './Code'
+import { AnalyzeFormValues } from './Code.data'
 
 export default {
   component: Code,

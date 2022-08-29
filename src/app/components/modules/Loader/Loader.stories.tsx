@@ -1,4 +1,4 @@
-import { select } from '@storybook/addon-knobs'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { AnimatePresence, motion, useAnimation } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -18,27 +18,31 @@ const transition = {
   damping: 20,
 }
 
-export default { component: Loader, title: 'Modules/Loader' }
+export default {
+  component: Loader,
+  title: 'Modules/Loader',
+  argTypes: {
+    step: {
+      option: 'select',
+      options: [
+        STEPS.INIT,
+        STEPS.DOWNLOAD_FIGMA_CHECK_FRAME,
+        STEPS.CAPTURED_SCREENSHOTS,
+        STEPS.CHECKED_OUT_CODE,
+        STEPS.INSTALLED_PACKAGES,
+        STEPS.CAPTURED_SCREENSHOTS,
+        STEPS.VISUAL_COMPARE,
+        STEPS.NUMERIC_COMPARE,
+        STEPS.UPLOADED_SCREENSHOTS,
+      ],
+    },
+  },
+} as ComponentMeta<typeof Loader>
 
-export function LoaderWithAnimationWithKnobs() {
+const Template: ComponentStory<typeof Loader> = (args) => {
+  const { step } = args
   const control = useAnimation()
   const [state, setState] = useState(false)
-
-  const step = select(
-    'Step',
-    [
-      STEPS.INIT,
-      STEPS.DOWNLOAD_FIGMA_CHECK_FRAME,
-      STEPS.CAPTURED_SCREENSHOTS,
-      STEPS.CHECKED_OUT_CODE,
-      STEPS.INSTALLED_PACKAGES,
-      STEPS.CAPTURED_SCREENSHOTS,
-      STEPS.VISUAL_COMPARE,
-      STEPS.NUMERIC_COMPARE,
-      STEPS.UPLOADED_SCREENSHOTS,
-    ],
-    STEPS.INIT,
-  )
 
   useEffect(() => {
     setState((prev) => !prev)
@@ -77,4 +81,9 @@ export function LoaderWithAnimationWithKnobs() {
       </AnimatePresence>
     </StoryContainer>
   )
+}
+
+export const LoaderWithAnimationStory = Template.bind({})
+LoaderWithAnimationStory.args = {
+  step: STEPS.INIT,
 }

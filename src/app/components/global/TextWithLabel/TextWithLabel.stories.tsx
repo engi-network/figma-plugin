@@ -1,21 +1,22 @@
-import { text } from '@storybook/addon-knobs'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import TextWithLabel from './TextWithLabel'
 
 export default {
   component: TextWithLabel,
   title: 'Global/Components/TextWithLabel',
-}
+} as ComponentMeta<typeof TextWithLabel>
 
-export function TextWithLabelWithKnobs() {
-  return (
-    <div className="bg-primary-white">
-      <TextWithLabel
-        id="text-with-label-id"
-        label={text('Label', 'label')}
-        placeholder={text('Placehoder', 'Placeholder')}
-        text={text('Text', 'Text')}
-      />
-    </div>
-  )
+const Template: ComponentStory<typeof TextWithLabel> = (args) => (
+  <div className="bg-primary-white">
+    <TextWithLabel {...args} />
+  </div>
+)
+
+export const TextWithLabelStory = Template.bind({})
+TextWithLabelStory.args = {
+  id: 'text-with-label-id',
+  label: 'label',
+  placeholder: 'Placeholder',
+  text: 'Text',
 }

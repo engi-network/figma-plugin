@@ -5,7 +5,7 @@ export default {
   title: 'Global/Components/Tab',
 }
 
-export function TabWihKnobs() {
+export function TabStory() {
   return (
     <div className="bg-slate-600 h-screen">
       <Tab tabLabels={['test1', 'test2', 'test3']}>
