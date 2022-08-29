@@ -1,4 +1,4 @@
-import { boolean, text } from '@storybook/addon-knobs'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { useState } from 'react'
 
 import Input from './Input'
@@ -6,25 +6,25 @@ import Input from './Input'
 export default {
   component: Input,
   title: 'Global/Components/Input',
-}
+} as ComponentMeta<typeof Input>
 
-export function InputWithKnobs() {
+const Template: ComponentStory<typeof Input> = (args) => {
   const [value, setValue] = useState('')
   const handleChangeValue = (value: string) => {
     setValue(value)
   }
-  const isDisabled = boolean('Disabled?', false)
 
   return (
     <div className="bg-primary-white">
-      <Input
-        label="Component"
-        onChange={handleChangeValue}
-        value={value}
-        placeholder={text('Placehoder', 'placehoder')}
-        error={text('Error', 'This field has an error!')}
-        disabled={isDisabled}
-      />
+      <Input value={value} {...args} onChange={handleChangeValue} />
     </div>
   )
+}
+
+export const InputStory = Template.bind({})
+InputStory.args = {
+  label: 'Component',
+  placeholder: 'Placeholder',
+  error: 'This field has an error',
+  disabled: false,
 }
