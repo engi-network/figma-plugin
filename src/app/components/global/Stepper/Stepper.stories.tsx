@@ -1,5 +1,4 @@
-import { select } from '@storybook/addon-knobs'
-import { useState } from 'react'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import { mapStepToIcon } from '~/app/components/pages/ResultPage/StatusStepper/StatusStepper'
 
@@ -9,27 +8,31 @@ import Stepper from './Stepper'
 export default {
   component: Stepper,
   title: 'Global/Components/Stepper',
-}
+  subcomponents: { Step },
+  argTypes: {
+    orientation: { control: 'select', options: ['horizontal', 'vertical'] },
+  },
+} as ComponentMeta<typeof Stepper>
 
-export function StepperWithKnobs() {
-  const [step, _] = useState(2)
-  const orientation = select(
-    'Orientation',
-    ['horizontal', 'vertical'],
-    'horizontal',
-  )
+const Template: ComponentStory<typeof Stepper> = (args) => (
+  <div className="bg-slate-800 h-full p-10">
+    <Stepper {...args}>{args.children}</Stepper>
+  </div>
+)
 
-  return (
-    <div className="bg-slate-800 h-full p-10">
-      <Stepper activeStep={step} orientation={orientation}>
-        {Array(6)
-          .fill(0)
-          .map((_, index) => (
-            <Step className="p-2" key={index}>
-              {mapStepToIcon(20, 20)[index]}
-            </Step>
-          ))}
-      </Stepper>
-    </div>
-  )
+export const StepperStory = Template.bind({})
+StepperStory.args = {
+  activeStep: 2,
+  orientation: 'horizontal',
+  children: (
+    <>
+      {Array(6)
+        .fill(0)
+        .map((_, index) => (
+          <Step className="p-2" key={index}>
+            {mapStepToIcon(20, 20)[index]}
+          </Step>
+        ))}
+    </>
+  ),
 }
