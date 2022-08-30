@@ -1,4 +1,4 @@
-import { text } from '@storybook/addon-knobs'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { useRef } from 'react'
 
 import { drawImage } from '~/app/lib/utils/canvas'
@@ -9,22 +9,25 @@ import Preview from './Preview'
 export default {
   component: Preview,
   title: 'Global/Modules/Preview',
-}
+} as ComponentMeta<typeof Preview>
 
-export function PreviewWithDefault() {
+const Template: ComponentStory<typeof Preview> = (args) => {
   const originCanvasRef = useRef<HTMLCanvasElement>(null)
-  const frameData = text('Frame', 'Frame string data')
-  const draw = async (canvas: HTMLCanvasElement, context: RenderingContext) => {
-    await drawImage(canvas, context as CanvasRenderingContext2D, frameData)
-  }
 
   return (
     <div className="bg-primary-white">
       <Preview
-        draw={draw}
+        {...args}
         originalCanvasRef={originCanvasRef}
         {...DEMENSIONS.SMALL}
       />
     </div>
   )
+}
+
+export const PreviewStory = Template.bind({})
+PreviewStory.args = {
+  draw: async (canvas: HTMLCanvasElement, context: RenderingContext) => {
+    await drawImage(canvas, context as CanvasRenderingContext2D, 'Frame string')
+  },
 }

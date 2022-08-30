@@ -21,7 +21,7 @@ import { STEP_MESSAGES } from '~/app/pages/Main/Main.types'
 interface Props {
   activeStep: number
   className?: string
-  data: MessageResult
+  data: Partial<MessageResult>
   layerName: string
   originalImageUrl: string
   stepMessage?: string
