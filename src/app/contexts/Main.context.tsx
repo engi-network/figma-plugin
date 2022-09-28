@@ -39,6 +39,7 @@ import {
 } from '~/plugin/constants'
 
 import useDataSource from '../hooks/useDataSource'
+import logger from '../lib/utils/logger'
 import { useUserContext } from './User.context'
 
 export interface MainContextProps {
@@ -77,13 +78,7 @@ export function useMainContextSetup(): MainContextProps {
   const [step, setStep] = useState(0)
   const [currentTimerId, setTimerId] = useState(-1)
 
-  const {
-    height = 0,
-    width = 0,
-    commit,
-    branch,
-    name = '',
-  } = selectionData || {}
+  const { height = 0, width = 0, name = '' } = selectionData || {}
 
   const formValidate = (values?: AnalyzeFormValues): boolean => {
     if (!values) {
@@ -141,6 +136,8 @@ export function useMainContextSetup(): MainContextProps {
         path,
         github_token = '',
         args,
+        commit,
+        branch,
       } = values as AnalyzeFormValues
 
       const context = originCanvasRef.current.getContext(
@@ -182,6 +179,7 @@ export function useMainContextSetup(): MainContextProps {
         width: width + '',
       }
 
+      logger.info('message for sns===>', makeCompact(message))
       await AWSService.publishCommandToSns(makeCompact(message))
 
       const reportInProgress = {
